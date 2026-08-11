@@ -102,7 +102,7 @@ def slide_html(slide, section_titles=None):
     blocks = blocks_html(slide)
     images = slide.get("images", [])
     notes = notes_html(slide)
-    takeaway = "" if role in {"cover", "section"} else takeaway_html(slide)
+    takeaway = "" if role in {"cover", "section", "closing"} else takeaway_html(slide)
     common = f'data-role="{esc(role)}" data-page="{slide.get("page")}"'
     if role not in ROLES:
         role = "bullets"

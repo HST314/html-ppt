@@ -26,6 +26,18 @@ def structural(text, ir):
     abs_path = bool(re.search(r'/(home|Users|tmp)/[^"\\s<]+', text))
     # 必查动画按 deck 实际用到的 role 动态确定，避免无 kpi 页的 deck 被 count-up 误伤
     ir_slides = ir.get("slides", [])
+    deck_issues = []
+    if len(ir_slides) < 2 or ir_slides[1].get("role") != "toc":
+        deck_issues.append("第 2 页缺少目录")
+    if not ir_slides or ir_slides[-1].get("role") != "closing":
+        deck_issues.append("最后一页不是 closing")
+    else:
+        closing = ir_slides[-1]
+        closing_blocks = closing.get("blocks", [])
+        if len(closing_blocks) > 1 or closing.get("takeaway") or any(b.get("type") in {"list", "table", "code"} for b in closing_blocks) or len(closing.get("images", [])) > 1:
+            deck_issues.append("结束页负载过高：只允许一个短句和一个 CTA")
+    if len(ir_slides) < 2 or ir_slides[-2].get("role") in {"cover", "toc", "section", "closing"}:
+        deck_issues.append("结束页之前缺少独立行动/决策页")
     required_anims = ["fade-up", "stagger-list", "rise-in"]
     if any(s.get("role") == "kpi" for s in ir_slides):
         required_anims.append("count-up")
@@ -36,7 +48,7 @@ def structural(text, ir):
         score = 100
         role = slide.get("role")
         title = slide.get("title", "")
-        if role not in {"cover", "section"}:
+        if role not in {"cover", "section", "closing"}:
             compact = re.sub(r"\s+", "", title)
             if len(compact) < 12 or not re.search(r"\d|提升|下降|完成|验证|锁定|进入|减少|扩大|转化|发布|交付|超过|低于|形成|支撑", title):
                 issues.append("标题不是观点式 action title")
@@ -98,6 +110,9 @@ def structural(text, ir):
         if slide_count != len(ir.get("slides", [])):
             issues.append("HTML 页数与 IR 不一致")
             score -= 15
+        if deck_issues:
+            issues.extend(deck_issues)
+            score -= 30
         rows.append({"page": slide.get("page"), "score": max(0, score), "mode": "structural-fallback", "issues": issues})
     return rows
 
@@ -105,7 +120,8 @@ def structural(text, ir):
 def try_playwright(args, ir):
     try:
         from playwright.sync_api import sync_playwright
-    except Exception:
+    except Exception as exc:
+        print(f"Playwright QA 降级：{exc}", file=sys.stderr)
         return None
     out_dir = Path(args.screenshots or Path(args.output).parent / "screenshots")
     out_dir.mkdir(parents=True, exist_ok=True)

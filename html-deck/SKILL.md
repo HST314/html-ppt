@@ -16,7 +16,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
 - 封面、结尾页与中间页背景由场景基因装饰层（`scripts/deco.py` + `assets/components/deco.css`）自动生成：奖牌圆环、数据光柱、流动动线、铭牌矩阵四类元素从场景图基因提取，颜色自动从主题 accent 派生以适配任意主题；禁止删除装饰层或改成静态贴图。
-- 内容必须经过 `references/NARRATIVE.md` 的叙事框架，内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
+- 内容必须经过 `references/NARRATIVE.md` 的叙事框架；第 2 页强制生成目录，收束固定拆成“行动页 + 低负载结束页”。内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
 
 ## 阶段 1：上下文管理
@@ -73,9 +73,10 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 2. 主题优先采用 `state/style_report.json` 的 `recommended_theme` 并叠加 `dist/auto-theme.css`；无风格报告时客户汇报默认 `business-dark`，用户明确要求极简或打印优先时选 `minimal-white`。
 3. 按 `outline.json.slides[]` 逐页渲染。每页 role 必须来自组件库：cover、toc、section、bullets、two-column、image-hero、image-side、gallery、table、kpi、quote、compare、timeline、closing。
 4. 图片自动分配遵循 `COMPONENTS.md` 决策矩阵；显式 `<!-- image: id -->` 优先。
-5. 图片零遗漏由两级机制保证：build_ir 自动拆页（gallery 超 6 张拆多页；hero/side/compare 超 1 张的溢出图移入自动图集页；无法匹配到内容页的清单图自动汇入兜底图集页），`audit_images.py` 与 QA `--manifest` 做最终覆盖核验，漏图直接判失败。
-6. 动画只使用 `ANIMATIONS.md` 的 `data-animate` 名称，并支持 B 键静态降级。
-6. 运行时必须支持：S 键独立演讲者窗口（BroadcastChannel 同步当前页/下一页/讲稿/计时器）、O 键缩略图总览、F 全屏、B 静态降级、#/N 深链接。
+5. 图片零遗漏由两级机制保证：build_ir 自动拆页（gallery 超 6 张拆多页；hero/side/compare 超 1 张的溢出图移入自动图集页；无法匹配到内容页的清单图自动汇入兜底图集页），并保证所有证据图页位于行动页和结束页之前；`audit_images.py` 与 QA `--manifest` 做最终覆盖核验，漏图直接判失败。
+6. 第 2 页必须为 `toc`；倒数第 2 页必须承载行动/决策内容；最后页必须为 `closing`，且至多一个短句、无 takeaway、无列表/表格/KPI/多图。内容型 closing 自动降级为普通内容页并另起结束页。
+7. 动画只使用 `ANIMATIONS.md` 的 `data-animate` 名称，并支持 B 键静态降级。
+8. 运行时必须支持：S 键独立演讲者窗口（BroadcastChannel 同步当前页/下一页/讲稿/计时器）、O 键缩略图总览、F 全屏、B 静态降级、#/N 深链接。
 
 出口产物：主题预览和完整 HTML。
 

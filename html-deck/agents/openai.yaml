@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML 演示文稿构建"
+  short_description: "将 Markdown 与场景图片转为离线单文件 HTML 演示文稿"
+  default_prompt: "Use $html-deck to turn my Markdown and image manifest into a QA-verified offline HTML presentation."

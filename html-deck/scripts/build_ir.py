@@ -47,6 +47,18 @@ def parse_md(text):
     return title or "Untitled Deck", sections, slides
 
 
+def toc_entries(sections, md_slides):
+    """目录必须存在；无二级章节时，从内容页标题提炼 3—6 个叙事节点。"""
+    entries = [s for s in sections if s]
+    if not entries:
+        entries = [s["title"] for s in md_slides if directives(s["raw"])["role"] != "closing"]
+    entries = entries[:6]
+    if len(entries) < 3:
+        defaults = ["建立共同判断", "展开关键证据", "确认下一步行动"]
+        entries.extend(x for x in defaults if x not in entries)
+    return entries[:6]
+
+
 def blocks(raw_lines):
     out, para, table, code = [], [], [], []
     in_code = False
@@ -312,6 +324,59 @@ def split_overflow_slides(slides):
     return out
 
 
+def closing_slide(deck_title):
+    """生成只承担情绪回收与单一 CTA 的低负载尾页。"""
+    echo = ""
+    for sep in ("：", ":"):
+        if sep in deck_title:
+            echo = deck_title.split(sep, 1)[1].strip()
+            break
+    title = "让下一步从今天开始"
+    bl = [{"type": "paragraph", "text": "感谢聆听｜现在确认第一项行动。"}]
+    return {
+        "page": None, "role": "closing", "title": title, "section": None,
+        "blocks": bl, "images": [], "takeaway": "", "echo": echo or None,
+        "notes": speaker_notes(title, bl, "用一句感谢和一个明确请求结束，不在尾页继续解释方案。"),
+        "decision": "automatic low-load closing after decision page",
+        "risk": {"level": "low", "issues": []},
+    }
+
+
+def enforce_ending(slides, deck_title):
+    """把内容型 closing 降级为行动页，并保证最后一页是低负载 closing。"""
+    normalized = []
+    moved_explicit_closing = False
+    for slide in slides:
+        if slide.get("role") != "closing":
+            normalized.append(slide)
+            continue
+        content_weight = len(slide.get("blocks", [])) + len(slide.get("images", []))
+        if content_weight:
+            action = dict(slide)
+            action.update({
+                "role": "bullets", "echo": None,
+                "decision": (slide.get("decision") or "explicit closing") + " | moved to pre-closing decision page",
+            })
+            action["risk"] = risk_for(action.get("title", ""), action.get("blocks", []), action.get("images", []))
+            normalized.append(action)
+            moved_explicit_closing = True
+    if not moved_explicit_closing:
+        bl = [
+            {"type": "list", "items": ["T+3 天确认试点范围与验收口径", "T+14 天锁定首批场景与数据看板", "T+30 天复盘并决定扩大范围"]},
+            {"type": "paragraph", "text": "每项行动绑定负责人、日期与可检查产物。"},
+            {"type": "paragraph", "text": "会后决策只保留范围、看板与复盘节奏三件事。"},
+        ]
+        title = "未来 30 天行动已压缩为 3 个检查点"
+        normalized.append({
+            "page": None, "role": "bullets", "title": title, "section": None,
+            "blocks": bl, "images": [], "takeaway": "So-what：现在只需确认第一项行动的负责人和时间。",
+            "notes": speaker_notes(title, bl, "把方案收束为可确认、可跟进、可复盘的行动。"),
+            "decision": "automatic closing decision page", "risk": risk_for(title, bl, []),
+        })
+    normalized.append(closing_slide(deck_title))
+    return normalized
+
+
 def risk_for(title, bl, imgs):
     issues = []
     issues.extend(action_title_issues(title))
@@ -348,9 +413,9 @@ def main():
     if style_report and style_report.get("cover_image_id"):
         cover_bg = next((i for i in manifest.get("images", []) if i.get("id") == style_report["cover_image_id"]), None)
     slides = [{"page": 1, "role": "cover", "title": title, "section": None, "blocks": [], "images": [], "bg_image": cover_bg, "takeaway": "", "notes": speaker_notes(title, [], "开场说明演示目标、对象与预期收获。"), "decision": "level-1 title becomes cover", "risk": {"level": "low", "issues": []}}]
-    if sections:
-        toc_blocks = [{"type": "list", "items": sections[:6]}, {"type": "paragraph", "text": "本页按照叙事章节建立预期，每章至少两页内容并用过渡页控制节奏。"}, {"type": "paragraph", "text": "目录顺序默认遵循场景框架：结论先行、证据展开、行动收束。"}]
-        slides.append({"page": 2, "role": "toc", "title": "目录将叙事拆成可追踪的 3 个阶段", "section": None, "blocks": toc_blocks, "images": [], "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。", "notes": speaker_notes("目录将叙事拆成可追踪的 3 个阶段", toc_blocks, "用目录建立预期，控制节奏。"), "decision": "sections detected", "risk": {"level": "low", "issues": []}})
+    toc_items = toc_entries(sections, md_slides)
+    toc_blocks = [{"type": "list", "items": toc_items}, {"type": "paragraph", "text": "目录先建立判断路径，再按证据与行动推进。"}]
+    slides.append({"page": 2, "role": "toc", "title": f"{len(toc_items)} 个叙事节点从判断走向行动", "section": None, "blocks": toc_blocks, "images": [], "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。", "notes": speaker_notes("目录建立完整叙事路径", toc_blocks, "用目录建立预期，控制节奏。"), "decision": "mandatory toc derived from sections or slide titles", "risk": {"level": "low", "issues": []}})
     last_section = None
     for md, imgs in zip(md_slides, image_groups):
         if md["section"] and md["section"] != last_section:
@@ -371,15 +436,7 @@ def main():
             utitle = f"清单内剩余场景图已自动汇入证据页（{ci + 1}/{len(chunks)}）"
             ubl = [{"type": "paragraph", "text": "以下场景图来自图片清单但未在正文中被显式引用，系统自动拆入本页以保证输入图片零遗漏。"}]
             slides.append({"page": None, "role": "gallery", "title": utitle, "section": last_section, "blocks": ubl, "images": chunk, "takeaway": f"So-what：本页收纳清单内未被引用的 {len(chunk)} 张场景图，可酌情保留或在定稿前删除。", "notes": speaker_notes(utitle, ubl, "说明这些图片自动汇入的原因，由演讲者决定去留。"), "decision": "unplaced images auto-collected into gallery", "risk": risk_for(utitle, ubl, chunk)})
-    if slides[-1]["role"] != "closing":
-        bl = [{"type": "list", "items": ["T+3 天确认试点范围与验收口径", "T+14 天锁定首批场景与数据看板", "T+30 天安排复盘会议并决定扩大范围"]}, {"type": "paragraph", "text": "行动项必须绑定负责人、时间和可检查产物，避免会后只留下方向性共识。"}, {"type": "paragraph", "text": "结束页承接前文证据，把决策请求压缩为一组可立即执行的动作。"}]
-        # 首尾呼应：封面标题冒号后的强调语自动成为结尾页 closing-echo
-        title_em = ""
-        for sep in ("：", ":"):
-            if sep in title:
-                title_em = title.split(sep, 1)[1].strip()
-                break
-        slides.append({"page": len(slides) + 1, "role": "closing", "title": "未来 30 天行动项已经压缩为 3 个检查点", "section": None, "blocks": bl, "images": [], "takeaway": "So-what：会后只需要确认范围、看板和复盘节奏三件事。", "echo": title_em or None, "notes": speaker_notes("未来 30 天行动项已经压缩为 3 个检查点", bl, "收束到明确行动。"), "decision": "automatic closing", "risk": risk_for("未来 30 天行动项已经压缩为 3 个检查点", bl, [])})
+    slides = enforce_ending(slides, title)
     # 拆页与汇入后统一重编页码
     for page_no, s in enumerate(slides, start=1):
         s["page"] = page_no
