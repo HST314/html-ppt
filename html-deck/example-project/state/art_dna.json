@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "source_image_ids": [
+    "project-sheet"
+  ],
+  "primary_image_id": "project-sheet",
+  "art_expression": "主题色为#101010、#f0f0f0、#f01010、#707070；线条呈均衡网格；亮部重心位于九宫格(3,1)，暗部重心位于(2,3)；饱和度0.61、明暗层次0.17。背景保留标题侧留白，以异尺度轮廓、项目色光晕和方向性线群形成版式节奏；封面展开、尾页镜像收束，禁止复用固定行业图形。",
+  "dna": {
+    "palette": [
+      "#101010",
+      "#f0f0f0",
+      "#f01010",
+      "#707070",
+      "#f0f010"
+    ],
+    "line_language": "均衡网格",
+    "dark_focus": [
+      1,
+      2
+    ],
+    "light_focus": [
+      2,
+      0
+    ],
+    "saturation": 0.613,
+    "contrast": 0.166
+  },
+  "cover_background": "art/project-cover.svg",
+  "closing_background": "art/project-closing.svg",
+  "non_template_signature": "1d5d9cec37a43c5c"
+}
