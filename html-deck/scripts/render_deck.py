@@ -107,7 +107,11 @@ def slide_html(slide, section_titles=None, art_dna=None):
     common = f'data-role="{esc(role)}" data-page="{slide.get("page")}"'
     if role not in ROLES:
         role = "bullets"
-    quiet = "" if role in {"cover", "closing", "image-hero"} else quiet_deco(section=(role == "section"))
+    quiet = "" if art_dna or role in {"cover", "closing", "image-hero"} else quiet_deco(section=(role == "section"))
+    art_layer = ""
+    if art_dna:
+        key = "cover_background" if role == "cover" else "closing_background" if role == "closing" else "section_background" if role == "section" else "content_background"
+        art_layer = f'<img class="project-art-bg project-art-{esc(role)}" src="{esc(art_dna.get(key))}" alt="" aria-hidden="true">'
     if role == "cover":
         bg = slide.get("bg_image")
         bg_html = ""
@@ -120,7 +124,7 @@ def slide_html(slide, section_titles=None, art_dna=None):
         subtitle = esc(slide.get("subtitle") or "从核心主张到落地计划的一次完整汇报")
         meta = slide.get("meta") or (section_titles or [])[:3] or ["Overview", "Evidence", "Action"]
         meta_html = "".join(f"<span>{esc(m)}</span>" for m in meta)
-        art_bg = f'<img class="project-art-bg" src="{esc(art_dna.get("cover_background"))}" alt="项目图片艺术元素生成的封面背景">' if art_dna else ""
+        art_bg = art_layer
         inner = (
             f'{art_bg}{bg_html}{"" if art_dna else cover_deco()}<canvas class="fx-canvas" width="1920" height="1080"></canvas>'
             f'<div class="outline-number">01</div><div class="watermark-word">DECK</div>'
@@ -130,24 +134,24 @@ def slide_html(slide, section_titles=None, art_dna=None):
             f'<div class="meta-line">{meta_html}</div>'
         )
     elif role == "toc":
-        inner = f'<div class="watermark-word">AGENDA</div><h2>{title}</h2>{blocks}'
+        inner = f'{art_layer}<div class="watermark-word">AGENDA</div><h2>{title}</h2>{blocks}'
     elif role == "section":
-        inner = f'<div class="outline-number">{str(slide.get("section_index") or slide.get("page")).zfill(2)}</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">{title}</h2><div class="deckline" data-animate="path-draw"></div>'
+        inner = f'{art_layer}<div class="outline-number">{str(slide.get("section_index") or slide.get("page")).zfill(2)}</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">{title}</h2><div class="deckline" data-animate="path-draw"></div>'
     elif role == "image-hero":
         im = img_html(images[0] if images else None, "image-frame hero-image", "cover")
-        inner = f'{im}<div class="hero-copy"><h2>{title}</h2>{blocks}</div>{takeaway}'
+        inner = f'{art_layer}{im}<div class="hero-copy"><h2>{title}</h2>{blocks}</div>{takeaway}'
     elif role == "image-side":
         im = img_html(images[0] if images else None, "image-frame side-image", "contain")
-        inner = f'<div class="copy"><h2>{title}</h2>{blocks}</div><div class="visual">{im}</div>{takeaway}'
+        inner = f'{art_layer}<div class="copy"><h2>{title}</h2>{blocks}</div><div class="visual">{im}</div>{takeaway}'
     elif role == "gallery":
         frames = "".join(img_html(img, "image-frame", "cover", i + 1) for i, img in enumerate(images[:6]))
         grid_cls = "gallery-grid" + (" gallery-small" if len(images[:6]) <= 3 else "")
-        inner = f'<h2>{title}</h2>{blocks}<div class="{grid_cls}">{frames}</div>{takeaway}'
+        inner = f'{art_layer}<h2>{title}</h2>{blocks}<div class="{grid_cls}">{frames}</div>{takeaway}'
     elif role == "two-column":
         parts = slide.get("blocks", [])
         left = "\n".join(block_html(b) for b in parts[::2]) or blocks
         right = "\n".join(block_html(b) for b in parts[1::2]) or (img_html(images[0], "image-frame side-image", "contain") if images else "")
-        inner = f'<div class="copy"><h2>{title}</h2>{left}</div><div class="visual panel" style="padding:34px">{right}</div>{takeaway}'
+        inner = f'{art_layer}<div class="copy"><h2>{title}</h2>{left}</div><div class="visual panel" style="padding:34px">{right}</div>{takeaway}'
     elif role == "table":
         inner = f'<h2>{title}</h2>{blocks}{takeaway}'
     elif role == "kpi":
@@ -179,10 +183,12 @@ def slide_html(slide, section_titles=None, art_dna=None):
         if echo:
             echo_sub = esc(slide.get("echo_sub") or "HONOR GALLERY · CONCEPT PROPOSAL")
             echo_html = f'<div class="closing-echo" data-animate="fade-up">{esc(echo)}<small>{echo_sub}</small></div>'
-        art_bg = f'<img class="project-art-bg" src="{esc(art_dna.get("closing_background"))}" alt="项目图片艺术元素生成的尾页背景">' if art_dna else ""
+        art_bg = art_layer
         inner = f'{art_bg}<canvas class="fx-canvas" width="1920" height="1080"></canvas>{"" if art_dna else closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'
     else:
-        inner = f'<h2>{title}</h2>{blocks}{takeaway}'
+        inner = f'{art_layer}<h2>{title}</h2>{blocks}{takeaway}'
+    if art_layer and art_layer not in inner:
+        inner = art_layer + inner
     return f'<section class="slide role-{role}" {common}>{quiet}{inner}{notes}</section>'
 
 
@@ -208,6 +214,10 @@ def main():
     js = asset_text("assets", "runtime", "runtime.js").replace("</script>", "<\\/script>")
     section_titles = [str(s.get("title")) for s in slides if s.get("role") == "section" and s.get("title")]
     art_dna = read_json(args.art_dna) if args.art_dna and Path(args.art_dna).exists() else None
+    if art_dna:
+        palette = art_dna.get("dna", {}).get("palette", [])
+        if len(palette) >= 3:
+            css += f'''\n:root{{--bg:#06101d;--page-bg:#02070d;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n'''
     body = "\n".join(slide_html(s, section_titles, art_dna) for s in slides)
     doc = f'''<!doctype html>
 <html lang="zh-CN">

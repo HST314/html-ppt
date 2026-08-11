@@ -15,11 +15,12 @@ def parse_args():
     p.add_argument("--history", required=True)
     p.add_argument("--screenshots", required=False)
     p.add_argument("--manifest", required=False, help="传入后执行图片覆盖审计，漏图直接判失败")
+    p.add_argument("--art-dna", required=False, help="全 Deck 项目视觉 DNA 报告")
     p.add_argument("--round", type=int, default=1)
     return p.parse_args()
 
 
-def structural(text, ir):
+def structural(text, ir, art_dna=None):
     rows = []
     slide_count = text.count('<section class="slide')
     external = bool(re.search(r'https?://', text))
@@ -27,6 +28,13 @@ def structural(text, ir):
     # 必查动画按 deck 实际用到的 role 动态确定，避免无 kpi 页的 deck 被 count-up 误伤
     ir_slides = ir.get("slides", [])
     deck_issues = []
+    if art_dna:
+        required = ["cover_background", "content_background", "section_background", "closing_background"]
+        missing = [k for k in required if not art_dna.get(k)]
+        if missing:
+            deck_issues.append("项目视觉系统缺少角色背景：" + ",".join(missing))
+        if text.count('class="project-art-bg') < len(ir_slides):
+            deck_issues.append("项目视觉 DNA 未覆盖全部页面")
     if len(ir_slides) < 2 or ir_slides[1].get("role") != "toc":
         deck_issues.append("第 2 页缺少目录")
     if not ir_slides or ir_slides[-1].get("role") != "closing":
@@ -177,12 +185,13 @@ def main():
     args = parse_args()
     text = Path(args.html).read_text(encoding="utf-8")
     ir = read_json(args.ir)
+    art_dna = read_json(args.art_dna) if args.art_dna else None
     rows = try_playwright(args, ir)
     if rows is None:
-        rows = structural(text, ir)
+        rows = structural(text, ir, art_dna)
     else:
         # playwright 模式同样执行内容容量规则，两种检查取并集
-        struct_map = {r["page"]: r for r in structural(text, ir)}
+        struct_map = {r["page"]: r for r in structural(text, ir, art_dna)}
         for r in rows:
             s = struct_map.get(r["page"])
             if s:

@@ -16,7 +16,14 @@
 }
 
 .deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.project-art-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:.82; }
+.project-art-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:.82; z-index:0; animation:artDrift 18s ease-in-out infinite alternate; }
+.project-art-toc, .project-art-bullets, .project-art-two-column, .project-art-image-side, .project-art-gallery, .project-art-table, .project-art-kpi, .project-art-quote, .project-art-compare, .project-art-timeline { opacity:.58; }
+.project-art-section { opacity:.76; }
+.slide > .project-art-bg ~ * { z-index:2; }
+.slide:has(.project-art-bg) .panel, .slide:has(.project-art-bg) .content-list li, .slide:has(.project-art-bg) .takeaway { background:rgba(5,15,28,.72); border-color:rgba(211,163,82,.25); }
+.slide:has(.project-art-bg)::after { background:linear-gradient(90deg,transparent,rgba(222,178,95,.5),transparent); }
+@keyframes artDrift { from { transform:scale(1.01) translate3d(-4px,0,0); } to { transform:scale(1.035) translate3d(7px,-4px,0); } }
+body.no-motion .project-art-bg { animation:none; }
 
 /* SVG 内部元素配色（currentColor / stop-color 通过 CSS 注入，保证主题自适应） */
 .deco { color: var(--ho); }
