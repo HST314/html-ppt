@@ -142,6 +142,14 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   background: var(--surface-2);
   border: 1px solid var(--line);
 }
+.project-image-container {
+  isolation: isolate;
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 12px 34px rgba(0,0,0,.16);
+}
+.project-image-container::before,
+.project-image-container::after { display: none !important; }
 .slide figure { margin: 0; }
 .image-frame img {
   width: 100%;
@@ -210,9 +218,11 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 .role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
 .role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
 .role-image-hero {
-  padding: 0;
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 28px 34px;
+  padding-bottom: 92px;
 }
 /* 封面场景图背景：风格检测选出的高权重场景图做全幅底图，蒙版保证文字可读 */
 .cover-bg {
@@ -234,28 +244,18 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   pointer-events: none;
 }
 .hero-image {
-  position: absolute;
-  inset: 0;
-  border: 0;
-  border-radius: 0;
-}
-.hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--bg) 92%, transparent), transparent 68%),
-    linear-gradient(0deg, rgba(0,0,0,.72), transparent 55%);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 .hero-copy {
-  align-self: end;
-  padding: var(--slide-padding);
-  max-width: 1100px;
-  z-index: 3;
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  min-width: 0;
 }
-.hero-copy h2 { color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.44); }
-.hero-copy .body, .hero-copy li { color: rgba(255,255,255,.9); }
+.hero-visual { grid-column: 5 / -1; grid-row: 1 / span 2; min-width: 0; min-height: 0; }
+.role-image-hero > .takeaway { grid-column: 1 / -1; grid-row: 3; }
 .side-image, .visual .image-frame {
   width: 100%;
   height: 690px;

@@ -15,6 +15,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
+- 项目图片只承担内容展示：必须置于独立、稳定、不可溢出的容器，默认 `contain` 保持原貌；禁止出血、叠字、背景融合、主体抠出越界和持续运动。背景系统独立承担主题视觉。生成或审查图片页时必须读取 `references/PROJECT_IMAGES.md`。
 - 全 Deck 必须先运行 `extract_art_dna.py`：将项目图转成 `art_expression`，生成 cover/content/section/closing 四种同源角色背景和统一设计令牌。封面展开、章节转场强化、内容页弱化、尾页收束；禁止首尾项目化而中间页继续套通用主题。禁止把 `deco.py` 的固定行业图形当成跨项目模板；它只允许在无可读项目图时作为明确标注的降级方案。
 - 内容必须经过 `references/NARRATIVE.md` 的叙事框架；第 2 页强制生成目录，收束固定拆成“行动页 + 低负载结束页”。内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
@@ -73,7 +74,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
    ```
 2. 主题优先采用 `state/style_report.json` 的 `recommended_theme` 并叠加 `dist/auto-theme.css`；无风格报告时客户汇报默认 `business-dark`，用户明确要求极简或打印优先时选 `minimal-white`。
 3. 按 `outline.json.slides[]` 逐页渲染。每页 role 必须来自组件库：cover、toc、section、bullets、two-column、image-hero、image-side、gallery、table、kpi、quote、compare、timeline、closing。
-4. 图片自动分配遵循 `COMPONENTS.md` 决策矩阵；显式 `<!-- image: id -->` 优先。
+4. 图片自动分配遵循 `COMPONENTS.md` 与 `PROJECT_IMAGES.md` 决策矩阵；显式 `<!-- image: id -->` 优先。无明确 `group_id` 关系的多图默认拆为单图页。
 5. 图片零遗漏由两级机制保证：build_ir 自动拆页（gallery 超 6 张拆多页；hero/side/compare 超 1 张的溢出图移入自动图集页；无法匹配到内容页的清单图自动汇入兜底图集页），并保证所有证据图页位于行动页和结束页之前；`audit_images.py` 与 QA `--manifest` 做最终覆盖核验，漏图直接判失败。
 6. 第 2 页必须为 `toc`；倒数第 2 页必须承载行动/决策内容；最后页必须为 `closing`，且至多一个短句、无 takeaway、无列表/表格/KPI/多图。内容型 closing 自动降级为普通内容页并另起结束页。
 7. 动画只使用 `ANIMATIONS.md` 的 `data-animate` 名称，并支持 B 键静态降级。
@@ -124,6 +125,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 硬约束：
 - 单文件零 CDN；字体使用中文系统字体栈兜底。
 - 图片不拉伸；每个 `img` 必须有 `object-fit` 与 `alt`。
+- 项目图片容器必须 `overflow:hidden` 且与文字无重叠；默认 `object-fit:contain`。只有确认裁切不损害主体时才允许显式 `cover`，QA 必须记录理由。
 - 每页标题建议 <= 42 字；正文列表建议 <= 8 条；每条 <= 58 字。超限先拆页。
 - 主题只能使用 `assets/themes/*.css` token。
 - HTML 不得泄露输入绝对路径。

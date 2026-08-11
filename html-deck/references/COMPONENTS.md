@@ -20,7 +20,7 @@
 - `section`：章节过渡页。
 - `bullets`：标题 + 3-6 条要点。
 - `two-column`：左右等宽文本/图表/列表。
-- `image-hero`：大图作为主视觉，适合 16:9 横图或高权重图片。
+- `image-hero`：大尺寸独立图片容器 + 相邻文字，禁止全屏出血或叠字。
 - `image-side`：文字 + 侧图，适合竖图、截图、图表。
 - `gallery`：3-6 张图网格。
 - `table`：结构化表格。
@@ -36,12 +36,12 @@
 
 | 条件 | role | fit | 决策理由 |
 | --- | --- | --- | --- |
-| suggested_role=hero 且 weight=high | image-hero | cover | 高权重大图承担视觉记忆点 |
-| aspect_ratio 接近 16:9 且 content_type=screenshot/photo | image-hero 或 two-column | contain/cover | 横图适合全宽或半屏 |
+| suggested_role=hero 且 weight=high | image-hero | contain | 高权重图用大容器完整展示，不作为背景 |
+| aspect_ratio 接近 16:9 且 content_type=screenshot/photo | image-hero 或 two-column | contain | 横图适合大幅或半屏独立容器 |
 | aspect_ratio 接近 9:16 | image-side | contain | 竖图需要侧栏保真 |
-| aspect_ratio 接近 1:1 | gallery 或 image-side | cover | 方图适合卡片化 |
+| aspect_ratio 接近 1:1 | gallery 或 image-side | contain | 方图适合克制卡片化 |
 | content_type=chart/diagram | image-side 或 two-column | contain | 图表必须保真 |
-| 3 张以上低/中权重图 | gallery | cover | 多图聚合呈现 |
+| 3 张以上且共享 group_id | gallery | contain | 只组合有明确内容关系的图片 |
 
 ## 容量规则
 

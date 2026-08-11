@@ -50,7 +50,14 @@ def structural(text, ir, art_dna=None):
     if any(s.get("role") == "kpi" for s in ir_slides):
         required_anims.append("count-up")
     if any(s.get("images") for s in ir_slides):
-        required_anims.append("kenburns")
+        if not re.search(r'class="[^"]*project-image-container', text):
+            deck_issues.append("项目图片缺少独立容器")
+        if re.search(r'<(?:figure|img)[^>]+data-animate="kenburns"', text):
+            deck_issues.append("项目图片使用持续缩放动画")
+        if re.search(r'class="[^"]*project-image-container[^"]*"[^>]*style="[^"]*--fit:cover', text):
+            deck_issues.append("项目图片默认使用 cover，存在内容裁切风险")
+        if re.search(r'role-image-hero[\s\S]{0,1200}hero-image::after', text):
+            deck_issues.append("项目图片与文字或背景发生融合")
     for slide in ir_slides:
         issues = []
         score = 100

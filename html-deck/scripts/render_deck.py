@@ -58,7 +58,7 @@ def blocks_html(slide):
     return "\n".join(block_html(b) for b in slide.get("blocks", []))
 
 
-def img_html(img, cls="image-frame", fit="cover", index=None):
+def img_html(img, cls="image-frame", fit="contain", index=None):
     if not img:
         return '<div class="image-frame" data-image-slot="empty"></div>'
     ctype = img.get("content_type", "")
@@ -67,7 +67,7 @@ def img_html(img, cls="image-frame", fit="cover", index=None):
     source = img.get("source") or img.get("content_type") or "scene"
     badge = f'<span class="gallery-index">{index:02d}</span>' if index else ""
     return (
-        f'<figure class="{frame_cls}" data-image-slot="{esc(img["id"])}" style="--fit:{fit}" data-animate="kenburns">'
+        f'<figure class="{frame_cls} project-image-container" data-image-slot="{esc(img["id"])}" style="--fit:{fit}" data-animate="fade-up">'
         f'{badge}'
         f'<img src="{esc(img["file"])}" alt="{esc(img["alt"])}" loading="eager">'
         f'<figcaption class="caption-bar"><span>{esc(caption)}</span><span class="caption-source">{esc(source)}</span></figcaption>'
@@ -115,7 +115,7 @@ def slide_html(slide, section_titles=None, art_dna=None):
     if role == "cover":
         bg = slide.get("bg_image")
         bg_html = ""
-        if bg:
+        if bg and not art_dna:
             bg_html = (
                 f'<img class="cover-bg" src="{esc(bg["file"])}" alt="{esc(bg.get("alt"))}">'
                 f'<div class="cover-bg-mask"></div>'
@@ -138,13 +138,13 @@ def slide_html(slide, section_titles=None, art_dna=None):
     elif role == "section":
         inner = f'{art_layer}<div class="outline-number">{str(slide.get("section_index") or slide.get("page")).zfill(2)}</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">{title}</h2><div class="deckline" data-animate="path-draw"></div>'
     elif role == "image-hero":
-        im = img_html(images[0] if images else None, "image-frame hero-image", "cover")
-        inner = f'{art_layer}{im}<div class="hero-copy"><h2>{title}</h2>{blocks}</div>{takeaway}'
+        im = img_html(images[0] if images else None, "image-frame hero-image", "contain")
+        inner = f'{art_layer}<div class="hero-copy"><h2>{title}</h2>{blocks}</div><div class="hero-visual">{im}</div>{takeaway}'
     elif role == "image-side":
         im = img_html(images[0] if images else None, "image-frame side-image", "contain")
         inner = f'{art_layer}<div class="copy"><h2>{title}</h2>{blocks}</div><div class="visual">{im}</div>{takeaway}'
     elif role == "gallery":
-        frames = "".join(img_html(img, "image-frame", "cover", i + 1) for i, img in enumerate(images[:6]))
+        frames = "".join(img_html(img, "image-frame", "contain", i + 1) for i, img in enumerate(images[:6]))
         grid_cls = "gallery-grid" + (" gallery-small" if len(images[:6]) <= 3 else "")
         inner = f'{art_layer}<h2>{title}</h2>{blocks}<div class="{grid_cls}">{frames}</div>{takeaway}'
     elif role == "two-column":

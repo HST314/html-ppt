@@ -145,8 +145,10 @@ def pick_role(slide, assigned_images):
     if re.search(r"对比|before|after|vs\.?|优势", joined, re.I):
         return "compare", "compare content detected"
     if assigned_images:
-        if len(assigned_images) >= 3:
-            return "gallery", "three or more images assigned"
+        group_ids = {str(i.get("group_id") or "").strip() for i in assigned_images}
+        explicitly_related = len(group_ids) == 1 and "" not in group_ids
+        if len(assigned_images) >= 2 and explicitly_related:
+            return "gallery", "related images share explicit group_id"
         img = assigned_images[0]
         if img.get("suggested_role") == "hero" or img.get("weight") == "high":
             return "image-hero", "high weight or hero image metadata"
@@ -271,6 +273,25 @@ def assign_images(slides, images):
 GALLERY_PAGE_SIZE = 6
 
 
+def images_are_related(images):
+    """只有非空且一致的 group_id 才能证明图片可组合。"""
+    groups = {str(i.get("group_id") or "").strip() for i in images}
+    return len(images) > 1 and len(groups) == 1 and "" not in groups
+
+
+def single_image_continuation(base_title, image, idx, total, section):
+    title = f"{base_title}（项目图 {idx}/{total}）"
+    bl = [{"type": "paragraph", "text": "本图没有足够元数据证明与其他图片属于同一内容组，因此采用独立容器单图展示。"}]
+    return {
+        "page": None, "role": "image-side", "title": title, "section": section,
+        "blocks": bl, "images": [image],
+        "takeaway": "So-what：保持项目图片原貌和清晰边界，避免为丰富页面强行组合。",
+        "notes": speaker_notes(title, bl, "说明本图的可识别内容，不推测未知业务关系。"),
+        "decision": "unrelated image isolated; no shared group_id",
+        "risk": risk_for(title, bl, [image]),
+    }
+
+
 def gallery_continuation(base_title, chunk, idx, total, section, note_seed):
     """为拆页产生的图集续页生成完整 slide 记录。"""
     title = f"{base_title}（证据图 {idx}/{total}）"
@@ -296,6 +317,18 @@ def split_overflow_slides(slides):
     for s in slides:
         role = s.get("role")
         imgs = list(s.get("images", []))
+        if len(imgs) > 1 and not images_are_related(imgs):
+            for idx, image in enumerate(imgs, start=1):
+                if idx == 1:
+                    ns = dict(s)
+                    ns["role"] = "image-side" if role == "gallery" else role
+                    ns["images"] = [image]
+                    ns["decision"] = (s.get("decision") or "") + " | unrelated images split into single-image pages"
+                    ns["risk"] = risk_for(ns["title"], ns.get("blocks", []), [image])
+                    out.append(ns)
+                else:
+                    out.append(single_image_continuation(s["title"], image, idx, len(imgs), s.get("section")))
+            continue
         if role == "gallery" and len(imgs) > GALLERY_PAGE_SIZE:
             chunks = [imgs[i:i + GALLERY_PAGE_SIZE] for i in range(0, len(imgs), GALLERY_PAGE_SIZE)]
             total = len(chunks)
@@ -316,9 +349,8 @@ def split_overflow_slides(slides):
             ns["decision"] = s.get("decision", "") + f" | {len(rest)} overflow image(s) moved to gallery"
             ns["risk"] = risk_for(ns["title"], ns.get("blocks", []), keep)
             out.append(ns)
-            chunks = [rest[i:i + GALLERY_PAGE_SIZE] for i in range(0, len(rest), GALLERY_PAGE_SIZE)]
-            for ci, chunk in enumerate(chunks):
-                out.append(gallery_continuation(s["title"], chunk, ci + 1, len(chunks), s.get("section"), "承接上一页未展示完的场景图片。"))
+            for idx, image in enumerate(rest, start=2):
+                out.append(single_image_continuation(s["title"], image, idx, len(imgs), s.get("section")))
         else:
             out.append(s)
     return out
@@ -431,11 +463,15 @@ def main():
     slides = split_overflow_slides(slides)
     # 零遗漏兜底：无法匹配到任何内容页的图片自动汇入独立图集页
     if unplaced_images:
-        chunks = [unplaced_images[i:i + GALLERY_PAGE_SIZE] for i in range(0, len(unplaced_images), GALLERY_PAGE_SIZE)]
+        if images_are_related(unplaced_images):
+            chunks = [unplaced_images[i:i + GALLERY_PAGE_SIZE] for i in range(0, len(unplaced_images), GALLERY_PAGE_SIZE)]
+        else:
+            chunks = [[image] for image in unplaced_images]
         for ci, chunk in enumerate(chunks):
-            utitle = f"清单内剩余场景图已自动汇入证据页（{ci + 1}/{len(chunks)}）"
+            utitle = f"清单内剩余场景图已独立汇入证据页（{ci + 1}/{len(chunks)}）"
             ubl = [{"type": "paragraph", "text": "以下场景图来自图片清单但未在正文中被显式引用，系统自动拆入本页以保证输入图片零遗漏。"}]
-            slides.append({"page": None, "role": "gallery", "title": utitle, "section": last_section, "blocks": ubl, "images": chunk, "takeaway": f"So-what：本页收纳清单内未被引用的 {len(chunk)} 张场景图，可酌情保留或在定稿前删除。", "notes": speaker_notes(utitle, ubl, "说明这些图片自动汇入的原因，由演讲者决定去留。"), "decision": "unplaced images auto-collected into gallery", "risk": risk_for(utitle, ubl, chunk)})
+            role = "gallery" if len(chunk) > 1 else "image-side"
+            slides.append({"page": None, "role": role, "title": utitle, "section": last_section, "blocks": ubl, "images": chunk, "takeaway": f"So-what：本页完整展示清单内未被引用的 {len(chunk)} 张场景图。", "notes": speaker_notes(utitle, ubl, "说明图片自动汇入的原因，不推测未知业务关系。"), "decision": "unplaced images isolated unless explicit group_id", "risk": risk_for(utitle, ubl, chunk)})
     slides = enforce_ending(slides, title)
     # 拆页与汇入后统一重编页码
     for page_no, s in enumerate(slides, start=1):
