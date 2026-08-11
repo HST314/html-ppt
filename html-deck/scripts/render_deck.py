@@ -18,6 +18,7 @@ def parse_args():
     p.add_argument("--output", required=True)
     p.add_argument("--state", required=False)
     p.add_argument("--preview-only", action="store_true")
+    p.add_argument("--art-dna", required=False, help="extract_art_dna.py 输出；为封面/尾页注入项目专属背景")
     return p.parse_args()
 
 
@@ -96,7 +97,7 @@ def cover_title_html(title):
     return f'<span class="h1-line">{esc(title)}</span>'
 
 
-def slide_html(slide, section_titles=None):
+def slide_html(slide, section_titles=None, art_dna=None):
     role = slide.get("role")
     title = esc(slide.get("title"))
     blocks = blocks_html(slide)
@@ -119,8 +120,9 @@ def slide_html(slide, section_titles=None):
         subtitle = esc(slide.get("subtitle") or "从核心主张到落地计划的一次完整汇报")
         meta = slide.get("meta") or (section_titles or [])[:3] or ["Overview", "Evidence", "Action"]
         meta_html = "".join(f"<span>{esc(m)}</span>" for m in meta)
+        art_bg = f'<img class="project-art-bg" src="{esc(art_dna.get("cover_background"))}" alt="项目图片艺术元素生成的封面背景">' if art_dna else ""
         inner = (
-            f'{bg_html}{cover_deco()}<canvas class="fx-canvas" width="1920" height="1080"></canvas>'
+            f'{art_bg}{bg_html}{"" if art_dna else cover_deco()}<canvas class="fx-canvas" width="1920" height="1080"></canvas>'
             f'<div class="outline-number">01</div><div class="watermark-word">DECK</div>'
             f'<div class="eyebrow">{eyebrow}</div>'
             f'<h1 data-animate="fade-up">{cover_title_html(title)}</h1>'
@@ -177,7 +179,8 @@ def slide_html(slide, section_titles=None):
         if echo:
             echo_sub = esc(slide.get("echo_sub") or "HONOR GALLERY · CONCEPT PROPOSAL")
             echo_html = f'<div class="closing-echo" data-animate="fade-up">{esc(echo)}<small>{echo_sub}</small></div>'
-        inner = f'<canvas class="fx-canvas" width="1920" height="1080"></canvas>{closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'
+        art_bg = f'<img class="project-art-bg" src="{esc(art_dna.get("closing_background"))}" alt="项目图片艺术元素生成的尾页背景">' if art_dna else ""
+        inner = f'{art_bg}<canvas class="fx-canvas" width="1920" height="1080"></canvas>{"" if art_dna else closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'
     else:
         inner = f'<h2>{title}</h2>{blocks}{takeaway}'
     return f'<section class="slide role-{role}" {common}>{quiet}{inner}{notes}</section>'
@@ -204,7 +207,8 @@ def main():
         css += "\n" + Path(args.theme_css).read_text(encoding="utf-8")
     js = asset_text("assets", "runtime", "runtime.js").replace("</script>", "<\\/script>")
     section_titles = [str(s.get("title")) for s in slides if s.get("role") == "section" and s.get("title")]
-    body = "\n".join(slide_html(s, section_titles) for s in slides)
+    art_dna = read_json(args.art_dna) if args.art_dna and Path(args.art_dna).exists() else None
+    body = "\n".join(slide_html(s, section_titles, art_dna) for s in slides)
     doc = f'''<!doctype html>
 <html lang="zh-CN">
 <head>

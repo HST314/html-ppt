@@ -15,7 +15,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
-- 封面、结尾页与中间页背景由场景基因装饰层（`scripts/deco.py` + `assets/components/deco.css`）自动生成：奖牌圆环、数据光柱、流动动线、铭牌矩阵四类元素从场景图基因提取，颜色自动从主题 accent 派生以适配任意主题；禁止删除装饰层或改成静态贴图。
+- 封面与尾页必须先运行 `extract_art_dna.py`：将项目图转成 `art_expression` 文字描述，覆盖主题色、线条、形状、构图重心、留白、版式节奏、光影纹样与空间层次，再分别生成“展开/收束”的项目专属 SVG 背景。禁止把 `deco.py` 的固定行业图形当成跨项目模板；它只允许在无可读项目图时作为明确标注的降级方案。
 - 内容必须经过 `references/NARRATIVE.md` 的叙事框架；第 2 页强制生成目录，收束固定拆成“行动页 + 低负载结束页”。内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
 
@@ -45,8 +45,9 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 python3 scripts/validate_input.py --deck deck.md --manifest images/manifest.json --output state/input_report.json
 python3 scripts/fetch_assets.py --manifest images/manifest.json
 python3 scripts/detect_style.py --manifest images/manifest.json --output state/style_report.json --theme-css dist/auto-theme.css
+python3 scripts/extract_art_dna.py --manifest images/manifest.json --output state/art_dna.json --assets-dir dist/art
 python3 scripts/build_ir.py --deck deck.md --manifest images/manifest.json --brief context/brief.md --style state/style_report.json --output outline.json --state state/run_state.json
-python3 scripts/render_deck.py --ir outline.json --theme $(python3 -c "import json;print(json.load(open('state/style_report.json'))['recommended_theme'])") --theme-css dist/auto-theme.css --output dist/deck.html --state state/run_state.json
+python3 scripts/render_deck.py --ir outline.json --theme $(python3 -c "import json;print(json.load(open('state/style_report.json'))['recommended_theme'])") --theme-css dist/auto-theme.css --art-dna state/art_dna.json --output dist/deck.html --state state/run_state.json
 python3 scripts/inline_assets.py --html dist/deck.html --manifest images/manifest.json --mode inline --output dist/deck.single.html
 python3 scripts/audit_images.py --manifest images/manifest.json --html dist/deck.single.html --output state/image_coverage.md
 python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --output state/qa_report.md --history state/qa_history.jsonl --manifest images/manifest.json
@@ -56,7 +57,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 
 出口产物：输入报告、IR、HTML、内联 HTML、QA 报告。
 
-校验点：每个 JSON 输出可解析；`dist/deck.single.html` 不含 `http://`、`https://`、输入绝对路径；内容页通过 action title、takeaway、notes、信息密度检查。
+校验点：每个 JSON 输出可解析；`art_dna.json` 含非空 `art_expression`、来源图片 ID、封面/尾页两个不同文件及 `non_template_signature`；`dist/deck.single.html` 不含 `http://`、`https://`、输入绝对路径；内容页通过 action title、takeaway、notes、信息密度检查。
 
 失败回退：退出码 1 按报告修复后重跑；退出码 2 记录 `state/run_state.json.errors` 并使用上个 checkpoint 继续。
 

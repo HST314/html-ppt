@@ -37,6 +37,13 @@ def main():
             path = manifest_path.parent / src
             if path.exists():
                 text = re.sub(r'(["\'])' + re.escape(src) + r'\1', lambda m: m.group(1) + data_uri(path) + m.group(1), text)
+        # 同时内联由艺术 DNA 流程生成、未登记在输入 manifest 中的本地背景。
+        for src in set(re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', text)):
+            if src.startswith(("data:", "http://", "https://")):
+                continue
+            path = html_path.parent / src
+            if path.is_file():
+                text = text.replace(src, data_uri(path))
         out = Path(args.output)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text, encoding="utf-8")
