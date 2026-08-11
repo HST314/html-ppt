@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "images": [
+    {
+      "id": "project-sheet",
+      "file": "project-contact-sheet.png",
+      "alt": "铸星纪航天纪念徽章五种项目视觉效果总览",
+      "description": "五联项目效果图完整呈现编排网格、焦点纵深、编辑式动线、空间层次与极简信号",
+      "content_type": "illustration",
+      "width": 1672,
+      "height": 941,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": ["航天", "徽章", "五种构图"],
+      "weight": "high"
+    }
+  ]
+}

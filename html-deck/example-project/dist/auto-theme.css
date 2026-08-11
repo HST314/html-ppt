@@ -1,0 +1,13 @@
+/* auto-derived from scene images by detect_style.py */
+:root {
+  --accent: #59ebff;
+  --accent-2: #ff69f0;
+  --line: rgba(48,218,242,.22);
+  --surface: rgba(48,218,242,.07);
+  --surface-2: rgba(48,218,242,.12);
+  --bg: rgb(8,13,14);
+  --page-bg: rgb(5,8,8);
+}
+.slide h2, .eyebrow, .kpi-number { text-shadow: 0 0 24px rgba(48,218,242,.24); }
+.panel, .content-list li { border-color: rgba(48,218,242,.28); }
+.gallery-index { background: #59ebff; }

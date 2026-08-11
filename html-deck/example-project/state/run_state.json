@@ -1,0 +1,32 @@
+{
+  "current_phase": "render:done",
+  "completed_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "qa_round": 0,
+  "errors": [],
+  "checkpoints": [
+    {
+      "at": "2026-08-11T04:40:37.268627+00:00",
+      "name": "outline"
+    },
+    {
+      "at": "2026-08-11T04:40:37.318936+00:00",
+      "name": "html-deck/example-project/dist/starforge-project.html"
+    }
+  ],
+  "updated_at": "2026-08-11T04:40:37.318942+00:00"
+}
