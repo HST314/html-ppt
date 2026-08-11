@@ -1,0 +1,132 @@
+/* ==========================================================================
+   场景基因装饰层 deco.css（v3）
+   从场景图提取的四类设计基因，为主题色自适应（全部从 --accent 派生）：
+     · 奖牌圆环  —— 刻度圆环 + 高亮弧段（封面 / 章节页 / 结尾页）
+     · 数据光柱  —— 发光柱阵，暖色柱 + 冰蓝柱点缀，呼吸动画
+     · 流动动线  —— 渐变 S 曲线贯穿页面（描边动画）
+     · 铭牌矩阵  —— 铭牌条 / 点阵 / 结尾页检查点铭牌卡
+   由 scripts/render_deck.py 生成配套 inline SVG（class="deco"）。
+   ========================================================================== */
+
+:root {
+  --ho: var(--accent, #ff9572);
+  --ho-deep: color-mix(in srgb, var(--accent, #ff9572) 72%, #c03505);
+  --ho-gold: color-mix(in srgb, var(--accent, #ff9572) 45%, #ffd76a);
+  --ho-ice: #8fc1ff;
+}
+
+.deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* SVG 内部元素配色（currentColor / stop-color 通过 CSS 注入，保证主题自适应） */
+.deco { color: var(--ho); }
+.deco-ring-outer { stroke: color-mix(in srgb, var(--ho-gold) 55%, transparent); stroke-width: 1; fill: none; }
+.deco-ring-mid { stroke: color-mix(in srgb, var(--ho) 16%, transparent); stroke-width: 1.5; fill: none; }
+.deco-ring-tick { stroke: color-mix(in srgb, var(--ho) 30%, transparent); stroke-width: 2; fill: none; }
+.deco-ring-hi { stroke: var(--ho); stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.deco-path-ghost { stroke: color-mix(in srgb, var(--ho) 20%, transparent); stroke-width: 1.5; fill: none; }
+.deco-dot { fill: var(--ho-gold); }
+.deco-stem { stroke: color-mix(in srgb, var(--ho) 62%, #ffffff 14%); stroke-width: 2; }
+.deco-stem-ice { stroke: rgba(143,193,255,.6); stroke-width: 2; }
+.deco-tip-warm { fill: color-mix(in srgb, var(--ho) 78%, #ffffff 22%); }
+.deco-tip-ice { fill: #a9d0ff; }
+.deco-plaque { fill: color-mix(in srgb, var(--ho) 10%, transparent); stroke: color-mix(in srgb, var(--ho) 40%, transparent); }
+.deco-plaque-on { fill: color-mix(in srgb, var(--ho) 85%, transparent); }
+.deco-plaque-line { stroke: rgba(255,220,200,.5); stroke-width: 3; stroke-linecap: round; }
+.deco-plaque-line-on { stroke: rgba(120,45,18,.6); stroke-width: 3; stroke-linecap: round; }
+.deco-quiet-path { stroke: color-mix(in srgb, var(--ho) 12%, transparent); stroke-width: 2; fill: none; }
+.deco-quiet-path2 { stroke: color-mix(in srgb, var(--ho) 6%, transparent); stroke-width: 1.5; fill: none; }
+.deco-quiet-dot { fill: color-mix(in srgb, var(--ho) 9%, transparent); }
+.deco-quiet-stem { stroke: color-mix(in srgb, var(--ho) 18%, transparent); stroke-width: 2; }
+.deco-quiet-tip { fill: color-mix(in srgb, var(--ho) 50%, transparent); }
+.deco-quiet-tip-ice { fill: rgba(143,193,255,.55); }
+
+/* 渐变 stop 颜色（inline SVG 的 <stop> 通过 class 上色） */
+.gs0 { stop-color: var(--ho-deep); }
+.gs1 { stop-color: var(--ho); }
+.gs2 { stop-color: var(--ho-gold); }
+.gs-warm0 { stop-color: color-mix(in srgb, var(--ho) 66%, #ffffff 34%); stop-opacity: .9; }
+.gs-warm1 { stop-color: var(--ho); stop-opacity: 0; }
+.gs-ice0 { stop-color: #cfe4ff; stop-opacity: .9; }
+.gs-ice1 { stop-color: var(--ho-ice); stop-opacity: 0; }
+
+/* —— 封面排版强化 —— */
+.role-cover .eyebrow { letter-spacing: .34em; }
+.role-cover h1 .h1-line { display: block; }
+.role-cover h1 .h1-em {
+  display: block;
+  margin-top: 20px;
+  font-size: .6em;
+  letter-spacing: .1em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 52%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.role-cover h1::after {
+  width: 380px;
+  height: 3px;
+  margin-top: 32px;
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+.role-cover .subtitle { font-size: 30px; color: color-mix(in srgb, var(--text) 72%, transparent); }
+.role-cover .meta-line span {
+  border: 1px solid color-mix(in srgb, var(--ho) 38%, transparent);
+  border-radius: 6px;
+  padding: 12px 20px;
+  background: color-mix(in srgb, var(--ho) 8%, transparent);
+  font-size: 20px;
+  letter-spacing: .12em;
+}
+.role-cover .outline-number { top: 120px; right: 110px; opacity: .5; }
+
+/* 动线描边与光柱呼吸动画 */
+.deco-path { stroke-dasharray: 2400; stroke-dashoffset: 2400; fill: none; stroke-width: 3.5; stroke-linecap: round; }
+.slide.is-active .deco-path { animation: decoDraw 1.8s .35s cubic-bezier(.6,.05,.3,1) forwards; }
+@keyframes decoDraw { to { stroke-dashoffset: 0; } }
+.deco-tip { animation: tipPulse 3.4s ease-in-out infinite; }
+@keyframes tipPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+body.no-motion .deco-path { stroke-dashoffset: 0; animation: none; }
+body.no-motion .deco-tip { animation: none; }
+
+/* 章节下划线统一为主题渐变（避免与 accent-2 撞色） */
+.role-section h2::after, .role-section .deckline {
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+
+/* —— 结尾页：检查点做成铭牌卡 —— */
+.role-closing .content-list {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 26px;
+  max-width: 1500px;
+  margin-top: 48px;
+}
+.role-closing .content-list li {
+  min-height: 168px;
+  padding: 26px 28px;
+  border-left: 0;
+  border-top: 3px solid var(--ho);
+  border-radius: 4px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ho) 14%, transparent), color-mix(in srgb, var(--ho) 5%, transparent));
+  box-shadow: 0 18px 44px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);
+  font-size: 27px;
+  line-height: 1.5;
+}
+.closing-echo {
+  margin-top: 54px;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 55%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.closing-echo small {
+  display: block;
+  margin-top: 16px;
+  font: 700 19px/1 var(--font-mono);
+  letter-spacing: .4em;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+}

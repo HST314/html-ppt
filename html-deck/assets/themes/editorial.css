@@ -1,0 +1,34 @@
+:root {
+  --page-bg: #11100e;
+  --bg: #f3eee5;
+  --surface: rgba(20,18,15,.07);
+  --surface-2: rgba(20,18,15,.12);
+  --text: #171512;
+  --muted: #685f52;
+  --inverse: #ffffff;
+  --accent: #b1362f;
+  --accent-2: #1d5f77;
+  --line: rgba(20,18,15,.18);
+  --shadow: 0 20px 60px rgba(20,18,15,.14);
+  --radius: 4px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --slide-padding: 86px;
+  --cover-size: 112px;
+  --title-size: 76px;
+  --body-size: 31px;
+  --texture: linear-gradient(90deg, rgba(177,54,47,.08), transparent 34%);
+}
+.slide h1, .slide h2, .quote-text { font-family: var(--font-serif); }
+.body:first-of-type::first-letter {
+  float: left;
+  padding: 8px 14px 0 0;
+  color: var(--accent);
+  font: 900 86px/.78 var(--font-serif);
+}
+.content-list {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+}
+.role-image-hero .caption-bar { font-family: var(--font-serif); }

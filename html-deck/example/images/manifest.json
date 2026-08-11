@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "images": [
+    {
+      "id": "img-001",
+      "file": "dashboard.png",
+      "alt": "运营驾驶舱截图，展示核心指标与趋势",
+      "description": "运营驾驶舱截图，展示核心指标与趋势",
+      "content_type": "screenshot",
+      "width": 1920,
+      "height": 1080,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": [
+        "产品",
+        "界面"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "img-002",
+      "file": "mobile.png",
+      "alt": "移动端客户提醒界面",
+      "description": "移动端客户提醒界面",
+      "content_type": "screenshot",
+      "width": 900,
+      "height": 1600,
+      "aspect_ratio": "9:16",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "移动端",
+        "界面"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "img-003",
+      "file": "workflow.png",
+      "alt": "客户旅程自动化流程图",
+      "description": "客户旅程自动化流程图",
+      "content_type": "diagram",
+      "width": 1400,
+      "height": 1400,
+      "aspect_ratio": "1:1",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "流程",
+        "架构"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "img-004",
+      "file": "customer-room.png",
+      "alt": "客户现场复盘会议照片",
+      "description": "客户现场复盘会议照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 1000,
+      "aspect_ratio": "16:10",
+      "suggested_role": "background",
+      "scene_tags": [
+        "客户",
+        "现场"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "img-005",
+      "file": "chart.png",
+      "alt": "增长趋势图",
+      "description": "增长趋势图",
+      "content_type": "chart",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "数据",
+        "增长"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "img-006",
+      "file": "team.png",
+      "alt": "交付团队协作场景",
+      "description": "交付团队协作场景",
+      "content_type": "photo",
+      "width": 1200,
+      "height": 900,
+      "aspect_ratio": "4:3",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "团队",
+        "交付"
+      ],
+      "weight": "low"
+    }
+  ]
+}

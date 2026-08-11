@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "images": [
+    {
+      "id": "tech-001",
+      "file": "hero-mainframe.png",
+      "alt": "灵犀 2.0 MoE 架构渲染图",
+      "description": "灵犀 2.0 MoE 架构渲染图",
+      "content_type": "diagram",
+      "width": 1920,
+      "height": 1080,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": [
+        "模型",
+        "架构"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "tech-002",
+      "file": "chip-npu.png",
+      "alt": "NPU 适配验证实拍",
+      "description": "NPU 适配验证实拍",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "芯片",
+        "端侧"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "tech-003",
+      "file": "latency-dash.png",
+      "alt": "端侧延迟监控看板",
+      "description": "端侧延迟监控看板",
+      "content_type": "screenshot",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "延迟",
+        "看板"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "tech-004",
+      "file": "cloud-edge.png",
+      "alt": "端云协同调度拓扑图",
+      "description": "端云协同调度拓扑图",
+      "content_type": "diagram",
+      "width": 1400,
+      "height": 1400,
+      "aspect_ratio": "1:1",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "端云",
+        "调度"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "tech-005",
+      "file": "poc-metrics.png",
+      "alt": "共创客户 POC 指标看板",
+      "description": "共创客户 POC 指标看板",
+      "content_type": "chart",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "POC",
+        "验证"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "tech-006",
+      "file": "sdk-tools.png",
+      "alt": "SDK 2.0 工具链界面",
+      "description": "SDK 2.0 工具链界面",
+      "content_type": "screenshot",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "SDK",
+        "工具链"
+      ],
+      "weight": "medium"
+    }
+  ]
+}

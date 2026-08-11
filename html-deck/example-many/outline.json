@@ -1,0 +1,529 @@
+{
+  "schema": "SlidesPlan",
+  "version": "2.0",
+  "narrative_framework": "customer_report",
+  "title": "某装备制造企业数字化转型阶段汇报",
+  "source": {
+    "deck": "example-many/deck.md",
+    "manifest": "example-many/images/manifest.json"
+  },
+  "theme_recommendation": "business-dark",
+  "slides": [
+    {
+      "page": 1,
+      "role": "cover",
+      "title": "某装备制造企业数字化转型阶段汇报",
+      "section": null,
+      "blocks": [],
+      "images": [],
+      "takeaway": "",
+      "notes": "这一页先直接给出结论：某装备制造企业数字化转型阶段汇报。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：开场说明演示目标、对象与预期收获。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "level-1 title becomes cover",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    },
+    {
+      "page": 2,
+      "role": "toc",
+      "title": "目录将叙事拆成可追踪的 3 个阶段",
+      "section": null,
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "一、进展结论",
+            "二、现场证据",
+            "三、下一步"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "本页按照叙事章节建立预期，每章至少两页内容并用过渡页控制节奏。"
+        },
+        {
+          "type": "paragraph",
+          "text": "目录顺序默认遵循场景框架：结论先行、证据展开、行动收束。"
+        }
+      ],
+      "images": [],
+      "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。",
+      "notes": "这一页先直接给出结论：目录将叙事拆成可追踪的 3 个阶段。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：一、进展结论；二、现场证据；三、下一步；本页按照叙事章节建立预期，每章至少两页内容并用过渡页控制节奏。；目录顺序默认遵循场景框架：结论先行、证据展开、行动收束。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "sections detected",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    },
+    {
+      "page": 3,
+      "role": "section",
+      "title": "一、进展结论",
+      "section": "一、进展结论",
+      "section_index": 1,
+      "blocks": [],
+      "images": [],
+      "takeaway": "",
+      "notes": "这一页先直接给出结论：一、进展结论。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "new level-2 section",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    },
+    {
+      "page": 4,
+      "role": "compare",
+      "title": "设备联网率完成 92%，超年度目标 7 个百分点",
+      "section": "一、进展结论",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "目标对比：年度目标 85%，6 月底实际完成 92%，提前半年达成。",
+            "过程证据：分两批完成 214 台设备接入，边缘网关统一纳管。",
+            "业务影响：设备停机定位时间从 4 小时缩短到 25 分钟。"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-013",
+          "file": "gate.png",
+          "alt": "园区大门照片",
+          "description": "园区大门照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "园区",
+            "大门"
+          ],
+          "weight": "low"
+        }
+      ],
+      "takeaway": "So-what：目标对比：年度目标 85%，6 月底实际完成 92%，提前半年达成。",
+      "notes": "这一页先直接给出结论：设备联网率完成 92%，超年度目标 7 个百分点。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：目标对比：年度目标 85%，6 月底实际完成 92%，提前半年达成。；过程证据：分两批完成 214 台设备接入，边缘网关统一纳管。；业务影响：设备停机定位时间从 4 小时缩短到 25 分钟。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "compare content detected",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 5,
+      "role": "gallery",
+      "title": "产线实时看板覆盖 8 条产线，异常响应时长缩短 40%（证据图 1/2）",
+      "section": "一、进展结论",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。",
+            "证据链覆盖设备、产线、质检、仓储和能耗五个视角。",
+            "所有截图和现场图都来自同一批数字化转型验收材料。"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-001",
+          "file": "line-dashboard.png",
+          "alt": "产线实时看板总览截图",
+          "description": "产线实时看板总览截图",
+          "content_type": "screenshot",
+          "width": 1920,
+          "height": 1080,
+          "aspect_ratio": "16:9",
+          "suggested_role": "hero",
+          "scene_tags": [
+            "产线",
+            "看板"
+          ],
+          "weight": "high"
+        },
+        {
+          "id": "mimg-002",
+          "file": "line-a.png",
+          "alt": "一号产线现场照片",
+          "description": "一号产线现场照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "产线",
+            "现场"
+          ],
+          "weight": "medium"
+        },
+        {
+          "id": "mimg-003",
+          "file": "line-b.png",
+          "alt": "二号产线现场照片",
+          "description": "二号产线现场照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "产线",
+            "现场"
+          ],
+          "weight": "medium"
+        },
+        {
+          "id": "mimg-004",
+          "file": "line-c.png",
+          "alt": "三号产线设备特写",
+          "description": "三号产线设备特写",
+          "content_type": "photo",
+          "width": 1400,
+          "height": 1400,
+          "aspect_ratio": "1:1",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "产线",
+            "现场"
+          ],
+          "weight": "medium"
+        },
+        {
+          "id": "mimg-005",
+          "file": "alert-detail.png",
+          "alt": "异常告警明细界面截图",
+          "description": "异常告警明细界面截图",
+          "content_type": "screenshot",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "inline",
+          "scene_tags": [
+            "看板",
+            "异常"
+          ],
+          "weight": "medium"
+        },
+        {
+          "id": "mimg-006",
+          "file": "gateway.png",
+          "alt": "边缘网关安装现场",
+          "description": "边缘网关安装现场",
+          "content_type": "photo",
+          "width": 1200,
+          "height": 900,
+          "aspect_ratio": "4:3",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "设备",
+            "网关"
+          ],
+          "weight": "low"
+        }
+      ],
+      "takeaway": "So-what：看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。",
+      "notes": "这一页先直接给出结论：产线实时看板覆盖 8 条产线，异常响应时长缩短 40%。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。；证据链覆盖设备、产线、质检、仓储和能耗五个视角。；所有截图和现场图都来自同一批数字化转型验收材料。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "explicit role directive | auto-split gallery 1/2",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 6,
+      "role": "gallery",
+      "title": "产线实时看板覆盖 8 条产线，异常响应时长缩短 40%（证据图 2/2）",
+      "section": "一、进展结论",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "本页为同组场景证据的第 2/2 页，与前后页共同构成完整证据链。"
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-007",
+          "file": "review-room.png",
+          "alt": "产线复盘会议现场照片",
+          "description": "产线复盘会议现场照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 1000,
+          "aspect_ratio": "16:10",
+          "suggested_role": "background",
+          "scene_tags": [
+            "复盘",
+            "会议"
+          ],
+          "weight": "high"
+        },
+        {
+          "id": "mimg-008",
+          "file": "response-trend.png",
+          "alt": "异常响应时长趋势图",
+          "description": "异常响应时长趋势图",
+          "content_type": "chart",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "inline",
+          "scene_tags": [
+            "数据",
+            "响应"
+          ],
+          "weight": "high"
+        }
+      ],
+      "takeaway": "So-what：同组证据共 2 页，本页为第 2 页，需结合前后页一起阅读。",
+      "notes": "这一页先直接给出结论：产线实时看板覆盖 8 条产线，异常响应时长缩短 40%（证据图 2/2）。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：本页为同组场景证据的第 2/2 页，与前后页共同构成完整证据链。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "auto-split gallery part 2/2",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 7,
+      "role": "section",
+      "title": "二、现场证据",
+      "section": "二、现场证据",
+      "section_index": 2,
+      "blocks": [],
+      "images": [],
+      "takeaway": "",
+      "notes": "这一页先直接给出结论：二、现场证据。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "new level-2 section",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    },
+    {
+      "page": 8,
+      "role": "image-side",
+      "title": "移动端巡检上线 3 个月，隐患闭环率提升到 96%",
+      "section": "二、现场证据",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "上线前纸质巡检闭环率仅 71%，上线后 3 个月提升到 96%。",
+            "巡检任务自动派发，超时未闭环自动升级到车间主任。",
+            "一线班长反馈录入耗时从平均 6 分钟降到 90 秒。"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-009",
+          "file": "mobile-inspect.png",
+          "alt": "移动端巡检任务界面截图",
+          "description": "移动端巡检任务界面截图",
+          "content_type": "screenshot",
+          "width": 900,
+          "height": 1600,
+          "aspect_ratio": "9:16",
+          "suggested_role": "inline",
+          "scene_tags": [
+            "移动端",
+            "巡检"
+          ],
+          "weight": "medium"
+        }
+      ],
+      "takeaway": "So-what：上线前纸质巡检闭环率仅 71%，上线后 3 个月提升到 96%。",
+      "notes": "这一页先直接给出结论：移动端巡检上线 3 个月，隐患闭环率提升到 96%。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：上线前纸质巡检闭环率仅 71%，上线后 3 个月提升到 96%。；巡检任务自动派发，超时未闭环自动升级到车间主任。；一线班长反馈录入耗时从平均 6 分钟降到 90 秒。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "image metadata selected for side layout",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 9,
+      "role": "image-side",
+      "title": "质检与仓储系统打通后，批次错漏率下降 58%",
+      "section": "二、现场证据",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "质检结果实时回写仓储系统，不合格批次自动锁定库位。",
+            "打通前每月平均错漏 31 批次，打通后稳定在 13 批次以内。",
+            "客户验厂时批次追溯演示从半天压缩到 20 分钟。"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-010",
+          "file": "quality-system.png",
+          "alt": "质检系统批次管理界面",
+          "description": "质检系统批次管理界面",
+          "content_type": "screenshot",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "inline",
+          "scene_tags": [
+            "质检",
+            "系统"
+          ],
+          "weight": "medium"
+        }
+      ],
+      "takeaway": "So-what：质检结果实时回写仓储系统，不合格批次自动锁定库位。",
+      "notes": "这一页先直接给出结论：质检与仓储系统打通后，批次错漏率下降 58%。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：质检结果实时回写仓储系统，不合格批次自动锁定库位。；打通前每月平均错漏 31 批次，打通后稳定在 13 批次以内。；客户验厂时批次追溯演示从半天压缩到 20 分钟。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "explicit role directive | 1 overflow image(s) moved to gallery",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 10,
+      "role": "gallery",
+      "title": "质检与仓储系统打通后，批次错漏率下降 58%（证据图 1/1）",
+      "section": "二、现场证据",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "本页为同组场景证据的第 1/1 页，与前后页共同构成完整证据链。"
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-011",
+          "file": "warehouse.png",
+          "alt": "立体仓库现场照片",
+          "description": "立体仓库现场照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "仓储",
+            "现场"
+          ],
+          "weight": "medium"
+        }
+      ],
+      "takeaway": "So-what：同组证据共 1 页，本页为第 1 页，需结合前后页一起阅读。",
+      "notes": "这一页先直接给出结论：质检与仓储系统打通后，批次错漏率下降 58%（证据图 1/1）。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：本页为同组场景证据的第 1/1 页，与前后页共同构成完整证据链。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "auto-split gallery part 1/1",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 11,
+      "role": "section",
+      "title": "三、下一步",
+      "section": "三、下一步",
+      "section_index": 3,
+      "blocks": [],
+      "images": [],
+      "takeaway": "",
+      "notes": "这一页先直接给出结论：三、下一步。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "new level-2 section",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    },
+    {
+      "page": 12,
+      "role": "image-side",
+      "title": "Q3 锁定能耗双控与技能培训两个扩展场景",
+      "section": "三、下一步",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "能耗场景：先接入 2 个车间的电表数据，验证峰谷优化空间。",
+            "培训场景：把巡检知识库转为新人 7 天上岗训练路径。",
+            "两个场景复用现有网关与看板，边际投入低于首期的 20%。"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "mimg-012",
+          "file": "energy-meter.png",
+          "alt": "园区电表箱照片",
+          "description": "园区电表箱照片",
+          "content_type": "photo",
+          "width": 1600,
+          "height": 900,
+          "aspect_ratio": "16:9",
+          "suggested_role": "gallery",
+          "scene_tags": [
+            "园区",
+            "电表"
+          ],
+          "weight": "low"
+        }
+      ],
+      "takeaway": "So-what：能耗场景：先接入 2 个车间的电表数据，验证峰谷优化空间。",
+      "notes": "这一页先直接给出结论：Q3 锁定能耗双控与技能培训两个扩展场景。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：能耗场景：先接入 2 个车间的电表数据，验证峰谷优化空间。；培训场景：把巡检知识库转为新人 7 天上岗训练路径。；两个场景复用现有网关与看板，边际投入低于首期的 20%。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "image metadata selected for side layout",
+      "risk": {
+        "level": "high",
+        "issues": [
+          "content_blocks_below_3"
+        ]
+      }
+    },
+    {
+      "page": 13,
+      "role": "closing",
+      "title": "未来 30 天行动项已经压缩为 3 个检查点",
+      "section": null,
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "T+3 天确认试点范围与验收口径",
+            "T+14 天锁定首批场景与数据看板",
+            "T+30 天安排复盘会议并决定扩大范围"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "行动项必须绑定负责人、时间和可检查产物，避免会后只留下方向性共识。"
+        },
+        {
+          "type": "paragraph",
+          "text": "结束页承接前文证据，把决策请求压缩为一组可立即执行的动作。"
+        }
+      ],
+      "images": [],
+      "takeaway": "So-what：会后只需要确认范围、看板和复盘节奏三件事。",
+      "notes": "这一页先直接给出结论：未来 30 天行动项已经压缩为 3 个检查点。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：T+3 天确认试点范围与验收口径；T+14 天锁定首批场景与数据看板；T+30 天安排复盘会议并决定扩大范围；行动项必须绑定负责人、时间和可检查产物，避免会后只留下方向性共识。；结束页承接前文证据，把决策请求压缩为一组可立即执行的动作。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+      "decision": "automatic closing",
+      "risk": {
+        "level": "low",
+        "issues": []
+      }
+    }
+  ]
+}

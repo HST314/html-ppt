@@ -1,0 +1,111 @@
+[data-animate] { animation-fill-mode: both; }
+.slide.is-active [data-animate="fade-up"] { animation: fadeUp .55s ease both; }
+.slide.is-active [data-animate="blur-in"] { animation: blurIn .68s ease both; }
+.slide.is-active [data-animate="rise-in"] { animation: riseIn .56s cubic-bezier(.2,.8,.2,1) both; }
+.slide.is-active [data-animate="zoom-pop"] { animation: zoomPop .5s cubic-bezier(.2,.9,.25,1.2) both; }
+.slide.is-active [data-animate="kenburns"] img,
+.slide.is-active [data-animate="kenburns"] { animation: kenburns 11s ease both; }
+.slide.is-active [data-animate="gradient-flow"] { animation: gradientFlow 7s linear infinite; }
+.slide.is-active [data-animate="shimmer-sweep"] { position: relative; overflow: hidden; }
+.slide.is-active [data-animate="shimmer-sweep"]::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -30%;
+  z-index: 4;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  transform: skewX(-16deg);
+  animation: shimmerSweep .72s ease both;
+}
+.slide.is-active [data-animate="stagger-list"] > * {
+  animation: fadeUp .45s ease both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.slide.is-active [data-animate="typewriter"] {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent);
+  animation: typewriter .72s steps(22,end) both, caret .7s steps(1,end) infinite;
+}
+.slide.is-active [data-animate="path-draw"] path,
+.slide.is-active [data-animate="path-draw"] line,
+.slide.is-active [data-animate="path-draw"] polyline {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: pathDraw .75s ease both;
+}
+.slide.is-active [data-animate="ripple-reveal"] { animation: rippleReveal .62s ease both; }
+.slide.is-active table tr {
+  animation: fadeUp .42s ease both;
+  animation-delay: calc(var(--row, 0) * 55ms);
+}
+.slide.is-active .timeline-item {
+  animation: riseIn .48s ease both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+.slide.is-active .compare-card:first-child { animation: splitLeft .55s ease both; }
+.slide.is-active .compare-card:last-child { animation: splitRight .55s ease both; }
+body.no-motion [data-animate],
+body.no-motion [data-animate] > *,
+body.no-motion .slide.is-active * {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+body.no-motion .fx-canvas { display: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(18px); transform: scale(.985); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(46px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes zoomPop {
+  0% { opacity: 0; transform: scale(.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes gradientFlow {
+  from { background-position: 0 0; }
+  to { background-position: 160px 160px; }
+}
+@keyframes shimmerSweep {
+  from { left: -30%; }
+  to { left: 120%; }
+}
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+@keyframes caret {
+  50% { border-color: transparent; }
+}
+@keyframes pathDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes rippleReveal {
+  from { opacity: 0; clip-path: circle(0% at 50% 50%); }
+  to { opacity: 1; clip-path: circle(142% at 50% 50%); }
+}
+@keyframes splitLeft {
+  from { opacity: 0; transform: translateX(-46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes splitRight {
+  from { opacity: 0; transform: translateX(46px); }
+  to { opacity: 1; transform: translateX(0); }
+}

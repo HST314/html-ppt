@@ -1,0 +1,103 @@
+:root {
+  --fs-display: 144px;
+  --fs-cover: var(--cover-size, 112px);
+  --fs-title: var(--title-size, 70px);
+  --fs-subtitle: 40px;
+  --fs-body: var(--body-size, 31px);
+  --fs-support: 22px;
+  --fs-caption: 17px;
+  --lh-tight: .96;
+  --lh-title: 1.05;
+  --lh-body: 1.36;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --grid-gap: 24px;
+}
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.deckline {
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
+}
+
+.outline-number {
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  font: 900 var(--fs-display)/.8 var(--font-mono);
+  opacity: .38;
+}
+
+.slide .watermark-word {
+  position: absolute;
+  right: 50px;
+  bottom: 8px;
+  z-index: 0;
+  max-width: 1000px;
+  color: var(--text);
+  opacity: .045;
+  font: 900 190px/.82 var(--font-sans);
+  text-transform: uppercase;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.accent-bar {
+  width: 6px;
+  min-height: 104px;
+  background: var(--accent);
+}
+
+.quote-deco {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+
+.slide .takeaway {
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  bottom: 48px;
+  z-index: 4;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  border-left: 6px solid var(--accent);
+  border-radius: min(var(--radius), 8px);
+  font: 700 var(--fs-support)/1.22 var(--font-sans);
+}
+
+.caption-bar {
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: 40px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px 18px;
+  color: #fff;
+  background: rgba(0,0,0,.56);
+  backdrop-filter: blur(10px);
+  font: 600 var(--fs-caption)/1.25 var(--font-sans);
+}
+
+.caption-source {
+  color: rgba(255,255,255,.72);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}

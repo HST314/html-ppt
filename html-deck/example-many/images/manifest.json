@@ -1,0 +1,213 @@
+{
+  "version": "1.0",
+  "images": [
+    {
+      "id": "mimg-001",
+      "file": "line-dashboard.png",
+      "alt": "产线实时看板总览截图",
+      "description": "产线实时看板总览截图",
+      "content_type": "screenshot",
+      "width": 1920,
+      "height": 1080,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": [
+        "产线",
+        "看板"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "mimg-002",
+      "file": "line-a.png",
+      "alt": "一号产线现场照片",
+      "description": "一号产线现场照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "产线",
+        "现场"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-003",
+      "file": "line-b.png",
+      "alt": "二号产线现场照片",
+      "description": "二号产线现场照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "产线",
+        "现场"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-004",
+      "file": "line-c.png",
+      "alt": "三号产线设备特写",
+      "description": "三号产线设备特写",
+      "content_type": "photo",
+      "width": 1400,
+      "height": 1400,
+      "aspect_ratio": "1:1",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "产线",
+        "现场"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-005",
+      "file": "alert-detail.png",
+      "alt": "异常告警明细界面截图",
+      "description": "异常告警明细界面截图",
+      "content_type": "screenshot",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "看板",
+        "异常"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-006",
+      "file": "gateway.png",
+      "alt": "边缘网关安装现场",
+      "description": "边缘网关安装现场",
+      "content_type": "photo",
+      "width": 1200,
+      "height": 900,
+      "aspect_ratio": "4:3",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "设备",
+        "网关"
+      ],
+      "weight": "low"
+    },
+    {
+      "id": "mimg-007",
+      "file": "review-room.png",
+      "alt": "产线复盘会议现场照片",
+      "description": "产线复盘会议现场照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 1000,
+      "aspect_ratio": "16:10",
+      "suggested_role": "background",
+      "scene_tags": [
+        "复盘",
+        "会议"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "mimg-008",
+      "file": "response-trend.png",
+      "alt": "异常响应时长趋势图",
+      "description": "异常响应时长趋势图",
+      "content_type": "chart",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "数据",
+        "响应"
+      ],
+      "weight": "high"
+    },
+    {
+      "id": "mimg-009",
+      "file": "mobile-inspect.png",
+      "alt": "移动端巡检任务界面截图",
+      "description": "移动端巡检任务界面截图",
+      "content_type": "screenshot",
+      "width": 900,
+      "height": 1600,
+      "aspect_ratio": "9:16",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "移动端",
+        "巡检"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-010",
+      "file": "quality-system.png",
+      "alt": "质检系统批次管理界面",
+      "description": "质检系统批次管理界面",
+      "content_type": "screenshot",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "质检",
+        "系统"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-011",
+      "file": "warehouse.png",
+      "alt": "立体仓库现场照片",
+      "description": "立体仓库现场照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "仓储",
+        "现场"
+      ],
+      "weight": "medium"
+    },
+    {
+      "id": "mimg-012",
+      "file": "energy-meter.png",
+      "alt": "园区电表箱照片",
+      "description": "园区电表箱照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "园区",
+        "电表"
+      ],
+      "weight": "low"
+    },
+    {
+      "id": "mimg-013",
+      "file": "gate.png",
+      "alt": "园区大门照片",
+      "description": "园区大门照片",
+      "content_type": "photo",
+      "width": 1600,
+      "height": 900,
+      "aspect_ratio": "16:9",
+      "suggested_role": "gallery",
+      "scene_tags": [
+        "园区",
+        "大门"
+      ],
+      "weight": "low"
+    }
+  ]
+}

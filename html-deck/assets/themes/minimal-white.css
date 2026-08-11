@@ -1,0 +1,33 @@
+:root {
+  --page-bg: #e9ecef;
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --surface-2: #eef1f4;
+  --text: #101418;
+  --muted: #5e6873;
+  --inverse: #ffffff;
+  --accent: #111827;
+  --accent-2: #2d7a9f;
+  --line: #dfe4ea;
+  --shadow: 0 14px 46px rgba(16,20,24,.10);
+  --radius: 6px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --slide-padding: 84px;
+  --cover-size: 98px;
+  --title-size: 66px;
+  --body-size: 30px;
+  --texture: linear-gradient(90deg, rgba(16,20,24,.04) 1px, transparent 1px), linear-gradient(rgba(16,20,24,.035) 1px, transparent 1px);
+  --texture-size: 160px 160px, 160px 160px;
+}
+.slide::after { opacity: 1; }
+.panel, .content-list li, .image-frame {
+  box-shadow: none;
+}
+.content-list li::before {
+  width: 18px;
+  height: 18px;
+  border-radius: 0;
+}
+.role-section .outline-number { opacity: .68; }

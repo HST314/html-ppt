@@ -1,0 +1,29 @@
+:root {
+  --page-bg: #06090a;
+  --bg: #071113;
+  --surface: rgba(126,232,250,.07);
+  --surface-2: rgba(126,232,250,.12);
+  --text: #e9fbff;
+  --muted: #8fb5bd;
+  --inverse: #ffffff;
+  --accent: #7ee8fa;
+  --accent-2: #9dff8f;
+  --line: rgba(126,232,250,.22);
+  --shadow: 0 24px 70px rgba(0,0,0,.36);
+  --radius: 6px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: Georgia, "Songti SC", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 82px;
+  --cover-size: 104px;
+  --title-size: 70px;
+  --body-size: 30px;
+  --texture: linear-gradient(rgba(126,232,250,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(126,232,250,.05) 1px, transparent 1px), repeating-linear-gradient(90deg, transparent 0 42px, rgba(157,255,143,.05) 42px 44px);
+  --texture-size: 54px 54px, 54px 54px, 160px 160px;
+}
+.slide h2, .eyebrow, .kpi-number { text-shadow: 0 0 24px rgba(126,232,250,.24); }
+.panel, .content-list li {
+  border-color: rgba(126,232,250,.28);
+  box-shadow: inset 0 0 0 1px rgba(126,232,250,.06), 0 22px 70px rgba(0,0,0,.38);
+}
+.content-list li::before { border-radius: 0; }

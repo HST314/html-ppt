@@ -1,0 +1,35 @@
+:root {
+  --page-bg: #05070d;
+  --bg: #0b1020;
+  --surface: rgba(255,255,255,.075);
+  --surface-2: rgba(255,255,255,.12);
+  --text: #f5f7fb;
+  --muted: #aab4c8;
+  --inverse: #ffffff;
+  --accent: #4dd4ac;
+  --accent-2: #f4c95d;
+  --line: rgba(255,255,255,.16);
+  --shadow: 0 24px 70px rgba(0,0,0,.28);
+  --radius: 8px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 86px;
+  --cover-size: 106px;
+  --title-size: 72px;
+  --body-size: 32px;
+  --texture: radial-gradient(circle at 78% 12%, rgba(77,212,172,.18), transparent 26%), linear-gradient(135deg, rgba(244,201,93,.08), transparent 38%);
+  --hairline-opacity: .82;
+}
+.panel, .content-list li, .takeaway {
+  backdrop-filter: blur(18px);
+  box-shadow: 0 22px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.role-cover h1::after, .role-section h2::after {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}

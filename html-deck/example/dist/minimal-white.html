@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>某 SaaS 产品 2026 上半年成果汇报</title>
+<style>:root {
+  --page-bg: #e9ecef;
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --surface-2: #eef1f4;
+  --text: #101418;
+  --muted: #5e6873;
+  --inverse: #ffffff;
+  --accent: #111827;
+  --accent-2: #2d7a9f;
+  --line: #dfe4ea;
+  --shadow: 0 14px 46px rgba(16,20,24,.10);
+  --radius: 6px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --slide-padding: 84px;
+  --cover-size: 98px;
+  --title-size: 66px;
+  --body-size: 30px;
+  --texture: linear-gradient(90deg, rgba(16,20,24,.04) 1px, transparent 1px), linear-gradient(rgba(16,20,24,.035) 1px, transparent 1px);
+  --texture-size: 160px 160px, 160px 160px;
+}
+.slide::after { opacity: 1; }
+.panel, .content-list li, .image-frame {
+  box-shadow: none;
+}
+.content-list li::before {
+  width: 18px;
+  height: 18px;
+  border-radius: 0;
+}
+.role-section .outline-number { opacity: .68; }
+
+:root {
+  --fs-display: 144px;
+  --fs-cover: var(--cover-size, 112px);
+  --fs-title: var(--title-size, 70px);
+  --fs-subtitle: 40px;
+  --fs-body: var(--body-size, 31px);
+  --fs-support: 22px;
+  --fs-caption: 17px;
+  --lh-tight: .96;
+  --lh-title: 1.05;
+  --lh-body: 1.36;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --grid-gap: 24px;
+}
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.deckline {
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
+}
+
+.outline-number {
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  font: 900 var(--fs-display)/.8 var(--font-mono);
+  opacity: .38;
+}
+
+.slide .watermark-word {
+  position: absolute;
+  right: 50px;
+  bottom: 8px;
+  z-index: 0;
+  max-width: 1000px;
+  color: var(--text);
+  opacity: .045;
+  font: 900 190px/.82 var(--font-sans);
+  text-transform: uppercase;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.accent-bar {
+  width: 6px;
+  min-height: 104px;
+  background: var(--accent);
+}
+
+.quote-deco {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+
+.slide .takeaway {
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  bottom: 48px;
+  z-index: 4;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  border-left: 6px solid var(--accent);
+  border-radius: min(var(--radius), 8px);
+  font: 700 var(--fs-support)/1.22 var(--font-sans);
+}
+
+.caption-bar {
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: 40px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px 18px;
+  color: #fff;
+  background: rgba(0,0,0,.56);
+  backdrop-filter: blur(10px);
+  font: 600 var(--fs-caption)/1.25 var(--font-sans);
+}
+
+.caption-source {
+  color: rgba(255,255,255,.72);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+:root {
+  --deck-width: 1920;
+  --deck-height: 1080;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: #080a0f;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+.deck-shell {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  place-items: center;
+  justify-content: center;
+  align-content: center;
+  background: var(--page-bg, #080a0f);
+}
+.deck-stage {
+  position: relative;
+  width: calc(var(--deck-width) * 1px);
+  height: calc(var(--deck-height) * 1px);
+  transform: scale(var(--deck-scale, 1));
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 30px 90px rgba(0,0,0,.35);
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  padding: var(--slide-padding);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .42s ease, transform .42s ease, filter .42s ease;
+  transform: translateX(46px);
+  overflow: hidden;
+}
+body.transition-fade .slide { transform: none; filter: blur(8px); }
+body.transition-scale-fade .slide { transform: scale(.975); }
+.slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  filter: none;
+}
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--texture);
+  background-size: var(--texture-size, auto);
+  opacity: .92;
+}
+.slide::after {
+  content: "";
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  top: 40px;
+  height: 1px;
+  background: var(--line);
+  opacity: var(--hairline-opacity, .65);
+}
+.slide > * { position: relative; z-index: 1; }
+.slide h1, .slide h2 {
+  margin: 0;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.slide h1 { font-size: var(--fs-cover); line-height: var(--lh-tight); max-width: 1300px; }
+.slide h2 { font-size: var(--fs-title); line-height: var(--lh-title); max-width: 1230px; }
+.subtitle {
+  margin: 30px 0 0;
+  max-width: 1000px;
+  color: var(--muted);
+  font-size: var(--fs-subtitle);
+  line-height: 1.32;
+}
+.eyebrow, .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: var(--accent);
+  font: 800 21px/1 var(--font-mono);
+  text-transform: uppercase;
+}
+.body, .slide p, .slide li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+.muted { color: var(--muted); }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.content-list {
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 18px;
+}
+.content-list li {
+  position: relative;
+  min-height: 54px;
+  padding: 12px 18px 12px 38px;
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.content-list li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+}
+.body {
+  max-width: 1120px;
+  margin: 26px 0 0;
+}
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.slide figure { margin: 0; }
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: var(--fit, cover);
+}
+.image-frame.screenshot-frame {
+  padding: 34px;
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 30%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 88%, #fff 12%), var(--surface));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.image-frame.screenshot-frame img {
+  border-radius: max(4px, calc(var(--radius) - 2px));
+  box-shadow: 0 20px 46px rgba(0,0,0,.28);
+}
+.role-cover {
+  display: grid;
+  align-content: end;
+  gap: 26px;
+}
+.role-cover .meta-line {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font: 700 24px/1 var(--font-mono);
+}
+.role-cover .outline-number {
+  position: absolute;
+  right: 80px;
+  top: 96px;
+}
+.role-section {
+  display: grid;
+  align-content: center;
+  justify-content: start;
+}
+.role-section h2 { font-size: 118px; max-width: 1320px; }
+.role-section .outline-number {
+  position: absolute;
+  right: 88px;
+  bottom: 86px;
+}
+.role-bullets, .role-table, .role-quote, .role-timeline, .role-kpi, .role-toc, .role-closing {
+  display: grid;
+  align-content: start;
+  padding-bottom: 112px;
+}
+.role-gallery {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding-bottom: 112px;
+}
+.role-gallery .gallery-grid { margin-top: 34px; min-height: 0; }
+.role-bullets .content-list, .role-toc .content-list { max-width: 1180px; }
+.role-two-column, .role-image-side, .role-compare {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 34px;
+  align-items: center;
+  padding-bottom: 92px;
+}
+.role-compare > h2 { grid-column: 1 / -1; }
+.role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
+.role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
+.role-image-hero {
+  padding: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.hero-image {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+}
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--bg) 92%, transparent), transparent 68%),
+    linear-gradient(0deg, rgba(0,0,0,.72), transparent 55%);
+  pointer-events: none;
+}
+.hero-copy {
+  align-self: end;
+  padding: var(--slide-padding);
+  max-width: 1100px;
+  z-index: 3;
+}
+.hero-copy h2 { color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.44); }
+.hero-copy .body, .hero-copy li { color: rgba(255,255,255,.9); }
+.side-image, .visual .image-frame {
+  width: 100%;
+  height: 690px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 34px;
+}
+.gallery-grid.gallery-small { grid-template-rows: minmax(0, 1fr); }
+.gallery-grid .image-frame { min-width: 0; min-height: 0; height: auto; }
+.gallery-grid figure { margin: 0; }
+.gallery-grid .caption-bar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0;
+}
+.gallery-index {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 2;
+  min-width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--accent);
+  font: 900 18px/1 var(--font-mono);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 40px;
+}
+.kpi-card {
+  min-height: 216px;
+  padding: 30px;
+  display: grid;
+  align-content: space-between;
+}
+.kpi-number {
+  color: var(--accent);
+  font: 900 82px/1 var(--font-mono);
+}
+.kpi-card small {
+  color: var(--muted);
+  font: 700 19px/1.3 var(--font-sans);
+}
+.quote-mark {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+.quote-text {
+  font: 800 64px/1.12 var(--font-serif);
+  max-width: 1260px;
+}
+.compare-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 28px;
+}
+.compare-card {
+  min-height: 520px;
+  padding: 38px;
+}
+.compare-card h3 {
+  margin: 0 0 24px;
+  color: var(--accent);
+  font: 900 36px/1.08 var(--font-sans);
+}
+.timeline-row {
+  margin-top: 54px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.timeline-item {
+  min-height: 264px;
+  padding: 26px;
+  border-top: 7px solid var(--accent);
+}
+.timeline-item .date {
+  color: var(--accent);
+  font: 900 24px/1 var(--font-mono);
+}
+.timeline-item p { font-size: 25px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 34px;
+  font-size: 28px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+th, td { padding: 14px 22px; border-bottom: 1px solid var(--line); text-align: left; }
+th { color: var(--accent); background: color-mix(in srgb, var(--surface) 70%, var(--accent) 12%); }
+tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
+.fx-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .34;
+  pointer-events: none;
+}
+.deck-ui {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--inverse);
+  background: rgba(0,0,0,.72);
+  font: 700 13px/1 system-ui, sans-serif;
+}
+.notes { display: none; }
+.overview {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 42px;
+  overflow: auto;
+  background: rgba(8,10,15,.94);
+}
+.overview.is-open { display: grid; }
+.overview button {
+  height: 154px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  padding: 14px;
+  color: #fff;
+  background: #151923;
+  text-align: left;
+  font: 700 18px/1.25 system-ui, sans-serif;
+  cursor: pointer;
+}
+.overview button span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+@media print {
+  html, body { overflow: visible; background: #fff; }
+  .deck-shell { display: block; width: auto; height: auto; background: #fff; }
+  .deck-stage { transform: none !important; width: 100%; height: auto; box-shadow: none; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
+  .deck-ui, .overview { display: none !important; }
+}
+
+[data-animate] { animation-fill-mode: both; }
+.slide.is-active [data-animate="fade-up"] { animation: fadeUp .55s ease both; }
+.slide.is-active [data-animate="blur-in"] { animation: blurIn .68s ease both; }
+.slide.is-active [data-animate="rise-in"] { animation: riseIn .56s cubic-bezier(.2,.8,.2,1) both; }
+.slide.is-active [data-animate="zoom-pop"] { animation: zoomPop .5s cubic-bezier(.2,.9,.25,1.2) both; }
+.slide.is-active [data-animate="kenburns"] img,
+.slide.is-active [data-animate="kenburns"] { animation: kenburns 11s ease both; }
+.slide.is-active [data-animate="gradient-flow"] { animation: gradientFlow 7s linear infinite; }
+.slide.is-active [data-animate="shimmer-sweep"] { position: relative; overflow: hidden; }
+.slide.is-active [data-animate="shimmer-sweep"]::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -30%;
+  z-index: 4;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  transform: skewX(-16deg);
+  animation: shimmerSweep .72s ease both;
+}
+.slide.is-active [data-animate="stagger-list"] > * {
+  animation: fadeUp .45s ease both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.slide.is-active [data-animate="typewriter"] {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent);
+  animation: typewriter .72s steps(22,end) both, caret .7s steps(1,end) infinite;
+}
+.slide.is-active [data-animate="path-draw"] path,
+.slide.is-active [data-animate="path-draw"] line,
+.slide.is-active [data-animate="path-draw"] polyline {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: pathDraw .75s ease both;
+}
+.slide.is-active [data-animate="ripple-reveal"] { animation: rippleReveal .62s ease both; }
+.slide.is-active table tr {
+  animation: fadeUp .42s ease both;
+  animation-delay: calc(var(--row, 0) * 55ms);
+}
+.slide.is-active .timeline-item {
+  animation: riseIn .48s ease both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+.slide.is-active .compare-card:first-child { animation: splitLeft .55s ease both; }
+.slide.is-active .compare-card:last-child { animation: splitRight .55s ease both; }
+body.no-motion [data-animate],
+body.no-motion [data-animate] > *,
+body.no-motion .slide.is-active * {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+body.no-motion .fx-canvas { display: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(18px); transform: scale(.985); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(46px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes zoomPop {
+  0% { opacity: 0; transform: scale(.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes gradientFlow {
+  from { background-position: 0 0; }
+  to { background-position: 160px 160px; }
+}
+@keyframes shimmerSweep {
+  from { left: -30%; }
+  to { left: 120%; }
+}
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+@keyframes caret {
+  50% { border-color: transparent; }
+}
+@keyframes pathDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes rippleReveal {
+  from { opacity: 0; clip-path: circle(0% at 50% 50%); }
+  to { opacity: 1; clip-path: circle(142% at 50% 50%); }
+}
+@keyframes splitLeft {
+  from { opacity: 0; transform: translateX(-46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes splitRight {
+  from { opacity: 0; transform: translateX(46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+</style>
+</head>
+<body>
+<main class="deck-shell"><div class="deck-stage"><section class="slide role-cover" data-role="cover" data-page="1"><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="outline-number">01</div><div class="watermark-word">DECK</div><div class="eyebrow">HTML DECK</div><h1 data-animate="fade-up">某 SaaS 产品 2026 上半年成果汇报</h1><p class="subtitle" data-animate="blur-in">标准 Markdown 与场景图片生成的离线网页演示</p><div class="meta-line"><span>16:9 HTML PPT</span><span>Offline Ready</span><span>v2 narrative craft</span></div><aside class="notes">这一页先直接给出结论：某 SaaS 产品 2026 上半年成果汇报。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：开场说明演示目标、对象与预期收获。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-toc" data-role="toc" data-page="2"><div class="watermark-word">AGENDA</div><h2>目录将叙事拆成可追踪的 3 个阶段</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">关键成果先行</li><li style="--i:1">过程与方法复盘</li><li style="--i:2">客户证据与现场案例</li><li style="--i:3">问题应对与下一步</li></ul>
+<p class="body" data-animate="fade-up">本页按照叙事章节建立预期，每章至少两页内容并用过渡页控制节奏。</p>
+<p class="body" data-animate="fade-up">目录顺序默认遵循场景框架：结论先行、证据展开、行动收束。</p><aside class="notes">这一页先直接给出结论：目录将叙事拆成可追踪的 3 个阶段。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：关键成果先行；过程与方法复盘；客户证据与现场案例；本页按照叙事章节建立预期，每章至少两页内容并用过渡页控制节奏。；目录顺序默认遵循场景框架：结论先行、证据展开、行动收束。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="3"><div class="outline-number">01</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">关键成果先行</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：关键成果先行。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-kpi" data-role="kpi" data-page="4"><h2>上半年续约率提升至 94%，超目标 9 个百分点</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">续约率达到 94%，较 2025 下半年提升 11 个百分点，超过 85% 目标线。</li><li style="--i:1">净收入留存 NRR 达到 118%，高于行业同类产品 102% 基准。</li><li style="--i:2">流失客户数从 31 家降至 12 家，主要集中在低活跃小客户。</li></ul><div class="kpi-grid"><div class="panel kpi-card" data-animate="zoom-pop" style="--i:0"><div class="kpi-number" data-animate="count-up" data-count-to="94" data-suffix="%">94%</div><p>目标对比</p><small>含目标/同比/基准上下文</small></div><div class="panel kpi-card" data-animate="zoom-pop" style="--i:1"><div class="kpi-number" data-animate="count-up" data-count-to="2025" data-suffix="">2025</div><p>同比变化</p><small>含目标/同比/基准上下文</small></div><div class="panel kpi-card" data-animate="zoom-pop" style="--i:2"><div class="kpi-number" data-animate="count-up" data-count-to="11" data-suffix="">11</div><p>过程效率</p><small>含目标/同比/基准上下文</small></div><div class="panel kpi-card" data-animate="zoom-pop" style="--i:3"><div class="kpi-number" data-animate="count-up" data-count-to="85" data-suffix="%">85%</div><p>业务影响</p><small>含目标/同比/基准上下文</small></div></div><div class="takeaway" data-animate="rise-in">So-what：续约率达到 94%，较 2025 下半年提升 11 个百分点，超过 85% 目标线。</div><aside class="notes">这一页先直接给出结论：上半年续约率提升至 94%，超目标 9 个百分点。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：续约率达到 94%，较 2025 下半年提升 11 个百分点，超过 85% 目标线。；净收入留存 NRR 达到 118%，高于行业同类产品 102% 基准。；流失客户数从 31 家降至 12 家，主要集中在低活跃小客户。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-table" data-role="table" data-page="5"><h2>北区重点客户收入完成 1.42 亿元，贡献 61% 增量</h2><table><tr style="--row:0"><th>区域</th><th>2026H1 收入</th><th>同比</th><th>目标完成</th><th>备注</th></tr><tr style="--row:2"><td>北区</td><td>1.42 亿</td><td>+38%</td><td>112%</td><td>大客户扩容</td></tr><tr style="--row:3"><td>华东</td><td>0.86 亿</td><td>+21%</td><td>97%</td><td>渠道稳定</td></tr><tr style="--row:4"><td>华南</td><td>0.51 亿</td><td>+14%</td><td>91%</td><td>新签放缓</td></tr><tr style="--row:5"><td>西部</td><td>0.28 亿</td><td>+31%</td><td>105%</td><td>标杆起量</td></tr><tr style="--row:6" class="highlight"><td>合计</td><td>3.07 亿</td><td>+29%</td><td>104%</td><td>超额完成</td></tr></table><div class="takeaway" data-animate="rise-in">So-what：本页用 table 证据支撑“北区重点客户收入完成 1.42 亿元，贡献 61% 增量”，下一页继续展开方法或行动。</div><aside class="notes">这一页先直接给出结论：北区重点客户收入完成 1.42 亿元，贡献 61% 增量。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：表格里的目标、同比、合计或高亮行是本页的证据锚点。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-hero" data-role="image-hero" data-page="6"><figure class="image-frame hero-image screenshot-frame" data-image-slot="img-001" style="--fit:cover" data-animate="kenburns"><img src="dashboard.png" alt="运营驾驶舱截图，展示核心指标与趋势" loading="eager"><figcaption class="caption-bar"><span>运营驾驶舱截图，展示核心指标与趋势</span><span class="caption-source">screenshot</span></figcaption></figure><div class="hero-copy"><h2>核心看板把经营异常发现时间从 3 天压缩到 4 小时</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">产品把续约风险、工单热区和用量下滑汇聚到同一页。</li><li style="--i:1">客户成功经理每天 09:30 前可完成重点账户扫描。</li><li style="--i:2">异常定位从“等周报”变为“当天响应”，减少跨部门解释成本。</li></ul></div><div class="takeaway" data-animate="rise-in">So-what：产品把续约风险、工单热区和用量下滑汇聚到同一页。</div><aside class="notes">这一页先直接给出结论：核心看板把经营异常发现时间从 3 天压缩到 4 小时。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：产品把续约风险、工单热区和用量下滑汇聚到同一页。；客户成功经理每天 09:30 前可完成重点账户扫描。；异常定位从“等周报”变为“当天响应”，减少跨部门解释成本。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="7"><div class="outline-number">02</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">过程与方法复盘</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：过程与方法复盘。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-timeline" data-role="timeline" data-page="8"><h2>三层运营节奏让高风险客户响应提前 12 天</h2><div class="timeline-row"><div class="panel timeline-item" style="--i:0"><div class="date">2026-01</div><p>2026-01｜建立健康分模型｜识别 63 家低活跃账户。</p></div><div class="panel timeline-item" style="--i:1"><div class="date">2026-02</div><p>2026-02｜上线红黄灯例会｜平均响应提前 7 天。</p></div><div class="panel timeline-item" style="--i:2"><div class="date">2026-04</div><p>2026-04｜接入工单语义标签｜定位效率提升 32%。</p></div><div class="panel timeline-item" style="--i:3"><div class="date">2026-06</div><p>2026-06｜完成复盘闭环｜高风险客户留存提升 18%。</p></div><div class="panel timeline-item" style="--i:4"><div class="date">T+5</div><p>目标对比：补充目标值、当前值与差距</p></div><div class="panel timeline-item" style="--i:5"><div class="date">T+6</div><p>过程证据：说明关键动作与责任边界</p></div></div><div class="takeaway" data-animate="rise-in">So-what：2026-01｜建立健康分模型｜识别 63 家低活跃账户。</div><aside class="notes">这一页先直接给出结论：三层运营节奏让高风险客户响应提前 12 天。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：2026-01｜建立健康分模型｜识别 63 家低活跃账户。；2026-02｜上线红黄灯例会｜平均响应提前 7 天。；2026-04｜接入工单语义标签｜定位效率提升 32%。；目标对比：补充目标值、当前值与差距；过程证据：说明关键动作与责任边界；业务影响：落到客户可感知的结果。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的</aside></section>
+<section class="slide role-image-side" data-role="image-side" data-page="9"><div class="copy"><h2>自动化旅程覆盖 4 类关键触点，减少人工跟进 38%</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">新客激活、功能采用、续约提醒、流失挽回形成自动化触达。</li><li style="--i:1">每个触点都绑定触发条件、责任人和复盘指标。</li><li style="--i:2">低价值重复提醒交给系统，高价值异议处理留给客户经理。</li></ul></div><div class="visual"><figure class="image-frame side-image" data-image-slot="img-003" style="--fit:contain" data-animate="kenburns"><img src="workflow.png" alt="客户旅程自动化流程图" loading="eager"><figcaption class="caption-bar"><span>客户旅程自动化流程图</span><span class="caption-source">diagram</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：新客激活、功能采用、续约提醒、流失挽回形成自动化触达。</div><aside class="notes">这一页先直接给出结论：自动化旅程覆盖 4 类关键触点，减少人工跟进 38%。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：新客激活、功能采用、续约提醒、流失挽回形成自动化触达。；每个触点都绑定触发条件、责任人和复盘指标。；低价值重复提醒交给系统，高价值异议处理留给客户经理。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-side" data-role="image-side" data-page="10"><div class="copy"><h2>移动端提醒让一线处理时效提升 27%，现场响应更稳定</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">一线团队可以在客户现场直接查看风险原因和建议话术。</li><li style="--i:1">提醒内容压缩为“问题、证据、动作”三段，降低误读。</li><li style="--i:2">移动端回填结果同步进入看板，管理层不再二次追问。</li></ul></div><div class="visual"><figure class="image-frame side-image screenshot-frame" data-image-slot="img-002" style="--fit:contain" data-animate="kenburns"><img src="mobile.png" alt="移动端客户提醒界面" loading="eager"><figcaption class="caption-bar"><span>移动端客户提醒界面</span><span class="caption-source">screenshot</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：一线团队可以在客户现场直接查看风险原因和建议话术。</div><aside class="notes">这一页先直接给出结论：移动端提醒让一线处理时效提升 27%，现场响应更稳定。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：一线团队可以在客户现场直接查看风险原因和建议话术。；提醒内容压缩为“问题、证据、动作”三段，降低误读。；移动端回填结果同步进入看板，管理层不再二次追问。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="11"><div class="outline-number">03</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">客户证据与现场案例</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：客户证据与现场案例。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-hero" data-role="image-hero" data-page="12"><figure class="image-frame hero-image" data-image-slot="img-004" style="--fit:cover" data-animate="kenburns"><img src="customer-room.png" alt="客户现场复盘会议照片" loading="eager"><figcaption class="caption-bar"><span>客户现场复盘会议照片</span><span class="caption-source">photo</span></figcaption></figure><div class="hero-copy"><h2>A 轮制造客户 45 天内完成 3 个场景扩容</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">客户原先只使用工单模块，扩展后覆盖巡检、备件、回访。</li><li style="--i:1">现场复盘显示，跨部门协作问题下降 24%。</li><li style="--i:2">该案例已沉淀为制造业标准实施包，可复用于 6 家在谈客户。</li></ul></div><div class="takeaway" data-animate="rise-in">So-what：客户原先只使用工单模块，扩展后覆盖巡检、备件、回访。</div><aside class="notes">这一页先直接给出结论：A 轮制造客户 45 天内完成 3 个场景扩容。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：客户原先只使用工单模块，扩展后覆盖巡检、备件、回访。；现场复盘显示，跨部门协作问题下降 24%。；该案例已沉淀为制造业标准实施包，可复用于 6 家在谈客户。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-gallery" data-role="gallery" data-page="13"><h2>多图证据显示团队协作、数据看板和客户现场形成闭环</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。</li><li style="--i:1">证据链覆盖产品、运营、交付和客户四个视角。</li><li style="--i:2">所有截图和现场图都来自同一批半年复盘材料。</li></ul><div class="gallery-grid"><figure class="image-frame screenshot-frame" data-image-slot="img-001" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">01</span><img src="dashboard.png" alt="运营驾驶舱截图，展示核心指标与趋势" loading="eager"><figcaption class="caption-bar"><span>运营驾驶舱截图，展示核心指标与趋势</span><span class="caption-source">screenshot</span></figcaption></figure><figure class="image-frame screenshot-frame" data-image-slot="img-002" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">02</span><img src="mobile.png" alt="移动端客户提醒界面" loading="eager"><figcaption class="caption-bar"><span>移动端客户提醒界面</span><span class="caption-source">screenshot</span></figcaption></figure><figure class="image-frame" data-image-slot="img-003" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">03</span><img src="workflow.png" alt="客户旅程自动化流程图" loading="eager"><figcaption class="caption-bar"><span>客户旅程自动化流程图</span><span class="caption-source">diagram</span></figcaption></figure><figure class="image-frame" data-image-slot="img-004" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">04</span><img src="customer-room.png" alt="客户现场复盘会议照片" loading="eager"><figcaption class="caption-bar"><span>客户现场复盘会议照片</span><span class="caption-source">photo</span></figcaption></figure><figure class="image-frame" data-image-slot="img-005" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">05</span><img src="chart.png" alt="增长趋势图" loading="eager"><figcaption class="caption-bar"><span>增长趋势图</span><span class="caption-source">chart</span></figcaption></figure><figure class="image-frame" data-image-slot="img-006" style="--fit:cover" data-animate="kenburns"><span class="gallery-index">06</span><img src="team.png" alt="交付团队协作场景" loading="eager"><figcaption class="caption-bar"><span>交付团队协作场景</span><span class="caption-source">photo</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。</div><aside class="notes">这一页先直接给出结论：多图证据显示团队协作、数据看板和客户现场形成闭环。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：看板负责识别问题，移动端负责一线执行，现场复盘负责校准方案。；证据链覆盖产品、运营、交付和客户四个视角。；所有截图和现场图都来自同一批半年复盘材料。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-quote" data-role="quote" data-page="14"><h2>客户原话验证“少开会、多看数”的变化已经被感知</h2><div class="quote-mark">“</div><div class="quote-mark">“</div><div class="quote-text">过去我们等周会才知道风险，现在每天早上能看到该处理的账户，会议从解释问题变成确认动作。</div>
+<ul class="content-list" data-animate="stagger-list"><li style="--i:0">该反馈来自 2026 年 6 月制造业客户复盘会。</li><li style="--i:1">反馈关键词集中在响应速度、责任清晰、数据可信。</li><li style="--i:2">客户已同意作为下半年行业案例共同发布。</li></ul><div class="takeaway" data-animate="rise-in">So-what：该反馈来自 2026 年 6 月制造业客户复盘会。</div><aside class="notes">这一页先直接给出结论：客户原话验证“少开会、多看数”的变化已经被感知。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：该反馈来自 2026 年 6 月制造业客户复盘会。；反馈关键词集中在响应速度、责任清晰、数据可信。；客户已同意作为下半年行业案例共同发布。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="15"><div class="outline-number">04</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">问题应对与下一步</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：问题应对与下一步。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-compare" data-role="compare" data-page="16"><h2>三类问题仍拖慢规模复制，需要在 Q3 前完成治理</h2><div class="compare-grid"><div class="panel compare-card"><h3>现状</h3><ul class="content-list" data-animate="stagger-list"><li style="--i:0">数据口径：渠道客户的活跃定义不一致，影响续约预测。</li><li style="--i:1">权限配置：部分大客户审批链长，导致移动端启用慢。</li><li style="--i:2">交付模板：制造业模板成熟，零售和教育模板仍需补齐。</li></ul></div><div class="panel compare-card"><h3>目标状态</h3><p class="body">目标状态：更清晰、更稳定、更可复用。</p></div></div><div class="takeaway" data-animate="rise-in">So-what：数据口径：渠道客户的活跃定义不一致，影响续约预测。</div><aside class="notes">这一页先直接给出结论：三类问题仍拖慢规模复制，需要在 Q3 前完成治理。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：数据口径：渠道客户的活跃定义不一致，影响续约预测。；权限配置：部分大客户审批链长，导致移动端启用慢。；交付模板：制造业模板成熟，零售和教育模板仍需补齐。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-timeline" data-role="timeline" data-page="17"><h2>下半年路线图聚焦 3 个里程碑，先补短板再扩大复制</h2><div class="timeline-row"><div class="panel timeline-item" style="--i:0"><div class="date">2026-07</div><p>2026-07｜统一活跃口径｜预测误差控制在 8% 以内。</p></div><div class="panel timeline-item" style="--i:1"><div class="date">2026-08</div><p>2026-08｜发布权限模板｜大客户启用周期缩短 5 天。</p></div><div class="panel timeline-item" style="--i:2"><div class="date">2026-09</div><p>2026-09｜补齐行业包｜新增零售、教育两个复制模板。</p></div><div class="panel timeline-item" style="--i:3"><div class="date">2026-12</div><p>2026-12｜完成规模复盘｜NRR 稳定在 120% 附近。</p></div><div class="panel timeline-item" style="--i:4"><div class="date">T+5</div><p>目标对比：补充目标值、当前值与差距</p></div><div class="panel timeline-item" style="--i:5"><div class="date">T+6</div><p>过程证据：说明关键动作与责任边界</p></div></div><div class="takeaway" data-animate="rise-in">So-what：2026-07｜统一活跃口径｜预测误差控制在 8% 以内。</div><aside class="notes">这一页先直接给出结论：下半年路线图聚焦 3 个里程碑，先补短板再扩大复制。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：2026-07｜统一活跃口径｜预测误差控制在 8% 以内。；2026-08｜发布权限模板｜大客户启用周期缩短 5 天。；2026-09｜补齐行业包｜新增零售、教育两个复制模板。；目标对比：补充目标值、当前值与差距；过程证据：说明关键动作与责任边界；业务影响：落到客户可感知的结果。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页</aside></section>
+<section class="slide role-closing" data-role="closing" data-page="18"><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="watermark-word">NEXT</div><div class="eyebrow">Closing</div><h2>未来 30 天行动项已经压缩为 3 个检查点</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">T+3 天确认试点范围与验收口径</li><li style="--i:1">T+14 天锁定首批场景与数据看板</li><li style="--i:2">T+30 天安排复盘会议并决定扩大范围</li></ul>
+<p class="body" data-animate="fade-up">行动项必须绑定负责人、时间和可检查产物，避免会后只留下方向性共识。</p>
+<p class="body" data-animate="fade-up">结束页承接前文证据，把决策请求压缩为一组可立即执行的动作。</p><div class="takeaway" data-animate="rise-in">So-what：会后只需要确认范围、看板和复盘节奏三件事。</div><aside class="notes">这一页先直接给出结论：未来 30 天行动项已经压缩为 3 个检查点。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：T+3 天确认试点范围与验收口径；T+14 天锁定首批场景与数据看板；T+30 天安排复盘会议并决定扩大范围；行动项必须绑定负责人、时间和可检查产物，避免会后只留下方向性共识。；结束页承接前文证据，把决策请求压缩为一组可立即执行的动作。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section></div></main>
+<div class="deck-ui"><span data-current>1</span><span>/</span><span data-total>18</span><span>← → / Space / S / O / F / B</span></div>
+<nav class="overview" aria-label="Slides overview"></nav>
+<script>(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.querySelector('.deck-stage');
+  const currentEl = document.querySelector('[data-current]');
+  const totalEl = document.querySelector('[data-total]');
+  const overview = document.querySelector('.overview');
+  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('html-deck-sync') : null;
+  let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#/', '')) - 1 || 0));
+  let started = Date.now();
+  let speakerWin = null;
+
+  function scale() {
+    if (!stage) return;
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    document.documentElement.style.setProperty('--deck-scale', s.toFixed(4));
+  }
+
+  function slideData(i) {
+    const slide = slides[i];
+    return {
+      index: i,
+      total: slides.length,
+      title: slide?.querySelector('h1,h2')?.textContent || '',
+      notes: slide?.querySelector('.notes')?.innerHTML || '本页没有备注。',
+      nextTitle: slides[i + 1]?.querySelector('h1,h2')?.textContent || '结束',
+      elapsed: Math.floor((Date.now() - started) / 1000)
+    };
+  }
+
+  function publish() {
+    const data = slideData(index);
+    if (channel) channel.postMessage({type: 'state', data});
+    if (speakerWin && !speakerWin.closed) speakerWin.postMessage({type: 'state', data}, '*');
+  }
+
+  function show(i, silent) {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((slide, n) => slide.classList.toggle('is-active', n === index));
+    if (currentEl) currentEl.textContent = String(index + 1);
+    if (totalEl) totalEl.textContent = String(slides.length);
+    history.replaceState(null, '', '#/' + (index + 1));
+    runCounters();
+    if (!silent) publish();
+  }
+
+  function runCounters() {
+    const nums = slides[index]?.querySelectorAll('[data-count-to]') || [];
+    nums.forEach((el) => {
+      const target = Number(el.getAttribute('data-count-to')) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (document.body.classList.contains('no-motion')) {
+        el.textContent = String(target) + suffix;
+        return;
+      }
+      const start = performance.now();
+      function tick(t) {
+        const p = Math.min(1, (t - start) / 700);
+        el.textContent = String(Math.round(target * p)) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+
+  function buildOverview() {
+    if (!overview || overview.children.length) return;
+    slides.forEach((slide, i) => {
+      const button = document.createElement('button');
+      button.innerHTML = '<span>' + String(i + 1).padStart(2, '0') + '</span>' + (slide.querySelector('h1,h2')?.textContent || 'Untitled');
+      button.addEventListener('click', () => {
+        overview.classList.remove('is-open');
+        show(i);
+      });
+      overview.appendChild(button);
+    });
+  }
+
+  function openSpeaker() {
+    if (speakerWin && !speakerWin.closed) {
+      speakerWin.focus();
+      publish();
+      return;
+    }
+    speakerWin = window.open('', 'html-deck-speaker', 'width=1180,height=760');
+    if (!speakerWin) return;
+    speakerWin.document.write(`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>Speaker</title><style>
+      *{box-sizing:border-box}body{margin:0;background:#090d14;color:#f8fafc;font-family:system-ui,"Microsoft YaHei",sans-serif}
+      main{height:100vh;display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:150px 1fr;gap:16px;padding:16px}
+      .card{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#151b27;padding:18px;overflow:auto}
+      h1,h2,p{margin:0}.title{font-size:30px;line-height:1.18}.next{color:#7ee8fa;font-size:24px}
+      .timer{font:800 70px/1 ui-monospace,Consolas,monospace;color:#4dd4ac}.notes{font-size:25px;line-height:1.45}
+      .meta{color:#9aa8bd;font:700 16px/1 ui-monospace,Consolas,monospace}
+    </style></head><body><main>
+      <section class="card"><p class="meta" id="page"></p><h1 class="title" id="title"></h1></section>
+      <section class="card"><p class="meta">NEXT</p><h2 class="next" id="next"></h2></section>
+      <section class="card"><p class="meta">SCRIPT</p><div class="notes" id="notes"></div></section>
+      <section class="card"><p class="meta">TIMER</p><div class="timer" id="timer">00:00</div></section>
+    </main><script>
+      function pad(n){return String(n).padStart(2,'0')}
+      function render(d){if(!d)return;page.textContent=(d.index+1)+' / '+d.total;title.textContent=d.title;next.textContent=d.nextTitle;notes.innerHTML=d.notes;timer.textContent=pad(Math.floor(d.elapsed/60))+':'+pad(d.elapsed%60)}
+      addEventListener('message',e=>{if(e.data&&e.data.type==='state')render(e.data.data)})
+      if('BroadcastChannel' in window){const c=new BroadcastChannel('html-deck-sync');c.onmessage=e=>{if(e.data&&e.data.type==='state')render(e.data.data)}}
+    <\/script></body></html>`);
+    speakerWin.document.close();
+    setTimeout(publish, 80);
+  }
+
+  function drawFx() {
+    const canvas = document.querySelector('.fx-canvas');
+    if (!canvas || document.body.classList.contains('no-motion')) return;
+    const ctx = canvas.getContext('2d');
+    const ratio = devicePixelRatio || 1;
+    canvas.width = 1920 * ratio;
+    canvas.height = 1080 * ratio;
+    ctx.scale(ratio, ratio);
+    const points = Array.from({length: 42}, (_, i) => ({x: (i * 137) % 1920, y: (i * 89) % 1080, r: 1 + (i % 4)}));
+    let frame = 0;
+    function tick() {
+      ctx.clearRect(0, 0, 1920, 1080);
+      ctx.strokeStyle = 'rgba(126,232,250,.18)';
+      ctx.fillStyle = 'rgba(77,212,172,.35)';
+      points.forEach((p, i) => {
+        const x = p.x + Math.sin((frame + i * 12) / 80) * 24;
+        const y = p.y + Math.cos((frame + i * 8) / 90) * 18;
+        ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI * 2); ctx.fill();
+        if (i % 3 === 0) {
+          const q = points[(i + 7) % points.length];
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      });
+      frame += 1;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key.toLowerCase() === 'f' && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    if (e.key.toLowerCase() === 'b') { document.body.classList.toggle('no-motion'); publish(); }
+    if (e.key.toLowerCase() === 's') openSpeaker();
+    if (e.key.toLowerCase() === 'o') { buildOverview(); overview?.classList.toggle('is-open'); }
+    if (e.key === 'Escape') overview?.classList.remove('is-open');
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.overview')) return;
+    if (e.clientX > innerWidth / 2) next(); else prev();
+  });
+  setInterval(publish, 1000);
+  addEventListener('resize', scale);
+  scale();
+  drawFx();
+  show(index, true);
+  publish();
+})();
+</script>
+</body>
+</html>

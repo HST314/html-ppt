@@ -1,0 +1,35 @@
+:root {
+  --page-bg: #e7ded1;
+  --bg: #fbf7f0;
+  --surface: #ffffff;
+  --surface-2: #f0e6d8;
+  --text: #24211d;
+  --muted: #6f675c;
+  --inverse: #ffffff;
+  --accent: #2f7d6d;
+  --accent-2: #c7653d;
+  --line: #dfd3c3;
+  --shadow: 0 18px 54px rgba(36,33,29,.13);
+  --radius: 8px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --slide-padding: 88px;
+  --cover-size: 100px;
+  --title-size: 68px;
+  --body-size: 31px;
+  --texture: radial-gradient(circle at 84% 18%, rgba(47,125,109,.12), transparent 28%);
+}
+.panel, .content-list li, .image-frame, .takeaway {
+  border-radius: 18px;
+}
+.image-frame {
+  border: 8px solid #fff;
+}
+.eyebrow::before {
+  content: "";
+  width: 34px;
+  height: 4px;
+  background: var(--accent-2);
+  transform: rotate(-3deg);
+}

@@ -1,0 +1,32 @@
+:root {
+  --page-bg: #e7ebf0;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #edf2f7;
+  --text: #172033;
+  --muted: #5d687c;
+  --inverse: #ffffff;
+  --accent: #0b6bcb;
+  --accent-2: #d14b3f;
+  --line: #d8dee8;
+  --shadow: 0 18px 60px rgba(23,32,51,.14);
+  --radius: 8px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 86px;
+  --cover-size: 102px;
+  --title-size: 70px;
+  --body-size: 31px;
+  --texture: linear-gradient(90deg, rgba(11,107,203,.08), transparent 36%), radial-gradient(circle at 92% 88%, rgba(209,75,63,.08), transparent 28%);
+}
+.slide h2 {
+  padding-left: 24px;
+  border-left: 6px solid var(--accent);
+}
+.panel, .content-list li, .takeaway {
+  background: #fff;
+}
+.role-section {
+  background: linear-gradient(90deg, rgba(11,107,203,.10), transparent 62%);
+}

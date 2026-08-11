@@ -1,0 +1,17 @@
+/* auto-derived from scene images by detect_style.py */
+:root {
+  --accent: #0072ff;
+  --accent-2: #ff1985;
+  --line: rgba(48,135,242,.22);
+  --surface: rgba(48,135,242,.07);
+  --surface-2: rgba(48,135,242,.12);
+  --bg: rgb(8,11,14);
+  --page-bg: rgb(5,6,8);
+}
+.slide h2, .eyebrow, .kpi-number { text-shadow: 0 0 24px rgba(48,135,242,.24); }
+.panel, .content-list li { border-color: rgba(48,135,242,.28); }
+.gallery-index { background: #0072ff; }
+:root {
+  --texture: linear-gradient(rgba(48,135,242,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(48,135,242,.05) 1px, transparent 1px);
+  --texture-size: 54px 54px, 54px 54px;
+}
