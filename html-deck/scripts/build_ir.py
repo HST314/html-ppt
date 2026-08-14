@@ -3,7 +3,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from common import ROLES, load_state, save_state, write_json, read_json
+from common import ROLES, load_state, save_state, write_json, read_json, parse_page_semantics, match_groups_to_items
 
 
 def parse_args():
@@ -14,6 +14,7 @@ def parse_args():
     p.add_argument("--style", required=False, help="detect_style.py 产出的 style_report.json，用于主题推荐与封面背景")
     p.add_argument("--output", required=True)
     p.add_argument("--state", required=True)
+    p.add_argument("--semantics", required=False, help="TASK-003: 页面语义登记 state/page_semantics.md；缺省取 --state 同目录下的 page_semantics.md")
     return p.parse_args()
 
 
@@ -441,6 +442,9 @@ def main():
     title, sections, md_slides = parse_md(deck_text)
     style_report = read_json(args.style) if args.style and Path(args.style).exists() else None
     image_groups, unplaced_images = assign_images(md_slides, manifest.get("images", []))
+    # TASK-003: 读取页面语义登记（默认 state/page_semantics.md），供分组消费与语义追溯
+    semantics_path = args.semantics or (Path(args.state).parent / "page_semantics.md")
+    semantics = parse_page_semantics(semantics_path) or {}
     cover_bg = None
     if style_report and style_report.get("cover_image_id"):
         cover_bg = next((i for i in manifest.get("images", []) if i.get("id") == style_report["cover_image_id"]), None)
@@ -449,7 +453,7 @@ def main():
     toc_blocks = [{"type": "list", "items": toc_items}, {"type": "paragraph", "text": "目录先建立判断路径，再按证据与行动推进。"}]
     slides.append({"page": 2, "role": "toc", "title": f"{len(toc_items)} 个叙事节点从判断走向行动", "section": None, "blocks": toc_blocks, "images": [], "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。", "notes": speaker_notes("目录建立完整叙事路径", toc_blocks, "用目录建立预期，控制节奏。"), "decision": "mandatory toc derived from sections or slide titles", "risk": {"level": "low", "issues": []}})
     last_section = None
-    for md, imgs in zip(md_slides, image_groups):
+    for page_idx, (md, imgs) in enumerate(zip(md_slides, image_groups), start=1):
         if md["section"] and md["section"] != last_section:
             slides.append({"page": len(slides) + 1, "role": "section", "title": md["section"], "section": md["section"], "section_index": len([s for s in slides if s["role"] == "section"]) + 1, "blocks": [], "images": [], "takeaway": "", "notes": speaker_notes(md["section"], [], "章节过渡。"), "decision": "new level-2 section", "risk": {"level": "low", "issues": []}})
             last_section = md["section"]
@@ -458,7 +462,21 @@ def main():
         bl = enrich_blocks(bl, role)
         d = directives(md["raw"])
         notes = d["notes"] or speaker_notes(md["title"], bl, "围绕本页标题展开，先讲结论再补充证据。")
-        slides.append({"page": len(slides) + 1, "role": role, "title": md["title"], "section": md["section"], "blocks": bl, "images": imgs, "takeaway": infer_takeaway(md["title"], bl, role), "notes": notes, "decision": why, "risk": risk_for(md["title"], bl, imgs)})
+        slide = {"page": len(slides) + 1, "role": role, "title": md["title"], "section": md["section"], "blocks": bl, "images": imgs, "takeaway": infer_takeaway(md["title"], bl, role), "notes": notes, "decision": why, "risk": risk_for(md["title"], bl, imgs)}
+        # TASK-003: 消费语义登记的分组结果（2–4 组含组标题），以结构化 groups 字段进入 IR
+        row = semantics.get(page_idx)
+        if row:
+            slide["semantics_page"] = f"P{page_idx:02d}"
+            slide["semantic_role"] = row.get("role") or None
+            list_items = [x for b in bl if b.get("type") == "list" for x in b.get("items", [])]
+            if row.get("groups") and list_items:
+                matched = match_groups_to_items(row["groups"], list_items)
+                if matched:
+                    slide["groups"] = matched
+                    slide["decision"] += f" | semantics groups: {len(matched)} 组"
+                else:
+                    slide["decision"] += " | semantics groups unmatched; flattened"
+        slides.append(slide)
     # 自动拆页：任何超出组件容量的图片拆成多页，渲染层不再截断图片
     slides = split_overflow_slides(slides)
     # 零遗漏兜底：无法匹配到任何内容页的图片自动汇入独立图集页

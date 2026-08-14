@@ -217,6 +217,30 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 .role-compare > h2 { grid-column: 1 / -1; }
 .role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
 .role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
+/* TASK-003: 语义信息组的独立视觉区块（组卡片），组标题可见 */
+.group-card {
+  padding: 24px 26px;
+  align-self: start;
+  text-align: left;
+}
+.group-card .group-title {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.group-card .group-list { margin-top: 0; gap: 12px; }
+.group-card .group-list li { min-height: 0; padding-top: 10px; padding-bottom: 10px; }
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin-top: 32px;
+}
+.role-two-column .group-stack { display: grid; gap: 20px; align-content: center; }
+.role-two-column .copy > .group-stack { margin-top: 30px; }
+.visual .image-frame.group-image { height: 220px; margin-bottom: 20px; }
 .role-image-hero {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));

@@ -58,6 +58,22 @@ def blocks_html(slide):
     return "\n".join(block_html(b) for b in slide.get("blocks", []))
 
 
+def group_card_html(group, index):
+    """TASK-003: 信息组渲染为独立视觉区块（卡片），组标题可见。"""
+    items = "".join(f'<li style="--i:{j}">{esc(x)}</li>' for j, x in enumerate(group.get("items", [])[:4]))
+    return (
+        f'<div class="panel group-card" data-animate="fade-up" style="--i:{index}">'
+        f'<h3 class="group-title">{esc(group.get("title"))}</h3>'
+        f'<ul class="content-list group-list">{items}</ul>'
+        f'</div>'
+    )
+
+
+def non_list_blocks_html(slide):
+    """TASK-003: groups 页的正文只保留非列表块，列表条目由组卡片承载，避免重复。"""
+    return "\n".join(block_html(b) for b in slide.get("blocks", []) if b.get("type") != "list")
+
+
 def img_html(img, cls="image-frame", fit="contain", index=None):
     if not img:
         return '<div class="image-frame" data-image-slot="empty"></div>'
@@ -148,10 +164,24 @@ def slide_html(slide, section_titles=None, art_dna=None):
         grid_cls = "gallery-grid" + (" gallery-small" if len(images[:6]) <= 3 else "")
         inner = f'{art_layer}<h2>{title}</h2>{blocks}<div class="{grid_cls}">{frames}</div>{takeaway}'
     elif role == "two-column":
-        parts = slide.get("blocks", [])
-        left = "\n".join(block_html(b) for b in parts[::2]) or blocks
-        right = "\n".join(block_html(b) for b in parts[1::2]) or (img_html(images[0], "image-frame side-image", "contain") if images else "")
-        inner = f'{art_layer}<div class="copy"><h2>{title}</h2>{left}</div><div class="visual panel" style="padding:34px">{right}</div>{takeaway}'
+        groups = slide.get("groups") or []
+        if groups:
+            # TASK-003: 每组渲染为独立卡片，偶数组入左栏、奇数组入右栏，右侧 visual panel 不空置
+            cards = [group_card_html(g, i) for i, g in enumerate(groups)]
+            left_cards = "\n".join(cards[::2])
+            right_cards = "\n".join(cards[1::2])
+            if images:
+                right_cards = img_html(images[0], "image-frame side-image group-image", "contain") + right_cards
+            inner = (
+                f'{art_layer}<div class="copy"><h2>{title}</h2>{non_list_blocks_html(slide)}'
+                f'<div class="group-stack">{left_cards}</div></div>'
+                f'<div class="visual panel" style="padding:34px"><div class="group-stack">{right_cards}</div></div>{takeaway}'
+            )
+        else:
+            parts = slide.get("blocks", [])
+            left = "\n".join(block_html(b) for b in parts[::2]) or blocks
+            right = "\n".join(block_html(b) for b in parts[1::2]) or (img_html(images[0], "image-frame side-image", "contain") if images else "")
+            inner = f'{art_layer}<div class="copy"><h2>{title}</h2>{left}</div><div class="visual panel" style="padding:34px">{right}</div>{takeaway}'
     elif role == "table":
         inner = f'<h2>{title}</h2>{blocks}{takeaway}'
     elif role == "kpi":
@@ -186,7 +216,13 @@ def slide_html(slide, section_titles=None, art_dna=None):
         art_bg = art_layer
         inner = f'{art_bg}<canvas class="fx-canvas" width="1920" height="1080"></canvas>{"" if art_dna else closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'
     else:
-        inner = f'{art_layer}<h2>{title}</h2>{blocks}{takeaway}'
+        groups = slide.get("groups") or []
+        if groups:
+            # TASK-003: bullets 等兜底 role 同样把登记分组渲染为独立卡片栅格
+            cards = "".join(group_card_html(g, i) for i, g in enumerate(groups))
+            inner = f'{art_layer}<h2>{title}</h2>{non_list_blocks_html(slide)}<div class="group-grid">{cards}</div>{takeaway}'
+        else:
+            inner = f'{art_layer}<h2>{title}</h2>{blocks}{takeaway}'
     if art_layer and art_layer not in inner:
         inner = art_layer + inner
     return f'<section class="slide role-{role}" {common}>{quiet}{inner}{notes}</section>'

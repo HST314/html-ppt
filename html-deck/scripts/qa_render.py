@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import argparse
+import html as html_lib
 import json
 import re
 import sys
 from pathlib import Path
-from common import read_json
+from common import read_json, parse_page_semantics, is_deck_content_slide
 
 
 def parse_args():
@@ -16,11 +17,20 @@ def parse_args():
     p.add_argument("--screenshots", required=False)
     p.add_argument("--manifest", required=False, help="传入后执行图片覆盖审计，漏图直接判失败")
     p.add_argument("--art-dna", required=False, help="全 Deck 项目视觉 DNA 报告")
+    p.add_argument("--semantics", required=False, help="TASK-003: 页面语义登记 state/page_semantics.md；缺省取 --history 同目录下的 page_semantics.md")
     p.add_argument("--round", type=int, default=1)
     return p.parse_args()
 
 
-def structural(text, ir, art_dna=None):
+def html_sections_by_page(text):
+    """TASK-003: 按 data-page 切出每页 HTML 片段，用于分组渲染核验。"""
+    sections = {}
+    for m in re.finditer(r'<section class="slide[^"]*"[^>]*?data-page="(\d+)"[\s\S]*?(?=<section class="slide|$)', text):
+        sections[int(m.group(1))] = m.group(0)
+    return sections
+
+
+def structural(text, ir, art_dna=None, semantics=None):
     rows = []
     slide_count = text.count('<section class="slide')
     external = bool(re.search(r'https?://', text))
@@ -28,6 +38,16 @@ def structural(text, ir, art_dna=None):
     # 必查动画按 deck 实际用到的 role 动态确定，避免无 kpi 页的 deck 被 count-up 误伤
     ir_slides = ir.get("slides", [])
     deck_issues = []
+    # TASK-003: deck 正文页序号（与 page_semantics.md 页码对应）与每页 HTML 片段
+    deck_ordinals = {}
+    ordinal = 0
+    for s in ir_slides:
+        if is_deck_content_slide(s):
+            ordinal += 1
+            deck_ordinals[s.get("page")] = ordinal
+    html_sections = html_sections_by_page(text)
+    # TASK-003: build_ir/render 自动改 role 的标记，此类页不参与 role 一致性判定
+    auto_transform_markers = ("moved to pre-closing", "overflow image", "unrelated images split", "auto-split")
     if art_dna:
         required = ["cover_background", "content_background", "section_background", "closing_background"]
         missing = [k for k in required if not art_dna.get(k)]
@@ -128,7 +148,46 @@ def structural(text, ir, art_dna=None):
         if deck_issues:
             issues.extend(deck_issues)
             score -= 30
-        rows.append({"page": slide.get("page"), "score": max(0, score), "mode": "structural-fallback", "issues": issues})
+        # ── TASK-003: 语义门禁（仅对 deck 正文页生效）────────────────────────
+        page_no = slide.get("page")
+        if is_deck_content_slide(slide):
+            decision = slide.get("decision") or ""
+            sem_row = semantics.get(deck_ordinals.get(page_no)) if semantics is not None else None
+            if "default content role" in decision:
+                issues.append("未经语义判断的默认 bullets（decision=default content role），需回到页面语义分析层")
+                score -= 30
+            if semantics is None:
+                issues.append("缺少语义登记文件 state/page_semantics.md")
+                score -= 25
+            elif sem_row is None:
+                issues.append("缺少语义登记：page_semantics.md 中无此页")
+                score -= 25
+            else:
+                auto_transformed = any(m in decision for m in auto_transform_markers)
+                reg_role = sem_row.get("role") or ""
+                if reg_role and reg_role != role and not auto_transformed:
+                    issues.append(f"IR role 与语义登记不一致（登记 {reg_role} / IR {role}）")
+                    score -= 25
+                if role == "bullets" and not auto_transformed and "并列" not in (sem_row.get("logic") or ""):
+                    issues.append("内容页使用 bullets 但语义登记未写明并列逻辑理由")
+                    score -= 25
+                reg_groups = sem_row.get("groups") or []
+                if reg_groups:
+                    sect = html_sections.get(page_no, "")
+                    titles_missing = [g["title"] for g in reg_groups
+                                      if g.get("title") and g["title"] not in sect and html_lib.escape(g["title"], quote=True) not in sect]
+                    if sect.count("group-card") < len(reg_groups) or titles_missing:
+                        issues.append("登记分组未渲染为独立视觉区块（缺组卡片或组标题）")
+                        score -= 20
+                    if not slide.get("groups"):
+                        issues.append("语义登记分组未进入 IR（提示）")
+                        score -= 6
+                else:
+                    list_items = sum(len(b.get("items", [])) for b in slide.get("blocks", []) if b.get("type") == "list")
+                    if list_items >= 4:
+                        issues.append("≥4 条信息未提供语义分组，已走兜底渲染（提示）")
+                        score -= 4
+        rows.append({"page": page_no, "score": max(0, score), "mode": "structural-fallback", "issues": issues})
     return rows
 
 
@@ -193,12 +252,15 @@ def main():
     text = Path(args.html).read_text(encoding="utf-8")
     ir = read_json(args.ir)
     art_dna = read_json(args.art_dna) if args.art_dna else None
+    # TASK-003: 语义门禁读取 state/page_semantics.md（默认与 --history 同目录）
+    sem_path = args.semantics or (Path(args.history).parent / "page_semantics.md")
+    semantics = parse_page_semantics(sem_path)
     rows = try_playwright(args, ir)
     if rows is None:
-        rows = structural(text, ir, art_dna)
+        rows = structural(text, ir, art_dna, semantics)
     else:
         # playwright 模式同样执行内容容量规则，两种检查取并集
-        struct_map = {r["page"]: r for r in structural(text, ir, art_dna)}
+        struct_map = {r["page"]: r for r in structural(text, ir, art_dna, semantics)}
         for r in rows:
             s = struct_map.get(r["page"])
             if s:
