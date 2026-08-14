@@ -18,7 +18,41 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 项目图片只承担内容展示：必须置于独立、稳定、不可溢出的容器，默认 `contain` 保持原貌；禁止出血、叠字、背景融合、主体抠出越界和持续运动。背景系统独立承担主题视觉。生成或审查图片页时必须读取 `references/PROJECT_IMAGES.md`。
 - 全 Deck 必须先运行 `extract_art_dna.py`：将项目图转成 `art_expression`，生成 cover/content/section/closing 四种同源角色背景和统一设计令牌。封面展开、章节转场强化、内容页弱化、尾页收束；禁止首尾项目化而中间页继续套通用主题。禁止把 `deco.py` 的固定行业图形当成跨项目模板；它只允许在无可读项目图时作为明确标注的降级方案。
 - 内容必须经过 `references/NARRATIVE.md` 的叙事框架；第 2 页强制生成目录，收束固定拆成“行动页 + 低负载结束页”。内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
+<!-- TASK-001: 新增页面语义分析层原则 -->
+- 每页生成前必须先完成「页面语义分析层」的五步判断（主结论 / 信息层级 / 逻辑关系 / 视觉结构 / 视觉焦点），并按 `references/page-logic-patterns.md` 的 13 类页面逻辑显式选择页面结构；禁止未经语义判断直接落“标题 + 多条横向 bullet”版式，`bullets` 只允许作为语义判断后的显式结论并附理由。单页信息 ≥4 条时必须先归为 2–4 个视觉信息组再选结构。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
+
+<!-- TASK-001: 新增整节——页面语义分析层（强制门禁） -->
+## 页面语义分析层（强制）
+
+触发时机：`build_ir.py` 运行之前必须完成；任何修订、重排、换 role 操作也必须重读本层结论。该层是 Agent 的强制推理步骤，不是可选建议。
+
+### 五步判断（每页必填）
+
+对 deck.md 中每一个 `###` 页面，依次写出：
+
+1. **主结论**：本页要让观众记住的唯一一句话。写不出主结论的页必须回炉拆页或并页。
+2. **信息层级**：本页信息分为哪几层（结论层 / 支撑层 / 细节层），各层分别有哪些条目。
+3. **逻辑关系**：条目之间属于 `references/page-logic-patterns.md` 13 类中的哪一类（并列、对比、因果、流程、时间轴、递进、中心辐射、闭环、矩阵、层级、数据、产品展示、图文叙事）。一页一个主导逻辑；出现第二个主导逻辑时拆页。
+4. **视觉结构**：该逻辑类型在 patterns 文档中对应的结构（编号链、分层条、中心辐射、双栏对照、图锚信息栏等），并映射到组件库 role。
+5. **视觉焦点**：页面上唯一的视觉锚点（主结论数字 / 主图 / 中心节点 / 第一流程节点），焦点必须占据最大字号、最大面积或最高对比之一，其余元素只做视线引导。
+
+### 信息分组规则（≥4 条强制）
+
+- 单页信息条目 ≥4 条时，先按「对象（谁）→ 阶段（何时）→ 属性（哪类）→ 价值（为何）」的优先维度归为 **2–4 个视觉信息组**，每组 2–4 条，每组提炼一个名词短语作为组标题。
+- 每个信息组对应页面上一个独立视觉区块（卡片 / 栏 / 层 / 节点），组内再排条目；组与组之间的关系决定主导逻辑（平等→并列，先后→流程/递进，主次→层级/中心辐射）。
+- 归组后超过 4 组、或单组超过 4 条、或组标题无法提炼时，必须拆页，禁止压缩字号硬塞。
+
+### 落地方式
+
+- 五步判断与分组结论逐页落盘到 `state/page_semantics.md`（表格：页码 / 主结论 / 逻辑类型 / 视觉结构 / 视觉焦点 / 信息组划分 / 选定 role / 选role理由），作为可审计中间产物。
+- 每页结构以显式 `<!-- role: xxx -->` 指令写回 deck.md，再运行 `build_ir.py`；禁止依赖 `build_ir.py` 的关键词猜测与默认兜底。
+- 13 类逻辑与组件库 role 的完整映射、结构示意与避坑清单见 `references/page-logic-patterns.md`；patterns 文档未覆盖的结构需求必须先在 patterns 文档中补登记，禁止临场发明版式。
+
+### 门禁
+
+- 任何内容页在 IR 中的 `decision` 为 `default content role`（即未经语义判断落入默认 `bullets`）时，阶段 5 QA 直接判门禁失败，必须回到本层补语义判断并显式指定 role 后重跑。
+- `bullets` 仅在五步判断结论确为「并列」且分组后无更贴切结构时允许使用，并必须在 `state/page_semantics.md` 写明理由。
 
 ## 阶段 1：上下文管理
 
@@ -40,7 +74,11 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 入口条件：完成阶段 1。
 
-动作：按顺序调用：
+<!-- TASK-001: 工具链前置语义分析步骤 -->
+动作：
+
+0. **页面语义分析（强制前置）**：先执行「页面语义分析层」——对每个 `###` 页完成五步判断与 ≥4 条信息分组，结论写入 `state/page_semantics.md`，并将每页显式 `<!-- role: xxx -->` 写回 deck.md；未完成本步不得调用 `build_ir.py`。
+1. 按顺序调用：
 
 ```bash
 python3 scripts/validate_input.py --deck deck.md --manifest images/manifest.json --output state/input_report.json
@@ -58,7 +96,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 
 出口产物：输入报告、IR、HTML、内联 HTML、QA 报告。
 
-校验点：每个 JSON 输出可解析；`art_dna.json` 含非空 `art_expression`、来源图片 ID、四类页面背景及 `non_template_signature`；HTML 中每页必须有项目背景层，四类背景不得全部同构；`dist/deck.single.html` 不含外链或输入绝对路径。
+校验点：每个 JSON 输出可解析；`art_dna.json` 含非空 `art_expression`、来源图片 ID、四类页面背景及 `non_template_signature`；HTML 中每页必须有项目背景层，四类背景不得全部同构；`dist/deck.single.html` 不含外链或输入绝对路径。<!-- TASK-001 --> 附加校验：`state/page_semantics.md` 存在且每个内容页都有主结论、逻辑类型、视觉结构、视觉焦点与选定 role；deck.md 中每个内容页均带显式 `<!-- role: -->` 指令。
 
 失败回退：退出码 1 按报告修复后重跑；退出码 2 记录 `state/run_state.json.errors` 并使用上个 checkpoint 继续。
 
@@ -73,7 +111,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
    python3 scripts/render_deck.py --ir outline.json --theme minimal-white --preview-only --output dist/preview-minimal-white.html
    ```
 2. 主题优先采用 `state/style_report.json` 的 `recommended_theme` 并叠加 `dist/auto-theme.css`；无风格报告时客户汇报默认 `business-dark`，用户明确要求极简或打印优先时选 `minimal-white`。
-3. 按 `outline.json.slides[]` 逐页渲染。每页 role 必须来自组件库：cover、toc、section、bullets、two-column、image-hero、image-side、gallery、table、kpi、quote、compare、timeline、closing。
+3. 按 `outline.json.slides[]` 逐页渲染。每页 role 必须来自组件库：cover、toc、section、bullets、two-column、image-hero、image-side、gallery、table、kpi、quote、compare、timeline、closing。<!-- TASK-001 --> 内容页 role 必须与 `state/page_semantics.md` 中该页的逻辑类型映射一致（映射表见 `references/page-logic-patterns.md`），禁止在渲染阶段临时更换为默认 `bullets`；信息组必须渲染为独立视觉区块，组标题可见。
 4. 图片自动分配遵循 `COMPONENTS.md` 与 `PROJECT_IMAGES.md` 决策矩阵；显式 `<!-- image: id -->` 优先。无明确 `group_id` 关系的多图默认拆为单图页。
 5. 图片零遗漏由两级机制保证：build_ir 自动拆页（gallery 超 6 张拆多页；hero/side/compare 超 1 张的溢出图移入自动图集页；无法匹配到内容页的清单图自动汇入兜底图集页），并保证所有证据图页位于行动页和结束页之前；`audit_images.py` 与 QA `--manifest` 做最终覆盖核验，漏图直接判失败。
 6. 第 2 页必须为 `toc`；倒数第 2 页必须承载行动/决策内容；最后页必须为 `closing`，且至多一个短句、无 takeaway、无列表/表格/KPI/多图。内容型 closing 自动降级为普通内容页并另起结束页。
@@ -106,11 +144,13 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 入口条件：IR 已生成。
 
 动作：
-1. 渲染前预测：检查标题长度、正文条数、每条字数、表格列数、图片数量与组件容量；高风险页先拆页或换 role。
+1. 渲染前预测：检查标题长度、正文条数、每条字数、表格列数、图片数量与组件容量；高风险页先拆页或换 role。<!-- TASK-001 --> 同时核对每页已完成语义五步判断，缺判断的页禁止进入渲染。
 2. 渲染后 QA：优先使用 Playwright 逐页截图；不可用时降级为 HTML/IR 结构检查。
 3. 每页按 `QA_RUBRIC.md` 100 分制评分，写入 `state/qa_history.jsonl`。
 4. 分数 < 90 必须进入修复循环，最多 3 轮；仍不达标时输出缺陷清单，不阻塞最终半成品交付。
-5. 美学首因检查必须覆盖：第一屏视觉焦点、主题 signature、图片 caption/screenshot framing、密文页不空洞、动画不干扰阅读。
+5. 美学首因检查必须覆盖：第一屏视觉焦点、主题 signature、图片 caption/screenshot framing、密文页不空洞、动画不干扰阅读。<!-- TASK-001 --> 并新增语义一致性检查：每页视觉焦点与 `state/page_semantics.md` 登记的焦点一致；页面结构与所声明逻辑类型的结构示意一致；≥4 条信息的页可见 2–4 个分组区块。
+<!-- TASK-001: 语义层门禁 -->
+6. 语义门禁：任一内容页 IR `decision` 为 `default content role`，或内容页使用 `bullets` 但 `state/page_semantics.md` 未写明并列逻辑理由，判 QA 失败并回到「页面语义分析层」，不属于可恢复缺陷。
 
 出口产物：`state/qa_history.jsonl`、`state/qa_report.md`。
 
@@ -127,6 +167,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 - 图片不拉伸；每个 `img` 必须有 `object-fit` 与 `alt`。
 - 项目图片容器必须 `overflow:hidden` 且与文字无重叠；默认 `object-fit:contain`。只有确认裁切不损害主体时才允许显式 `cover`，QA 必须记录理由。
 - 每页标题建议 <= 42 字；正文列表建议 <= 8 条；每条 <= 58 字。超限先拆页。
+<!-- TASK-001 -->- 禁止默认“标题 + 多条横向 bullet”版式：内容页结构必须由「页面语义分析层」的 13 类逻辑显式导出；单页 ≥4 条信息必须先归为 2–4 个视觉信息组。
 - 主题只能使用 `assets/themes/*.css` token。
 - HTML 不得泄露输入绝对路径。
 - 修订已有 deck 时，只改指定页；运行 diff 校验，未指定页应字节级不变。
