@@ -136,7 +136,14 @@ def slide_html(slide, section_titles=None, art_dna=None):
     art_layer = ""
     if art_dna:
         key = "cover_background" if role == "cover" else "closing_background" if role == "closing" else "section_background" if role == "section" else "content_background"
-        art_layer = f'<img class="project-art-bg project-art-{esc(role)}" src="{esc(art_dna.get(key))}" alt="" aria-hidden="true">'
+        # TASK-013 fix: art 背景套 overflow:hidden 裁切框——artDrift 动画 scale/translate 会越出页边界，
+        # 直接子级时越界部分计入 .slide scrollable overflow（全页 scrollHeight/scrollWidth 统一 +5/+6）；
+        # 中间裁切层截断溢出传播，动画视觉效果不变
+        art_layer = (
+            f'<div class="project-art-frame">'
+            f'<img class="project-art-bg project-art-{esc(role)}" src="{esc(art_dna.get(key))}" alt="" aria-hidden="true">'
+            f'</div>'
+        )
     if role == "cover":
         bg = slide.get("bg_image")
         bg_html = ""
