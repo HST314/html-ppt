@@ -251,7 +251,8 @@ def main():
     args = parse_args()
     text = Path(args.html).read_text(encoding="utf-8")
     ir = read_json(args.ir)
-    art_dna = read_json(args.art_dna) if args.art_dna else None
+    # TASK-005: art_dna 文件缺失时按降级标注而非报错崩溃
+    art_dna = read_json(args.art_dna) if args.art_dna and Path(args.art_dna).exists() else None
     # TASK-003: 语义门禁读取 state/page_semantics.md（默认与 --history 同目录）
     sem_path = args.semantics or (Path(args.history).parent / "page_semantics.md")
     semantics = parse_page_semantics(sem_path)
@@ -274,7 +275,14 @@ def main():
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
     failed = [r for r in rows if r["score"] < 90]
     avg = sum(r["score"] for r in rows) / max(1, len(rows))
-    report = ["# QA Report", "", f"- mode: {rows[0]['mode'] if rows else 'none'}", f"- pages: {len(rows)}", f"- average_score: {avg:.1f}", f"- failed_pages: {len(failed)}", "", "## Page Scores"]
+    # TASK-005: art DNA 来源标注，区分 像素提取 / md 解读 / 降级
+    if art_dna is None:
+        art_dna_label = "fallback（无项目视觉 DNA，基础主题装饰降级）"
+    elif art_dna.get("source_mode") == "md":
+        art_dna_label = "md（图片 md 解读路径，生成式融合背景）"
+    else:
+        art_dna_label = "image（图片像素提取路径）"
+    report = ["# QA Report", "", f"- mode: {rows[0]['mode'] if rows else 'none'}", f"- art_dna: {art_dna_label}", f"- pages: {len(rows)}", f"- average_score: {avg:.1f}", f"- failed_pages: {len(failed)}", "", "## Page Scores"]
     for row in rows:
         issues = "；".join(row["issues"]) if row["issues"] else "无"
         report.append(f"- P{row['page']}: {row['score']} 分，问题：{issues}")

@@ -23,3 +23,15 @@
 - 四类角色背景缺任一个，或 HTML 任一页没有项目视觉层：失败。
 - HTML 未内联两个背景或仍包含本地绝对路径：失败。
 - 不同项目得到相同 `non_template_signature`：失败。
+
+<!-- TASK-005: 新增 md 解读输入路径；以上像素提取规则逐字保留，未改动 -->
+## 无像素输入：图片 md 解读路径
+
+适用场景：项目没有可读图片（无法像素提取），但存在图片的 md 解读文档（如设计方向 candidate 的图文解读）。此时不得直接落入 `art_dna=fallback` 的裸模板降级，必须以 md 解读作为 art DNA 的视觉事实来源。
+
+- 输入：项目图片 md 解读文档（一份或多份）。Agent 通读后按本规范同一组维度提取视觉事实：特色主题颜色、线条方向、形状语言、构图重心、质感与留白、版式节奏、光影纹样、空间层次。禁止仅依据项目行业名称猜测；每个维度必须能指回 md 解读中的原文描述。
+- 清单落盘：Agent 将提取结果写成机器可读清单 `state/art_dna_md.json`，字段：`source_md_ids`（解读文档标识列表）、`dna`（`palette` 至少 3 个 hex 色、`line_language`（纵向生长/横向延展/均衡网格）、`light_focus`/`dark_focus`（九宫格 [x,y]，0–2）、`saturation`、`contrast`）、`art_expression`（覆盖全部 8 维度的文字描述）。
+- 代码消费：运行 `scripts/art_dna_from_md.py --md-report state/art_dna_md.json --output state/art_dna.json --assets-dir dist/art`。清单缺任一维度时退出码非零并输出字段级修复清单；通过时生成与图片路径同风格的 cover/content/section/closing 四类同源 SVG 背景（同一套生成器），`art_dna.json` 附加 `source_mode="md"`。
+- 生成纪律与图片路径一致：全部页面共享同一艺术 DNA（封面展开、章节强化、内容页低权重铺陈、尾页镜像或变奏收束）；保留标题侧安全留白；不得固定使用行业图形；QA 报告标注 `art_dna=md`。
+- 只有既无可读图片、又无图片 md 解读时，才允许使用基础主题装饰降级，并在 QA 报告标注 `art_dna=fallback`。
+- md 路径阻断检查：`source_md_ids` 为空失败；`art_expression` 缺任一维度失败；其余阻断检查与图片路径相同（`source_image_ids` 一项由 `source_md_ids` 替代）。
