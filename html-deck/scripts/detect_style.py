@@ -104,6 +104,19 @@ def aggregate(per_image, images):
         if score > cover_score:
             cover_score = score
             cover_candidate = img_id
+    # TASK-009: 无可分析场景图时落入默认视觉方向（浅色高亮/深蓝骨架/青蓝辅助），
+    # 不再默认 business-dark 深色霓虹 token；有图 deck 的推导行为不变。
+    if not votes:
+        return {
+            "style": "business",
+            "recommended_theme": "proposal-light",
+            "hue": 0.58,
+            "accent": "#123a6b",
+            "accent_2": "#1fa8d8",
+            "dark_base": False,
+            "cover_image_id": None,
+            "votes": votes,
+        }
     style = max(votes, key=votes.get) if votes else "business"
     # 聚合色相：取主风格图片的 vivid 色相
     hues = [per_image[i]["hue"] for i in per_image if per_image[i]["style"] == style and per_image[i]["hue"] is not None]

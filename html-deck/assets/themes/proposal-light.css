@@ -1,0 +1,51 @@
+/* TASK-009: 默认视觉方向主题——浅色、高亮度、深蓝信息骨架、青蓝辅助、留白充分、轻科技、商业提案感
+   设计 token 基准见 SKILL.md「默认视觉方向设计 token」一节。 */
+:root {
+  --page-bg: #e9eef5;      /* 高亮页面底（明度基准 ≥92%） */
+  --bg: #f7fafd;           /* 浅色高亮主背景 */
+  --surface: #ffffff;      /* 留白充分的卡片面 */
+  --surface-2: #eef4fa;
+  --text: #14263f;         /* 深蓝正文 */
+  --muted: #55677f;        /* 灰蓝辅助文字 */
+  --inverse: #ffffff;
+  --accent: #123a6b;       /* 深蓝信息骨架：标题、组标题、结构线、大数字 */
+  --accent-2: #1fa8d8;     /* 青蓝辅助：连接线、编号、焦点描边、次级强调 */
+  --line: #d4e0ec;
+  --shadow: 0 18px 55px rgba(18, 58, 107, .12);
+  --radius: 10px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 96px;   /* 留白基准（页边距 ≥86px） */
+  --cover-size: 100px;
+  --title-size: 66px;
+  --body-size: 30px;
+  /* 轻科技纹理：低饱和青蓝细渐变，不抢内容 */
+  --texture:
+    linear-gradient(90deg, rgba(31, 168, 216, .06), transparent 34%),
+    radial-gradient(circle at 88% 90%, rgba(18, 58, 107, .06), transparent 30%);
+  --hairline-opacity: .9;
+}
+
+/* 深蓝信息骨架：标题左侧骨架柱 */
+.slide h2 {
+  padding-left: 24px;
+  border-left: 6px solid var(--accent);
+}
+
+.panel, .content-list li, .takeaway {
+  background: #fff;
+}
+
+/* 列表条目左侧骨架线用青蓝辅助色，与深蓝骨架分层 */
+.content-list li {
+  border-left: 1px solid var(--line);
+}
+.content-list li::before {
+  background: var(--accent-2);
+}
+
+/* 章节页：浅蓝渐变骨架（art DNA 章节页由其深色生成式背景覆盖） */
+.role-section {
+  background: linear-gradient(90deg, rgba(18, 58, 107, .08), transparent 62%);
+}

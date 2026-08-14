@@ -9,6 +9,9 @@ from deco import cover_deco, closing_deco, quiet_deco
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# TASK-009: 浅色视觉方向主题集合（art DNA 深色 token 在这些主题下只作用于封面/章节/尾页）
+LIGHT_THEMES = {"proposal-light", "business-light", "minimal-white", "warm-human", "editorial"}
+
 
 def parse_args():
     p = argparse.ArgumentParser(description="Render SlidesPlan IR to offline HTML deck.")
@@ -120,7 +123,13 @@ def slide_html(slide, section_titles=None, art_dna=None):
     images = slide.get("images", [])
     notes = notes_html(slide)
     takeaway = "" if role in {"cover", "section", "closing"} else takeaway_html(slide)
+    # TASK-009: 视觉蓝图落版——layout 变体类与追溯数据属性（样式由 assets/components/layouts.css 承载）
+    layout_variant = (slide.get("layout_variant") or "").strip()
+    layout_pattern = (slide.get("layout_pattern") or "").strip()
+    layout_cls = f" layout-{esc(layout_variant)}" if layout_variant else ""
     common = f'data-role="{esc(role)}" data-page="{slide.get("page")}"'
+    if layout_pattern:
+        common += f' data-pattern="{esc(layout_pattern)}" data-variant="{esc(layout_variant)}"'
     if role not in ROLES:
         role = "bullets"
     quiet = "" if art_dna or role in {"cover", "closing", "image-hero"} else quiet_deco(section=(role == "section"))
@@ -165,7 +174,14 @@ def slide_html(slide, section_titles=None, art_dna=None):
         inner = f'{art_layer}<h2>{title}</h2>{blocks}<div class="{grid_cls}">{frames}</div>{takeaway}'
     elif role == "two-column":
         groups = slide.get("groups") or []
-        if groups:
+        if groups and layout_variant.startswith(("grid-", "chain-")):
+            # TASK-009: 矩阵/链式变体——全部组卡片进入单一通栏容器，格阵/链式构图由 layouts.css 承载
+            cards = "\n".join(group_card_html(g, i) for i, g in enumerate(groups))
+            inner = (
+                f'{art_layer}<h2>{title}</h2>{non_list_blocks_html(slide)}'
+                f'<div class="group-grid layout-canvas">{cards}</div>{takeaway}'
+            )
+        elif groups:
             # TASK-003: 每组渲染为独立卡片，偶数组入左栏、奇数组入右栏，右侧 visual panel 不空置
             cards = [group_card_html(g, i) for i, g in enumerate(groups)]
             left_cards = "\n".join(cards[::2])
@@ -176,6 +192,25 @@ def slide_html(slide, section_titles=None, art_dna=None):
                 f'{art_layer}<div class="copy"><h2>{title}</h2>{non_list_blocks_html(slide)}'
                 f'<div class="group-stack">{left_cards}</div></div>'
                 f'<div class="visual panel" style="padding:34px"><div class="group-stack">{right_cards}</div></div>{takeaway}'
+            )
+        elif layout_variant.startswith("loop-"):
+            # TASK-009: 闭环变体——列表条目渲染为环形节点 + 闭合 SVG 回授箭头 + 中心主张（蓝图焦点）
+            loop_items = [x for b in slide.get("blocks", []) if b.get("type") == "list" for x in b.get("items", [])]
+            nodes = "".join(f'<div class="panel loop-node loop-node-{i+1}" data-animate="fade-up" style="--i:{i}"><p>{esc(x)}</p></div>' for i, x in enumerate(loop_items[:4]))
+            claim = esc((slide.get("blueprint") or {}).get("focus") or title)
+            pno = slide.get("page")
+            ring = (
+                f'<svg class="loop-ring" viewBox="0 0 1200 660" fill="none" aria-hidden="true">'
+                f'<defs><marker id="loopArrow{pno}" markerWidth="13" markerHeight="13" refX="9" refY="6.5" orient="auto">'
+                f'<path d="M0 0 L13 6.5 L0 13 z" class="loop-arrow"/></marker></defs>'
+                f'<path class="loop-arc" d="M 220 250 A 400 240 0 0 1 980 250" marker-end="url(#loopArrow{pno})"/>'
+                f'<path class="loop-arc" d="M 985 265 A 400 240 0 0 1 610 535" marker-end="url(#loopArrow{pno})"/>'
+                f'<path class="loop-arc" d="M 590 540 A 400 240 0 0 1 212 262" marker-end="url(#loopArrow{pno})"/>'
+                f'</svg>'
+            )
+            inner = (
+                f'{art_layer}<h2>{title}</h2>{non_list_blocks_html(slide)}'
+                f'<div class="loop-stage">{ring}{nodes}<div class="panel loop-claim">{claim}</div></div>{takeaway}'
             )
         else:
             parts = slide.get("blocks", [])
@@ -225,7 +260,7 @@ def slide_html(slide, section_titles=None, art_dna=None):
             inner = f'{art_layer}<h2>{title}</h2>{blocks}{takeaway}'
     if art_layer and art_layer not in inner:
         inner = art_layer + inner
-    return f'<section class="slide role-{role}" {common}>{quiet}{inner}{notes}</section>'
+    return f'<section class="slide role-{role}{layout_cls}" {common}>{quiet}{inner}{notes}</section>'
 
 
 def main():
@@ -238,12 +273,22 @@ def main():
         save_state(args.state, state, "render:start")
     ir = read_json(args.ir)
     slides = ir.get("slides", [])[:1] if args.preview_only else ir.get("slides", [])
+    deco_css = asset_text("assets", "components", "deco.css")
+    if args.theme in LIGHT_THEMES:
+        # TASK-009 fix: 浅色主题下把 deco.css「art 背景页面板深色化」收窄到
+        # 封面/章节/尾页（深色生成背景页）。原全局规则会把内容页 layout 变体的
+        # 深蓝 accent 组件（hub 核心卡、loop 主张胶囊等）压成浅色底白字。
+        deco_css = deco_css.replace(
+            ".slide:has(.project-art-bg) .panel, .slide:has(.project-art-bg) .content-list li, .slide:has(.project-art-bg) .takeaway",
+            ".slide:is(.role-cover,.role-section,.role-closing):has(.project-art-bg) .panel, .slide:is(.role-cover,.role-section,.role-closing):has(.project-art-bg) .content-list li, .slide:is(.role-cover,.role-section,.role-closing):has(.project-art-bg) .takeaway",
+        )
     css = "\n".join([
         asset_text("assets", "themes", args.theme + ".css"),
         asset_text("assets", "components", "typography.css"),
         asset_text("assets", "components", "base.css"),
         asset_text("assets", "animations", "animations.css"),
-        asset_text("assets", "components", "deco.css"),
+        deco_css,
+        asset_text("assets", "components", "layouts.css"),  # TASK-009: 视觉蓝图 layout-* 变体样式
     ])
     if args.theme_css and Path(args.theme_css).exists():
         css += "\n" + Path(args.theme_css).read_text(encoding="utf-8")
@@ -253,7 +298,13 @@ def main():
     if art_dna:
         palette = art_dna.get("dna", {}).get("palette", [])
         if len(palette) >= 3:
-            css += f'''\n:root{{--bg:#06101d;--page-bg:#02070d;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n'''
+            # TASK-009: 浅色视觉方向（proposal-light 等）下，art DNA 深色 token 只作用于
+            # 封面/章节/尾页（生成式深色背景页）；内容页落在主题浅色 token 上，
+            # 内容背景图按「内容页弱化」降为淡色纹理。深色主题保持原全局覆盖行为不变。
+            if args.theme in LIGHT_THEMES:
+                css += f'''\n/* TASK-009: art DNA 深色 token 仅作用于生成式深色背景页 */\n.role-cover,.role-section,.role-closing{{--bg:#06101d;--page-bg:#02070d;--text:#f5f7fb;--muted:#aab4c8;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n.slide:not(.role-cover):not(.role-section):not(.role-closing) .project-art-bg{{opacity:.12;}}\n.slide:not(.role-cover):not(.role-section):not(.role-closing):has(.project-art-bg)::after{{background:var(--line);}}\n'''
+            else:
+                css += f'''\n:root{{--bg:#06101d;--page-bg:#02070d;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n'''
     body = "\n".join(slide_html(s, section_titles, art_dna) for s in slides)
     doc = f'''<!doctype html>
 <html lang="zh-CN">

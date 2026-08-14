@@ -1,0 +1,379 @@
+/* ==========================================================================
+   TASK-009: 视觉布局决策引擎——layout-* 变体样式层
+   每个变体对应 references/layout-patterns.md 中 pattern 的可辨识空间构图；
+   由 render_deck.py 按 IR 的 layout_variant 输出 layout-<variant> 类。
+   纯 CSS 实现，print 兼容，无 JS 依赖。
+   ========================================================================== */
+
+/* ── 通栏格阵/链式容器（render 单容器分支）────────────────────────────── */
+/* TASK-009 fix: role-two-column 父级是 12 列 grid，单容器分支（grid-系、chain-系、
+   loop-系、ascend-系）的 h2/容器/takeaway 必须 span 全宽，否则卡片会被压扁在左列出现竖排文字。
+   直接用具体类名而非属性选择器，确保所有浏览器一致匹配。
+   注意：本注释内严禁出现星号紧跟斜杠的序列，否则会提前闭合注释并作废下方规则。 */
+.slide.role-two-column.layout-grid-2x2 > h2,
+.slide.role-two-column.layout-grid-2x2 > .takeaway,
+.slide.role-two-column.layout-grid-2x2 > p,
+.slide.role-two-column.layout-grid-2x2 > .group-grid,
+.slide.role-two-column.layout-grid-2x3 > h2,
+.slide.role-two-column.layout-grid-2x3 > .takeaway,
+.slide.role-two-column.layout-grid-2x3 > p,
+.slide.role-two-column.layout-grid-2x3 > .group-grid,
+.slide.role-two-column.layout-chain-3 > h2,
+.slide.role-two-column.layout-chain-3 > .takeaway,
+.slide.role-two-column.layout-chain-3 > p,
+.slide.role-two-column.layout-chain-3 > .group-grid,
+.slide.role-two-column.layout-chain-4 > h2,
+.slide.role-two-column.layout-chain-4 > .takeaway,
+.slide.role-two-column.layout-chain-4 > p,
+.slide.role-two-column.layout-chain-4 > .group-grid,
+.slide.role-two-column.layout-loop-3 > h2,
+.slide.role-two-column.layout-loop-3 > .takeaway,
+.slide.role-two-column.layout-loop-3 > p,
+.slide.role-two-column.layout-loop-3 > .loop-stage,
+.slide.role-two-column.layout-loop-4 > h2,
+.slide.role-two-column.layout-loop-4 > .takeaway,
+.slide.role-two-column.layout-loop-4 > p,
+.slide.role-two-column.layout-loop-4 > .loop-stage,
+.slide.role-two-column.layout-ascend-4 > h2,
+.slide.role-two-column.layout-ascend-4 > .takeaway,
+.slide.role-two-column.layout-ascend-4 > p,
+.slide.role-two-column.layout-ascend-4 > .group-stack,
+.slide.role-two-column.layout-ascend-4 > .group-grid {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-grid-2x2,
+.slide.role-two-column.layout-grid-2x3,
+.slide.role-two-column.layout-chain-3,
+.slide.role-two-column.layout-chain-4,
+.slide.role-two-column.layout-loop-3,
+.slide.role-two-column.layout-loop-4,
+.slide.role-two-column.layout-ascend-4 {
+  align-items: start;
+  align-content: center;
+}
+.group-grid.layout-canvas {
+  margin-top: 46px;
+  align-content: center;
+  width: 100%;
+}
+
+/* ── ⑦ 矩阵：grid-2x2 ───────────────────────────────────────────────── */
+.layout-grid-2x2 .group-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x2 .group-card {
+  position: relative;
+  min-height: 330px;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x2 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+
+/* ── ⑦ 矩阵：grid-2x3（两组卡片通栏堆叠，组内条目 3 列成阵）──────────── */
+.layout-grid-2x3 .group-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x3 .group-card {
+  position: relative;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x3 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+.layout-grid-2x3 .group-card .group-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.layout-grid-2x3 .group-card .group-list li {
+  min-height: 0;
+}
+
+/* ── ⑨ 非对称图文：asym-cards（5:7 非对称，首卡为焦点块）────────────── */
+.layout-asym-cards > .copy { grid-column: span 5; }
+.layout-asym-cards > .visual { grid-column: 6 / span 7; }
+.layout-asym-cards > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-asym-cards > .copy .group-card:first-child .group-title {
+  font-size: 31px;
+}
+
+/* ── ⑨ 非对称图文：anchor-right（右栏焦点锚定，镜像 7:5）────────────── */
+.layout-anchor-right > .copy { grid-column: span 5; }
+.layout-anchor-right > .visual { grid-column: 6 / span 7; }
+.layout-anchor-right > .visual.panel {
+  border: 2px solid var(--accent-2);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ⑨ 非对称图文：cause-effect（左因右果，果区青蓝强调 + 方向箭头）─── */
+.layout-cause-effect > .visual.panel {
+  position: relative;
+  border: 2px solid var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 8%, var(--surface));
+}
+.layout-cause-effect > .visual.panel::before {
+  content: "→";
+  position: absolute;
+  left: -64px;
+  top: 46%;
+  color: var(--accent-2);
+  font: 900 58px/1 var(--font-sans);
+}
+.layout-cause-effect > .visual.panel .group-title {
+  color: var(--accent);
+  font-size: 31px;
+}
+
+/* ── ① 中心节点+分支：hub-left（左栏深蓝大中心核，右栏分支）────────── */
+.layout-hub-left > .copy .group-card:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 24px 60px rgba(18, 58, 107, .28);
+}
+.layout-hub-left > .copy .group-card:first-child .group-title {
+  color: #fff;
+  font-size: 32px;
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li {
+  color: #eaf2fb;
+  background: rgba(255, 255, 255, .10);
+  border-left-color: rgba(255, 255, 255, .32);
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li::before {
+  background: var(--accent-2);
+}
+
+/* ── ① 中心节点+分支：hub-radiate（中心核光晕 + 分支辐射线）────────── */
+.layout-hub-radiate > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow), 0 0 0 12px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-hub-radiate > .copy .group-card:first-child .group-title {
+  font-size: 32px;
+}
+.layout-hub-radiate > .visual.panel {
+  position: relative;
+  border-left: 4px solid var(--accent-2);
+}
+.layout-hub-radiate > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 20%;
+  bottom: 20%;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent-2) 35%, transparent));
+}
+
+/* ── ① 中心节点+分支：hub-return（回授中心，闭环逻辑的替代承载）────── */
+.layout-hub-return > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 10px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-hub-return > .visual.panel {
+  position: relative;
+}
+.layout-hub-return > .visual.panel::after {
+  content: "↺";
+  position: absolute;
+  right: 18px;
+  top: 10px;
+  color: var(--accent-2);
+  font: 900 54px/1 var(--font-sans);
+  opacity: .8;
+}
+
+/* ── ⑤ 对比构图：vs-split（中央分界 + VS 徽标）────────────────────── */
+.layout-vs-split > .visual.panel {
+  position: relative;
+}
+.layout-vs-split > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 6%;
+  bottom: 6%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+.layout-vs-split > .visual.panel::after {
+  content: "VS";
+  position: absolute;
+  left: -47px;
+  top: 44%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font: 900 19px/1 var(--font-mono);
+  box-shadow: 0 10px 26px rgba(18, 58, 107, .3);
+}
+
+/* ── ② 三模块闭环：loop-3/loop-4（环形 SVG 回授箭头 + 节点 + 中心主张）─ */
+.loop-stage {
+  position: relative;
+  height: 660px;
+  margin-top: 14px;
+}
+.loop-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent-2);
+}
+.loop-arc {
+  stroke: currentColor;
+  stroke-width: 4;
+  fill: none;
+  opacity: .85;
+}
+.loop-arrow {
+  fill: var(--accent-2);
+}
+.loop-node {
+  position: absolute;
+  z-index: 2;
+  width: 450px;
+  padding: 20px 26px;
+  border-top: 4px solid var(--accent);
+}
+.loop-node p {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.42;
+}
+.loop-node-1 { left: 3%; top: 3%; }
+.loop-node-2 { right: 3%; top: 3%; }
+.loop-node-3 { left: 50%; bottom: 1%; transform: translateX(-50%); }
+.loop-node-4 { right: 5%; bottom: 16%; }
+.loop-claim {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  max-width: 560px;
+  padding: 26px 44px;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.3;
+  box-shadow: 0 22px 55px rgba(18, 58, 107, .3);
+}
+
+/* ── ③ 路径式流程：ascend-4（阶梯上行，最高级为焦点）───────────────── */
+.layout-ascend-4 .timeline-row {
+  margin-top: 30px;
+  padding-bottom: 116px;
+}
+.layout-ascend-4 .timeline-item:nth-child(1) { margin-top: 108px; }
+.layout-ascend-4 .timeline-item:nth-child(2) { margin-top: 72px; }
+.layout-ascend-4 .timeline-item:nth-child(3) { margin-top: 36px; }
+.layout-ascend-4 .timeline-item:nth-child(4) {
+  margin-top: 0;
+  border-top-color: var(--accent-2);
+  border-top-width: 10px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ③ 路径式流程：chain-3（横向链式三节点 + 连接线 + 编号徽标）────── */
+.layout-chain-3 .group-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  position: relative;
+  margin-top: 84px;
+  counter-reset: chain;
+}
+.layout-chain-3 .group-grid::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: -36px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.layout-chain-3 .group-grid::after {
+  content: "";
+  position: absolute;
+  right: calc(5% - 16px);
+  top: -44px;
+  border: 10px solid transparent;
+  border-left: 16px solid var(--accent-2);
+}
+.layout-chain-3 .group-card {
+  position: relative;
+  min-height: 300px;
+  counter-increment: chain;
+}
+.layout-chain-3 .group-card::before {
+  content: "0" counter(chain);
+  position: absolute;
+  top: -52px;
+  left: 22px;
+  padding: 4px 14px;
+  background: #fff;
+  border: 2px solid var(--accent-2);
+  border-radius: 999px;
+  color: var(--accent);
+  font: 900 20px/1.2 var(--font-mono);
+}
+
+/* ── ⑫ 层级空间结构：layers（分层条 L1…Ln，自上而下递缩）───────────── */
+[class*="layout-layers"] .group-stack {
+  counter-reset: layer;
+}
+[class*="layout-layers"] .group-card {
+  position: relative;
+  counter-increment: layer;
+  border-left: 6px solid var(--accent);
+}
+[class*="layout-layers"] .group-card::before {
+  content: "L" counter(layer);
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(2) { margin-left: 34px; }
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(3) { margin-left: 68px; }
+
+/* ── 打印兼容：变体的绝对定位元素在打印下保持静态流 ─────────────────── */
+@media print {
+  .loop-stage { height: auto; }
+  .loop-node, .loop-claim { position: static; transform: none; margin: 12px 0; width: auto; }
+  .loop-ring { display: none; }
+  .layout-ascend-4 .timeline-item { margin-top: 0 !important; }
+}

@@ -3,7 +3,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from common import ROLES, load_state, save_state, write_json, read_json, parse_page_semantics, match_groups_to_items
+from common import ROLES, load_state, save_state, write_json, read_json, parse_page_semantics, match_groups_to_items, parse_visual_blueprints
 
 
 def parse_args():
@@ -15,6 +15,7 @@ def parse_args():
     p.add_argument("--output", required=True)
     p.add_argument("--state", required=True)
     p.add_argument("--semantics", required=False, help="TASK-003: 页面语义登记 state/page_semantics.md；缺省取 --state 同目录下的 page_semantics.md")
+    p.add_argument("--blueprints", required=False, help="TASK-009: 视觉蓝图 state/visual_blueprints.md；缺省取 --state 同目录下的 visual_blueprints.md")
     return p.parse_args()
 
 
@@ -445,6 +446,9 @@ def main():
     # TASK-003: 读取页面语义登记（默认 state/page_semantics.md），供分组消费与语义追溯
     semantics_path = args.semantics or (Path(args.state).parent / "page_semantics.md")
     semantics = parse_page_semantics(semantics_path) or {}
+    # TASK-009: 读取视觉蓝图（默认 state/visual_blueprints.md），供布局决策消费与落版追溯
+    blueprints_path = args.blueprints or (Path(args.state).parent / "visual_blueprints.md")
+    blueprints = parse_visual_blueprints(blueprints_path) or {}
     cover_bg = None
     if style_report and style_report.get("cover_image_id"):
         cover_bg = next((i for i in manifest.get("images", []) if i.get("id") == style_report["cover_image_id"]), None)
@@ -476,6 +480,13 @@ def main():
                     slide["decision"] += f" | semantics groups: {len(matched)} 组"
                 else:
                     slide["decision"] += " | semantics groups unmatched; flattened"
+        # TASK-009: 消费视觉蓝图（布局 pattern + 变体 + 蓝图片段）写入 IR，渲染层按此落版
+        bp_row = blueprints.get(page_idx)
+        if bp_row:
+            slide["layout_pattern"] = bp_row.get("pattern") or None
+            slide["layout_variant"] = bp_row.get("variant") or None
+            slide["blueprint"] = {k: bp_row.get(k) for k in ("focus", "title_pos", "main_area", "aux_area", "whitespace", "svg_need", "image_need", "reason")}
+            slide["decision"] += f" | layout: {bp_row.get('pattern')}/{bp_row.get('variant')}"
         slides.append(slide)
     # 自动拆页：任何超出组件容量的图片拆成多页，渲染层不再截断图片
     slides = split_overflow_slides(slides)

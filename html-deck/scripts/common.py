@@ -12,7 +12,7 @@ ROLES = {
 }
 THEMES = {
     "business-dark", "business-light", "tech-dark", "editorial",
-    "warm-human", "minimal-white"
+    "warm-human", "minimal-white", "proposal-light"  # TASK-009: 默认视觉方向主题（浅色高亮/深蓝骨架/青蓝辅助）
 }
 
 
@@ -226,3 +226,121 @@ def match_groups_to_items(row_groups, slide_items):
     if not (2 <= len(out) <= 4):
         return None
     return out
+
+
+# ── TASK-009: 视觉蓝图（state/visual_blueprints.md）共享解析 ──────────────
+# visual_blueprints.md 由「视觉布局决策引擎」第②③步逐页落盘，表格列：
+# 页码 / 布局pattern / 变体 / 视觉焦点 / 标题位置 / 主体区域 / 辅助信息区域 / 留白比例 / SVG需求 / 图片需求 / 选型理由
+# 布局签名 = pattern + 变体；连续内容页签名相同即违反连页变体禁令（QA 判失败）。
+
+# 12 种登记 layout pattern（key → 中文名），与 references/layout-patterns.md 一致
+LAYOUT_PATTERNS = {
+    "center-hub": "中心节点+分支",
+    "tri-loop": "三模块闭环",
+    "path-flow": "路径式流程",
+    "timeline": "时间轴",
+    "compare": "对比构图",
+    "big-number": "数据大数字",
+    "matrix": "矩阵",
+    "text-image": "左文右图",
+    "asym-mix": "非对称图文",
+    "product-hero": "产品英雄图",
+    "hero-details": "主图+细节",
+    "hierarchy-space": "层级空间结构",
+}
+
+# 蓝图「布局pattern」单元格别名归一（中文名/序号/英文别名 → key）
+_PATTERN_ALIASES = {
+    "中心节点+分支": "center-hub", "中心节点与分支": "center-hub", "中心节点": "center-hub",
+    "三模块闭环": "tri-loop", "三环闭环": "tri-loop",
+    "路径式流程": "path-flow", "路径流程": "path-flow",
+    "时间轴": "timeline",
+    "对比构图": "compare",
+    "数据大数字": "big-number", "大数字": "big-number",
+    "矩阵": "matrix",
+    "左文右图": "text-image",
+    "非对称图文": "asym-mix",
+    "产品英雄图": "product-hero", "英雄图": "product-hero",
+    "一张主图+1-3个细节": "hero-details", "一张主图+1–3个细节": "hero-details",
+    "主图+细节": "hero-details", "主图加细节": "hero-details",
+}
+
+# 蓝图八字段（空缺即 QA 判失败）：内部键 → 表头关键字
+BLUEPRINT_FIELDS = {
+    "focus": "焦点",
+    "title_pos": "标题位置",
+    "main_area": "主体区域",
+    "aux_area": "辅助信息",
+    "whitespace": "留白比例",
+    "svg_need": "SVG",
+    "image_need": "图片需求",
+    "reason": "选型理由",
+}
+
+# 蓝图「图片需求」声明需要图片的取值（无图项目命中时按冲突裁决降级）
+_IMAGE_REQUIRED_TOKENS = ("是", "必需", "必须", "需要")
+
+
+def normalize_layout_pattern(cell):
+    """TASK-009: 归一布局 pattern 单元格 → 登记 key；未登记返回归一后的原文。"""
+    s = (cell or "").strip().strip("` ")
+    s = re.sub(r"^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫]\s*", "", s)
+    s = re.sub(r"^\d+\s*[.、)）]\s*", "", s)
+    if s in LAYOUT_PATTERNS:
+        return s
+    if s in _PATTERN_ALIASES:
+        return _PATTERN_ALIASES[s]
+    low = s.lower()
+    if low in LAYOUT_PATTERNS:
+        return low
+    for name, key in _PATTERN_ALIASES.items():
+        if name in s:
+            return key
+    return s
+
+
+def blueprint_image_required(row):
+    """TASK-009: 蓝图是否声明需要图片（冲突裁决：无图项目须降级）。"""
+    v = (row.get("image_need") or "").strip()
+    return any(t in v for t in _IMAGE_REQUIRED_TOKENS) and not v.startswith(("否", "不"))
+
+
+def parse_visual_blueprints(path):
+    """TASK-009: 解析 state/visual_blueprints.md → {页序号(int): row}；文件缺失返回 None。"""
+    p = Path(path)
+    if not p.exists():
+        return None
+    header = None
+    rows = {}
+    order = 0
+    for line in p.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        if header is None:
+            if any("页码" in c for c in cells) and any("pattern" in c.lower() or "布局" in c for c in cells):
+                header = cells
+            continue
+        if all(set(c) <= {"-", ":", " "} for c in cells):
+            continue
+        order += 1
+
+        def col(keyword):
+            for i, h in enumerate(header):
+                if keyword.lower() in h.lower() and i < len(cells):
+                    return cells[i]
+            return ""
+
+        page_cell = col("页码")
+        m = re.search(r"\d+", page_cell)
+        page_no = int(m.group()) if m else order
+        row = {
+            "page": page_no,
+            "pattern": normalize_layout_pattern(col("pattern") or col("布局")),
+            "variant": (col("变体") or "").strip().strip("` ").lower(),
+        }
+        for key, kw in BLUEPRINT_FIELDS.items():
+            row[key] = col(kw)
+        rows[page_no] = row
+    return rows

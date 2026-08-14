@@ -5,7 +5,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from common import read_json, parse_page_semantics, is_deck_content_slide
+from common import read_json, parse_page_semantics, is_deck_content_slide, parse_visual_blueprints, LAYOUT_PATTERNS, BLUEPRINT_FIELDS
 
 
 def parse_args():
@@ -18,6 +18,7 @@ def parse_args():
     p.add_argument("--manifest", required=False, help="传入后执行图片覆盖审计，漏图直接判失败")
     p.add_argument("--art-dna", required=False, help="全 Deck 项目视觉 DNA 报告")
     p.add_argument("--semantics", required=False, help="TASK-003: 页面语义登记 state/page_semantics.md；缺省取 --history 同目录下的 page_semantics.md")
+    p.add_argument("--blueprints", required=False, help="TASK-009: 视觉蓝图 state/visual_blueprints.md；缺省取 --history 同目录下的 visual_blueprints.md")
     p.add_argument("--round", type=int, default=1)
     return p.parse_args()
 
@@ -30,7 +31,7 @@ def html_sections_by_page(text):
     return sections
 
 
-def structural(text, ir, art_dna=None, semantics=None):
+def structural(text, ir, art_dna=None, semantics=None, blueprints=None):
     rows = []
     slide_count = text.count('<section class="slide')
     external = bool(re.search(r'https?://', text))
@@ -48,6 +49,9 @@ def structural(text, ir, art_dna=None, semantics=None):
     html_sections = html_sections_by_page(text)
     # TASK-003: build_ir/render 自动改 role 的标记，此类页不参与 role 一致性判定
     auto_transform_markers = ("moved to pre-closing", "overflow image", "unrelated images split", "auto-split")
+    # TASK-009: 连页变体禁令——上一内容页的布局签名（pattern + 变体）
+    prev_content_sig = None
+    prev_content_page = None
     if art_dna:
         required = ["cover_background", "content_background", "section_background", "closing_background"]
         missing = [k for k in required if not art_dna.get(k)]
@@ -187,6 +191,33 @@ def structural(text, ir, art_dna=None, semantics=None):
                     if list_items >= 4:
                         issues.append("≥4 条信息未提供语义分组，已走兜底渲染（提示）")
                         score -= 4
+            # ── TASK-009: 布局门禁（四步链路第②③步核验）────────────────────
+            if blueprints is None:
+                issues.append("缺少视觉蓝图文件 state/visual_blueprints.md（四步链路第③步：生成视觉蓝图未落盘）")
+                score -= 25
+            else:
+                bp_row = blueprints.get(deck_ordinals.get(page_no))
+                if bp_row is None:
+                    issues.append("缺少视觉蓝图登记：visual_blueprints.md 中无此页（四步链路第②③步缺失）")
+                    score -= 25
+                else:
+                    if bp_row.get("pattern") not in LAYOUT_PATTERNS:
+                        issues.append(f"布局 pattern 未登记于 layout-patterns.md 的 12 种模式：{bp_row.get('pattern')}")
+                        score -= 20
+                    missing_fields = [k for k in BLUEPRINT_FIELDS if not (bp_row.get(k) or "").strip()]
+                    if missing_fields:
+                        issues.append("视觉蓝图字段空缺：" + ",".join(missing_fields))
+                        score -= 15
+                    ir_pattern = slide.get("layout_pattern")
+                    if ir_pattern != bp_row.get("pattern"):
+                        issues.append(f"IR layout_pattern 与蓝图登记不一致（登记 {bp_row.get('pattern')} / IR {ir_pattern}）")
+                        score -= 20
+                    sig = (bp_row.get("pattern"), bp_row.get("variant") or "")
+                    if prev_content_sig is not None and sig == prev_content_sig:
+                        issues.append(f"与上一内容页（P{prev_content_page}）使用完全相同的布局签名（{sig[0]}/{sig[1] or '无变体'}），违反连页变体禁令")
+                        score -= 20
+                    prev_content_sig = sig
+                    prev_content_page = page_no
         rows.append({"page": page_no, "score": max(0, score), "mode": "structural-fallback", "issues": issues})
     return rows
 
@@ -256,12 +287,15 @@ def main():
     # TASK-003: 语义门禁读取 state/page_semantics.md（默认与 --history 同目录）
     sem_path = args.semantics or (Path(args.history).parent / "page_semantics.md")
     semantics = parse_page_semantics(sem_path)
+    # TASK-009: 布局门禁读取 state/visual_blueprints.md（默认与 --history 同目录）
+    bp_path = args.blueprints or (Path(args.history).parent / "visual_blueprints.md")
+    blueprints = parse_visual_blueprints(bp_path)
     rows = try_playwright(args, ir)
     if rows is None:
-        rows = structural(text, ir, art_dna, semantics)
+        rows = structural(text, ir, art_dna, semantics, blueprints)
     else:
         # playwright 模式同样执行内容容量规则，两种检查取并集
-        struct_map = {r["page"]: r for r in structural(text, ir, art_dna, semantics)}
+        struct_map = {r["page"]: r for r in structural(text, ir, art_dna, semantics, blueprints)}
         for r in rows:
             s = struct_map.get(r["page"])
             if s:
