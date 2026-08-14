@@ -209,7 +209,9 @@ def enrich_blocks(bl, role):
         return enriched
     content_count = sum(1 for b in enriched if b.get("type") in {"paragraph", "list", "table", "quote", "code"})
     if content_count < 2:
-        enriched.append({"type": "list", "items": ["目标对比：补充目标值、当前值与差距", "过程证据：说明关键动作与责任边界", "业务影响：落到客户可感知的结果"]})
+        # TASK-011 fix: 补位块打 generated 标记——节点式变体（ascend/chain/loop 等计数变体）
+        # 渲染节点时必须跳过补位块，禁止把无来源条目落成节点卡片（渲染节点数 = 蓝图登记阶段数）。
+        enriched.append({"type": "list", "items": ["目标对比：补充目标值、当前值与差距", "过程证据：说明关键动作与责任边界", "业务影响：落到客户可感知的结果"], "generated": "enrich_blocks"})
         content_count += 1
     return enriched
 

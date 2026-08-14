@@ -195,7 +195,8 @@ def slide_html(slide, section_titles=None, art_dna=None):
             )
         elif layout_variant.startswith("loop-"):
             # TASK-009: 闭环变体——列表条目渲染为环形节点 + 闭合 SVG 回授箭头 + 中心主张（蓝图焦点）
-            loop_items = [x for b in slide.get("blocks", []) if b.get("type") == "list" for x in b.get("items", [])]
+            # TASK-011 fix: 同样跳过补位块，闭环节点数只由内容驱动（与蓝图登记数一致）
+            loop_items = [x for b in slide.get("blocks", []) if b.get("type") == "list" and not b.get("generated") for x in b.get("items", [])]
             nodes = "".join(f'<div class="panel loop-node loop-node-{i+1}" data-animate="fade-up" style="--i:{i}"><p>{esc(x)}</p></div>' for i, x in enumerate(loop_items[:4]))
             claim = esc((slide.get("blueprint") or {}).get("focus") or title)
             pno = slide.get("page")
@@ -237,7 +238,9 @@ def slide_html(slide, section_titles=None, art_dna=None):
     elif role == "timeline":
         items = []
         for b in slide.get("blocks", []):
-            if b.get("type") == "list":
+            # TASK-011 fix: 跳过 enrich_blocks 补位块——ascend/chain 等计数变体的节点必须全部来自
+            # 正文内容（渲染节点数 = 蓝图登记阶段数），禁止把占位条目落成 T+N 幻影节点卡。
+            if b.get("type") == "list" and not b.get("generated"):
                 items.extend(b.get("items", []))
         cards = "".join(f'<div class="panel timeline-item" style="--i:{i}"><div class="date">{esc(item.split("｜")[0] if "｜" in item else "T+" + str(i+1))}</div><p>{esc(item)}</p></div>' for i, item in enumerate(items[:6]))
         inner = f'<h2>{title}</h2><div class="timeline-row">{cards}</div>{takeaway}'

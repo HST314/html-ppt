@@ -218,6 +218,19 @@ def structural(text, ir, art_dna=None, semantics=None, blueprints=None):
                         score -= 20
                     prev_content_sig = sig
                     prev_content_page = page_no
+                    # ── TASK-011: 节点数门禁——计数变体（ascend-N/chain-N/loop-N）渲染节点数必须等于
+                    # 蓝图登记阶段数 N；超出即存在无来源幻影节点（如补位块落卡），不足即内容缺失。
+                    bp_variant = (bp_row.get("variant") or "").strip()
+                    vm = re.fullmatch(r"(ascend|chain|loop)-(\d+)", bp_variant)
+                    if vm:
+                        expected = int(vm.group(2))
+                        sect = html_sections.get(page_no, "")
+                        rendered = (len(re.findall(r'class="panel timeline-item"', sect))
+                                    + len(re.findall(r'class="panel group-card"', sect))
+                                    + len(re.findall(r'class="panel loop-node ', sect)))
+                        if rendered != expected:
+                            issues.append(f"渲染节点数与蓝图登记数不一致（{bp_variant} 登记 {expected} / 渲染 {rendered}），存在无来源幻影节点或内容缺失")
+                            score -= 20
         rows.append({"page": page_no, "score": max(0, score), "mode": "structural-fallback", "issues": issues})
     return rows
 
@@ -254,12 +267,13 @@ def try_playwright(args, ir):
                     page.keyboard.press("ArrowRight")
                     page.wait_for_timeout(60)
                 page.wait_for_timeout(900)  # 等过渡动画结束再截图
-                overflow = page.evaluate(
+                # TASK-011 fix: 溢出判定附实测像素，便于定位纵向/横向溢出（如计数变体幻影节点撑高页面）
+                dims = page.evaluate(
                     "(() => { const el = document.querySelector('.slide.is-active');"
-                    " if (!el) return false;"
-                    " return el.scrollHeight > el.clientHeight + 4"
-                    " || el.scrollWidth > el.clientWidth + 4; })()"
+                    " if (!el) return null;"
+                    " return {sh: el.scrollHeight, ch: el.clientHeight, sw: el.scrollWidth, cw: el.clientWidth}; })()"
                 )
+                overflow = bool(dims) and (dims["sh"] > dims["ch"] + 4 or dims["sw"] > dims["cw"] + 4)
                 page.add_style_tag(content=".slide * { animation: none !important; }")
                 page.screenshot(path=str(out_dir / f"slide-{i:02d}.png"))
                 visible = page.locator(".slide.is-active").count() == 1
@@ -270,7 +284,7 @@ def try_playwright(args, ir):
                     issues.append("当前页可见状态异常")
                 if overflow:
                     score -= 20
-                    issues.append("页面内容溢出屏幕")
+                    issues.append(f"页面内容溢出屏幕（scrollHeight {dims['sh']} / clientHeight {dims['ch']}，scrollWidth {dims['sw']} / clientWidth {dims['cw']}）")
                 rows.append({"page": slide.get("page"), "score": score, "mode": "playwright", "issues": issues})
             browser.close()
     except Exception:
