@@ -57,11 +57,10 @@ def structural(text, ir, art_dna=None, semantics=None, blueprints=None):
         missing = [k for k in required if not art_dna.get(k)]
         if missing:
             deck_issues.append("项目视觉系统缺少角色背景：" + ",".join(missing))
-        # TASK-015 fix: 首尾页按用户要求回退经典 deco 高对比版式（不再使用生成式融合背景），
-        # art DNA 背景覆盖门禁的适用范围随之收敛为「内容页/章节页」——这些页面缺一报一，容差不变
-        art_expected = sum(1 for s in ir_slides if s.get("role") not in {"cover", "closing"})
-        if text.count('class="project-art-bg') < art_expected:
-            deck_issues.append("项目视觉 DNA 未覆盖全部内容页")
+        # TASK-017 fix: 首尾页恢复铺生成式融合背景，art DNA 背景覆盖门禁随之恢复
+        # cover/content/section/closing 四类页面全核对（原范围恢复，非加强非削弱，容差不变）
+        if text.count('class="project-art-bg') < len(ir_slides):
+            deck_issues.append("项目视觉 DNA 未覆盖全部页面")
     if len(ir_slides) < 2 or ir_slides[1].get("role") != "toc":
         deck_issues.append("第 2 页缺少目录")
     if not ir_slides or ir_slides[-1].get("role") != "closing":

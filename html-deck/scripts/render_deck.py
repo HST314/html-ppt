@@ -134,11 +134,12 @@ def slide_html(slide, section_titles=None, art_dna=None):
         role = "bullets"
     quiet = "" if art_dna or role in {"cover", "closing", "image-hero"} else quiet_deco(section=(role == "section"))
     art_layer = ""
-    # TASK-015 fix: 首尾页回退旧版高对比 deco 版式——用户反馈封面/尾页文字与生成式融合背景
-    # 几乎融为一体；cover/closing 不再注入 project-art 生成背景（art DNA 背景仅作用于
-    # 内容页/章节页），恢复 cover_deco()/closing_deco() 经典版式；artDrift 与 frame 裁切层
-    # 在中间页保持不变
-    if art_dna and role not in {"cover", "closing"}:
+    # TASK-017 fix: 方向更正——撤销 TASK-015 的模板回退，首尾页恢复生成式融合背景路线
+    # （用户 19:42 v9 截图明确"改回去"= 保留 v9 原版首尾页：深藏蓝近黑基底、轨道圆环/横向
+    # 轨迹线/星点融入背景、白标题+金副标题高对比）；cover/closing 重新注入 project-art
+    # 背景层；"融为一体"根因由下方实底深色基底 + --ho 本地重声明配套 CSS 修复；
+    # artDrift 与 frame 裁切层在全页面保持不变
+    if art_dna:
         key = "cover_background" if role == "cover" else "closing_background" if role == "closing" else "section_background" if role == "section" else "content_background"
         # TASK-013 fix: art 背景套 overflow:hidden 裁切框——artDrift 动画 scale/translate 会越出页边界，
         # 直接子级时越界部分计入 .slide scrollable overflow（全页 scrollHeight/scrollWidth 统一 +5/+6）；
@@ -162,7 +163,7 @@ def slide_html(slide, section_titles=None, art_dna=None):
         meta_html = "".join(f"<span>{esc(m)}</span>" for m in meta)
         art_bg = art_layer
         inner = (
-            f'{art_bg}{bg_html}{cover_deco()}<canvas class="fx-canvas" width="1920" height="1080"></canvas>'  # TASK-015 fix: 封面始终使用经典 deco 版式
+            f'{art_bg}{bg_html}{"" if art_dna else cover_deco()}<canvas class="fx-canvas" width="1920" height="1080"></canvas>'  # TASK-017 fix: 封面恢复生成式融合背景，仅无 art DNA 时降级经典 deco
             f'<div class="outline-number">01</div><div class="watermark-word">DECK</div>'
             f'<div class="eyebrow">{eyebrow}</div>'
             f'<h1 data-animate="fade-up">{cover_title_html(title)}</h1>'
@@ -263,7 +264,7 @@ def slide_html(slide, section_titles=None, art_dna=None):
             echo_sub = esc(slide.get("echo_sub") or "HONOR GALLERY · CONCEPT PROPOSAL")
             echo_html = f'<div class="closing-echo" data-animate="fade-up">{esc(echo)}<small>{echo_sub}</small></div>'
         art_bg = art_layer
-        inner = f'{art_bg}<canvas class="fx-canvas" width="1920" height="1080"></canvas>{closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'  # TASK-015 fix: 尾页始终使用经典 deco 版式
+        inner = f'{art_bg}<canvas class="fx-canvas" width="1920" height="1080"></canvas>{"" if art_dna else closing_deco()}<div class="watermark-word">NEXT</div><div class="eyebrow">{eyebrow}</div><h2>{title}</h2>{blocks}{takeaway}{echo_html}'  # TASK-017 fix: 尾页恢复生成式融合背景，仅无 art DNA 时降级经典 deco
     else:
         groups = slide.get("groups") or []
         if groups:
@@ -319,13 +320,15 @@ def main():
                 css += f'''\n/* TASK-009: art DNA 深色 token 仅作用于生成式深色背景页 */\n.role-cover,.role-section,.role-closing{{--bg:#06101d;--page-bg:#02070d;--text:#f5f7fb;--muted:#aab4c8;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n.slide:not(.role-cover):not(.role-section):not(.role-closing) .project-art-bg{{opacity:.12;}}\n.slide:not(.role-cover):not(.role-section):not(.role-closing):has(.project-art-bg)::after{{background:var(--line);}}\n'''
             else:
                 css += f'''\n:root{{--bg:#06101d;--page-bg:#02070d;--accent:{palette[1]};--accent-2:{palette[2]};--line:color-mix(in srgb,{palette[1]} 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}}\n'''
-            # TASK-015 fix: 首尾页回退经典 deco 版式的配套样式（仅 cover/closing，中间页零影响）。
-            # ① 实体深色基底：.slide 本身无 background，页面底色由共享 .deck-stage 提供；移除生成
-            #    背景图后封面/尾页必须自带底色，否则局部深色 token 只改了文字色、底仍是浅色舞台。
+            # TASK-017 fix: 首尾页生成式融合背景的对比度配套（仅 cover/closing，中间页零影响）。
+            # ① 实体深色基底：.slide 本身无 background，页面底色由共享 .deck-stage 提供（浅色主题下
+            #    为浅色）；封面/尾页自带 var(--bg)（#06101d 深藏蓝近黑）实底，生成背景图（opacity .82）
+            #    叠在实底上 → 基底稳定在深藏蓝近黑量级，轨道圆环/轨迹线/星点低饱和融入，
+            #    对标用户 v9 截图观感，不再被浅色舞台稀释成灰蓝中亮底。
             # ② --ho 系列本地重声明：CSS 自定义属性在定义处（:root）即完成 var() 替换并固化，
-            #    :root 的 --ho:var(--accent) 不随首尾页局部 --accent 覆盖变化；渐变标题
-            #    （h1-em/closing-echo）必须按局部 accent 重推导，保证深色基底上的对比度。
-            css += "\n/* TASK-015: 首尾页经典 deco 版式配套 */\n.role-cover,.role-closing{background:var(--bg);--ho:var(--accent);--ho-deep:color-mix(in srgb,var(--accent) 72%,#c03505);--ho-gold:color-mix(in srgb,var(--accent) 45%,#ffd76a);}\n"
+            #    :root 的 --ho:var(--accent) 不随首尾页局部 --accent（art DNA 金）覆盖变化；渐变标题
+            #    （h1-em/closing-echo）必须按局部 accent 重推导，保证深色实底上的对比度。
+            css += "\n/* TASK-017: 首尾页融合背景对比度配套 */\n.role-cover,.role-closing{background:var(--bg);--ho:var(--accent);--ho-deep:color-mix(in srgb,var(--accent) 72%,#c03505);--ho-gold:color-mix(in srgb,var(--accent) 45%,#ffd76a);}\n"
     body = "\n".join(slide_html(s, section_titles, art_dna) for s in slides)
     doc = f'''<!doctype html>
 <html lang="zh-CN">
