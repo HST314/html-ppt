@@ -101,3 +101,20 @@
   font-family: var(--font-mono);
   white-space: nowrap;
 }
+
+/* TASK-001: 文本内部升级工具类(对标 guizang .hi/.mark、autoppt 语义强调;规则见 references/page-logic-patterns.md 第 17 节)
+   .hl  关键词高亮:accent 色 + 加粗,每卡 ≤3 处,只动 color/weight 不打断行高
+   .num 数据突出:accent 色 + 等宽 + 加粗 + 禁换行,数字必须带口径 */
+.hl {
+  color: var(--accent);
+  font-weight: 800;
+}
+.num {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* accent 填充面上的反色墨文字(对比度纪律:禁止白字压浅金) */
+:root { --on-accent: #171106; }
