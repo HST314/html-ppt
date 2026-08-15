@@ -11,7 +11,8 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 - 最终 HTML 必须双击可演示；CSS/JS 内联，禁止 CDN。
 - Agent 只能选择 `references/COMPONENTS.md` 中登记的 role 组件和 `assets/components/typography.css` 中登记的装饰组件，禁止临场发明版式。
-- 所有中间产物落盘：`outline.json`、`state/run_state.json`、`state/qa_history.jsonl`、`qa_report.md`。
+<!-- TASK-003 -->- 所有 PPT 生成必须走「执行流程总线」七阶段流水线：项目理解 → 故事线分析 → 页面任务定义 → 页面逻辑判断 → 视觉结构选择 → HTML 生成 → 质量检查；页面逻辑分析（总线③④步）为必经阶段，任何 deck 不得跳过。
+- 所有中间产物落盘：`outline.json`、`state/run_state.json`、`state/qa_history.jsonl`、`qa_report.md`；<!-- TASK-003 -->流程产物另含 `state/storyline.md`、`state/page_semantics.md`、`state/visual_blueprints.md`。
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
@@ -21,15 +22,95 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 <!-- TASK-001: 新增页面语义分析层原则 -->
 - 每页生成前必须先完成「页面语义分析层」的五步判断（主结论 / 信息层级 / 逻辑关系 / 视觉结构 / 视觉焦点），并按 `references/page-logic-patterns.md` 的 13 类页面逻辑显式选择页面结构；禁止未经语义判断直接落“标题 + 多条横向 bullet”版式，`bullets` 只允许作为语义判断后的显式结论并附理由。单页信息 ≥4 条时必须先归为 2–4 个视觉信息组再选结构。
 <!-- TASK-009: 视觉布局决策引擎原则 -->
-- 禁止从文字内容直接进入 HTML。每个内容页必须走完四步链路：① 页面逻辑识别（语义五步判断）→ ② 选择 layout pattern（`references/layout-patterns.md` 12 种之一，显式记录选型理由）→ ③ 生成视觉蓝图（逐页落盘 `state/visual_blueprints.md`，含焦点/标题位/主体区/辅助区/留白比例/SVG 与图片需求）→ ④ 生成 HTML。缺任一步即 QA 判失败。
+- 禁止从文字内容直接进入 HTML。每个内容页必须走完四步链路：① 页面逻辑识别（语义五步判断）→ ② 选择 layout pattern（`references/layout-patterns.md` 12 种之一，显式记录选型理由）→ ③ 生成视觉蓝图（逐页落盘 `state/visual_blueprints.md`，<!-- TASK-007 fix -->含蓝图九字段：页面类型/主视觉区域/标题区域/内容区域/辅助区域/图片区域/留白区域/SVG需求/选型理由，口径见 `references/html-layout-system.md` §0）→ ④ 生成 HTML。缺任一步即 QA 判失败。
+<!-- TASK-008: 页面场景识别系统原则 -->
+- 每页生成前必须先完成「页面场景判定」（`references/design-scenario-system.md` 10 类业务场景：封面/章节/品牌价值/产品介绍/项目方案/流程/数据/案例/成果展示/总结），在总线③页面任务定义时连同页面任务一并判定（页面任务决定场景），并回答两问——"这一页属于什么场景？为什么选择这种设计？"；判定结论落 `state/page_semantics.md`「页面场景」列，<!-- TASK-010 fix -->蓝图「页面类型」取值域 = 10 类业务场景 + 1 个骨架保留项 `目录页(toc)`（全库唯一口径，唯一定义见 `references/design-scenario-system.md` §2 注），蓝图「选型理由」必须引用场景判定结论。禁止所有页面使用同一个模板（场景多样性为事前预防，连页签名检查为事后兜底）。deck 级场景（`references/NARRATIVE.md`）与 page 级场景（10 类业务场景）为两层口径，不得混淆或合并。
 - 默认视觉方向：浅色、高亮度、深蓝信息骨架、青蓝辅助、留白充分、轻科技、商业提案感，以下方「默认视觉方向设计 token」为准；未声明视觉方向的项目一律按此执行。
 - 连续多个内容页不得使用完全相同的“横条列表”布局；同一 layout pattern 连页出现时必须使用可辨识变体（布局签名 = pattern + 变体，连页相同即 QA 判失败）。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
 
+<!-- TASK-003: 新增整节——执行流程总线（七阶段强制流水线） -->
+## 执行流程总线（七阶段强制流水线）
+
+所有 PPT 生成必须依序走完以下七个阶段，禁止跳步、禁止从需求文本直接进入 HTML 生成；任一阶段的落盘产物缺失即判流程失败，不得进入下一阶段。本总线是「页面语义分析层」「视觉布局决策引擎」与「阶段 1–6」的上位编排：原各层机制内容不变，按本总线位次执行。
+
+```
+需求文本
+  ↓
+① 项目理解        → context/brief.md（含场景归类结论）
+  ↓
+② 故事线分析      → state/storyline.md
+  ↓
+③ 页面任务定义    → state/page_semantics.md「页面任务」列<!-- TASK-008 --> +「页面场景」列
+  ↓
+④ 页面逻辑判断    → state/page_semantics.md（五步判断，同表）
+  ↓
+⑤ 视觉结构选择    → state/visual_blueprints.md
+  ↓
+⑥ HTML 生成       → outline.json → dist/deck.single.html
+  ↓
+⑦ 质量检查        → state/qa_report.md（含流程门禁）
+```
+
+### ① 项目理解
+
+- 动作：建立/补全 `context/brief.md`（受众、场合、时长、场景类型、密度），并显式判定本项目落入 `references/NARRATIVE.md` 的哪一类场景框架；不在已登记场景内时登记「自定义场景」并给出章节顺序理由。
+- 落盘：`context/brief.md`，必须含 `scene_type` 与场景归类结论。
+- 门禁：brief 五字段齐全且场景归类有结论，否则不得进入②。
+- 对应原机制：阶段 1「上下文管理」。
+
+### ② 故事线分析
+
+- 动作：按场景框架排出全 deck 章节顺序，划定封面/目录/章节过渡/行动页/结束页位置，为每章分配叙事任务与页数配额，标注节奏（数据先行章、证据章、收束章）。
+- 落盘：`state/storyline.md`（章节序列 / 各章叙事任务 / 页数配额 / 节奏标注）。
+- 门禁：目录节点 3–6 个、收束为两段式（行动页 + 低负载结束页）；缺 `state/storyline.md` 不得进入③。
+- 对应原机制：`references/NARRATIVE.md` 场景框架与 Deck 级叙事门禁——由事后检查前置为规划产物。
+
+### ③ 页面任务定义
+
+- 动作：把故事线展开到页——每个 `###` 页登记唯一页面任务：`提出判断` / `展示证据` / `解释机制` / `请求决策` / `过渡收束`。一页一个任务；任务写不出的页回炉拆页或并页。<!-- TASK-008 -->同一步内按 `references/design-scenario-system.md` 完成页面场景判定（10 类；页面任务决定场景，骨架页按故事线位置判定，判定流程见该文 §1），逐页登记「页面场景」。
+- 落盘：`state/page_semantics.md` 表格新增「页面任务」列<!-- TASK-008 -->与「页面场景」列（<!-- TASK-010 fix -->枚举 = 10 类业务场景 + 1 个骨架保留项 `目录页(toc)`），与④的五步判断同表登记。
+- 门禁：每页有且仅有一个页面任务<!-- TASK-008 -->与唯一页面场景；缺任务或场景登记不得进入④。
+- 对应原机制：NARRATIVE.md「中段每页只完成一个任务」由 Deck 级门禁升级为逐页显式登记。<!-- TASK-008 -->页面场景体系（10 类 × 五属性）由 design-scenario-system.md 承载，场景判定前置为规划产物。
+
+### ④ 页面逻辑判断
+
+- 动作：执行「页面语义分析层」五步判断（主结论 / 信息层级 / 逻辑关系 / 视觉结构 / 视觉焦点）与 ≥4 条信息分组。
+- 落盘：`state/page_semantics.md`（与③同表）。
+- 门禁：沿用语义层门禁（IR `decision` 为 `default content role` 判失败等）。
+- 对应原机制：「页面语义分析层（强制）」全节。
+
+### ⑤ 视觉结构选择
+
+- 动作：执行「视觉布局决策引擎」第②③步——layout pattern 选型（含冲突裁决）+ 逐页视觉蓝图落盘。
+- 落盘：`state/visual_blueprints.md`。
+- 门禁：沿用布局引擎门禁（<!-- TASK-007 fix -->蓝图九字段空缺、连页签名相同、计数变体节点数不符均判失败）。
+- 对应原机制：「视觉布局决策引擎（四步强制链路）」全节；其第①步即本总线④，第④步即本总线⑥。
+
+### ⑥ HTML 生成
+
+- 动作：按阶段 2 工具链运行 `build_ir.py` → `render_deck.py` → `inline_assets.py`；渲染以蓝图与显式 role 指令为准，禁止绕开蓝图临场拼版式。
+- 落盘：`outline.json`、`dist/deck.single.html`。
+- 对应原机制：阶段 2「工具系统」、阶段 3「执行编排」、阶段 4「状态与记忆」。
+
+### ⑦ 质量检查
+
+- 动作：按阶段 5 执行 QA（语义门禁、布局门禁、反同质化签名核对、对比度硬指标等），并执行流程门禁（见下）。
+- 落盘：`state/qa_report.md`、`state/qa_history.jsonl`。
+- 不合格处理：回到最早出问题的阶段修复后重跑后续阶段，最多 3 轮。
+
+### 流程门禁（任一不满足即 QA 判失败，不属于可恢复缺陷）
+
+- 缺 `context/brief.md` 场景归类结论 → 判失败（①缺失）。
+- 缺 `state/storyline.md`，或故事线无目录节点/收束两段式登记 → 判失败（②缺失）。
+- `state/page_semantics.md` 任一内容页缺「页面任务」<!-- TASK-008 -->、「页面场景」或五步判断任一字段 → 判失败（③④缺失）。
+- 缺 `state/visual_blueprints.md` 或内容页蓝图九字段空缺（<!-- TASK-007 fix -->口径见 `references/html-layout-system.md` §0）→ 判失败（⑤缺失）。
+- IR 中 `layout_pattern` 与蓝图登记不一致 → 判失败（⑥绕开⑤直接生成）。
+
 <!-- TASK-001: 新增整节——页面语义分析层（强制门禁） -->
 ## 页面语义分析层（强制）
 
-触发时机：`build_ir.py` 运行之前必须完成；任何修订、重排、换 role 操作也必须重读本层结论。该层是 Agent 的强制推理步骤，不是可选建议。
+触发时机：执行流程总线第④步（页面逻辑判断）；`build_ir.py` 运行之前必须完成；任何修订、重排、换 role 操作也必须重读本层结论。该层是 Agent 的强制推理步骤，不是可选建议。
 
 ### 五步判断（每页必填）
 
@@ -49,7 +130,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 ### 落地方式
 
-- 五步判断与分组结论逐页落盘到 `state/page_semantics.md`（表格：页码 / 主结论 / 逻辑类型 / 视觉结构 / 视觉焦点 / 信息组划分 / 选定 role / 选role理由），作为可审计中间产物。
+- 五步判断与分组结论逐页落盘到 `state/page_semantics.md`（表格：页码 / <!-- TASK-003 -->页面任务 / <!-- TASK-008 -->页面场景 / 主结论 / 逻辑类型 / 视觉结构 / 视觉焦点 / 信息组划分 / 选定 role / 选role理由），作为可审计中间产物；「页面任务」<!-- TASK-008 -->与「页面场景」列在执行流程总线第③步（页面任务定义）先行填好，本层只补后续列。
 - 每页结构以显式 `<!-- role: xxx -->` 指令写回 deck.md，再运行 `build_ir.py`；禁止依赖 `build_ir.py` 的关键词猜测与默认兜底。
 - 13 类逻辑与组件库 role 的完整映射、结构示意与避坑清单见 `references/page-logic-patterns.md`；patterns 文档未覆盖的结构需求必须先在 patterns 文档中补登记，禁止临场发明版式。
 
@@ -61,19 +142,19 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 <!-- TASK-009: 新增整节——视觉布局决策引擎（四步强制链路） -->
 ## 视觉布局决策引擎（四步强制链路）
 
-触发时机：「页面语义分析层」完成后、运行 `build_ir.py` 之前。四步依序执行，禁止跳步，禁止从文字内容直接进入 HTML。
+触发时机：「页面语义分析层」完成后、运行 `build_ir.py` 之前——即执行流程总线第⑤步（视觉结构选择，其第①步为总线④、第④步为总线⑥）。四步依序执行，禁止跳步，禁止从文字内容直接进入 HTML。
 
 ### 四步定义
 
 1. **页面逻辑识别**：沿用「页面语义分析层」五步判断，逐页落盘 `state/page_semantics.md`（本步产物即四步链路第①步）。
-2. **选择 layout pattern**：按 `references/layout-patterns.md` 的「13 类逻辑 → 12 种 layout pattern」映射表为每页选定唯一 pattern，并显式记录选型理由；多 pattern 适用时按冲突裁决规则（资源约束 → 逻辑忠实 → 连页去重 → 焦点唯一 → 容量兜底）裁决。
-3. **生成视觉蓝图（中间产物落盘）**：逐页写入 `state/visual_blueprints.md`，机器可读表格，列序固定：`页码 / 布局pattern / 变体 / 视觉焦点 / 标题位置 / 主体区域 / 辅助信息区域 / 留白比例 / SVG需求 / 图片需求 / 选型理由`。蓝图字段必须与本页语义登记一致（焦点同一、组数与主体区域承载一致）。
+2. **选择 layout pattern**：按 `references/layout-patterns.md` 的「13 类逻辑 → 12 种 layout pattern」映射表为每页选定唯一 pattern，并显式记录选型理由；多 pattern 适用时按冲突裁决规则（资源约束 → 逻辑忠实 → 连页去重 → 焦点唯一 → 容量兜底）裁决。<!-- TASK-008 -->选型理由必须引用总线③的页面场景判定结论（"本页为 X 场景，故选 Y pattern"，回答"为什么选择这种设计"；模板句见 `references/design-scenario-system.md` §3），未引用场景判定即 QA 判失败；同 deck 内同场景页面的布局签名不得雷同。
+3. **生成视觉蓝图（中间产物落盘）**：逐页写入 `state/visual_blueprints.md`，机器可读表格，列序固定：`页码 / 布局pattern / 变体 / 页面类型 / 主视觉区域(视觉焦点) / 标题区域(标题位置) / 内容区域(主体区域) / 辅助区域(辅助信息) / 图片区域(图片需求) / 留白区域(留白比例) / SVG需求 / 选型理由`。<!-- TASK-007 fix: 蓝图七字段与原八字段合并为一份定义，全库唯一口径见 references/html-layout-system.md §0 -->蓝图字段必须与本页语义登记一致（主视觉区域与语义焦点同一、组数与内容区域承载一致）；蓝图九字段口径（页面类型/主视觉区域/标题区域/内容区域/辅助区域/图片区域/留白区域/SVG需求/选型理由）以 `references/html-layout-system.md` §0 为唯一定义，禁止另立口径。
 4. **生成 HTML**：`build_ir.py` 消费蓝图把 `layout_pattern` / `layout_variant` / 蓝图片段写入 IR；渲染层按蓝图落版（`data-pattern` / `data-variant` 与 `layout-*` 变体类）；QA 门禁核验。
 
 ### 门禁（缺任一步即 QA 判失败）
 
 - 缺 `state/visual_blueprints.md`，或内容页在蓝图中无登记 → QA 判失败（四步链路第③步缺失）。
-- 蓝图 pattern 不在 12 种登记之内、八字段（焦点/标题位/主体区/辅助区/留白比例/SVG需求/图片需求/选型理由）任一空缺 → QA 判失败。
+- 蓝图 pattern 不在 12 种登记之内、蓝图九字段（<!-- TASK-007 fix -->页面类型/主视觉区域/标题区域/内容区域/辅助区域/图片区域/留白区域/SVG需求/选型理由，口径见 `references/html-layout-system.md` §0）任一空缺 → QA 判失败。
 - IR 中的 `layout_pattern` 与蓝图登记不一致（渲染绕开蓝图）→ QA 判失败。
 - 连续内容页布局签名（pattern + 变体）完全相同 → QA 判失败（连页变体禁令）。
 - <!-- TASK-011 -->计数变体（ascend-N / chain-N / loop-N）实际渲染节点数与蓝图登记数 N 不一致 → QA 判失败（存在无来源幻影节点或内容缺失）；渲染层不得把 IR 补位块（`generated` 标记）落成节点卡片。
@@ -95,17 +176,18 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 ## 阶段 1：上下文管理
 
-入口条件：用户给出或指定工作目录，至少存在 `deck.md`；图片可选但若存在必须有 `images/manifest.json`。
+入口条件：用户给出或指定工作目录，至少存在 `deck.md`；图片可选但若存在必须有 `images/manifest.json`。本阶段即执行流程总线第①步（项目理解）。
 
 动作：
 1. 读取 `context/brief.md`；不存在则创建，缺省值为：受众=客户决策层，场合=客户汇报，时长=15 分钟，场景类型=客户汇报，密度=低密度演讲型。
 2. 若受众、场合、时长、场景类型同时缺失，最多问 3 个问题；有合理默认值时继续执行。
-3. 只在需要时读取 `references/`：叙事读 `NARRATIVE.md`，主题读 `THEMES.md`，组件读 `COMPONENTS.md`，动画读 `ANIMATIONS.md`，QA 读 `QA_RUBRIC.md`。
-4. 长文稿按 `##` 章节分批处理，批间只保留 `outline.json` 与 `state/run_state.json`。
+3. <!-- TASK-003 -->显式判定场景归类：本项目落入 `references/NARRATIVE.md` 哪一类场景框架（客户汇报型 / 产品发布型 / 技术分享型），写入 `context/brief.md` 的场景归类结论；不在登记场景内时写「自定义场景」并给出章节顺序理由。
+4. 只在需要时读取 `references/`：叙事读 `NARRATIVE.md`，主题读 `THEMES.md`，组件读 `COMPONENTS.md`，动画读 `ANIMATIONS.md`，QA 读 `QA_RUBRIC.md`。<!-- TASK-007 fix -->布局落版（Grid/Flex/图片区/色块/信息模块、合并蓝图定义、输出稳定规则）读 `html-layout-system.md`。<!-- TASK-008 -->页面场景判定（10 类场景、五属性量规、选型理由模板）读 `design-scenario-system.md`。
+5. 长文稿按 `##` 章节分批处理，批间只保留 `outline.json` 与 `state/run_state.json`。
 
 出口产物：`context/brief.md`、初始化或恢复后的 `state/run_state.json`。
 
-校验点：brief 包含 audience、occasion、duration_minutes、scene_type、density。
+校验点：brief 包含 audience、occasion、duration_minutes、scene_type、density；<!-- TASK-003 -->并含场景归类结论。
 
 失败回退：brief 不可写时使用内存默认值继续，并在 QA 报告中列为可恢复缺陷。
 
@@ -116,7 +198,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 <!-- TASK-001: 工具链前置语义分析步骤 -->
 动作：
 
-0. **页面语义分析 + 布局决策（强制前置）**：先执行「页面语义分析层」——对每个 `###` 页完成五步判断与 ≥4 条信息分组，结论写入 `state/page_semantics.md`，并将每页显式 `<!-- role: xxx -->` 写回 deck.md；<!-- TASK-009 -->再执行「视觉布局决策引擎」第②③步——为每页选定 layout pattern 并把视觉蓝图逐页落盘 `state/visual_blueprints.md`；未完成这两步不得调用 `build_ir.py`。
+0. **页面语义分析 + 布局决策（强制前置）**：<!-- TASK-003 -->先按执行流程总线完成前置各步——②故事线分析（落盘 `state/storyline.md`）、③页面任务定义（`state/page_semantics.md`「页面任务」列<!-- TASK-008 -->与「页面场景」列）；再执行「页面语义分析层」（总线④）——对每个 `###` 页完成五步判断与 ≥4 条信息分组，结论写入 `state/page_semantics.md`，并将每页显式 `<!-- role: xxx -->` 写回 deck.md；<!-- TASK-009 -->再执行「视觉布局决策引擎」第②③步（总线⑤）——为每页选定 layout pattern 并把视觉蓝图逐页落盘 `state/visual_blueprints.md`；未完成②③④⑤不得调用 `build_ir.py`。
 1. 按顺序调用：
 
 ```bash
@@ -137,7 +219,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 
 出口产物：输入报告、IR、HTML、内联 HTML、QA 报告。
 
-校验点：每个 JSON 输出可解析；`art_dna.json` 含非空 `art_expression`、来源图片 ID、四类页面背景及 `non_template_signature`；HTML 中每页必须有项目背景层，四类背景不得全部同构；`dist/deck.single.html` 不含外链或输入绝对路径。<!-- TASK-005 --> md 解读路径下 `art_dna.json` 的 `source_mode` 必须为 `"md"`、来源标识为 `source_md_ids`（替代来源图片 ID），QA 报告须标注 `art_dna=md`。<!-- TASK-001 --> 附加校验：`state/page_semantics.md` 存在且每个内容页都有主结论、逻辑类型、视觉结构、视觉焦点与选定 role；deck.md 中每个内容页均带显式 `<!-- role: -->` 指令。<!-- TASK-009 --> 附加校验：`state/visual_blueprints.md` 存在且每个内容页都有布局 pattern、可辨识变体、视觉焦点、标题位置、主体区域、辅助信息区域、留白比例、SVG 需求、图片需求与选型理由；IR 中每个内容页带 `layout_pattern` / `layout_variant`。
+校验点：每个 JSON 输出可解析；`art_dna.json` 含非空 `art_expression`、来源图片 ID、四类页面背景及 `non_template_signature`；HTML 中每页必须有项目背景层，四类背景不得全部同构；`dist/deck.single.html` 不含外链或输入绝对路径。<!-- TASK-005 --> md 解读路径下 `art_dna.json` 的 `source_mode` 必须为 `"md"`、来源标识为 `source_md_ids`（替代来源图片 ID），QA 报告须标注 `art_dna=md`。<!-- TASK-003 --> 附加校验：`state/storyline.md` 存在且含章节序列、各章叙事任务、页数配额与节奏标注；`state/page_semantics.md` 每个内容页均含「页面任务」列登记。<!-- TASK-008 --> 附加校验：`state/page_semantics.md` 每页均含「页面场景」列登记（<!-- TASK-010 fix -->枚举 = `references/design-scenario-system.md` 10 类业务场景 + 1 个骨架保留项 `目录页(toc)`）。<!-- TASK-005 fix: 阶段2校验点补登记必经阶段要求，与运行原则表述一致 --> 附加校验：页面逻辑分析为必经阶段，不得跳过——任一内容页未完成总线④五步判断（主结论/信息层级/逻辑关系/视觉结构/视觉焦点）即调用 `build_ir.py` 的，本校验点判不通过。<!-- TASK-001 --> 附加校验：`state/page_semantics.md` 存在且每个内容页都有主结论、逻辑类型、视觉结构、视觉焦点与选定 role；deck.md 中每个内容页均带显式 `<!-- role: -->` 指令。<!-- TASK-009 --> 附加校验：`state/visual_blueprints.md` 存在且每个内容页都有布局 pattern、可辨识变体，<!-- TASK-007 fix -->以及蓝图九字段——页面类型、主视觉区域（视觉焦点）、标题区域（标题位置）、内容区域（主体区域）、辅助区域（辅助信息）、图片区域（图片需求）、留白区域（留白比例）、SVG 需求与选型理由（口径见 `references/html-layout-system.md` §0）；IR 中每个内容页带 `layout_pattern` / `layout_variant`。
 
 失败回退：退出码 1 按报告修复后重跑；退出码 2 记录 `state/run_state.json.errors` 并使用上个 checkpoint 继续。
 
@@ -193,7 +275,11 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 <!-- TASK-001: 语义层门禁 -->
 6. 语义门禁：任一内容页 IR `decision` 为 `default content role`，或内容页使用 `bullets` 但 `state/page_semantics.md` 未写明并列逻辑理由，判 QA 失败并回到「页面语义分析层」，不属于可恢复缺陷。
 <!-- TASK-009: 布局层门禁 -->
-7. 布局门禁：任一内容页缺视觉蓝图登记、蓝图八字段空缺、pattern 未登记于 `references/layout-patterns.md`、IR `layout_pattern` 与蓝图不一致，或连续内容页布局签名（pattern + 变体）完全相同，判 QA 失败并回到「视觉布局决策引擎」第②③步，不属于可恢复缺陷。
+7. 布局门禁：任一内容页缺视觉蓝图登记、蓝图九字段空缺（<!-- TASK-007 fix -->页面类型/主视觉区域/标题区域/内容区域/辅助区域/图片区域/留白区域/SVG需求/选型理由，口径见 `references/html-layout-system.md` §0）、pattern 未登记于 `references/layout-patterns.md`、IR `layout_pattern` 与蓝图不一致，或连续内容页布局签名（pattern + 变体）完全相同，判 QA 失败并回到「视觉布局决策引擎」第②③步，不属于可恢复缺陷。<!-- TASK-007 --> 落版稳定核验：HTML 输出稳定规则五条与「禁止 div 堆叠文字」反模式按 `references/html-layout-system.md` §6/§7 与 `references/QA_RUBRIC.md`「布局稳定与结构纪律检查」执行。
+<!-- TASK-003: 流程门禁 -->
+8. 流程门禁：任一内容页缺 `state/storyline.md` 故事线登记、缺「页面任务」登记，或 brief 缺场景归类结论，判 QA 失败并回到执行流程总线对应阶段（①/②/③），不属于可恢复缺陷。
+<!-- TASK-008: 场景门禁 -->
+9. 场景门禁：任一页面缺场景判定记录（`state/page_semantics.md`「页面场景」列空缺）、蓝图「页面类型」不在<!-- TASK-010 fix -->「10 类业务场景 + 1 个骨架保留项 `目录页(toc)`」取值域内、蓝图「选型理由」未引用场景判定结论（未回答"为什么选择这种设计"），或同 deck 内同场景页面版式签名雷同，判 QA 失败并回到执行流程总线③/⑤修复，不属于可恢复缺陷；检查项口径见 `references/QA_RUBRIC.md`「场景判定与场景多样性检查」。
 
 出口产物：`state/qa_history.jsonl`、`state/qa_report.md`。
 

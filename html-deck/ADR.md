@@ -9,14 +9,18 @@
 - `mucsbr/ppt-agent-workflow-san`：吸收 HTML 预览先于 PPTX 的两阶段观念。本 skill 将 HTML 作为一等交付，同时保留结构化 IR 以便未来导出 PPTX。
 - ClawHub 两个参考仓库当前无法匿名克隆；已按 issue 中给出的架构点落地：`outline.json` IR、相对路径/内联资产、逐页渲染、summary/QA 收尾、截图 QA 优先与结构化降级。
 
-## 六阶段落地
+<!-- TASK-005: 本节标题与 1–6 列表更新为七阶段口径，与 SKILL.md「执行流程总线（七阶段强制流水线）」一致；原实现要点并入对应阶段 -->
+## 七阶段落地
 
-1. 上下文管理：`context/brief.md` 默认值不阻塞，长文只保留 IR。
-2. 工具系统：五个确定性脚本全部支持 `--help`，I/O JSON 化，退出码区分成功/可恢复/阻断。
-3. 执行编排：先输出 business-dark 与 minimal-white 预览/验证，逐页只使用登记 role。
-4. 状态记忆：`state/run_state.json` 保存阶段、页完成情况与 checkpoint；`memory/brand.md` 保存稳定品牌偏好。
-5. 评估预测：IR 内写入风险预测，`qa_render.py` 优先 Playwright，缺失时结构化 QA 降级。
-6. 约束恢复：单文件、零 CDN、图片不拉伸、不泄露绝对路径；3 轮 QA 仍失败时输出缺陷清单。
+按 SKILL.md「执行流程总线」七阶段（项目理解 → 故事线分析 → 页面任务定义 → 页面逻辑判断 → 视觉结构选择 → HTML 生成 → 质量检查）落地：
+
+1. 项目理解（原「上下文管理」）：`context/brief.md` 默认值不阻塞，长文只保留 IR；显式判定场景归类结论并写入 brief。
+2. 故事线分析：`state/storyline.md` 落盘章节序列、各章叙事任务、页数配额与节奏标注；叙事框架由事后检查前置为规划产物。
+3. 页面任务定义：`state/page_semantics.md` 新增「页面任务」列，每页登记唯一任务（提出判断/展示证据/解释机制/请求决策/过渡收束）。
+4. 页面逻辑判断：「页面语义分析层」五步判断逐页落盘，为必经阶段；`bullets` 只允许作为语义判断后的显式结论。
+5. 视觉结构选择：「视觉布局决策引擎」四步链路选型，逐页视觉蓝图落盘 `state/visual_blueprints.md`；连页布局签名必须不同。
+6. HTML 生成（原「工具系统 / 执行编排 / 状态记忆」）：确定性脚本全部支持 `--help`，I/O JSON 化，退出码区分成功/可恢复/阻断；先输出 business-dark 与 minimal-white 预览/验证，逐页只使用登记 role；`state/run_state.json` 保存阶段、页完成情况与 checkpoint，`memory/brand.md` 保存稳定品牌偏好。
+7. 质量检查（原「评估预测 / 约束恢复」）：IR 内写入风险预测，`qa_render.py` 优先 Playwright，缺失时结构化 QA 降级；流程门禁任一不满足即判失败；单文件、零 CDN、图片不拉伸、不泄露绝对路径；3 轮 QA 仍失败时输出缺陷清单。
 
 ## 不同取舍
 
