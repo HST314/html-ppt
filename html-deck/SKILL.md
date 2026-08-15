@@ -280,6 +280,8 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 8. 流程门禁：任一内容页缺 `state/storyline.md` 故事线登记、缺「页面任务」登记，或 brief 缺场景归类结论，判 QA 失败并回到执行流程总线对应阶段（①/②/③），不属于可恢复缺陷。
 <!-- TASK-008: 场景门禁 -->
 9. 场景门禁：任一页面缺场景判定记录（`state/page_semantics.md`「页面场景」列空缺）、蓝图「页面类型」不在<!-- TASK-010 fix -->「10 类业务场景 + 1 个骨架保留项 `目录页(toc)`」取值域内、蓝图「选型理由」未引用场景判定结论（未回答"为什么选择这种设计"），或同 deck 内同场景页面版式签名雷同，判 QA 失败并回到执行流程总线③/⑤修复，不属于可恢复缺陷；检查项口径见 `references/QA_RUBRIC.md`「场景判定与场景多样性检查」。
+<!-- TASK-016: 终审门禁 -->
+10. 终审门禁：每页生成后必须执行 `references/final-quality-check.md` 四维检查（13 条）+ 二次升级判断，并将结果逐页登记 `state/qa_report.md` 终审节（页码 / 四维结论 / 二次升级命中方式与修改记录 / 重检结论或「无需升级」结论）；二次升级为自动修改回路（命中即改、改后重过四维检查形成闭环），不是建议清单——命中升级方式却只有建议无修改动作、或任一页缺终审登记，判 QA 失败并回到 `references/final-quality-check.md` 对应回路执行，不属于可恢复缺陷。
 
 出口产物：`state/qa_history.jsonl`、`state/qa_report.md`。
 
