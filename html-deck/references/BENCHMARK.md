@@ -129,3 +129,26 @@
 **沉淀落点**:`references/design-scenario-system.md`(新建——10 类 page 级场景 × 五属性量规 + 判定流程 + 反模式);`SKILL.md` 总线③(场景判定落点)与场景门禁;`state/page_semantics.md` 新增「页面场景」列(格式定义于 SKILL.md);`references/QA_RUBRIC.md`「场景判定与场景多样性检查」;`references/html-layout-system.md` §0(<!-- TASK-010 fix -->蓝图「页面类型」取值域对齐 10 类业务场景 + 1 个骨架保留项 `目录页(toc)`);`references/NARRATIVE.md`(deck 级 / page 级两层场景关系);`references/page-logic-patterns.md`(决策流程 ⓪ 步同步场景判定)。
 
 **与本库既有机制的关系**:O 键缩略图总览与 S 键演讲者预览已承担"同源预览"职能,B 键静态降级与打印媒体查询即"基态即终态"的本库实现,本轮不再重复建设;场景路由 JSON 化思路落地为 <!-- TASK-010 fix -->10 类业务场景体系 + 总线③强制判定门禁;"内容决定视觉"落成场景卡五属性量化区间与「禁止全 deck 同模板」反模式,与 TASK-007 输出稳定规则五条(不溢出/不缩字/图不变形)方向一致、互为强化。
+
+---
+
+<!-- TASK-019: 新增——huashu-slides 逐文件对标 + 用户点名「瀑布式全景图演示」机制破解(2026-08-16 落盘) -->
+## 8. huashu-slides(内容→设计→构建工作流 · 风格预设 · 英雄数字 · 瀑布式全景)
+
+**来源**:平台技能库 `huashu-slides`(SKILL.md + references 4 份 + scripts/create_slides.py)。工作流为 Content→Design→Build→Assembly→Polish 五段,Path A(HTML→PPTX)/ Path B(全 AI 图)双路径,内置 18 种风格预设(Snoopy/Manga/Ligne Claire/Neo-Pop/xkcd/Neo-Brutalism + 5 种 Professional Editorial:Pentagram/Fathom/Müller-Brockmann/Build/Takram)。**注意:该技能分发文件中不含瀑布全景实现代码**——用户点名的瀑布式全景效果图来自其 HTML deck 实践(培训长 deck),机制由本库按效果图逆向拆解并原生实现(见「沉淀落点」)。
+
+**学到什么(逐文件)**:
+1. **SKILL.md**:① Assertion-Evidence 标题法——每页标题是"断言句"而非"主题词"(本库 page-logic-patterns 主结论纪律同向);② 5/5/5 密度律(每页 ≤5 块、每块 ≤5 行、每行 ≤5 词组)——与本库场景卡密度档互补,偏口头宣讲场景;③ "mood over layout" 提示词黄金律——先定情绪/氛围词再定版式,与本库 art DNA 四类生成先行的方向一致。
+2. **design-principles.md**:① 60-30-10 配色(主 60 / 辅 30 / 强调 10)——对应本库双色分工的比例化表达;② "distraction test"(逐元素问"删掉观众会漏掉信息吗")——与本库 §8 删除测试同口径;③ "design for disaster"(投影偏色/远距/亮光环境兜底)——呼应本库 V1 对比度阻断项的动机层。
+3. **design-movements.md**:设计运动 → 视觉特征 → 提示词映射表(Bauhaus/Swiss/Brutalism 等),把"风格"从历史名词转成可执行的 token 特征清单——本库主题 signature 元素可借用此表的"特征 → token"写法。
+4. **prompt-templates.md**:风格预设的结构化描述模板(色彩/字体/材质/禁忌四段式),其中 **Fathom 风格的 hero-metric 版式**(超大等宽数字 + 小标签 + 发丝线,数字即图形焦点)直接可迁移到数据页。
+5. **proven-styles-gallery.md / proven-styles-snoopy.md**:成品风格实证库——同一内容在 18 种风格下的成稿对照,证明"风格 = token 组 + 少量 signature 件"而非结构重写,印证本库主题只覆盖 token 不改结构的纪律;Ligne Claire 的"面板克制"(每格一焦点、粗描边平面色)与 Müller-Brockmann 的网格纪律对信息页有直接借鉴。
+6. **scripts/create_slides.py**:PPTX 组装器(HTML 渲染图 → 16:9 幻灯片),Path A 的出口工程化;本库出口是单文件 HTML,不引入,但其"每页先渲染成图再组装"的质检思路(渲染即校验)与 render_deck 预览流同向。
+
+**瀑布式全景机制拆解(用户点名效果)**:效果图特征 = 黑底 + slide 缩略图卡片组成的 3D 微倾"照片墙" + 编号徽章 + 边缘出血。四要素全部可原生化:① 缩略图 = 同源 DOM 深克隆 + `transform:scale()`(承接 §7 baoyu-design 结论,零截图零管线);② 3D 墙 = 容器 `perspective` + 网格 `rotateY(-24deg) rotateX(7deg) scale(1.16)` + 个体 `rotate 1.2deg`;③ 网格 = 固定 2120px 4 列 Grid 居中,`aspect-ratio:16/9` 卡片;④ 入场 = 个体 `scale` 属性 1.5→1 交错淡入(`--i * 28ms`)。跳转不复制导航逻辑:委托既有 O 总览按钮(合成 `keydown('o')` 构建 + 点击对应按钮),导航内核零改动。
+
+**沉淀落点**:`references/panorama-overview.md`(新建——机制拆解 + 交互口径 + 样式 token 纪律 + QA 核对点);`assets/components/base.css`(瀑布全景增量样式块,全 token 派生);`assets/runtime/runtime.js`(G 键全景增量模块,委托跳转);`scripts/render_deck.py`(骨架挂 `.waterfall` 挂载点 + deck-ui 提示加 G);`SKILL.md` 阶段 3 动作 8(运行时特性行挂 G 键);`references/final-quality-check.md` §3(deck 级核对点挂接);本节(§8)登记。
+
+**应用到哪页**(目标 deck 新增 2 处页面级迁移,均模块内部改造、不动布局签名):① **Fathom hero-metric → P17 量产行**(`15 批 × 600 枚` 升级为卡内英雄数字块:52px 等宽大数字 + 标签 + 单位降档,文本零改动);② **焦点即图形面 → P18 中心核**(`.spoke-core` 标题 27px→42px、副题 24px→27px,中心核成为版面最大视觉件,呼应 hub-spoke 的中心→周围空间语义)。
+
+**与本库既有机制的关系**:Assertion-Evidence / 主结论纪律、60-30-10 / 双色分工、distraction test / §8 删除测试、design for disaster / V1 对比度阻断——四组口径互为印证,不重复建设;5/5/5 密度律作为口头宣讲场景的补充档位参考,不改本库场景卡量规;G 键全景与 O 键文字总览互补(视觉检索 vs 标题检索),共用同一跳转路径;风格预设四段式描述法留作后续主题扩展的参考格式。

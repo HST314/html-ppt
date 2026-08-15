@@ -340,8 +340,9 @@ def main():
 </head>
 <body>
 <main class="deck-shell"><div class="deck-stage">{body}</div></main>
-<div class="deck-ui"><span data-current>1</span><span>/</span><span data-total>{len(slides)}</span><span>← → / Space / S / O / F / B</span></div>
+<div class="deck-ui"><span data-current>1</span><span>/</span><span data-total>{len(slides)}</span><span>← → / Space / S / O / F / B / G</span></div>
 <nav class="overview" aria-label="Slides overview"></nav>
+<nav class="waterfall" aria-label="Slides panorama"></nav><!-- TASK-019: 瀑布式全景总览挂载点 -->
 <script>{js}</script>
 </body>
 </html>

@@ -159,3 +159,102 @@
   show(index, true);
   publish();
 })();
+
+/* TASK-019: 瀑布式全景总览（增量模块 · 既有导航内核零改动）
+   机制：DOM 深克隆缩略图（cloneNode + transform:scale 适配 1920×1080 画布）
+   + 3D 倾斜墙（perspective + rotateY/rotateX）+ 交错入场（animation-delay）。
+   跳转：委托既有 .overview 按钮（内核点击处理器原生执行 show(i)），不复制导航逻辑。
+   交互口径见 references/panorama-overview.md。 */
+(function () {
+  const nav = document.querySelector('.waterfall');
+  const overview = document.querySelector('.overview');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  if (!nav || !overview || !slides.length) return;
+  let built = false;
+
+  function build() {
+    if (built) return;
+    built = true;
+    const wall = document.createElement('div');
+    wall.className = 'wf-wall';
+    slides.forEach((slide, i) => {
+      const card = document.createElement('div');
+      card.className = 'wf-card';
+      card.style.setProperty('--i', i);
+      card.setAttribute('role', 'button');
+      const num = document.createElement('span');
+      num.className = 'wf-num';
+      num.textContent = String(i + 1).padStart(2, '0');
+      const clip = document.createElement('div');
+      clip.className = 'wf-clip';
+      const scale = document.createElement('div');
+      scale.className = 'wf-scale';
+      scale.appendChild(slide.cloneNode(true));
+      clip.appendChild(scale);
+      const title = document.createElement('div');
+      title.className = 'wf-title';
+      const h = slide.querySelector('h1,h2');
+      title.textContent = h ? h.textContent : 'Untitled';
+      card.appendChild(num);
+      card.appendChild(clip);
+      card.appendChild(title);
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        gotoSlide(i);
+      });
+      wall.appendChild(card);
+    });
+    const hint = document.createElement('div');
+    hint.className = 'wf-hint';
+    hint.innerHTML = '<b>G / Esc</b> 返回 · 点击卡片跳转';
+    nav.appendChild(wall);
+    nav.appendChild(hint);
+    /* 阻止卡片外空白处点击冒泡到 document 的 prev/next 导航 */
+    nav.addEventListener('click', (e) => { e.stopPropagation(); });
+  }
+
+  function currentIndex() {
+    const el = document.querySelector('[data-current]');
+    const n = parseInt(el && el.textContent, 10);
+    return (n >= 1 && n <= slides.length) ? n - 1 : 0;
+  }
+
+  function markCurrent() {
+    const idx = currentIndex();
+    Array.from(nav.querySelectorAll('.wf-card')).forEach((card, i) => {
+      card.classList.toggle('current', i === idx);
+    });
+  }
+
+  function gotoSlide(i) {
+    /* 若 overview 按钮尚未构建，借内核的 'o' 键处理构建一次，再收回 overview 显示态 */
+    if (!overview.children.length) {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'o' }));
+      overview.classList.remove('is-open');
+    }
+    const btn = overview.children[i];
+    close();
+    if (btn) btn.click(); /* 内核按钮点击 = remove('is-open') + show(i) */
+  }
+
+  function open() {
+    build();
+    overview.classList.remove('is-open'); /* 与 O 总览互斥 */
+    markCurrent();
+    nav.classList.add('open');
+  }
+
+  function close() { nav.classList.remove('open'); }
+
+  document.addEventListener('keydown', (e) => {
+    const k = e.key.toLowerCase();
+    if (k === 'g') {
+      e.preventDefault();
+      nav.classList.contains('open') ? close() : open();
+    } else if (k === 'o' && nav.classList.contains('open')) {
+      close(); /* O 总览开启时关闭全景，保持互斥 */
+    } else if (e.key === 'Escape') {
+      close();
+    }
+  });
+})();
