@@ -26,7 +26,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 <!-- TASK-008: 页面场景识别系统原则 -->
 - 每页生成前必须先完成「页面场景判定」（`references/design-scenario-system.md` 10 类业务场景：封面/章节/品牌价值/产品介绍/项目方案/流程/数据/案例/成果展示/总结），在总线③页面任务定义时连同页面任务一并判定（页面任务决定场景），并回答两问——"这一页属于什么场景？为什么选择这种设计？"；判定结论落 `state/page_semantics.md`「页面场景」列，<!-- TASK-010 fix -->蓝图「页面类型」取值域 = 10 类业务场景 + 1 个骨架保留项 `目录页(toc)`（全库唯一口径，唯一定义见 `references/design-scenario-system.md` §2 注），蓝图「选型理由」必须引用场景判定结论。禁止所有页面使用同一个模板（场景多样性为事前预防，连页签名检查为事后兜底）。deck 级场景（`references/NARRATIVE.md`）与 page 级场景（10 类业务场景）为两层口径，不得混淆或合并。
 - 默认视觉方向：浅色、高亮度、深蓝信息骨架、青蓝辅助、留白充分、轻科技、商业提案感，以下方「默认视觉方向设计 token」为准；未声明视觉方向的项目一律按此执行。
-- 连续多个内容页不得使用完全相同的“横条列表”布局；同一 layout pattern 连页出现时必须使用可辨识变体（布局签名 = pattern + 变体，连页相同即 QA 判失败）。
+- 连续多个内容页不得使用完全相同的“横条列表”布局；同一 layout pattern 连页出现时必须使用可辨识变体（布局签名 = pattern + 变体，连页相同即 QA 判失败）。<!-- TASK-018 fix -->全 deck 内视觉结构相同或高度相似的页面不得超过 2 页（转场页除外；渲染级签名四元组口径与判定见 `references/html-layout-system.md` §9，终审强制检查见 `references/final-quality-check.md` D1）；仅改配色/描边的伪变体不算结构差异。每页结构类符号有产出下限（内容页 ≥2 个实例且 ≥1 个承担方向/关系职能，骨架页 ≥1 个，口径见 `references/visual-symbol-system.md` §0.4；缺符号为终审阻断项）；正文/背景对比度 ≥4.5:1、大标题 ≥3:1，禁止近似色组合（强调件与其承载面 <3:1 或同 token 前后景，终审阻断，见 `references/final-quality-check.md` V1）。
 - 每一步失败都要产出可执行恢复路径，不能卡死。
 
 <!-- TASK-003: 新增整节——执行流程总线（七阶段强制流水线） -->
@@ -75,9 +75,9 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 ### ④ 页面逻辑判断
 
-- 动作：执行「页面语义分析层」五步判断（主结论 / 信息层级 / 逻辑关系 / 视觉结构 / 视觉焦点）与 ≥4 条信息分组。
-- 落盘：`state/page_semantics.md`（与③同表）。
-- 门禁：沿用语义层门禁（IR `decision` 为 `default content role` 判失败等）。
+- 动作：执行「页面语义分析层」五步判断（主结论 / 信息层级 / 逻辑关系 / 视觉结构 / 视觉焦点）与 ≥4 条信息分组。<!-- TASK-018 fix -->同一步内执行**正文语义关系分析**（强制微步骤，`references/design-scenario-system.md` §1A）：除标题外所有正文先判定主导关系（并列 / 递进 / 因果 / 对比 / 总分 / 层级六类），登记「正文关系」列，再按关系 → 结构映射表选正文承载结构；禁止正文未做关系分析直接落结构（防裸列表平铺）。
+- 落盘：`state/page_semantics.md`（与③同表<!-- TASK-018 fix -->，含「正文关系」列）。
+- 门禁：沿用语义层门禁（IR `decision` 为 `default content role` 判失败等<!-- TASK-018 fix -->；内容页缺「正文关系」登记判失败）。
 - 对应原机制：「页面语义分析层（强制）」全节。
 
 ### ⑤ 视觉结构选择
@@ -103,7 +103,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 
 - 缺 `context/brief.md` 场景归类结论 → 判失败（①缺失）。
 - 缺 `state/storyline.md`，或故事线无目录节点/收束两段式登记 → 判失败（②缺失）。
-- `state/page_semantics.md` 任一内容页缺「页面任务」<!-- TASK-008 -->、「页面场景」或五步判断任一字段 → 判失败（③④缺失）。
+- `state/page_semantics.md` 任一内容页缺「页面任务」<!-- TASK-008 -->、「页面场景」或五步判断任一字段 → 判失败（③④缺失）。<!-- TASK-018 fix -->任一内容页缺「正文关系」列登记（`references/design-scenario-system.md` §1A 六类枚举）→ 同判失败（④缺失）。
 - 缺 `state/visual_blueprints.md` 或内容页蓝图九字段空缺（<!-- TASK-007 fix -->口径见 `references/html-layout-system.md` §0）→ 判失败（⑤缺失）。
 - IR 中 `layout_pattern` 与蓝图登记不一致 → 判失败（⑥绕开⑤直接生成）。
 
@@ -281,7 +281,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 <!-- TASK-008: 场景门禁 -->
 9. 场景门禁：任一页面缺场景判定记录（`state/page_semantics.md`「页面场景」列空缺）、蓝图「页面类型」不在<!-- TASK-010 fix -->「10 类业务场景 + 1 个骨架保留项 `目录页(toc)`」取值域内、蓝图「选型理由」未引用场景判定结论（未回答"为什么选择这种设计"），或同 deck 内同场景页面版式签名雷同，判 QA 失败并回到执行流程总线③/⑤修复，不属于可恢复缺陷；检查项口径见 `references/QA_RUBRIC.md`「场景判定与场景多样性检查」。
 <!-- TASK-016: 终审门禁 -->
-10. 终审门禁：每页生成后必须执行 `references/final-quality-check.md` 四维检查（13 条）+ 二次升级判断，并将结果逐页登记 `state/qa_report.md` 终审节（页码 / 四维结论 / 二次升级命中方式与修改记录 / 重检结论或「无需升级」结论）；二次升级为自动修改回路（命中即改、改后重过四维检查形成闭环），不是建议清单——命中升级方式却只有建议无修改动作、或任一页缺终审登记，判 QA 失败并回到 `references/final-quality-check.md` 对应回路执行，不属于可恢复缺陷。
+10. 终审门禁：每页生成后必须执行 `references/final-quality-check.md` 四维检查（<!-- TASK-018 fix -->15 条）+ 二次升级判断，并将结果逐页登记 `state/qa_report.md` 终审节（页码 / 四维结论 / 二次升级命中方式与修改记录 / 重检结论或「无需升级」结论）；二次升级为自动修改回路（命中即改、改后重过四维检查形成闭环），不是建议清单——命中升级方式却只有建议无修改动作、或任一页缺终审登记，判 QA 失败并回到 `references/final-quality-check.md` 对应回路执行，不属于可恢复缺陷。
 
 出口产物：`state/qa_history.jsonl`、`state/qa_report.md`。
 

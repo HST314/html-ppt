@@ -420,3 +420,137 @@
   .loop-ring { display: none; }
   .layout-ascend-4 .timeline-item { margin-top: 0 !important; }
 }
+
+/* ==========================================================================
+   TASK-018: 结构级变体（登记见 references/layout-patterns.md §12.5）
+   五个变体的渲染级签名四元组互异，用于全 deck 结构配额下的差异化落版。
+   另含 hub-left 金面内高亮对比度修复（.hl/.num 金上金字 ≈1:1 → 深墨暗片）。
+   ========================================================================== */
+
+/* ── P9 对比度修复：hub-left 金面中心核内强调件改深墨暗片 ─────────────── */
+.layout-hub-left > .copy .group-card:first-child .hl,
+.layout-hub-left > .copy .group-card:first-child .num {
+  color: var(--on-accent);
+  background: rgba(23, 17, 6, .16);
+  padding: 0 .18em;
+  border-radius: 4px;
+}
+
+/* ── 全宽行：五个新变体的 h2 / 容器 / takeaway 通栏 ──────────────────── */
+.slide.role-two-column.layout-gather-3 > h2,
+.slide.role-two-column.layout-gather-3 > .takeaway,
+.slide.role-two-column.layout-gather-3 > .group-grid,
+.slide.role-two-column.layout-hub-top > h2,
+.slide.role-two-column.layout-hub-top > .takeaway,
+.slide.role-two-column.layout-hub-top > .group-grid,
+.slide.role-two-column.layout-hub-spoke > h2,
+.slide.role-two-column.layout-hub-spoke > .takeaway,
+.slide.role-two-column.layout-hub-spoke > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > h2,
+.slide.role-two-column.layout-checkpoint-3 > .takeaway,
+.slide.role-two-column.layout-checkpoint-3 > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > .cp-note,
+.slide.role-two-column[class*="layout-layers"] > h2,
+.slide.role-two-column[class*="layout-layers"] > .takeaway,
+.slide.role-two-column[class*="layout-layers"] > .copy {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-gather-3,
+.slide.role-two-column.layout-hub-top,
+.slide.role-two-column.layout-hub-spoke,
+.slide.role-two-column.layout-checkpoint-3,
+.slide.role-two-column[class*="layout-layers"] {
+  align-items: start;
+  align-content: center;
+}
+
+/* ── ① 聚合收束 gather-3：上 N 格 + 聚合方向符行 + 底部中心核 ────────── */
+/* TASK-018 fix: 复位 .group-grid 的 auto-fit 列模板，避免子容器被压成等宽列 */
+.layout-gather-3 .gather-rows { display: grid; grid-template-columns: none; gap: 16px; width: 100%; }
+.layout-gather-3 .gather-needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-gather-3 .gather-core {
+  position: relative; max-width: 1080px; width: 100%; margin: 0 auto;
+  text-align: center; border: 2px solid var(--accent); border-top-width: 8px;
+}
+
+/* ── ① 通栏核总分 hub-top：顶部通栏核 + 分叉方向符 + 下双分支 ────────── */
+/* TASK-018 fix: 同上，复位列模板 */
+.layout-hub-top .hub-top-rows { display: grid; grid-template-columns: none; gap: 16px; width: 100%; }
+.layout-hub-top .hub-top-core {
+  position: relative; width: 100%; text-align: center;
+  border: 2px solid var(--accent); border-top-width: 8px; padding: 26px 34px;
+}
+.layout-hub-top .hub-top-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.layout-hub-top .hub-top-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-hub-top .hub-top-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+
+/* ── ① 左右夹核辐射 hub-spoke：左列卡 + 中心核 + 右列卡 + 对向连接符 ─── */
+.layout-hub-spoke .spoke-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 24px; width: 100%; align-items: center;
+}
+.layout-hub-spoke .spoke-col { display: grid; gap: 20px; align-content: center; }
+.layout-hub-spoke .spoke-core {
+  position: relative; text-align: center; padding: 40px 30px;
+  border: 2px solid var(--accent); border-top-width: 8px;
+}
+.layout-hub-spoke .spoke-core::before,
+.layout-hub-spoke .spoke-core::after {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  color: var(--accent-2); font: 900 44px/1 var(--font-sans);
+}
+.layout-hub-spoke .spoke-core::before { content: "→"; left: -56px; }
+.layout-hub-spoke .spoke-core::after { content: "←"; right: -56px; }
+
+/* ── ⑨ 数字焦点锚定 num-anchor：左编号纵列 + 右大数字面板 ────────────── */
+.layout-num-anchor > .copy { grid-column: span 5; }
+.layout-num-anchor > .visual { grid-column: 6 / span 7; }
+.layout-num-anchor .goal-chain { counter-reset: goal; }
+.layout-num-anchor .goal-chain .group-card { position: relative; counter-increment: goal; padding-left: 92px; }
+.layout-num-anchor .goal-chain .group-card::before {
+  content: "0" counter(goal); position: absolute; left: 24px; top: 24px;
+  color: var(--accent-2); font: 900 30px/1 var(--font-mono);
+}
+.layout-num-anchor .num-panel { text-align: center; padding: 40px 34px; }
+.layout-num-anchor .num-big {
+  display: block; color: var(--accent);
+  font: 900 118px/1 var(--font-mono); letter-spacing: -2px;
+}
+.layout-num-anchor .num-big small { font-size: 34px; letter-spacing: 0; }
+.layout-num-anchor .num-note { margin-top: 12px; color: var(--muted); font-size: 22px; }
+.layout-num-anchor .tag-pill-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+.layout-num-anchor .tag-pill {
+  padding: 8px 18px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); font-size: 20px;
+}
+
+/* ── ④ 检查点轴 checkpoint-3：日期徽章节点 + 字符箭头 + 当前锁定焦点 ─── */
+.layout-checkpoint-3 .checkpoint-flow {
+  display: grid; grid-template-columns: minmax(0, 1fr) 62px minmax(0, 1fr) 62px minmax(0, 1fr);
+  gap: 0 8px; width: 100%; margin-top: 40px; align-items: stretch;
+}
+.layout-checkpoint-3 .checkpoint-node { position: relative; padding: 28px 24px; border-top: 5px solid var(--accent-2); }
+.layout-checkpoint-3 .checkpoint-node.is-current {
+  border: 2px solid var(--accent); border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-checkpoint-3 .cp-date {
+  display: inline-block; margin-bottom: 14px; padding: 6px 16px;
+  background: var(--bg); border: 2px solid var(--accent-2); border-radius: 999px;
+  color: var(--accent); font: 900 22px/1.2 var(--font-mono);
+}
+.layout-checkpoint-3 .is-current .cp-date { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.layout-checkpoint-3 .cp-link { display: grid; place-items: center; color: var(--accent-2); font: 900 44px/1 var(--font-sans); }
+.layout-checkpoint-3 .cp-current-tag {
+  position: absolute; right: 18px; top: 16px;
+  color: var(--accent); font: 700 18px/1 var(--font-mono);
+}
+.layout-checkpoint-3 .cp-note { color: var(--muted); font-size: 20px; margin-top: 6px; }
+
+/* ── 打印兼容：新变体连接符静态化 ───────────────────────────────────── */
+@media print {
+  .layout-hub-spoke .spoke-core::before,
+  .layout-hub-spoke .spoke-core::after { position: static; transform: none; }
+}
