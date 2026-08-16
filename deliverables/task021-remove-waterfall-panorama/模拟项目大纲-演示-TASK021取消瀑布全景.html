@@ -1,0 +1,1751 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>以任务精神为礼：航天纪念徽章与任务海报一体化方案</title>
+<style>:root {
+  /* TASK-001 fix: 全 deck 配色统一——原文件存在三处 :root 覆盖(初版青绿 / auto-derived 蓝 / 最终金蓝),
+     合并为唯一权威主题:深藏蓝底 + 金(强调/焦点) + 钢蓝(结构/引导),accent 面文字用 --on-accent 深墨 */
+  --page-bg: #02070d;
+  --bg: #06101d;
+  --surface: rgba(5,15,28,.70);
+  --surface-2: rgba(9,25,44,.82);
+  --text: #f5f7fb;
+  --muted: #aab4c8;
+  --inverse: #ffffff;
+  --accent: #c9a45c;
+  --accent-2: #5f8fbf;
+  --on-accent: #171106;
+  --line: color-mix(in srgb, #c9a45c 30%, transparent);
+  --shadow: 0 24px 70px rgba(0,0,0,.28);
+  --radius: 8px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 86px;
+  --cover-size: 106px;
+  --title-size: 72px;
+  --body-size: 32px;
+  --texture: radial-gradient(circle at 78% 12%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 26%), linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 9%, transparent), transparent 38%);
+  --hairline-opacity: .82;
+}
+.panel, .content-list li, .takeaway {
+  backdrop-filter: blur(18px);
+  box-shadow: 0 22px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.role-cover h1::after, .role-section h2::after {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}
+
+:root {
+  --fs-display: 144px;
+  --fs-cover: var(--cover-size, 112px);
+  --fs-title: var(--title-size, 70px);
+  --fs-subtitle: 40px;
+  --fs-body: var(--body-size, 31px);
+  --fs-support: 22px;
+  --fs-caption: 17px;
+  --lh-tight: .96;
+  --lh-title: 1.05;
+  --lh-body: 1.36;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --grid-gap: 24px;
+}
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.deckline {
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
+}
+
+.outline-number {
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  font: 900 var(--fs-display)/.8 var(--font-mono);
+  opacity: .38;
+}
+
+.slide .watermark-word {
+  position: absolute;
+  right: 50px;
+  bottom: 8px;
+  z-index: 0;
+  max-width: 1000px;
+  color: var(--text);
+  opacity: .045;
+  font: 900 190px/.82 var(--font-sans);
+  text-transform: uppercase;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.accent-bar {
+  width: 6px;
+  min-height: 104px;
+  background: var(--accent);
+}
+
+.quote-deco {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+
+.slide .takeaway {
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  bottom: 48px;
+  z-index: 4;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  border-left: 6px solid var(--accent);
+  border-radius: min(var(--radius), 8px);
+  font: 700 var(--fs-support)/1.22 var(--font-sans);
+}
+
+.caption-bar {
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: 40px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px 18px;
+  color: #fff;
+  background: rgba(0,0,0,.56);
+  backdrop-filter: blur(10px);
+  font: 600 var(--fs-caption)/1.25 var(--font-sans);
+}
+
+.caption-source {
+  color: rgba(255,255,255,.72);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+:root {
+  --deck-width: 1920;
+  --deck-height: 1080;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: #080a0f;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+.deck-shell {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  place-items: center;
+  justify-content: center;
+  align-content: center;
+  background: var(--page-bg, #080a0f);
+}
+.deck-stage {
+  position: relative;
+  width: calc(var(--deck-width) * 1px);
+  height: calc(var(--deck-height) * 1px);
+  transform: scale(var(--deck-scale, 1));
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 30px 90px rgba(0,0,0,.35);
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  padding: var(--slide-padding);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .42s ease, transform .42s ease, filter .42s ease;
+  transform: translateX(46px);
+  overflow: hidden;
+}
+body.transition-fade .slide { transform: none; filter: blur(8px); }
+body.transition-scale-fade .slide { transform: scale(.975); }
+.slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  filter: none;
+}
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--texture);
+  background-size: var(--texture-size, auto);
+  opacity: .92;
+}
+.slide::after {
+  content: "";
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  top: 40px;
+  height: 1px;
+  background: var(--line);
+  opacity: var(--hairline-opacity, .65);
+}
+.slide > * { position: relative; z-index: 1; }
+.slide h1, .slide h2 {
+  margin: 0;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.slide h1 { font-size: var(--fs-cover); line-height: var(--lh-tight); max-width: 1300px; }
+.slide h2 { font-size: var(--fs-title); line-height: var(--lh-title); max-width: 1230px; }
+.subtitle {
+  margin: 30px 0 0;
+  max-width: 1000px;
+  color: var(--muted);
+  font-size: var(--fs-subtitle);
+  line-height: 1.32;
+}
+.eyebrow, .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: var(--accent);
+  font: 800 21px/1 var(--font-mono);
+  text-transform: uppercase;
+}
+.body, .slide p, .slide li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+.muted { color: var(--muted); }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.content-list {
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 18px;
+}
+.content-list li {
+  position: relative;
+  min-height: 54px;
+  padding: 12px 18px 12px 38px;
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.content-list li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+}
+.body {
+  max-width: 1120px;
+  margin: 26px 0 0;
+}
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.project-image-container {
+  isolation: isolate;
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 12px 34px rgba(0,0,0,.16);
+}
+.project-image-container::before,
+.project-image-container::after { display: none !important; }
+.slide figure { margin: 0; }
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: var(--fit, cover);
+}
+.image-frame.screenshot-frame {
+  padding: 34px;
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 30%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 88%, #fff 12%), var(--surface));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.image-frame.screenshot-frame img {
+  border-radius: max(4px, calc(var(--radius) - 2px));
+  box-shadow: 0 20px 46px rgba(0,0,0,.28);
+}
+.role-cover {
+  display: grid;
+  align-content: end;
+  gap: 26px;
+}
+.role-cover .meta-line {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font: 700 24px/1 var(--font-mono);
+}
+.role-cover .outline-number {
+  position: absolute;
+  right: 80px;
+  top: 96px;
+}
+.role-section {
+  display: grid;
+  align-content: center;
+  justify-content: start;
+}
+.role-section h2 { font-size: 118px; max-width: 1320px; }
+.role-section .outline-number {
+  position: absolute;
+  right: 88px;
+  bottom: 86px;
+}
+.role-bullets, .role-table, .role-quote, .role-timeline, .role-kpi, .role-toc, .role-closing {
+  display: grid;
+  align-content: start;
+  padding-bottom: 112px;
+}
+.role-gallery {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding-bottom: 112px;
+}
+.role-gallery .gallery-grid { margin-top: 34px; min-height: 0; }
+.role-bullets .content-list, .role-toc .content-list { max-width: 1180px; }
+.role-two-column, .role-image-side, .role-compare {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 34px;
+  align-items: center;
+  padding-bottom: 92px;
+}
+.role-compare > h2 { grid-column: 1 / -1; }
+.role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
+.role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
+/* TASK-003: 语义信息组的独立视觉区块（组卡片），组标题可见 */
+.group-card {
+  padding: 24px 26px;
+  align-self: start;
+  text-align: left;
+}
+.group-card .group-title {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.group-card .group-list { margin-top: 0; gap: 12px; }
+.group-card .group-list li { min-height: 0; padding-top: 10px; padding-bottom: 10px; }
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin-top: 32px;
+}
+.role-two-column .group-stack { display: grid; gap: 20px; align-content: center; }
+.role-two-column .copy > .group-stack { margin-top: 30px; }
+.visual .image-frame.group-image { height: 220px; margin-bottom: 20px; }
+.role-image-hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 28px 34px;
+  padding-bottom: 92px;
+}
+/* 封面场景图背景：风格检测选出的高权重场景图做全幅底图，蒙版保证文字可读 */
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .55;
+  z-index: 0;
+}
+.cover-bg-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 45%, transparent), color-mix(in srgb, var(--bg) 86%, transparent) 80%),
+    linear-gradient(90deg, color-mix(in srgb, var(--bg) 45%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.hero-image {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.hero-copy {
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  min-width: 0;
+}
+.hero-visual { grid-column: 5 / -1; grid-row: 1 / span 2; min-width: 0; min-height: 0; }
+.role-image-hero > .takeaway { grid-column: 1 / -1; grid-row: 3; }
+.side-image, .visual .image-frame {
+  width: 100%;
+  height: 690px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 34px;
+}
+.gallery-grid.gallery-small { grid-template-rows: minmax(0, 1fr); }
+.gallery-grid .image-frame { min-width: 0; min-height: 0; height: auto; }
+.gallery-grid figure { margin: 0; }
+.gallery-grid .caption-bar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0;
+}
+.gallery-index {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 2;
+  min-width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--accent);
+  font: 900 18px/1 var(--font-mono);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 40px;
+}
+.kpi-card {
+  min-height: 216px;
+  padding: 30px;
+  display: grid;
+  align-content: space-between;
+}
+.kpi-number {
+  color: var(--accent);
+  font: 900 82px/1 var(--font-mono);
+}
+.kpi-card small {
+  color: var(--muted);
+  font: 700 19px/1.3 var(--font-sans);
+}
+.quote-mark {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+.quote-text {
+  font: 800 64px/1.12 var(--font-serif);
+  max-width: 1260px;
+}
+.compare-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 28px;
+}
+.compare-card {
+  min-height: 480px;
+  padding: 38px;
+  overflow: hidden;
+}
+.compare-card .image-frame {
+  height: auto;
+  max-height: 430px;
+}
+.compare-card .image-frame img {
+  height: auto;
+  max-height: 430px;
+}
+.compare-card h3 {
+  margin: 0 0 24px;
+  color: var(--accent);
+  font: 900 36px/1.08 var(--font-sans);
+}
+.timeline-row {
+  margin-top: 54px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.timeline-item {
+  min-height: 264px;
+  padding: 26px;
+  border-top: 7px solid var(--accent);
+}
+.timeline-item .date {
+  color: var(--accent);
+  font: 900 24px/1 var(--font-mono);
+}
+.timeline-item p { font-size: 25px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 34px;
+  font-size: 28px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+th, td { padding: 14px 22px; border-bottom: 1px solid var(--line); text-align: left; }
+th { color: var(--accent); background: color-mix(in srgb, var(--surface) 70%, var(--accent) 12%); }
+tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
+.fx-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .34;
+  pointer-events: none;
+}
+.deck-ui {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--inverse);
+  background: rgba(0,0,0,.72);
+  font: 700 13px/1 system-ui, sans-serif;
+}
+.notes { display: none; }
+.overview {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 42px;
+  overflow: auto;
+  background: rgba(8,10,15,.94);
+}
+.overview.is-open { display: grid; }
+.overview button {
+  height: 154px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  padding: 14px;
+  color: #fff;
+  background: #151923;
+  text-align: left;
+  font: 700 18px/1.25 system-ui, sans-serif;
+  cursor: pointer;
+}
+.overview button span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+@media print {
+  html, body { overflow: visible; background: #fff; }
+  .deck-shell { display: block; width: auto; height: auto; background: #fff; }
+  .deck-stage { transform: none !important; width: 100%; height: auto; box-shadow: none; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
+  .deck-ui, .overview { display: none !important; }
+}
+
+[data-animate] { animation-fill-mode: both; }
+.slide.is-active [data-animate="fade-up"] { animation: fadeUp .55s ease both; }
+.slide.is-active [data-animate="blur-in"] { animation: blurIn .68s ease both; }
+.slide.is-active [data-animate="rise-in"] { animation: riseIn .56s cubic-bezier(.2,.8,.2,1) both; }
+.slide.is-active [data-animate="zoom-pop"] { animation: zoomPop .5s cubic-bezier(.2,.9,.25,1.2) both; }
+.slide.is-active [data-animate="kenburns"] img,
+.slide.is-active [data-animate="kenburns"] { animation: kenburns 11s ease both; }
+.slide.is-active [data-animate="gradient-flow"] { animation: gradientFlow 7s linear infinite; }
+.slide.is-active [data-animate="shimmer-sweep"] { position: relative; overflow: hidden; }
+.slide.is-active [data-animate="shimmer-sweep"]::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -30%;
+  z-index: 4;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  transform: skewX(-16deg);
+  animation: shimmerSweep .72s ease both;
+}
+.slide.is-active [data-animate="stagger-list"] > * {
+  animation: fadeUp .45s ease both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.slide.is-active [data-animate="typewriter"] {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent);
+  animation: typewriter .72s steps(22,end) both, caret .7s steps(1,end) infinite;
+}
+.slide.is-active [data-animate="path-draw"] path,
+.slide.is-active [data-animate="path-draw"] line,
+.slide.is-active [data-animate="path-draw"] polyline {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: pathDraw .75s ease both;
+}
+.slide.is-active [data-animate="ripple-reveal"] { animation: rippleReveal .62s ease both; }
+.slide.is-active table tr {
+  animation: fadeUp .42s ease both;
+  animation-delay: calc(var(--row, 0) * 55ms);
+}
+.slide.is-active .timeline-item {
+  animation: riseIn .48s ease both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+.slide.is-active .compare-card:first-child { animation: splitLeft .55s ease both; }
+.slide.is-active .compare-card:last-child { animation: splitRight .55s ease both; }
+body.no-motion [data-animate],
+body.no-motion [data-animate] > *,
+body.no-motion .slide.is-active * {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+body.no-motion .fx-canvas { display: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(18px); transform: scale(.985); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(46px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes zoomPop {
+  0% { opacity: 0; transform: scale(.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes gradientFlow {
+  from { background-position: 0 0; }
+  to { background-position: 160px 160px; }
+}
+@keyframes shimmerSweep {
+  from { left: -30%; }
+  to { left: 120%; }
+}
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+@keyframes caret {
+  50% { border-color: transparent; }
+}
+@keyframes pathDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes rippleReveal {
+  from { opacity: 0; clip-path: circle(0% at 50% 50%); }
+  to { opacity: 1; clip-path: circle(142% at 50% 50%); }
+}
+@keyframes splitLeft {
+  from { opacity: 0; transform: translateX(-46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes splitRight {
+  from { opacity: 0; transform: translateX(46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ==========================================================================
+   场景基因装饰层 deco.css（v3）
+   从场景图提取的四类设计基因，为主题色自适应（全部从 --accent 派生）：
+     · 奖牌圆环  —— 刻度圆环 + 高亮弧段（封面 / 章节页 / 结尾页）
+     · 数据光柱  —— 发光柱阵，暖色柱 + 冰蓝柱点缀，呼吸动画
+     · 流动动线  —— 渐变 S 曲线贯穿页面（描边动画）
+     · 铭牌矩阵  —— 铭牌条 / 点阵 / 结尾页检查点铭牌卡
+   由 scripts/render_deck.py 生成配套 inline SVG（class="deco"）。
+   ========================================================================== */
+
+:root {
+  --ho: var(--accent, #ff9572);
+  --ho-deep: color-mix(in srgb, var(--accent, #ff9572) 72%, #c03505);
+  --ho-gold: color-mix(in srgb, var(--accent, #ff9572) 45%, #ffd76a);
+  --ho-ice: #8fc1ff;
+}
+
+.deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* TASK-013 fix: artDrift 动画（scale 1.01→1.035 + translate）使背景图四边越出页界，
+   越界部分会向上计入 .slide 的 scrollable overflow（scrollHeight/scrollWidth 实测 +5/+6）。
+   增加 .project-art-frame 裁切层（overflow:hidden）截断溢出传播，动画本身不变 */
+.project-art-frame { position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+.project-art-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:.82; z-index:0; animation:artDrift 18s ease-in-out infinite alternate; }
+.project-art-toc, .project-art-bullets, .project-art-two-column, .project-art-image-side, .project-art-gallery, .project-art-table, .project-art-kpi, .project-art-quote, .project-art-compare, .project-art-timeline { opacity:.58; }
+.project-art-section { opacity:.76; }
+.slide > .project-art-frame ~ *, .slide > .project-art-bg ~ * { z-index:2; } /* TASK-013 fix: art 层已包进 frame，兄弟层级选择器同步 */
+.slide:has(.project-art-bg) .panel, .slide:has(.project-art-bg) .content-list li, .slide:has(.project-art-bg) .takeaway { background:rgba(5,15,28,.72); border-color:rgba(211,163,82,.25); }
+.slide:has(.project-art-bg)::after { background:linear-gradient(90deg,transparent,rgba(222,178,95,.5),transparent); }
+@keyframes artDrift { from { transform:scale(1.01) translate3d(-4px,0,0); } to { transform:scale(1.035) translate3d(7px,-4px,0); } }
+body.no-motion .project-art-bg { animation:none; }
+
+/* SVG 内部元素配色（currentColor / stop-color 通过 CSS 注入，保证主题自适应） */
+.deco { color: var(--ho); }
+.deco-ring-outer { stroke: color-mix(in srgb, var(--ho-gold) 55%, transparent); stroke-width: 1; fill: none; }
+.deco-ring-mid { stroke: color-mix(in srgb, var(--ho) 16%, transparent); stroke-width: 1.5; fill: none; }
+.deco-ring-tick { stroke: color-mix(in srgb, var(--ho) 30%, transparent); stroke-width: 2; fill: none; }
+.deco-ring-hi { stroke: var(--ho); stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.deco-path-ghost { stroke: color-mix(in srgb, var(--ho) 20%, transparent); stroke-width: 1.5; fill: none; }
+.deco-dot { fill: var(--ho-gold); }
+.deco-stem { stroke: color-mix(in srgb, var(--ho) 62%, #ffffff 14%); stroke-width: 2; }
+.deco-stem-ice { stroke: rgba(143,193,255,.6); stroke-width: 2; }
+.deco-tip-warm { fill: color-mix(in srgb, var(--ho) 78%, #ffffff 22%); }
+.deco-tip-ice { fill: #a9d0ff; }
+.deco-plaque { fill: color-mix(in srgb, var(--ho) 10%, transparent); stroke: color-mix(in srgb, var(--ho) 40%, transparent); }
+.deco-plaque-on { fill: color-mix(in srgb, var(--ho) 85%, transparent); }
+.deco-plaque-line { stroke: rgba(255,220,200,.5); stroke-width: 3; stroke-linecap: round; }
+.deco-plaque-line-on { stroke: rgba(120,45,18,.6); stroke-width: 3; stroke-linecap: round; }
+.deco-quiet-path { stroke: color-mix(in srgb, var(--ho) 12%, transparent); stroke-width: 2; fill: none; }
+.deco-quiet-path2 { stroke: color-mix(in srgb, var(--ho) 6%, transparent); stroke-width: 1.5; fill: none; }
+.deco-quiet-dot { fill: color-mix(in srgb, var(--ho) 9%, transparent); }
+.deco-quiet-stem { stroke: color-mix(in srgb, var(--ho) 18%, transparent); stroke-width: 2; }
+.deco-quiet-tip { fill: color-mix(in srgb, var(--ho) 50%, transparent); }
+.deco-quiet-tip-ice { fill: rgba(143,193,255,.55); }
+
+/* 渐变 stop 颜色（inline SVG 的 <stop> 通过 class 上色） */
+.gs0 { stop-color: var(--ho-deep); }
+.gs1 { stop-color: var(--ho); }
+.gs2 { stop-color: var(--ho-gold); }
+.gs-warm0 { stop-color: color-mix(in srgb, var(--ho) 66%, #ffffff 34%); stop-opacity: .9; }
+.gs-warm1 { stop-color: var(--ho); stop-opacity: 0; }
+.gs-ice0 { stop-color: #cfe4ff; stop-opacity: .9; }
+.gs-ice1 { stop-color: var(--ho-ice); stop-opacity: 0; }
+
+/* —— 封面排版强化 —— */
+.role-cover .eyebrow { letter-spacing: .34em; }
+.role-cover h1 .h1-line { display: block; }
+.role-cover h1 .h1-em {
+  display: block;
+  margin-top: 20px;
+  font-size: .6em;
+  letter-spacing: .1em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 52%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.role-cover h1::after {
+  width: 380px;
+  height: 3px;
+  margin-top: 32px;
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+.role-cover .subtitle { font-size: 30px; color: color-mix(in srgb, var(--text) 72%, transparent); }
+.role-cover .meta-line span {
+  border: 1px solid color-mix(in srgb, var(--ho) 38%, transparent);
+  border-radius: 6px;
+  padding: 12px 20px;
+  background: color-mix(in srgb, var(--ho) 8%, transparent);
+  font-size: 20px;
+  letter-spacing: .12em;
+}
+.role-cover .outline-number { top: 120px; right: 110px; opacity: .5; }
+
+/* 动线描边与光柱呼吸动画 */
+.deco-path { stroke-dasharray: 2400; stroke-dashoffset: 2400; fill: none; stroke-width: 3.5; stroke-linecap: round; }
+.slide.is-active .deco-path { animation: decoDraw 1.8s .35s cubic-bezier(.6,.05,.3,1) forwards; }
+@keyframes decoDraw { to { stroke-dashoffset: 0; } }
+.deco-tip { animation: tipPulse 3.4s ease-in-out infinite; }
+@keyframes tipPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+body.no-motion .deco-path { stroke-dashoffset: 0; animation: none; }
+body.no-motion .deco-tip { animation: none; }
+
+/* 章节下划线统一为主题渐变（避免与 accent-2 撞色） */
+.role-section h2::after, .role-section .deckline {
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+
+/* —— 结尾页：检查点做成铭牌卡 —— */
+.role-closing .content-list {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 26px;
+  max-width: 1500px;
+  margin-top: 48px;
+}
+.role-closing .content-list li {
+  min-height: 168px;
+  padding: 26px 28px;
+  border-left: 0;
+  border-top: 3px solid var(--ho);
+  border-radius: 4px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ho) 14%, transparent), color-mix(in srgb, var(--ho) 5%, transparent));
+  box-shadow: 0 18px 44px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);
+  font-size: 27px;
+  line-height: 1.5;
+}
+.closing-echo {
+  margin-top: 54px;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 55%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.closing-echo small {
+  display: block;
+  margin-top: 16px;
+  font: 700 19px/1 var(--font-mono);
+  letter-spacing: .4em;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+}
+
+/* ==========================================================================
+   TASK-009: 视觉布局决策引擎——layout-* 变体样式层
+   每个变体对应 references/layout-patterns.md 中 pattern 的可辨识空间构图；
+   由 render_deck.py 按 IR 的 layout_variant 输出 layout-<variant> 类。
+   纯 CSS 实现，print 兼容，无 JS 依赖。
+   ========================================================================== */
+
+/* ── 通栏格阵/链式容器（render 单容器分支）────────────────────────────── */
+/* TASK-009 fix: role-two-column 父级是 12 列 grid，单容器分支（grid-系、chain-系、
+   loop-系、ascend-系）的 h2/容器/takeaway 必须 span 全宽，否则卡片会被压扁在左列出现竖排文字。
+   直接用具体类名而非属性选择器，确保所有浏览器一致匹配。
+   注意：本注释内严禁出现星号紧跟斜杠的序列，否则会提前闭合注释并作废下方规则。 */
+.slide.role-two-column.layout-grid-2x2 > h2,
+.slide.role-two-column.layout-grid-2x2 > .takeaway,
+.slide.role-two-column.layout-grid-2x2 > p,
+.slide.role-two-column.layout-grid-2x2 > .group-grid,
+.slide.role-two-column.layout-grid-2x3 > h2,
+.slide.role-two-column.layout-grid-2x3 > .takeaway,
+.slide.role-two-column.layout-grid-2x3 > p,
+.slide.role-two-column.layout-grid-2x3 > .group-grid,
+.slide.role-two-column.layout-chain-3 > h2,
+.slide.role-two-column.layout-chain-3 > .takeaway,
+.slide.role-two-column.layout-chain-3 > p,
+.slide.role-two-column.layout-chain-3 > .group-grid,
+.slide.role-two-column.layout-chain-4 > h2,
+.slide.role-two-column.layout-chain-4 > .takeaway,
+.slide.role-two-column.layout-chain-4 > p,
+.slide.role-two-column.layout-chain-4 > .group-grid,
+.slide.role-two-column.layout-loop-3 > h2,
+.slide.role-two-column.layout-loop-3 > .takeaway,
+.slide.role-two-column.layout-loop-3 > p,
+.slide.role-two-column.layout-loop-3 > .loop-stage,
+.slide.role-two-column.layout-loop-4 > h2,
+.slide.role-two-column.layout-loop-4 > .takeaway,
+.slide.role-two-column.layout-loop-4 > p,
+.slide.role-two-column.layout-loop-4 > .loop-stage,
+.slide.role-two-column.layout-ascend-4 > h2,
+.slide.role-two-column.layout-ascend-4 > .takeaway,
+.slide.role-two-column.layout-ascend-4 > p,
+.slide.role-two-column.layout-ascend-4 > .group-stack,
+.slide.role-two-column.layout-ascend-4 > .group-grid {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-grid-2x2,
+.slide.role-two-column.layout-grid-2x3,
+.slide.role-two-column.layout-chain-3,
+.slide.role-two-column.layout-chain-4,
+.slide.role-two-column.layout-loop-3,
+.slide.role-two-column.layout-loop-4,
+.slide.role-two-column.layout-ascend-4 {
+  align-items: start;
+  align-content: center;
+}
+.group-grid.layout-canvas {
+  margin-top: 46px;
+  align-content: center;
+  width: 100%;
+}
+
+/* ── ⑦ 矩阵：grid-2x2 ───────────────────────────────────────────────── */
+.layout-grid-2x2 .group-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x2 .group-card {
+  position: relative;
+  min-height: 330px;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x2 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+
+/* ── ⑦ 矩阵：grid-2x3（两组卡片通栏堆叠，组内条目 3 列成阵）──────────── */
+.layout-grid-2x3 .group-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x3 .group-card {
+  position: relative;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x3 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+.layout-grid-2x3 .group-card .group-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.layout-grid-2x3 .group-card .group-list li {
+  min-height: 0;
+}
+
+/* ── ⑨ 非对称图文：asym-cards（5:7 非对称，首卡为焦点块）────────────── */
+.layout-asym-cards > .copy { grid-column: span 5; }
+.layout-asym-cards > .visual { grid-column: 6 / span 7; }
+.layout-asym-cards > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-asym-cards > .copy .group-card:first-child .group-title {
+  font-size: 31px;
+}
+
+/* ── ⑨ 非对称图文：anchor-right（右栏焦点锚定，镜像 7:5）────────────── */
+.layout-anchor-right > .copy { grid-column: span 5; }
+.layout-anchor-right > .visual { grid-column: 6 / span 7; }
+.layout-anchor-right > .visual.panel {
+  border: 2px solid var(--accent-2);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ⑨ 非对称图文：cause-effect（左因右果，果区青蓝强调 + 方向箭头）─── */
+.layout-cause-effect > .visual.panel {
+  position: relative;
+  border: 2px solid var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 8%, var(--surface));
+}
+.layout-cause-effect > .visual.panel::before {
+  content: "→";
+  position: absolute;
+  left: -64px;
+  top: 46%;
+  color: var(--accent-2);
+  font: 900 58px/1 var(--font-sans);
+}
+.layout-cause-effect > .visual.panel .group-title {
+  color: var(--accent);
+  font-size: 31px;
+}
+
+/* ── ① 中心节点+分支：hub-left（左栏金色大中心核，右栏分支）────────── */
+.layout-hub-left > .copy .group-card:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+}
+/* TASK-001 fix: 中心核金面文字改 --on-accent 深墨(原白字 2.4:1 不可读) */
+.layout-hub-left > .copy .group-card:first-child .group-title {
+  color: var(--on-accent);
+  font-size: 32px;
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li {
+  color: var(--on-accent);
+  background: rgba(23, 17, 6, .08);
+  border-left-color: rgba(23, 17, 6, .30);
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li::before {
+  background: var(--accent-2);
+}
+
+/* ── ① 中心节点+分支：hub-radiate（中心核光晕 + 分支辐射线）────────── */
+.layout-hub-radiate > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow), 0 0 0 12px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-hub-radiate > .copy .group-card:first-child .group-title {
+  font-size: 32px;
+}
+.layout-hub-radiate > .visual.panel {
+  position: relative;
+  border-left: 4px solid var(--accent-2);
+}
+.layout-hub-radiate > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 20%;
+  bottom: 20%;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent-2) 35%, transparent));
+}
+
+/* ── ① 中心节点+分支：hub-return（回授中心，闭环逻辑的替代承载）────── */
+.layout-hub-return > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 10px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-hub-return > .visual.panel {
+  position: relative;
+}
+.layout-hub-return > .visual.panel::after {
+  content: "↺";
+  position: absolute;
+  right: 18px;
+  top: 10px;
+  color: var(--accent-2);
+  font: 900 54px/1 var(--font-sans);
+  opacity: .8;
+}
+
+/* ── ⑤ 对比构图：vs-split（中央分界 + VS 徽标）────────────────────── */
+.layout-vs-split > .visual.panel {
+  position: relative;
+}
+.layout-vs-split > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 6%;
+  bottom: 6%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+.layout-vs-split > .visual.panel::after {
+  content: "VS";
+  position: absolute;
+  left: -47px;
+  top: 44%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--on-accent); /* TASK-001 fix: VS 徽标金面改深墨字 */
+  border-radius: 50%;
+  font: 900 19px/1 var(--font-mono);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .35);
+}
+
+/* ── ② 三模块闭环：loop-3/loop-4（环形 SVG 回授箭头 + 节点 + 中心主张）─ */
+.loop-stage {
+  position: relative;
+  height: 660px;
+  margin-top: 14px;
+}
+.loop-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent-2);
+}
+.loop-arc {
+  stroke: currentColor;
+  stroke-width: 4;
+  fill: none;
+  opacity: .85;
+}
+.loop-arrow {
+  fill: var(--accent-2);
+}
+.loop-node {
+  position: absolute;
+  z-index: 2;
+  width: 450px;
+  padding: 20px 26px;
+  border-top: 4px solid var(--accent);
+}
+.loop-node p {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.42;
+}
+.loop-node-1 { left: 3%; top: 3%; }
+.loop-node-2 { right: 3%; top: 3%; }
+.loop-node-3 { left: 50%; bottom: 1%; transform: translateX(-50%); }
+.loop-node-4 { right: 5%; bottom: 16%; }
+/* TASK-001 fix: 提权 .slide .panel.loop-claim(0,3,0 且位置靠后),压过 .slide:has(.project-art-bg) .panel 的深色底,
+   否则中心主张金面被吞、深墨字不可见 */
+.slide .panel.loop-claim {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  max-width: 560px;
+  padding: 26px 44px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.3;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, .35);
+}
+
+/* ── ③ 路径式流程：ascend-4（阶梯上行，最高级为焦点）───────────────── */
+.layout-ascend-4 .timeline-row {
+  margin-top: 30px;
+  padding-bottom: 116px;
+}
+.layout-ascend-4 .timeline-item:nth-child(1) { margin-top: 108px; }
+.layout-ascend-4 .timeline-item:nth-child(2) { margin-top: 72px; }
+.layout-ascend-4 .timeline-item:nth-child(3) { margin-top: 36px; }
+.layout-ascend-4 .timeline-item:nth-child(4) {
+  margin-top: 0;
+  border-top-color: var(--accent-2);
+  border-top-width: 10px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ③ 路径式流程：chain-3（横向链式三节点 + 连接线 + 编号徽标）────── */
+.layout-chain-3 .group-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  position: relative;
+  margin-top: 84px;
+  counter-reset: chain;
+}
+.layout-chain-3 .group-grid::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: -36px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.layout-chain-3 .group-grid::after {
+  content: "";
+  position: absolute;
+  right: calc(5% - 16px);
+  top: -44px;
+  border: 10px solid transparent;
+  border-left: 16px solid var(--accent-2);
+}
+.layout-chain-3 .group-card {
+  position: relative;
+  min-height: 300px;
+  counter-increment: chain;
+}
+.layout-chain-3 .group-card::before {
+  content: "0" counter(chain);
+  position: absolute;
+  top: -52px;
+  left: 22px;
+  padding: 4px 14px;
+  background: var(--bg); /* TASK-001 fix: 原白底胶囊金字对比度不足,改深底金字 */
+  border: 2px solid var(--accent-2);
+  border-radius: 999px;
+  color: var(--accent);
+  font: 900 20px/1.2 var(--font-mono);
+}
+
+/* ── ⑫ 层级空间结构：layers（分层条 L1…Ln，自上而下递缩）───────────── */
+[class*="layout-layers"] .group-stack {
+  counter-reset: layer;
+}
+[class*="layout-layers"] .group-card {
+  position: relative;
+  counter-increment: layer;
+  border-left: 6px solid var(--accent);
+}
+[class*="layout-layers"] .group-card::before {
+  content: "L" counter(layer);
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(2) { margin-left: 34px; }
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(3) { margin-left: 68px; }
+
+/* ==========================================================================
+   TASK-001: 文本内部升级 + 符号视觉引导(对标 4 家外部 skill,结论见 skill references/BENCHMARK.md)
+   .hl 关键词高亮 / .num 数据突出(规则:references/page-logic-patterns.md 第 17 节)
+   ========================================================================== */
+.hl { color: var(--accent); font-weight: 800; }
+.num { color: var(--accent); font-family: var(--font-mono); font-weight: 900; white-space: nowrap; }
+
+/* 组标题引导符:钢蓝小方块标记信息组入口(符号体系①:分组标记) */
+.group-card .group-title::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 14px;
+  background: var(--accent-2);
+  vertical-align: 1px;
+}
+/* hub-left 中心核金面上标记用深墨,保持可读 */
+.layout-hub-left > .copy .group-card:first-child .group-title::before { background: var(--on-accent); }
+
+/* takeaway 结论条前置符号(符号体系②:结论锚点) */
+.takeaway::before {
+  content: "◆";
+  color: var(--accent-2);
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+/* 目录页:编号徽章 01–04(大编号徽章,对标 autoppt) */
+.role-toc .content-list { counter-reset: toc; }
+.role-toc .content-list li { counter-increment: toc; padding-left: 96px; }
+.role-toc .content-list li::before {
+  content: "0" counter(toc);
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  height: auto;
+  background: transparent;
+  color: var(--accent-2);
+  font: 900 30px/1 var(--font-mono);
+}
+.role-toc .toc-desc {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+/* 章节页:过渡句(候选方向 candidate-5「极简信号」——标题 + 一句过渡) */
+.role-section .section-lede {
+  margin: 34px 0 0;
+  max-width: 1100px;
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+  font-size: 30px;
+  line-height: 1.4;
+}
+
+/* 阶梯流程页:STEP 编号徽章(强化递进阅读顺序) */
+.layout-ascend-4 .timeline-row { counter-reset: step; }
+.layout-ascend-4 .timeline-item { counter-increment: step; position: relative; }
+.layout-ascend-4 .timeline-item::after {
+  content: "0" counter(step);
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+
+/* ── ⑨ 非对称图文:ed-strip(编辑式动线条,TASK-001 新变体,登记见 skill references/layout-patterns.md)── */
+.slide.role-two-column.layout-ed-strip > h2,
+.slide.role-two-column.layout-ed-strip > .takeaway,
+.slide.role-two-column.layout-ed-strip > .ed-flow,
+.slide.role-two-column.layout-ed-strip > .ed-brand {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-ed-strip { align-items: start; align-content: center; }
+.ed-flow { display: grid; gap: 18px; margin-top: 40px; counter-reset: ed; }
+.ed-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: 110px 320px minmax(0, 1fr);
+  align-items: center;
+  gap: 26px;
+  padding: 24px 30px;
+  counter-increment: ed;
+}
+.ed-strip::before {
+  content: "0" counter(ed);
+  color: var(--accent-2);
+  font: 900 44px/1 var(--font-mono);
+}
+.ed-strip .ed-name { color: var(--accent); font: 900 30px/1.25 var(--font-sans); }
+.ed-strip .ed-text { font-size: 25px; line-height: 1.4; margin: 0; }
+.ed-flow .ed-strip:not(:last-child)::after {
+  content: "↓";
+  position: absolute;
+  left: 52px;
+  bottom: -24px;
+  color: var(--accent-2);
+  font: 900 24px/1 var(--font-sans);
+  opacity: .8;
+}
+.ed-brand {
+  margin-top: 30px;
+  padding: 22px 30px;
+  border-left: 6px solid var(--accent-2);
+  font-size: 25px;
+  line-height: 1.4;
+}
+
+/* ── 打印兼容:变体的绝对定位元素在打印下保持静态流 ─────────────────── */
+@media print {
+  .loop-stage { height: auto; }
+  .loop-node, .slide .panel.loop-claim { position: static; transform: none; margin: 12px 0; width: auto; } /* TASK-001 fix: 提权同步,打印下中心主张回静态流 */
+  .loop-ring { display: none; }
+  .layout-ascend-4 .timeline-item { margin-top: 0 !important; }
+}
+
+/* TASK-001 fix: 原此处两层 :root 覆盖(auto-derived 蓝 #123a6b/#1fa8d8 与最终金蓝)已合并入头部唯一 :root;
+   下列修饰规则同步改为 token 派生,清除硬编码蓝(原 rgba(48,149,242,*) 与金主题撞色) */
+.slide h2, .eyebrow, .kpi-number { text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 22%, transparent); }
+.panel, .content-list li { border-color: color-mix(in srgb, var(--accent) 26%, transparent); }
+.gallery-index { background: var(--accent); color: var(--on-accent); }
+
+/* TASK-017: 首尾页融合背景对比度配套 */
+.role-cover,.role-closing{background:var(--bg);--ho:var(--accent);--ho-deep:color-mix(in srgb,var(--accent) 72%,#c03505);--ho-gold:color-mix(in srgb,var(--accent) 45%,#ffd76a);}
+</style>
+
+<style>
+/* TASK-018: 用户反馈根治——结构级变体（渲染级结构签名差异化）+ P9 对比度修复 + 符号引导补齐
+   登记口径: skill references/layout-patterns.md §12.5；规则: html-layout-system.md §9 / final-quality-check.md V1/V5/D1/L4 */
+
+/* P9 对比度修复: hub-left 金面中心核内 .hl/.num 改深墨暗片(原金字压金面对比度≈1:1) */
+.layout-hub-left > .copy .group-card:first-child .hl,
+.layout-hub-left > .copy .group-card:first-child .num {
+  color: var(--on-accent);
+  background: rgba(23, 17, 6, .16);
+  padding: 0 .18em;
+  border-radius: 4px;
+}
+/* P9 符号补齐: 金核→分支面板的方向连接符 */
+.layout-hub-left > .visual.panel { position: relative; }
+.layout-hub-left > .visual.panel::before {
+  content: "→"; position: absolute; left: -58px; top: 46%;
+  color: var(--accent-2); font: 900 52px/1 var(--font-sans);
+}
+
+/* 全宽行: 新变体的 h2 / 容器 / takeaway / 说明条 通栏 */
+.slide.role-two-column.layout-gather-3 > h2,
+.slide.role-two-column.layout-gather-3 > .takeaway,
+.slide.role-two-column.layout-gather-3 > .group-grid,
+.slide.role-two-column.layout-hub-top > h2,
+.slide.role-two-column.layout-hub-top > .takeaway,
+.slide.role-two-column.layout-hub-top > .group-grid,
+.slide.role-two-column.layout-hub-spoke > h2,
+.slide.role-two-column.layout-hub-spoke > .takeaway,
+.slide.role-two-column.layout-hub-spoke > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > h2,
+.slide.role-two-column.layout-checkpoint-3 > .takeaway,
+.slide.role-two-column.layout-checkpoint-3 > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > .cp-note,
+.slide.role-two-column[class*="layout-layers"] > h2,
+.slide.role-two-column[class*="layout-layers"] > .takeaway,
+.slide.role-two-column[class*="layout-layers"] > .copy {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-gather-3,
+.slide.role-two-column.layout-hub-top,
+.slide.role-two-column.layout-hub-spoke,
+.slide.role-two-column.layout-checkpoint-3,
+.slide.role-two-column[class*="layout-layers"] {
+  align-items: start;
+  align-content: center;
+}
+
+/* ① 聚合收束 gather-3: 上 3 格 + 聚合方向符行 + 底部中心核 */
+.layout-gather-3 .gather-rows { display: grid; grid-template-columns: none; gap: 14px; width: 100%; }
+.layout-gather-3 .gather-needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-gather-3 .gather-core {
+  position: relative; max-width: 1080px; width: 100%; margin: 0 auto;
+  text-align: center; border: 2px solid var(--accent); border-top-width: 8px;
+}
+
+/* ① 通栏核总分 hub-top: 顶部通栏核 + 分叉方向符 + 下双分支 */
+.layout-hub-top .hub-top-rows { display: grid; grid-template-columns: none; gap: 14px; width: 100%; }
+.layout-hub-top .hub-top-core {
+  position: relative; width: 100%; text-align: center;
+  border: 2px solid var(--accent); border-top-width: 8px; padding: 26px 34px;
+}
+.layout-hub-top .hub-top-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.layout-hub-top .hub-top-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-hub-top .hub-top-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+
+/* ① 左右夹核辐射 hub-spoke: 左列卡 + 中心核 + 右列卡 + 对向连接符 */
+.layout-hub-spoke .spoke-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 24px; width: 100%; align-items: center;
+}
+.layout-hub-spoke .spoke-col { display: grid; gap: 20px; align-content: center; }
+.layout-hub-spoke .spoke-core {
+  position: relative; text-align: center; padding: 40px 30px;
+  border: 2px solid var(--accent); border-top-width: 8px;
+}
+.layout-hub-spoke .spoke-core::before,
+.layout-hub-spoke .spoke-core::after {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  color: var(--accent-2); font: 900 44px/1 var(--font-sans);
+}
+.layout-hub-spoke .spoke-core::before { content: "→"; left: -56px; }
+.layout-hub-spoke .spoke-core::after { content: "←"; right: -56px; }
+
+/* ⑨ 数字焦点锚定 num-anchor: 左编号纵列 + 右大数字面板 */
+.layout-num-anchor > .copy { grid-column: span 5; }
+.layout-num-anchor > .visual { grid-column: 6 / span 7; }
+.layout-num-anchor .goal-chain { counter-reset: goal; }
+.layout-num-anchor .goal-chain .group-card { position: relative; counter-increment: goal; padding-left: 92px; }
+.layout-num-anchor .goal-chain .group-card::before {
+  content: "0" counter(goal); position: absolute; left: 24px; top: 24px;
+  color: var(--accent-2); font: 900 30px/1 var(--font-mono);
+}
+.layout-num-anchor .num-panel { text-align: center; padding: 40px 34px; }
+.layout-num-anchor .num-big {
+  display: block; color: var(--accent);
+  font: 900 118px/1 var(--font-mono); letter-spacing: -2px;
+}
+.layout-num-anchor .num-big small { font-size: 34px; letter-spacing: 0; }
+.layout-num-anchor .num-note { margin-top: 12px; color: var(--muted); font-size: 22px; }
+.layout-num-anchor .panel-label {
+  margin-top: 28px; color: var(--accent-2);
+  font: 700 18px/1 var(--font-mono); letter-spacing: 3px;
+}
+.layout-num-anchor .tag-pill-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 14px; }
+.layout-num-anchor .tag-pill {
+  padding: 8px 18px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); font-size: 20px;
+}
+
+/* ⑤ 对比页维度标签(对位标签符号) */
+.dim-tag {
+  display: inline-block; margin-right: 10px; padding: 2px 10px;
+  border: 1px solid color-mix(in srgb, var(--accent-2) 55%, transparent); border-radius: 4px;
+  color: var(--accent-2); font: 700 17px/1.4 var(--font-mono);
+}
+
+/* ④ 检查点轴 checkpoint-3: 日期徽章节点 + 字符箭头 + 当前锁定焦点 */
+.layout-checkpoint-3 .checkpoint-flow {
+  display: grid; grid-template-columns: minmax(0, 1fr) 62px minmax(0, 1fr) 62px minmax(0, 1fr);
+  gap: 0 8px; width: 100%; margin-top: 34px; align-items: stretch;
+}
+.layout-checkpoint-3 .checkpoint-node { position: relative; padding: 28px 24px; border-top: 5px solid var(--accent-2); }
+.layout-checkpoint-3 .checkpoint-node.is-current {
+  border: 2px solid var(--accent); border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-checkpoint-3 .cp-date {
+  display: inline-block; margin-bottom: 14px; padding: 6px 16px;
+  background: var(--bg); border: 2px solid var(--accent-2); border-radius: 999px;
+  color: var(--accent); font: 900 22px/1.2 var(--font-mono);
+}
+.layout-checkpoint-3 .is-current .cp-date { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.layout-checkpoint-3 .cp-link { display: grid; place-items: center; color: var(--accent-2); font: 900 44px/1 var(--font-sans); }
+.layout-checkpoint-3 .cp-current-tag {
+  position: absolute; right: 18px; top: 16px;
+  color: var(--accent); font: 700 18px/1 var(--font-mono);
+}
+.layout-checkpoint-3 .cp-note { color: var(--muted); font-size: 20px; margin-top: 6px; }
+
+/* 打印兼容: 新变体连接符静态化 */
+@media print {
+  .layout-hub-spoke .spoke-core::before,
+  .layout-hub-spoke .spoke-core::after { position: static; transform: none; }
+}
+</style>
+<style>
+/* ===== TASK-019: 页面级借鉴① P17 Fathom 英雄数字（仅作用于本页 li，文本零改动） ===== */
+.layout-chain-3 .content-list li.hero-metric{display:flex;align-items:center;justify-content:space-between;
+  gap:24px;min-height:96px;padding:16px 24px 16px 38px;border-left:1px solid var(--line)}
+.layout-chain-3 .content-list li.hero-metric::before{top:50%;transform:translateY(-50%)}
+.layout-chain-3 .hero-metric .hm-label{font-size:22px;font-weight:700;color:var(--text);white-space:nowrap}
+.layout-chain-3 .hero-metric .hm-num{display:flex;align-items:baseline;gap:.28em;font-family:"SF Mono","Cascadia Mono",Consolas,monospace;
+  color:var(--accent);white-space:nowrap}
+.layout-chain-3 .hero-metric .hm-num .num{font-size:52px;font-weight:900;line-height:1}
+.layout-chain-3 .hero-metric .hm-num .hm-u{font-size:24px;font-weight:800;color:var(--muted)}
+
+/* ===== TASK-019: 页面级借鉴② P18 核心标题字号强化（焦点即图形面） ===== */
+.layout-hub-spoke .spoke-core .group-title{font-size:42px}
+</style>
+</head>
+<body>
+<main class="deck-shell"><div class="deck-stage"><section class="slide role-cover" data-role="cover" data-page="1"><div class="project-art-frame"><img class="project-art-bg project-art-cover" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjkzIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjEiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik00MzkgNzA4IEw4NTggODQ3IiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTMiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0zNzMgMjAzIEw2MDYgMjc2IiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTEiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xOTAyIDc5NiBMMjE4NCA5NTgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4yMCIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTExNzUgOTc4IEwxNDUwIDEwNTMiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTgwIDM0OCBMMjYwIDQ0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzM2IDQzNSBMNjUyIDQ3MSIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTY5OSA3OSBMMjI1OCAxOTgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wOSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTg5OCAzNiBMMTQxNiAxNTQiIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4wOCIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTIxNCA2MjcgTDQwOCA3MDEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xMiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE3MDMgNjExIEwyMTA2IDczNCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMjU2IDU1MiBMNjUyIDY2OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTAyIDg0NSBMNzA0IDg4NyIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEyIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTg3MSAyNDQgTDI1NjIgMzc1IiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMjEiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik00NDcgNDc0IEwxMDM0IDYyMSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjIxIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMzAwIDg4MSBMNzQwIDEwNDEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xOCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTQ5NCA3MTAgTDExNjggNzQ0IiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMjEwIDI0IEwxODgwIDEzNCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE2IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTM5NCA5MzQgTDE3NjggMTA2OCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSI4NDQuMCIgY3k9IjE5My4wIiByPSIxNjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4wNTAiIHN0cm9rZS13aWR0aD0iMSIvPjxjaXJjbGUgY3g9Ijg5OS4wIiBjeT0iMTY0LjAiIHI9IjI4MyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2OCIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iOTcyLjAiIGN5PSIxOTkuMCIgcj0iMTU4IiBmaWxsPSJub25lIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMDg2IiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSI4OTYuMCIgY3k9IjE2MS4wIiByPSIyMzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xMDQiIHN0cm9rZS13aWR0aD0iMSIvPjxjaXJjbGUgY3g9IjEwMzQuMCIgY3k9IjIwMC4wIiByPSIyMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4xMjIiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjEwNTguMCIgY3k9IjI1Mi4wIiByPSIxODAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkwNS4wIiBjeT0iMjEyLjAiIHI9IjEzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="outline-number">01</div><div class="watermark-word">HONOR</div><!-- TASK-001: 水印呼应项目代号(尾页 HONOR GALLERY),替换无意义 DECK --><div class="eyebrow">CONCEPT PROPOSAL · 概念方案</div><h1 data-animate="fade-up"><span class="h1-line">以任务精神为礼</span><span class="h1-em">航天纪念徽章与任务海报一体化方案</span></h1><p class="subtitle" data-animate="blur-in">从核心主张到落地计划的一次完整汇报</p><div class="meta-line"><span>背景与目标</span><span>从做产品，到建立一套任务视觉系统</span><span>从看见设计，到形成体验</span><span>交付闭环与最终价值</span></div><!-- TASK-001 fix: 补齐第 4 章节,与目录页 4 个叙事节点一致 --><aside class="notes">这一页先直接给出结论：以任务精神为礼：航天纪念徽章与任务海报一体化方案。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：开场说明演示目标、对象与预期收获。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-toc" data-role="toc" data-page="2"><div class="project-art-frame"><img class="project-art-bg project-art-toc" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><div class="watermark-word">AGENDA</div><h2><span class="num">4</span> 个叙事节点从判断走向行动</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0"><span class="hl">背景与目标</span><span class="toc-desc">为什么做 · 做到什么程度</span></li><li style="--i:1"><span class="hl">从做产品，到建立一套任务视觉系统</span><span class="toc-desc">核心策略 · 视觉语言 · 徽章 · 工艺 · 海报 · 统一性</span></li><li style="--i:2"><span class="hl">从看见设计，到形成体验</span><span class="toc-desc">三重价值闭环 · 参观路径</span></li><li style="--i:3"><span class="hl">交付闭环与最终价值</span><span class="toc-desc">整体交付链 · 价值回收 · 下一步</span></li></ul><!-- TASK-001: 目录升级——编号徽章(CSS 计数)+ 章节范围副行 + 关键词高亮 -->
+<p class="body" data-animate="fade-up">目录先建立判断路径，再按证据与行动推进。</p><aside class="notes">这一页先直接给出结论：目录建立完整叙事路径。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：背景与目标；从做产品，到建立一套任务视觉系统；从看见设计，到形成体验；目录先建立判断路径，再按证据与行动推进。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="3"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9Ijg1Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNzIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik03NDIgMSBMMTM0NCAxMjMiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xMiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE1MDcgNzMwIEwxOTk0IDgxNyIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA5IiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNNjU1IDk3NiBMOTMwIDEwMTEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTExOSAyMDYgTDczOCAzNDUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE4MzggNTI3IEwyNDk2IDYyNSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzk5IDkxNyBMNjU4IDEwMTYiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTEyMzMgNzUyIEwxODQ2IDg4NSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjA3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTM1MCA4OTMgTDE3NjAgOTgzIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjcgMzM4IEw1OTQgNDA1IiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMjEiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0xNjgxIDc2MSBMMTk0MiA4NjIiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wNyIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTM5IDIxOSBMNTM4IDI3OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTE5NCA1NDYgTDE4ODggNjQwIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNDAxIDQ2NyBMMTkwMiA2MDgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUyIDg1NCBMNTY0IDkyNiIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNODQyIDI3MSBMMTEwNCAzMzMiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTEwOTAgNzgyIEwxNjgwIDkzMiIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTExOCA2OTcgTDE2NTYgODc1IiBzdHJva2U9IiNlOGM4N2EiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNTg3IDE4OCBMMTkxNCAzNTUiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4wOSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iOTA0LjAiIGN5PSIyNDQuMCIgcj0iMzEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMDUwIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI4NjAuMCIgY3k9IjE0OS4wIiByPSIxOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4wNjgiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjkxOS4wIiBjeT0iMTI3LjAiIHI9IjI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4NiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMTA1NC4wIiBjeT0iMTA5LjAiIHI9IjE0NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTY1LjAiIGN5PSIxOTMuMCIgcj0iMTY5IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDQ1LjAiIGN5PSIxNTcuMCIgcj0iMzA3IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTQwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIxMDYwLjAiIGN5PSIyNjYuMCIgcj0iMjU3IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTU4IiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsdGVyPSJ1cmwoI2dyYWluKSIgb3BhY2l0eT0iLjI2Ii8+PC9zdmc+" alt="" aria-hidden="true"></div><div class="outline-number">01</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">背景与目标</h2><div class="deckline" data-animate="path-draw"></div><p class="section-lede">从「为什么做」到「做到什么程度」——先建立评价标准，再进入方案。</p><!-- TASK-001: 章节过渡句(极简信号) --><aside class="notes">这一页先直接给出结论：背景与目标。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-gather-3" data-role="two-column" data-page="4" data-pattern="center-hub" data-variant="gather-3"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>项目背景：纪念品只是载体，真正交付的是任务认知</h2><div class="group-grid layout-canvas gather-rows"><div class="gather-needs"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">任务纪念</h3><ul class="content-list group-list"><li style="--i:0">让任务精神被<span class="hl">看见、被带走</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">品牌传播</h3><ul class="content-list group-list"><li style="--i:0">形成可识别的<span class="hl">航天视觉符号</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">参观体验</h3><ul class="content-list group-list"><li style="--i:0">让公众在现场<span class="hl">读懂任务</span></li></ul></div></div><div class="gather-links" aria-hidden="true"><span>↓</span><span>↓</span><span>↓</span></div><div class="panel gather-core" data-animate="fade-up" style="--i:3"><h3 class="group-title">双重要求</h3><p style="margin:0;font-size:24px;line-height:1.4">内部审核与公众感知<span class="hl">同时成立</span></p></div></div><div class="takeaway" data-animate="rise-in">So-what：纪念品只是载体，真正要交付的是<span class="hl">任务认知</span>。</div><aside class="notes">这一页先直接给出结论：项目背景：纪念品只是载体，真正交付的是任务认知。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：任务纪念：让任务精神被看见、被带走；品牌传播：形成可识别的航天视觉符号；参观体验：让公众在现场读懂任务。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-num-anchor" data-role="two-column" data-page="5" data-pattern="asym-mix" data-variant="num-anchor"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><div class="copy"><h2>项目目标：一次采购同时满足任务、品牌与交付标准</h2><div class="group-stack goal-chain"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">任务目标</h3><ul class="content-list group-list"><li style="--i:0">准确表达<span class="hl">任务精神与型号特征</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">品牌目标</h3><ul class="content-list group-list"><li style="--i:0">建立<span class="hl">统一可识别</span>的视觉系统</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">交付目标</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">按期按质</span>落地</li></ul></div></div></div><div class="visual panel num-panel" data-animate="fade-up" style="--i:3"><span class="num-big">15<small> 批</small> × 600<small> 枚</small></span><div class="num-note">按期按质落地</div><div class="panel-label">执行约束</div><div class="tag-pill-row"><span class="tag-pill">批次</span><span class="tag-pill">工艺</span><span class="tag-pill">包装</span><span class="tag-pill">运输</span><span class="tag-pill">税费</span></div></div><div class="takeaway" data-animate="rise-in">So-what：一次采购必须同时交出<span class="hl">任务表达</span>、<span class="hl">品牌识别</span>与<span class="hl">按期交付</span>。</div><aside class="notes">这一页先直接给出结论：项目目标：一次采购同时满足任务、品牌与交付标准。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：任务目标：准确表达任务精神与型号特征；品牌目标：建立统一可识别的视觉系统；交付目标：15 批 × 600 枚按期按质落地。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-section" data-role="section" data-page="6"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9Ijg1Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNzIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik03NDIgMSBMMTM0NCAxMjMiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xMiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE1MDcgNzMwIEwxOTk0IDgxNyIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA5IiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNNjU1IDk3NiBMOTMwIDEwMTEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTExOSAyMDYgTDczOCAzNDUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE4MzggNTI3IEwyNDk2IDYyNSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzk5IDkxNyBMNjU4IDEwMTYiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTEyMzMgNzUyIEwxODQ2IDg4NSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjA3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTM1MCA4OTMgTDE3NjAgOTgzIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjcgMzM4IEw1OTQgNDA1IiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMjEiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0xNjgxIDc2MSBMMTk0MiA4NjIiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wNyIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTM5IDIxOSBMNTM4IDI3OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTE5NCA1NDYgTDE4ODggNjQwIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNDAxIDQ2NyBMMTkwMiA2MDgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUyIDg1NCBMNTY0IDkyNiIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNODQyIDI3MSBMMTEwNCAzMzMiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTEwOTAgNzgyIEwxNjgwIDkzMiIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTExOCA2OTcgTDE2NTYgODc1IiBzdHJva2U9IiNlOGM4N2EiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNTg3IDE4OCBMMTkxNCAzNTUiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4wOSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iOTA0LjAiIGN5PSIyNDQuMCIgcj0iMzEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMDUwIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI4NjAuMCIgY3k9IjE0OS4wIiByPSIxOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4wNjgiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjkxOS4wIiBjeT0iMTI3LjAiIHI9IjI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4NiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMTA1NC4wIiBjeT0iMTA5LjAiIHI9IjE0NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTY1LjAiIGN5PSIxOTMuMCIgcj0iMTY5IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDQ1LjAiIGN5PSIxNTcuMCIgcj0iMzA3IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTQwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIxMDYwLjAiIGN5PSIyNjYuMCIgcj0iMjU3IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTU4IiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsdGVyPSJ1cmwoI2dyYWluKSIgb3BhY2l0eT0iLjI2Ii8+PC9zdmc+" alt="" aria-hidden="true"></div><div class="outline-number">02</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">从做产品，到建立一套任务视觉系统</h2><div class="deckline" data-animate="path-draw"></div><p class="section-lede">视觉系统先成立，徽章与海报才会成为同一项目的不同表达。</p><!-- TASK-001: 章节过渡句 --><aside class="notes">这一页先直接给出结论：从做产品，到建立一套任务视觉系统。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-hub-top" data-role="two-column" data-page="7" data-pattern="center-hub" data-variant="hub-top"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>核心策略：一套视觉 DNA 支撑产品、海报与体验统一</h2><div class="group-grid layout-canvas hub-top-rows"><div class="panel hub-top-core" data-animate="fade-up" style="--i:0"><h3 class="group-title">一套视觉 DNA</h3><p style="margin:0;font-size:24px;line-height:1.4">产品、海报与体验共用<span class="hl">同一套视觉底座</span></p></div><div class="hub-top-links" aria-hidden="true"><span>↓</span><span>↓</span></div><div class="hub-top-branches"><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">视觉基调</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">深蓝科技基调</span>，金色点缀</li><li style="--i:1"><span class="hl">金属质感</span>与精密线条</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">语义与空间</h3><ul class="content-list group-list"><li style="--i:0">火箭、轨道、星座的<span class="hl">任务语义</span></li><li style="--i:1"><span class="hl">空间纵深</span>与大胆留白</li><li style="--i:2"><span class="hl">高对比</span>信息层级</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：所有触点共享<span class="hl">同一套视觉语言</span>，而不是三个互不相干的成果。</div><aside class="notes">这一页先直接给出结论：核心策略：一套视觉 DNA 支撑产品、海报与体验统一。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：深蓝科技基调，金色点缀；金属质感与精密线条；火箭、轨道、星座的任务语义。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-grid-2x3" data-role="two-column" data-page="8" data-pattern="matrix" data-variant="grid-2x3"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>视觉语言：六条原则形成硬核航天感</h2><div class="group-grid layout-canvas"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">形式语言</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">色彩</span>：深蓝为主、金色点睛</li><li style="--i:1"><span class="hl">线条</span>：轨迹线必须承担连接或方向作用</li><li style="--i:2"><span class="hl">空间</span>：纵深分层，不堆砌光效</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">质感语言</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">材质</span>：金属与珐琅的真实质感</li><li style="--i:1"><span class="hl">字体</span>：硬朗无衬线，字距克制</li><li style="--i:2"><span class="hl">图形</span>：几何化火箭与轨道符号</li></ul></div></div><div class="takeaway" data-animate="rise-in">So-what：科技感来自<span class="hl">结构、材质、尺度与秩序</span>，不靠堆砌光效。</div><aside class="notes">这一页先直接给出结论：视觉语言：六条原则形成硬核航天感。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：色彩：深蓝为主、金色点睛；线条：轨迹线必须承担连接或方向作用；空间：纵深分层，不堆砌光效。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-hub-left" data-role="two-column" data-page="9" data-pattern="center-hub" data-variant="hub-left"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><div class="copy"><h2>产品主角：徽章把任务精神转化为可收藏的实体</h2><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">识别与构图</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">长征八号甲火箭</span>高浮雕主体</li><li style="--i:1">主题构图呼应<span class="hl">任务海报</span></li></ul></div></div></div><div class="visual panel" style="padding:34px"><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">材质与收藏</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">锌合金基体</span>，压铸一次成型</li><li style="--i:1"><span class="hl">限量编号</span>，强化收藏属性</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：徽章同时承担<span class="hl">任务识别</span>、<span class="hl">纪念属性</span>与<span class="hl">收藏感</span>。</div><aside class="notes">这一页先直接给出结论：产品主角：徽章把任务精神转化为可收藏的实体。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：长征八号甲火箭高浮雕主体；锌合金基体，压铸一次成型；主题构图呼应任务海报。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-layers-3" data-role="two-column" data-page="10" data-pattern="hierarchy-space" data-variant="layers-3"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>工艺细节：六类工艺共同支撑真实质感</h2><div class="copy"><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">基底与雕刻</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">锌合金基体</span>：结构强度的底座</li><li style="--i:1"><span class="hl">凹凸金属雕刻</span>：触感与光影</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">点睛工艺</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">局部闪粉</span>：星空质感点睛</li><li style="--i:1"><span class="hl">高级珐琅彩</span>：标志色持久鲜艳</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">表面处理</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">高温烤漆</span>：色彩饱和度来源</li><li style="--i:1"><span class="hl">电镀</span>：统一金属光泽</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：高级感不是概念图好看，而是<span class="hl">可被看见的制造质量</span>。</div><aside class="notes">这一页先直接给出结论：工艺细节：六类工艺共同支撑真实质感。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：锌合金基体：结构强度的底座；凹凸金属雕刻：触感与光影；高温烤漆：色彩饱和度来源。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-ed-strip" data-role="two-column" data-page="11" data-pattern="asym-mix" data-variant="ed-strip"><!-- TASK-001 fix: 原 asym-cards 变体与 P4 版式签名重复,改编辑式动线条(新登记变体) --><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>海报系统：把任务叙事扩大为可传播的场景</h2><div class="ed-flow"><div class="panel ed-strip" data-animate="fade-up" style="--i:0"><div class="ed-name">火箭升空</div><p class="ed-text">宏大叙事的第一视觉</p></div><div class="panel ed-strip" data-animate="fade-up" style="--i:1"><div class="ed-name">卫星组网</div><p class="ed-text">千帆星座的场景化表达</p></div><div class="panel ed-strip" data-animate="fade-up" style="--i:2"><div class="ed-name">深空背景</div><p class="ed-text">统一徽章与海报的空间纵深</p></div></div><div class="panel ed-brand" data-animate="fade-up" style="--i:3"><span class="hl">品牌统一</span>：标志、色彩、字体全线统一</div><div class="takeaway" data-animate="rise-in">So-what：海报把火箭升空与星座组网，转化为<span class="hl">公众可感知的场景</span>。</div><!-- TASK-001: P11 重构——三条场景动线条(大编号+↓引导) + 品牌收束条,层级:场景层→品牌层→结论层 --><aside class="notes">这一页先直接给出结论：海报系统：把任务叙事扩大为可传播的场景。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：火箭升空：宏大叙事的第一视觉；卫星组网：千帆星座的场景化表达；深空背景：统一徽章与海报的空间纵深。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-vs-split" data-role="two-column" data-page="12" data-pattern="compare" data-variant="vs-split"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><div class="copy"><h2>统一性：徽章与海报完成同一任务的两种表达</h2><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">徽章 · 近距收藏</h3><ul class="content-list group-list"><li style="--i:0"><span class="dim-tag">色彩</span>同一<span class="hl">深蓝金体系</span></li><li style="--i:1"><span class="dim-tag">主题</span><span class="hl">火箭形象</span>同源</li><li style="--i:2"><span class="dim-tag">元素</span><span class="hl">轨道与星座符号</span>共享</li></ul></div></div></div><div class="visual panel" style="padding:34px"><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">海报 · 远距传播</h3><ul class="content-list group-list"><li style="--i:0"><span class="dim-tag">语义</span><span class="hl">徽章材质</span>对应海报空间</li><li style="--i:1"><span class="dim-tag">尺度</span><span class="hl">近距收藏</span>与远距传播</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：徽章负责<span class="hl">近距收藏</span>，海报负责<span class="hl">远距传播</span>，共享同一视觉 DNA。</div><aside class="notes">这一页先直接给出结论：统一性：徽章与海报完成同一任务的两种表达。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：色彩统一：同一深蓝金体系；主题统一：火箭形象同源；元素统一：轨道与星座符号共享。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-section" data-role="section" data-page="13"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9Ijg1Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNzIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik03NDIgMSBMMTM0NCAxMjMiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xMiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE1MDcgNzMwIEwxOTk0IDgxNyIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA5IiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNNjU1IDk3NiBMOTMwIDEwMTEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTExOSAyMDYgTDczOCAzNDUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE4MzggNTI3IEwyNDk2IDYyNSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzk5IDkxNyBMNjU4IDEwMTYiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTEyMzMgNzUyIEwxODQ2IDg4NSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjA3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTM1MCA4OTMgTDE3NjAgOTgzIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjcgMzM4IEw1OTQgNDA1IiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMjEiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0xNjgxIDc2MSBMMTk0MiA4NjIiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wNyIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTM5IDIxOSBMNTM4IDI3OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTE5NCA1NDYgTDE4ODggNjQwIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNDAxIDQ2NyBMMTkwMiA2MDgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUyIDg1NCBMNTY0IDkyNiIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNODQyIDI3MSBMMTEwNCAzMzMiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTEwOTAgNzgyIEwxNjgwIDkzMiIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTExOCA2OTcgTDE2NTYgODc1IiBzdHJva2U9IiNlOGM4N2EiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNTg3IDE4OCBMMTkxNCAzNTUiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4wOSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iOTA0LjAiIGN5PSIyNDQuMCIgcj0iMzEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMDUwIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI4NjAuMCIgY3k9IjE0OS4wIiByPSIxOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4wNjgiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjkxOS4wIiBjeT0iMTI3LjAiIHI9IjI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4NiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMTA1NC4wIiBjeT0iMTA5LjAiIHI9IjE0NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTY1LjAiIGN5PSIxOTMuMCIgcj0iMTY5IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDQ1LjAiIGN5PSIxNTcuMCIgcj0iMzA3IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTQwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIxMDYwLjAiIGN5PSIyNjYuMCIgcj0iMjU3IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTU4IiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsdGVyPSJ1cmwoI2dyYWluKSIgb3BhY2l0eT0iLjI2Ii8+PC9zdmc+" alt="" aria-hidden="true"></div><div class="outline-number">03</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">从看见设计，到形成体验</h2><div class="deckline" data-animate="path-draw"></div><p class="section-lede">让甲方、公众与引导人员，在一次参观中各得其所。</p><!-- TASK-001: 章节过渡句 --><aside class="notes">这一页先直接给出结论：从看见设计，到形成体验。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-loop-3" data-role="two-column" data-page="14" data-pattern="tri-loop" data-variant="loop-3"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>参观体验：一次参观完成三重价值闭环</h2><div class="loop-stage"><svg class="loop-ring" viewBox="0 0 1200 660" fill="none" aria-hidden="true"><defs><marker id="loopArrow14" markerWidth="13" markerHeight="13" refX="9" refY="6.5" orient="auto"><path d="M0 0 L13 6.5 L0 13 z" class="loop-arrow"/></marker></defs><path class="loop-arc" d="M 220 250 A 400 240 0 0 1 980 250" marker-end="url(#loopArrow14)"/><path class="loop-arc" d="M 985 265 A 400 240 0 0 1 610 535" marker-end="url(#loopArrow14)"/><path class="loop-arc" d="M 590 540 A 400 240 0 0 1 212 262" marker-end="url(#loopArrow14)"/></svg><div class="panel loop-node loop-node-1" data-animate="fade-up" style="--i:0"><p><span class="hl">决策认同</span>：甲方看到品牌高度与可实施性</p></div><div class="panel loop-node loop-node-2" data-animate="fade-up" style="--i:1"><p><span class="hl">公众理解</span>：第一眼识别、第二层理解、离场记住</p></div><div class="panel loop-node loop-node-3" data-animate="fade-up" style="--i:2"><p><span class="hl">讲述传递</span>：开场有抓手、墙间有转场、结尾回扣</p></div><div class="panel loop-claim">一次参观，三重价值闭环</div><!-- TASK-001: 清除占位残留文本「三重价值对象（循环中心主张）」,改为真中心主张 --></div><div class="takeaway" data-animate="rise-in">So-what：<span class="hl">决策认同</span>、<span class="hl">公众理解</span>、<span class="hl">讲述传递</span>相互强化，闭合成环。</div><aside class="notes">这一页先直接给出结论：参观体验：一次参观完成三重价值闭环。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：决策认同：甲方看到品牌高度与可实施性；公众理解：第一眼识别、第二层理解、离场记住；讲述传递：开场有抓手、墙间有转场、结尾回扣。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-timeline layout-ascend-4" data-role="timeline" data-page="15" data-pattern="path-flow" data-variant="ascend-4"><div class="project-art-frame"><img class="project-art-bg project-art-timeline" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>参观路径：四阶段让认知逐步加深并形成记忆</h2><div class="timeline-row"><div class="panel timeline-item" style="--i:0"><div class="date">认识任务</div><p>主题序厅与徽章墙建立第一印象</p></div><div class="panel timeline-item" style="--i:1"><div class="date">相信能力</div><p>工艺与交付证据区建立信任</p></div><div class="panel timeline-item" style="--i:2"><div class="date">理解体系</div><p>视觉系统拆解区讲清方法</p></div><div class="panel timeline-item" style="--i:3"><div class="date">体验成果</div><p>海报场景与互动区形成记忆</p></div></div><!-- TASK-001: 清除阶段名重复前缀(date 已承载),STEP 编号由 CSS 计数徽章承载 --><div class="takeaway" data-animate="rise-in">So-what：空间不是信息堆叠，而是一条<span class="hl">认知逐步加深</span>的路径。</div><aside class="notes">这一页先直接给出结论：参观路径：四阶段让认知逐步加深并形成记忆。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：认识任务｜主题序厅与徽章墙建立第一印象；相信能力｜工艺与交付证据区建立信任；理解体系｜视觉系统拆解区讲清方法；目标对比：补充目标值、当前值与差距；过程证据：说明关键动作与责任边界；业务影响：落到客户可感知的结果。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="16"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9Ijg1Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNzIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik03NDIgMSBMMTM0NCAxMjMiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xMiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTE1MDcgNzMwIEwxOTk0IDgxNyIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA5IiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNNjU1IDk3NiBMOTMwIDEwMTEiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTExOSAyMDYgTDczOCAzNDUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE4MzggNTI3IEwyNDk2IDYyNSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzk5IDkxNyBMNjU4IDEwMTYiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4yMSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTEyMzMgNzUyIEwxODQ2IDg4NSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjA3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTM1MCA4OTMgTDE3NjAgOTgzIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0zNjcgMzM4IEw1OTQgNDA1IiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMjEiIHN0cm9rZS13aWR0aD0iNCIvPjxwYXRoIGQ9Ik0xNjgxIDc2MSBMMTk0MiA4NjIiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wNyIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTM5IDIxOSBMNTM4IDI3OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTE5NCA1NDYgTDE4ODggNjQwIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNDAxIDQ2NyBMMTkwMiA2MDgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUyIDg1NCBMNTY0IDkyNiIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNODQyIDI3MSBMMTEwNCAzMzMiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNiIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTEwOTAgNzgyIEwxNjgwIDkzMiIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTExOCA2OTcgTDE2NTYgODc1IiBzdHJva2U9IiNlOGM4N2EiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xNTg3IDE4OCBMMTkxNCAzNTUiIHN0cm9rZT0iIzEyM2E2YiIgb3BhY2l0eT0iMC4wOSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PGNpcmNsZSBjeD0iOTA0LjAiIGN5PSIyNDQuMCIgcj0iMzEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMDUwIiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI4NjAuMCIgY3k9IjE0OS4wIiByPSIxOTciIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4wNjgiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjkxOS4wIiBjeT0iMTI3LjAiIHI9IjI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjA4NiIgc3Ryb2tlLXdpZHRoPSIzIi8+PGNpcmNsZSBjeD0iMTA1NC4wIiBjeT0iMTA5LjAiIHI9IjE0NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTY1LjAiIGN5PSIxOTMuMCIgcj0iMTY5IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDQ1LjAiIGN5PSIxNTcuMCIgcj0iMzA3IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTQwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSIxMDYwLjAiIGN5PSIyNjYuMCIgcj0iMjU3IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTU4IiBzdHJva2Utd2lkdGg9IjEiLz48L2c+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsdGVyPSJ1cmwoI2dyYWluKSIgb3BhY2l0eT0iLjI2Ii8+PC9zdmc+" alt="" aria-hidden="true"></div><div class="outline-number">04</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">交付闭环与最终价值</h2><div class="deckline" data-animate="path-draw"></div><p class="section-lede">从设计文件到 <span class="num">600</span> 枚实物的落地链，再回到项目为什么成立。</p><!-- TASK-001: 章节过渡句 --><aside class="notes">这一页先直接给出结论：交付闭环与最终价值。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-chain-3" data-role="two-column" data-page="17" data-pattern="path-flow" data-variant="chain-3"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>交付闭环：从设计文件到 <span class="num">600</span> 枚实物的完整落地</h2><div class="group-grid layout-canvas"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">生产链</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">设计</span>：<span class="num">15</span> 套徽章设计图与海报</li><li style="--i:1"><span class="hl">打样</span>：工艺验证与封样确认</li><li style="--i:2" class="hero-metric"><span class="hm-label"><span class="hl">量产</span>：</span><span class="hm-num"><span class="num">15</span><span class="hm-u"> 批 × </span><span class="num">600</span><span class="hm-u"> 枚</span></span></li><!-- TASK-019: Fathom 英雄数字结构,文本零改动 --></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">履约保障</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">包装运输</span>：防护、税费与按期到货</li><li style="--i:1"><span class="hl">文件</span>：完整报价、设计示意与案例</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">验收标准</h3><ul class="content-list group-list"><li style="--i:0">信息准确、系列一致</li><li style="--i:1">工艺可落地、按期到货</li></ul></div></div><div class="takeaway" data-animate="rise-in">So-what：设计、打样、量产、包装、运输、验收是<span class="hl">一条整体交付链</span>。</div><aside class="notes">这一页先直接给出结论：交付闭环：从设计文件到 600 枚实物的完整落地。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：设计：15 套徽章设计图与海报；打样：工艺验证与封样确认；量产：15 批 × 600 枚。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-hub-spoke" data-role="two-column" data-page="18" data-pattern="center-hub" data-variant="hub-spoke"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>最终价值：五项价值回收形成长期记忆点</h2><div class="group-grid layout-canvas spoke-grid"><div class="spoke-col"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">任务认知</h3><ul class="content-list group-list"><li style="--i:0">任务精神被<span class="hl">持续看见</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">品牌表达</h3><ul class="content-list group-list"><li style="--i:0">视觉资产<span class="hl">长期复用</span></li></ul></div></div><div class="panel spoke-core" data-animate="fade-up" style="--i:2"><h3 class="group-title">长期记忆点</h3><p style="margin:0;font-size:27px;line-height:1.45"><!-- TASK-019: 核心副题 24px→27px,焦点即图形面 -->五项价值回收的<span class="hl">汇聚点</span></p></div><div class="spoke-col"><div class="panel group-card" data-animate="fade-up" style="--i:3"><h3 class="group-title">产品收藏</h3><ul class="content-list group-list"><li style="--i:0"><span class="num">600</span> 枚徽章成为<span class="hl">记忆载体</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:4"><h3 class="group-title">传播场景</h3><ul class="content-list group-list"><li style="--i:0">海报让叙事<span class="hl">走进公众</span></li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:5"><h3 class="group-title">参观体验</h3><ul class="content-list group-list"><li style="--i:0">每次接触都形成<span class="hl">记忆</span></li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：最好的交付不是做完 <span class="num">600</span> 枚徽章，而是让任务形象<span class="hl">持续被记住</span>。</div><aside class="notes">这一页先直接给出结论：最终价值：五项价值回收形成长期记忆点。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：任务认知：任务精神被持续看见；品牌表达：视觉资产长期复用；产品收藏：600 枚徽章成为记忆载体。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section><section class="slide role-two-column layout-checkpoint-3" data-role="two-column" data-page="19" data-pattern="timeline" data-variant="checkpoint-3"><div class="project-art-frame"><img class="project-art-bg project-art-bullets" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjE4Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0iIj48ZWxsaXBzZSBjeD0iOTYwLjAiIGN5PSIxODAuMCIgcng9IjY4MCIgcnk9IjUyMCIgZmlsbD0idXJsKCNnKSIvPjxnIG9wYWNpdHk9IjAuNDIiPjxwYXRoIGQ9Ik0tMTIwIDkwMCBRIDY1MCAxMTAgMTk5MCAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIuMjQiLz48cGF0aCBkPSJNNjAgOTgwIFEgNzgwIDI4MCAyMDUwIDUxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjggMTgiIG9wYWNpdHk9Ii40MiIvPjxwYXRoIGQ9Ik0xNDUwIDk2MCBMMTQ1MCAyNTAiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjE0Ii8+PHBhdGggZD0iTTE0MzIgMzAwIEwxNDUwIDI1MCBMMTQ2OCAzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iLjM0Ii8+PC9nPjxwYXRoIGQ9Ik05NzQgMjMwIEwxMjg4IDI2NCIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjIwIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNOTMgNzY3IEw2NDYgODgwIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0xNTYwIDUzOCBMMjIyMCA2NzgiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4xNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTkyMSA0NzEgTDE0NjIgNjEyIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02ODQgNDk3IEwxMjY4IDU2MSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzc1IDg2NSBMNjUwIDk0MCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEzIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTY0IDQzNyBMNzQ4IDQ2MSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTI3MyA4MDkgTDE4NDYgOTgyIiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NzYgNzc3IEwxMTMyIDgzMyIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNzI4IDYwIEwxMzk2IDE2OCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTg3IDcyNSBMMTIzNCA4NTIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xNyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTUzMCA2MTIgTDEwMDAgNjgyIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMDgiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0xMzc2IDc2MiBMMTczMiA4NzgiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4wNiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTE1MSAzNzYgTDQ0MiA1NDciIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE2NjQgNTQwIEwyMDY4IDYyNCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMzU2IDYwNCBMNzcyIDY2MCIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjEwIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNTk0IDE0IEwxMjg4IDE0OCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjA4IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTkwMSAzMjggTDIxODIgNDg5IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTkiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9Ijk5OC4wIiBjeT0iMTMxLjAiIHI9IjExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iOTI1LjAiIGN5PSIxMzQuMCIgcj0iMjE5IiBmaWxsPSJub25lIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMDY4IiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5OTQuMCIgY3k9IjIwMS4wIiByPSIxNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijg4OC4wIiBjeT0iMjEwLjAiIHI9IjIyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAxNy4wIiBjeT0iMjQ5LjAiIHI9Ijk4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTIyIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI5NTMuMCIgY3k9IjE4Mi4wIiByPSIxMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xNDAiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9IjkzNy4wIiBjeT0iMTU0LjAiIHI9IjI5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjE1OCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9nPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbHRlcj0idXJsKCNncmFpbikiIG9wYWNpdHk9Ii4yNiIvPjwvc3ZnPg==" alt="" aria-hidden="true"></div><h2>下一步：交付推进已压缩为 <span class="num">3</span> 个检查点</h2><div class="group-grid layout-canvas checkpoint-flow"><div class="panel checkpoint-node is-current" data-animate="fade-up" style="--i:0"><span class="cp-date">T+7 天</span><span class="cp-current-tag">当前锁定</span><h3 class="group-title">设计图与打样</h3><ul class="content-list group-list"><li style="--i:0">确认 <span class="hl">15 套设计图</span>与打样方向</li></ul></div><div class="cp-link" aria-hidden="true">→</div><div class="panel checkpoint-node" data-animate="fade-up" style="--i:1"><span class="cp-date">T+20 天</span><h3 class="group-title">封样与工艺</h3><ul class="content-list group-list"><li style="--i:0"><span class="hl">封样确认</span>与工艺验证</li></ul></div><div class="cp-link" aria-hidden="true">→</div><div class="panel checkpoint-node" data-animate="fade-up" style="--i:2"><span class="cp-date">T+30 天</span><h3 class="group-title">量产与排期</h3><ul class="content-list group-list"><li style="--i:0">启动<span class="hl">首批量产</span>与交付排期</li></ul></div></div><p class="cp-note" data-animate="fade-up">每项检查点绑定负责人、日期与可验收产物；会后只需锁定设计图、封样与排期三件事。</p><div class="takeaway" data-animate="rise-in">So-what：现在只需确认第一项——<span class="hl">15 套设计图与打样方向</span>。</div><aside class="notes">这一页直接给出行动结论：交付推进已压缩为 3 个检查点。讲的时候按时间线推进：T+7 天确认 15 套设计图与打样方向；T+20 天完成封样确认与工艺验证；T+30 天启动首批量产与交付排期。强调每项检查点都绑定负责人、日期与可验收产物，会后只需锁定设计图、封样与排期三件事，让甲方感到下一步清晰可执行。
+
+转场句：基于这个行动安排，下一页收束到项目整体价值与落地邀请。</aside><!-- TASK-001 fix: 讲稿同步重写,清除与新内容矛盾的模板残留(试点/看板) --></section><section class="slide role-closing" data-role="closing" data-page="20"><div class="project-art-frame"><img class="project-art-bg project-art-closing" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agc3RvcC1jb2xvcj0iI2M5YTQ1YyIgc3RvcC1vcGFjaXR5PSIuMzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwNzE0MjYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIHN0b3AtY29sb3I9IiMwNzE0MjYiLz48c3RvcCBvZmZzZXQ9Ii42MiIgc3RvcC1jb2xvcj0iIzA3MTQyNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDcwZCIvPjwvbGluZWFyR3JhZGllbnQ+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgYmFzZUZyZXF1ZW5jeT0iLjgiIG51bU9jdGF2ZXM9IjIiIHNlZWQ9IjU0Ii8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAuMDM1IDAiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNiKSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5MjAgMCkgc2NhbGUoLTEgMSkiPjxlbGxpcHNlIGN4PSI5NjAuMCIgY3k9IjE4MC4wIiByeD0iNjgwIiByeT0iNTIwIiBmaWxsPSJ1cmwoI2cpIi8+PGcgb3BhY2l0eT0iMC44OCI+PHBhdGggZD0iTS0xMjAgOTAwIFEgNjUwIDExMCAxOTkwIDMyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNWY4ZmJmIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9Ii4yNCIvPjxwYXRoIGQ9Ik02MCA5ODAgUSA3ODAgMjgwIDIwNTAgNTEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNjOWE0NWMiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iOCAxOCIgb3BhY2l0eT0iLjQyIi8+PHBhdGggZD0iTTE0NTAgOTYwIEwxNDUwIDI1MCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIuMTQiLz48cGF0aCBkPSJNMTQzMiAzMDAgTDE0NTAgMjUwIEwxNDY4IDMwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIuMzQiLz48L2c+PHBhdGggZD0iTTMxNyAzMDMgTDczNCA0ODAiIHN0cm9rZT0iIzA3MTQyNiIgb3BhY2l0eT0iMC4xOSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTI5NSA4MDMgTDkzMCA5NTgiIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTE1MzIgNzk4IEwyMDQ0IDkxMCIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjE4IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTU3MiAxMTggTDIwMDQgMjcwIiBzdHJva2U9IiNkY2U4ZjUiIG9wYWNpdHk9IjAuMTAiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0xNDYzIDM4OSBMMTgyNiA0MzIiIHN0cm9rZT0iI2U4Yzg3YSIgb3BhY2l0eT0iMC4xMyIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTEyNjkgNTA5IEwxOTU4IDY3OCIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjExIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNDkgODIwIEw1MTggODg5IiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMDciIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik01NDcgNjA0IEwxMTk0IDY5MSIgc3Ryb2tlPSIjYzlhNDVjIiBvcGFjaXR5PSIwLjA5IiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNODYgMzU1IEw1OTIgNDYxIiBzdHJva2U9IiM1ZjhmYmYiIG9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik04MjYgMjIxIEwxMjcyIDI2NyIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjE2IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMzMwIDEyNCBMNjAwIDE1NCIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjE2IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTI1OCAxMTAgTDE2MTYgMjY4IiBzdHJva2U9IiMxMjNhNmIiIG9wYWNpdHk9IjAuMTYiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik01OTMgMjAyIEwxMTY2IDMzNSIgc3Ryb2tlPSIjMDcxNDI2IiBvcGFjaXR5PSIwLjA3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTMyNCA4NjUgTDE2NjggOTI5IiBzdHJva2U9IiNjOWE0NWMiIG9wYWNpdHk9IjAuMTgiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik03ODEgMTcwIEwxMDIyIDMzMSIgc3Ryb2tlPSIjNWY4ZmJmIiBvcGFjaXR5PSIwLjE5IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNzA5IDY0IEwxMzk4IDE1MyIgc3Ryb2tlPSIjZGNlOGY1IiBvcGFjaXR5PSIwLjExIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTU5OCA0NzYgTDE5NzYgNjU0IiBzdHJva2U9IiNlOGM4N2EiIG9wYWNpdHk9IjAuMjAiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik03ODQgNTE5IEwxMDI4IDY4MyIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjA2IiBzdHJva2Utd2lkdGg9IjEiLz48Y2lyY2xlIGN4PSI5NTguMCIgY3k9IjI2MC4wIiByPSIxODAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4wNTAiIHN0cm9rZS13aWR0aD0iMSIvPjxjaXJjbGUgY3g9IjEwMzkuMCIgY3k9IjIzOS4wIiByPSIzMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVmOGZiZiIgb3BhY2l0eT0iMC4wNjgiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjEwNTkuMCIgY3k9IjI3MC4wIiByPSIxMjciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjZThmNSIgb3BhY2l0eT0iMC4wODYiIHN0cm9rZS13aWR0aD0iMyIvPjxjaXJjbGUgY3g9Ijk3Mi4wIiBjeT0iMjMxLjAiIHI9IjE2NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjODdhIiBvcGFjaXR5PSIwLjEwNCIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTAyMy4wIiBjeT0iMjUzLjAiIHI9IjI5NyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTIzYTZiIiBvcGFjaXR5PSIwLjEyMiIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iOTczLjAiIGN5PSIxODAuMCIgcj0iMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwNzE0MjYiIG9wYWNpdHk9IjAuMTQwIiBzdHJva2Utd2lkdGg9IjMiLz48Y2lyY2xlIGN4PSI5NzcuMCIgY3k9IjI1Mi4wIiByPSIyMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTQ1YyIgb3BhY2l0eT0iMC4xNTgiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48cmVjdCB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiBmaWx0ZXI9InVybCgjZ3JhaW4pIiBvcGFjaXR5PSIuMjYiLz48L3N2Zz4=" alt="" aria-hidden="true"></div><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="watermark-word">NEXT</div><div class="eyebrow">NEXT STEP · 落地行动</div><h2>让下一步从今天开始</h2><p class="body" data-animate="fade-up">感谢聆听｜现在确认第一项行动。</p><div class="closing-echo" data-animate="fade-up">航天纪念徽章与任务海报一体化方案<small>HONOR GALLERY · CONCEPT PROPOSAL</small></div><aside class="notes">这一页先直接给出结论：让下一步从今天开始。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：感谢聆听｜现在确认第一项行动。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section></div></main>
+<div class="deck-ui"><span data-current>1</span><span>/</span><span data-total>20</span><span>← → / Space / S / O / F / B</span></div><!-- TASK-021 fix: 底栏提示回退至 TASK-018 口径 -->
+<nav class="overview" aria-label="Slides overview"></nav>
+<script>(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.querySelector('.deck-stage');
+  const currentEl = document.querySelector('[data-current]');
+  const totalEl = document.querySelector('[data-total]');
+  const overview = document.querySelector('.overview');
+  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('html-deck-sync') : null;
+  let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#/', '')) - 1 || 0));
+  let started = Date.now();
+  let speakerWin = null;
+
+  function scale() {
+    if (!stage) return;
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    document.documentElement.style.setProperty('--deck-scale', s.toFixed(4));
+  }
+
+  function slideData(i) {
+    const slide = slides[i];
+    return {
+      index: i,
+      total: slides.length,
+      title: slide?.querySelector('h1,h2')?.textContent || '',
+      notes: slide?.querySelector('.notes')?.innerHTML || '本页没有备注。',
+      nextTitle: slides[i + 1]?.querySelector('h1,h2')?.textContent || '结束',
+      elapsed: Math.floor((Date.now() - started) / 1000)
+    };
+  }
+
+  function publish() {
+    const data = slideData(index);
+    if (channel) channel.postMessage({type: 'state', data});
+    if (speakerWin && !speakerWin.closed) speakerWin.postMessage({type: 'state', data}, '*');
+  }
+
+  function show(i, silent) {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((slide, n) => slide.classList.toggle('is-active', n === index));
+    if (currentEl) currentEl.textContent = String(index + 1);
+    if (totalEl) totalEl.textContent = String(slides.length);
+    history.replaceState(null, '', '#/' + (index + 1));
+    runCounters();
+    if (!silent) publish();
+  }
+
+  function runCounters() {
+    const nums = slides[index]?.querySelectorAll('[data-count-to]') || [];
+    nums.forEach((el) => {
+      const target = Number(el.getAttribute('data-count-to')) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (document.body.classList.contains('no-motion')) {
+        el.textContent = String(target) + suffix;
+        return;
+      }
+      const start = performance.now();
+      function tick(t) {
+        const p = Math.min(1, (t - start) / 700);
+        el.textContent = String(Math.round(target * p)) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+
+  function buildOverview() {
+    if (!overview || overview.children.length) return;
+    slides.forEach((slide, i) => {
+      const button = document.createElement('button');
+      button.innerHTML = '<span>' + String(i + 1).padStart(2, '0') + '</span>' + (slide.querySelector('h1,h2')?.textContent || 'Untitled');
+      button.addEventListener('click', () => {
+        overview.classList.remove('is-open');
+        show(i);
+      });
+      overview.appendChild(button);
+    });
+  }
+
+  function openSpeaker() {
+    if (speakerWin && !speakerWin.closed) {
+      speakerWin.focus();
+      publish();
+      return;
+    }
+    speakerWin = window.open('', 'html-deck-speaker', 'width=1180,height=760');
+    if (!speakerWin) return;
+    speakerWin.document.write(`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>Speaker</title><style>
+      *{box-sizing:border-box}body{margin:0;background:#090d14;color:#f8fafc;font-family:system-ui,"Microsoft YaHei",sans-serif}
+      main{height:100vh;display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:150px 1fr;gap:16px;padding:16px}
+      .card{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#151b27;padding:18px;overflow:auto}
+      h1,h2,p{margin:0}.title{font-size:30px;line-height:1.18}.next{color:#7ee8fa;font-size:24px}
+      .timer{font:800 70px/1 ui-monospace,Consolas,monospace;color:#4dd4ac}.notes{font-size:25px;line-height:1.45}
+      .meta{color:#9aa8bd;font:700 16px/1 ui-monospace,Consolas,monospace}
+    </style></head><body><main>
+      <section class="card"><p class="meta" id="page"></p><h1 class="title" id="title"></h1></section>
+      <section class="card"><p class="meta">NEXT</p><h2 class="next" id="next"></h2></section>
+      <section class="card"><p class="meta">SCRIPT</p><div class="notes" id="notes"></div></section>
+      <section class="card"><p class="meta">TIMER</p><div class="timer" id="timer">00:00</div></section>
+    </main><script>
+      function pad(n){return String(n).padStart(2,'0')}
+      function render(d){if(!d)return;page.textContent=(d.index+1)+' / '+d.total;title.textContent=d.title;next.textContent=d.nextTitle;notes.innerHTML=d.notes;timer.textContent=pad(Math.floor(d.elapsed/60))+':'+pad(d.elapsed%60)}
+      addEventListener('message',e=>{if(e.data&&e.data.type==='state')render(e.data.data)})
+      if('BroadcastChannel' in window){const c=new BroadcastChannel('html-deck-sync');c.onmessage=e=>{if(e.data&&e.data.type==='state')render(e.data.data)}}
+    <\/script></body></html>`);
+    speakerWin.document.close();
+    setTimeout(publish, 80);
+  }
+
+  function drawFx() {
+    const canvas = document.querySelector('.fx-canvas');
+    if (!canvas || document.body.classList.contains('no-motion')) return;
+    const ctx = canvas.getContext('2d');
+    const ratio = devicePixelRatio || 1;
+    canvas.width = 1920 * ratio;
+    canvas.height = 1080 * ratio;
+    ctx.scale(ratio, ratio);
+    const points = Array.from({length: 42}, (_, i) => ({x: (i * 137) % 1920, y: (i * 89) % 1080, r: 1 + (i % 4)}));
+    let frame = 0;
+    function tick() {
+      ctx.clearRect(0, 0, 1920, 1080);
+      ctx.strokeStyle = 'rgba(126,232,250,.18)';
+      ctx.fillStyle = 'rgba(77,212,172,.35)';
+      points.forEach((p, i) => {
+        const x = p.x + Math.sin((frame + i * 12) / 80) * 24;
+        const y = p.y + Math.cos((frame + i * 8) / 90) * 18;
+        ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI * 2); ctx.fill();
+        if (i % 3 === 0) {
+          const q = points[(i + 7) % points.length];
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      });
+      frame += 1;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key.toLowerCase() === 'f' && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    if (e.key.toLowerCase() === 'b') { document.body.classList.toggle('no-motion'); publish(); }
+    if (e.key.toLowerCase() === 's') openSpeaker();
+    if (e.key.toLowerCase() === 'o') { buildOverview(); overview?.classList.toggle('is-open'); }
+    if (e.key === 'Escape') overview?.classList.remove('is-open');
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.overview')) return;
+    if (e.clientX > innerWidth / 2) next(); else prev();
+  });
+  setInterval(publish, 1000);
+  addEventListener('resize', scale);
+  scale();
+  drawFx();
+  show(index, true);
+  publish();
+})();
+</script>
+</body>
+</html>
