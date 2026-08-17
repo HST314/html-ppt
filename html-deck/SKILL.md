@@ -107,6 +107,17 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 缺 `state/visual_blueprints.md` 或内容页蓝图九字段空缺（<!-- TASK-007 fix -->口径见 `references/html-layout-system.md` §0）→ 判失败（⑤缺失）。
 - IR 中 `layout_pattern` 与蓝图登记不一致 → 判失败（⑥绕开⑤直接生成）。
 
+<!-- TASK-001: 新增整节——目录页(toc)模板调度逻辑 -->
+## 目录页（toc）模板调度逻辑
+
+当页面类型 `slide_type = toc`（目录页）时，禁止从零全新设计目录布局，禁止使用 `ul`/`li` 普通项目符号列表，必须走模板调度：
+
+1. **读取模板库**：加载 `slide_templates/toc/` 下全部模板（`toc-fluid-loop.html` 流体闭环发散式 / `toc-curve-timeline.html` 曲线时间轴 / `toc-arc-card.html` 圆弧环形排布 / `toc-modern-card.html` 商务简约圆角卡片兜底通用款）。
+2. **按条目数选型**：根据当前真实目录条目数量自动挑选最适配模板——3–4 条优先圆弧/曲线类（节点稀疏不空旷）；5–6 条任选四套之一（按 deck 视觉风格匹配）；7–8 条优先 `toc-fluid-loop` 或 `toc-modern-card`（八点位全用满）；拿不准时用 `toc-modern-card` 兜底。
+3. **占位符替换**：将业务数据逐项替换模板中的 `{{toc_main_title}}` 与 `{{item_01_num}}/{{item_01_title}}/{{item_01_desc}}` … `{{item_08_*}}` 占位符；未使用的节点须连同其 `.toc-node` 及对应 SVG 连线/圆点（`data-link` / `data-mark` / `data-dot`）一并删除。
+4. **样式保留**：保留模板全部布局、异形容器、渐变描边与曲线连线样式；只允许按主题改 `:root` CSS 变量，禁止重排结构、禁止删 class。
+5. **渲染输出**：模板为单文件 HTML（CSS 内联、零外部资源），替换完成后直接作为该页渲染结果输出，QA 按既有门禁验收（对比度、溢出、占位符清零）。
+
 <!-- TASK-001: 新增整节——页面语义分析层（强制门禁） -->
 ## 页面语义分析层（强制）
 

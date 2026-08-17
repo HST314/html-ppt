@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!-- TASK-001: 流体闭环发散式目录模板（样式骨架，仅占位符，无业务文本）
+     占位符：{{toc_main_title}} / {{item_01_num}}~{{item_08_num}} / {{item_01_title}}~{{item_08_title}} / {{item_01_desc}}~{{item_08_desc}}
+     使用：按真实条目数替换占位符；未使用的节点请连同其 .toc-node 与 data-link 对应的 SVG path 一并删除。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{toc_main_title}}</title>
+<style>
+  /* TASK-001: 主题变量集中管理，改配色只动 :root */
+  :root {
+    --bg: #f4f7fc;
+    --ink: #16324f;
+    --ink-soft: #5b7290;
+    --accent-1: #2f7cf6;
+    --accent-2: #34d1c8;
+    --accent-3: #8f7bff;
+    --card-bg: #ffffff;
+    --line: rgba(47, 124, 246, 0.35);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dfe6f0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", sans-serif;
+  }
+  /* TASK-001: 16:9 舞台，纯CSS等比缩放（cqw单位随容器缩放） */
+  .stage {
+    position: relative;
+    width: min(100vw, 177.78vh);
+    aspect-ratio: 16 / 9;
+    background: var(--bg);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  /* 中心流体主题块 */
+  .hub {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 24cqw;
+    height: 24cqw;
+    max-height: 62%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3cqw;
+    color: #ffffff;
+    /* 流体轮廓 */
+    border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3) 70%);
+    box-shadow: 0 1.2cqw 3cqw rgba(47, 124, 246, 0.35);
+    overflow: hidden;
+  }
+  .hub::after { /* 装饰高光 */
+    content: "";
+    position: absolute;
+    left: -20%;
+    top: -30%;
+    width: 70%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255,255,255,0.35), transparent);
+    pointer-events: none;
+  }
+  .hub-title {
+    position: relative;
+    font-size: 2.6cqw;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+  /* 发散流体卡片 */
+  .toc-node {
+    position: absolute;
+    z-index: 2;
+    width: 17cqw;
+    height: 12.5cqw;
+    max-height: 24%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6cqw;
+    padding: 1.2cqw 1.6cqw;
+    background: var(--card-bg);
+    /* 流体轮廓，每个卡片略有差异 */
+    border-radius: 52% 48% 45% 55% / 55% 48% 52% 45%;
+    box-shadow: 0 0.8cqw 2cqw rgba(22, 50, 79, 0.12);
+    overflow: hidden; /* 文字溢出防护 */
+  }
+  /* 渐变描边 */
+  .toc-node::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.18cqw;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .toc-node:nth-of-type(odd) { border-radius: 45% 55% 58% 42% / 50% 44% 56% 50%; }
+  .node-num {
+    font-size: 1.5cqw;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-1);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-title {
+    font-size: 1.35cqw;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-desc {
+    font-size: 0.95cqw;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+  /* 8个发散方位（椭圆轨道） */
+  .pos-1 { left: 50%; top: 13%; }
+  .pos-2 { left: 76%; top: 24%; }
+  .pos-3 { left: 87%; top: 50%; }
+  .pos-4 { left: 76%; top: 76%; }
+  .pos-5 { left: 50%; top: 87%; }
+  .pos-6 { left: 24%; top: 76%; }
+  .pos-7 { left: 13%; top: 50%; }
+  .pos-8 { left: 24%; top: 24%; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <!-- TASK-001: 柔和曲线连线层（中心→各节点三次贝塞尔曲线 + 闭环装饰椭圆） -->
+  <svg class="links" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+    <ellipse cx="640" cy="360" rx="440" ry="240" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="6 8"/>
+    <ellipse cx="640" cy="360" rx="470" ry="265" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 10"/>
+    <g fill="none" stroke="var(--line)" stroke-width="2" stroke-linecap="round">
+      <path data-link="1" d="M640 300 C620 240 620 200 640 160"/>
+      <path data-link="2" d="M730 320 C820 280 880 240 950 210"/>
+      <path data-link="3" d="M760 360 C880 350 960 355 1090 360"/>
+      <path data-link="4" d="M730 400 C820 440 880 490 950 520"/>
+      <path data-link="5" d="M640 420 C620 480 620 530 640 590"/>
+      <path data-link="6" d="M550 400 C460 450 400 490 330 520"/>
+      <path data-link="7" d="M520 360 C400 350 320 355 190 360"/>
+      <path data-link="8" d="M550 320 C460 280 400 240 330 210"/>
+    </g>
+    <g fill="var(--accent-2)">
+      <circle cx="640" cy="160" r="5"/><circle cx="950" cy="210" r="5"/>
+      <circle cx="1090" cy="360" r="5"/><circle cx="950" cy="520" r="5"/>
+      <circle cx="640" cy="590" r="5"/><circle cx="330" cy="520" r="5"/>
+      <circle cx="190" cy="360" r="5"/><circle cx="330" cy="210" r="5"/>
+    </g>
+  </svg>
+
+  <div class="hub">
+    <div class="hub-title">{{toc_main_title}}</div>
+  </div>
+
+  <!-- 目录节点：序号 + 主标题 + 一行释义 -->
+  <section class="toc-node pos-1">
+    <div class="node-num">{{item_01_num}}</div>
+    <div class="node-title">{{item_01_title}}</div>
+    <div class="node-desc">{{item_01_desc}}</div>
+  </section>
+  <section class="toc-node pos-2">
+    <div class="node-num">{{item_02_num}}</div>
+    <div class="node-title">{{item_02_title}}</div>
+    <div class="node-desc">{{item_02_desc}}</div>
+  </section>
+  <section class="toc-node pos-3">
+    <div class="node-num">{{item_03_num}}</div>
+    <div class="node-title">{{item_03_title}}</div>
+    <div class="node-desc">{{item_03_desc}}</div>
+  </section>
+  <section class="toc-node pos-4">
+    <div class="node-num">{{item_04_num}}</div>
+    <div class="node-title">{{item_04_title}}</div>
+    <div class="node-desc">{{item_04_desc}}</div>
+  </section>
+  <section class="toc-node pos-5">
+    <div class="node-num">{{item_05_num}}</div>
+    <div class="node-title">{{item_05_title}}</div>
+    <div class="node-desc">{{item_05_desc}}</div>
+  </section>
+  <section class="toc-node pos-6">
+    <div class="node-num">{{item_06_num}}</div>
+    <div class="node-title">{{item_06_title}}</div>
+    <div class="node-desc">{{item_06_desc}}</div>
+  </section>
+  <section class="toc-node pos-7">
+    <div class="node-num">{{item_07_num}}</div>
+    <div class="node-title">{{item_07_title}}</div>
+    <div class="node-desc">{{item_07_desc}}</div>
+  </section>
+  <section class="toc-node pos-8">
+    <div class="node-num">{{item_08_num}}</div>
+    <div class="node-title">{{item_08_title}}</div>
+    <div class="node-desc">{{item_08_desc}}</div>
+  </section>
+</div>
+</body>
+</html>

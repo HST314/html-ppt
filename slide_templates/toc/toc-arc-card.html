@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!-- TASK-001: 圆弧环形排布卡片目录模板（样式骨架，仅占位符，无业务文本）
+     占位符：{{toc_main_title}} / {{item_01_num}}~{{item_08_num}} / {{item_01_title}}~{{item_08_title}} / {{item_01_desc}}~{{item_08_desc}}
+     使用：按真实条目数替换占位符；未使用的节点请连同其 .toc-node 与 data-dot 对应的 SVG 圆点一并删除。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{toc_main_title}}</title>
+<style>
+  /* TASK-001: 主题变量集中管理，改配色只动 :root */
+  :root {
+    --bg: #f5f8fc;
+    --ink: #17324e;
+    --ink-soft: #5d748e;
+    --accent-1: #2f7cf6;
+    --accent-2: #34d1c8;
+    --accent-3: #8f7bff;
+    --card-bg: #ffffff;
+    --line: rgba(47, 124, 246, 0.38);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dfe6f0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", sans-serif;
+  }
+  /* TASK-001: 16:9 舞台，纯CSS等比缩放（cqw单位随容器缩放） */
+  .stage {
+    position: relative;
+    width: min(100vw, 177.78vh);
+    aspect-ratio: 16 / 9;
+    background: var(--bg);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  /* 页眉：主标题居中 */
+  .toc-header {
+    position: absolute;
+    left: 50%;
+    top: 4.5%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 46%;
+    text-align: center;
+    overflow: hidden;
+  }
+  .toc-main-title {
+    display: inline-block;
+    font-size: 2.7cqw;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    padding-bottom: 1cqw;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .toc-main-title::after { /* 标题下装饰弧线 */
+    content: "";
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: 0;
+    height: 0.4cqw;
+    border-radius: 1cqw;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  }
+  /* 圆弧上的异形卡片 */
+  .toc-node {
+    position: absolute;
+    z-index: 2;
+    width: 14cqw;
+    height: 10cqw;
+    max-height: 23%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5cqw;
+    padding: 1cqw 1.4cqw;
+    background: var(--card-bg);
+    /* 异形容器：大圆角叶片形 */
+    border-radius: 3cqw 3cqw 3cqw 3cqw / 3.6cqw 3.6cqw 2.4cqw 2.4cqw;
+    box-shadow: 0 0.8cqw 2cqw rgba(23, 50, 78, 0.13);
+    overflow: hidden; /* 文字溢出防护 */
+  }
+  /* 渐变描边 */
+  .toc-node::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.18cqw;
+    background: linear-gradient(160deg, var(--accent-1), var(--accent-3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .toc-node:nth-of-type(even)::before {
+    background: linear-gradient(160deg, var(--accent-2), var(--accent-1));
+  }
+  .node-num {
+    font-size: 1.4cqw;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-1);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-title {
+    font-size: 1.2cqw;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-desc {
+    font-size: 0.9cqw;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+  /* 8个卡片沿圆弧排布（圆心 640,760 半径 560） */
+  .pos-1 { left: 7.2%;  top: 89.4%; }
+  .pos-2 { left: 13.8%; top: 61.7%; }
+  .pos-3 { left: 25.9%; top: 40.6%; }
+  .pos-4 { left: 41.6%; top: 29.2%; }
+  .pos-5 { left: 58.4%; top: 29.2%; }
+  .pos-6 { left: 74.1%; top: 40.6%; }
+  .pos-7 { left: 86.2%; top: 61.7%; }
+  .pos-8 { left: 92.8%; top: 89.4%; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <!-- TASK-001: 三条同心圆弧装饰线（中间一条为节点逻辑连线） + 节点圆点 -->
+  <svg class="links" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M43 633 A610 610 0 0 1 1237 633" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 10"/>
+    <path d="M92 644 A560 560 0 0 1 1188 644" fill="none" stroke="var(--line)" stroke-width="2.5"/>
+    <path d="M141 654 A510 510 0 0 1 1139 654" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="8 8"/>
+    <g fill="var(--accent-2)">
+      <circle data-dot="1" cx="43" cy="633" r="4.5"/><circle data-dot="2" cx="136" cy="416" r="4.5"/>
+      <circle data-dot="3" cx="305" cy="250" r="4.5"/><circle data-dot="4" cx="523" cy="161" r="4.5"/>
+      <circle data-dot="5" cx="757" cy="161" r="4.5"/><circle data-dot="6" cx="975" cy="250" r="4.5"/>
+      <circle data-dot="7" cx="1144" cy="416" r="4.5"/><circle data-dot="8" cx="1237" cy="633" r="4.5"/>
+    </g>
+  </svg>
+
+  <header class="toc-header">
+    <h2 class="toc-main-title">{{toc_main_title}}</h2>
+  </header>
+
+  <!-- 目录节点：序号 + 主标题 + 一行释义（沿圆弧排布） -->
+  <section class="toc-node pos-1">
+    <div class="node-num">{{item_01_num}}</div>
+    <div class="node-title">{{item_01_title}}</div>
+    <div class="node-desc">{{item_01_desc}}</div>
+  </section>
+  <section class="toc-node pos-2">
+    <div class="node-num">{{item_02_num}}</div>
+    <div class="node-title">{{item_02_title}}</div>
+    <div class="node-desc">{{item_02_desc}}</div>
+  </section>
+  <section class="toc-node pos-3">
+    <div class="node-num">{{item_03_num}}</div>
+    <div class="node-title">{{item_03_title}}</div>
+    <div class="node-desc">{{item_03_desc}}</div>
+  </section>
+  <section class="toc-node pos-4">
+    <div class="node-num">{{item_04_num}}</div>
+    <div class="node-title">{{item_04_title}}</div>
+    <div class="node-desc">{{item_04_desc}}</div>
+  </section>
+  <section class="toc-node pos-5">
+    <div class="node-num">{{item_05_num}}</div>
+    <div class="node-title">{{item_05_title}}</div>
+    <div class="node-desc">{{item_05_desc}}</div>
+  </section>
+  <section class="toc-node pos-6">
+    <div class="node-num">{{item_06_num}}</div>
+    <div class="node-title">{{item_06_title}}</div>
+    <div class="node-desc">{{item_06_desc}}</div>
+  </section>
+  <section class="toc-node pos-7">
+    <div class="node-num">{{item_07_num}}</div>
+    <div class="node-title">{{item_07_title}}</div>
+    <div class="node-desc">{{item_07_desc}}</div>
+  </section>
+  <section class="toc-node pos-8">
+    <div class="node-num">{{item_08_num}}</div>
+    <div class="node-title">{{item_08_title}}</div>
+    <div class="node-desc">{{item_08_desc}}</div>
+  </section>
+</div>
+</body>
+</html>

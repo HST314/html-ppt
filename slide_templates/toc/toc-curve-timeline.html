@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- TASK-001: 曲线时间轴异形目录模板（样式骨架，仅占位符，无业务文本）
+     占位符：{{toc_main_title}} / {{item_01_num}}~{{item_08_num}} / {{item_01_title}}~{{item_08_title}} / {{item_01_desc}}~{{item_08_desc}}
+     使用：按真实条目数替换占位符；未使用的节点请连同其 .toc-node 与 data-mark 对应的 SVG 圆点/短茎一并删除。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{toc_main_title}}</title>
+<style>
+  /* TASK-001: 主题变量集中管理，改配色只动 :root */
+  :root {
+    --bg: #f7f9fd;
+    --ink: #17324e;
+    --ink-soft: #5d748e;
+    --accent-1: #2f7cf6;
+    --accent-2: #34d1c8;
+    --accent-3: #f6a52f;
+    --card-bg: #ffffff;
+    --line: rgba(47, 124, 246, 0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dfe6f0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", sans-serif;
+  }
+  /* TASK-001: 16:9 舞台，纯CSS等比缩放（cqw单位随容器缩放） */
+  .stage {
+    position: relative;
+    width: min(100vw, 177.78vh);
+    aspect-ratio: 16 / 9;
+    background: var(--bg);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  /* 页眉：主标题 + 装饰 */
+  .toc-header {
+    position: absolute;
+    left: 5%;
+    top: 6%;
+    z-index: 2;
+    max-width: 34%;
+    padding-left: 1.4cqw;
+    border-left: 0.45cqw solid var(--accent-1);
+    border-image: linear-gradient(180deg, var(--accent-1), var(--accent-2)) 1;
+    overflow: hidden;
+  }
+  .toc-main-title {
+    font-size: 2.7cqw;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+  /* 时间轴节点卡片：异形大圆角 + 渐变描边 */
+  .toc-node {
+    position: absolute;
+    z-index: 2;
+    width: 15.5cqw;
+    height: 9.5cqw;
+    max-height: 20%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.45cqw;
+    padding: 1cqw 1.4cqw;
+    background: var(--card-bg);
+    /* 异形容器：不对称大圆角 */
+    border-radius: 2.2cqw 2.2cqw 2.2cqw 0.6cqw;
+    box-shadow: 0 0.7cqw 1.8cqw rgba(23, 50, 78, 0.12);
+    overflow: hidden; /* 文字溢出防护 */
+  }
+  .toc-node[data-side="down"] { border-radius: 0.6cqw 2.2cqw 2.2cqw 2.2cqw; }
+  /* 渐变描边 */
+  .toc-node::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.18cqw;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .toc-node[data-tone="warm"]::before {
+    background: linear-gradient(135deg, var(--accent-3), var(--accent-1));
+  }
+  .node-num {
+    font-size: 1.35cqw;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-1);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toc-node[data-tone="warm"] .node-num { color: var(--accent-3); }
+  .node-title {
+    font-size: 1.2cqw;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-desc {
+    font-size: 0.9cqw;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+  /* 8个节点卡片方位（沿S形曲线交替上下） */
+  .pos-1 { left: 14.8%; top: 64.2%; }
+  .pos-2 { left: 24.5%; top: 88.5%; }
+  .pos-3 { left: 36.8%; top: 51.1%; }
+  .pos-4 { left: 50%;   top: 75.4%; }
+  .pos-5 { left: 62.6%; top: 41%; }
+  .pos-6 { left: 71.9%; top: 58.8%; }
+  .pos-7 { left: 81.2%; top: 15.8%; }
+  .pos-8 { left: 92.2%; top: 37.2%; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <!-- TASK-001: S形主曲线 + 节点圆点 + 卡片短茎连线（柔和曲线） -->
+  <svg class="links" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M80 560 C280 640 380 440 640 440 C900 440 940 200 1200 160"
+          fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M80 576 C280 656 380 456 640 456 C900 456 940 216 1200 176"
+          fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 9"/>
+    <g stroke="var(--line)" stroke-width="2" fill="none" stroke-linecap="round">
+      <path data-mark="1" d="M190 578 Q186 554 190 530"/>
+      <path data-mark="2" d="M313 542 Q317 556 313 570"/>
+      <path data-mark="3" d="M471 470 Q467 452 471 435"/>
+      <path data-mark="4" d="M640 440 Q644 458 640 476"/>
+      <path data-mark="5" d="M801 402 Q797 382 801 362"/>
+      <path data-mark="6" d="M920 315 Q924 336 920 356"/>
+      <path data-mark="7" d="M1039 221 Q1035 201 1039 181"/>
+      <path data-mark="8" d="M1200 160 Q1204 180 1200 200"/>
+    </g>
+    <g fill="#ffffff" stroke="var(--accent-1)" stroke-width="2.5">
+      <circle cx="190" cy="578" r="7"/><circle cx="313" cy="542" r="7"/>
+      <circle cx="471" cy="470" r="7"/><circle cx="640" cy="440" r="7"/>
+      <circle cx="801" cy="402" r="7"/><circle cx="920" cy="315" r="7"/>
+      <circle cx="1039" cy="221" r="7"/><circle cx="1200" cy="160" r="7"/>
+    </g>
+  </svg>
+
+  <header class="toc-header">
+    <h2 class="toc-main-title">{{toc_main_title}}</h2>
+  </header>
+
+  <!-- 目录节点：序号 + 主标题 + 一行释义（沿曲线交替上下排布） -->
+  <section class="toc-node pos-1" data-side="up">
+    <div class="node-num">{{item_01_num}}</div>
+    <div class="node-title">{{item_01_title}}</div>
+    <div class="node-desc">{{item_01_desc}}</div>
+  </section>
+  <section class="toc-node pos-2" data-side="down" data-tone="warm">
+    <div class="node-num">{{item_02_num}}</div>
+    <div class="node-title">{{item_02_title}}</div>
+    <div class="node-desc">{{item_02_desc}}</div>
+  </section>
+  <section class="toc-node pos-3" data-side="up">
+    <div class="node-num">{{item_03_num}}</div>
+    <div class="node-title">{{item_03_title}}</div>
+    <div class="node-desc">{{item_03_desc}}</div>
+  </section>
+  <section class="toc-node pos-4" data-side="down" data-tone="warm">
+    <div class="node-num">{{item_04_num}}</div>
+    <div class="node-title">{{item_04_title}}</div>
+    <div class="node-desc">{{item_04_desc}}</div>
+  </section>
+  <section class="toc-node pos-5" data-side="up">
+    <div class="node-num">{{item_05_num}}</div>
+    <div class="node-title">{{item_05_title}}</div>
+    <div class="node-desc">{{item_05_desc}}</div>
+  </section>
+  <section class="toc-node pos-6" data-side="down" data-tone="warm">
+    <div class="node-num">{{item_06_num}}</div>
+    <div class="node-title">{{item_06_title}}</div>
+    <div class="node-desc">{{item_06_desc}}</div>
+  </section>
+  <section class="toc-node pos-7" data-side="up">
+    <div class="node-num">{{item_07_num}}</div>
+    <div class="node-title">{{item_07_title}}</div>
+    <div class="node-desc">{{item_07_desc}}</div>
+  </section>
+  <section class="toc-node pos-8" data-side="down" data-tone="warm">
+    <div class="node-num">{{item_08_num}}</div>
+    <div class="node-title">{{item_08_title}}</div>
+    <div class="node-desc">{{item_08_desc}}</div>
+  </section>
+</div>
+</body>
+</html>
