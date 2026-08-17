@@ -80,6 +80,8 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 }
 .slide h1 { font-size: var(--fs-cover); line-height: var(--lh-tight); max-width: 1300px; }
 .slide h2 { font-size: var(--fs-title); line-height: var(--lh-title); max-width: 1230px; }
+/* TASK-004 fix: 长标题平衡换行，消除末词孤行（P14“离”、P20“链路”）；对不支持浏览器自动回退普通换行 */
+.slide h1, .slide h2 { text-wrap: balance; }
 .subtitle {
   margin: 30px 0 0;
   max-width: 1000px;
@@ -446,10 +448,14 @@ tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
   color: var(--accent);
   font-family: var(--font-mono);
 }
+/* TASK-004 fix: @page 自定义 1920×1080 页面，Chromium 默认打印下每页恰为一页 16:9 画布，
+   消除 Letter 纵向造成的右侧/底部裁切；print-color-adjust 保证深空背景强制保留 */
+@page { size: 1920px 1080px; margin: 0; }
 @media print {
-  html, body { overflow: visible; background: #fff; }
+  html, body { overflow: visible; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .deck-shell { display: block; width: auto; height: auto; background: #fff; }
   .deck-stage { transform: none !important; width: 100%; height: auto; box-shadow: none; }
-  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; break-inside: avoid; }
+  .slide:last-of-type { page-break-after: auto; }
   .deck-ui, .overview { display: none !important; }
 }

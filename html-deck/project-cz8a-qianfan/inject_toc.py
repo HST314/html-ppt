@@ -87,6 +87,19 @@ def main():
   .toc-stage .stage { width: 100%; height: 100%; }
   .toc-stage .hub { box-shadow: 0 1.2cqw 3cqw rgba(18, 64, 110, 0.55); }
   .toc-stage .toc-node { box-shadow: 0 0.8cqw 2cqw rgba(0, 0, 0, 0.45); }
+
+  /* TASK-004 fix: 打印（PDF）路径不支持 mask-composite 渐变描边，::before 会整卡铺满渐变
+     导致近白文字不可读；打印时退回实色细边框，恢复深色卡片底与文字对比度（屏幕端不变） */
+  @media print {
+    .toc-stage .toc-node::before {
+      background: none;
+      -webkit-mask: none;
+              mask: none;
+      border: 2px solid var(--accent-2);
+      border-radius: inherit;
+      padding: 0;
+    }
+  }
 """
 
     # 5) 注入 deck.single.html 的 role-toc 页
