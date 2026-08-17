@@ -1,0 +1,36 @@
+{
+  "version": "2.0",
+  "source_image_ids": [
+    "badge-01-gold-enamel",
+    "badge-02-silver-minimal",
+    "badge-03-dual-scene",
+    "badge-04-champagne-orbit",
+    "badge-05-fusion-culture"
+  ],
+  "primary_image_id": "badge-01-gold-enamel",
+  "art_expression": "主题色为#0c0c24、#ccb49c、#0c0c3c、#fcfcfc；线条呈横向延展；亮部重心位于九宫格(2,2)，暗部重心位于(1,1)；饱和度0.63、明暗层次0.40。背景保留标题侧留白，以异尺度轮廓、项目色光晕和方向性线群形成版式节奏；封面展开、尾页镜像收束，禁止复用固定行业图形。",
+  "dna": {
+    "palette": [
+      "#0c0c24",
+      "#ccb49c",
+      "#0c0c3c",
+      "#fcfcfc"
+    ],
+    "line_language": "横向延展",
+    "dark_focus": [
+      0,
+      0
+    ],
+    "light_focus": [
+      1,
+      1
+    ],
+    "saturation": 0.63,
+    "contrast": 0.395
+  },
+  "cover_background": "art/project-cover.svg",
+  "content_background": "art/project-content.svg",
+  "section_background": "art/project-section.svg",
+  "closing_background": "art/project-closing.svg",
+  "non_template_signature": "fb3effbd6c5e52fd"
+}

@@ -49,7 +49,8 @@ def analyze(path):
     darkest=min(range(9), key=lambda i:thirds[i]); brightest=max(range(9), key=lambda i:thirds[i])
     sat=sum(colorsys.rgb_to_hsv(r/255,g/255,b/255)[1] for r,g,b in px)/max(1,len(px))
     contrast=(max(thirds)-min(thirds))/255
-    return {"palette":[hexrgb(c) for c in palette],"line_language":"纵向生长" if vertical>horizontal*1.08 else "横向延展" if horizontal>vertical*1.08 else "均衡网格","dark_focus":[darkest%3,darkest//3],"light_focus":[brightest%3,brightest//3],"saturation":round(sat,3),"contrast":round(contrast,3)}
+    # TASK-022 fix: semantic_palette 已返回 hex 字符串列表，禁止二次 hexrgb（原双重转换在 Pillow 路径下必抛 TypeError）
+    return {"palette":palette,"line_language":"纵向生长" if vertical>horizontal*1.08 else "横向延展" if horizontal>vertical*1.08 else "均衡网格","dark_focus":[darkest%3,darkest//3],"light_focus":[brightest%3,brightest//3],"saturation":round(sat,3),"contrast":round(contrast,3)}
 
 def analyze_png(path):
     """无 Pillow 降级：用标准库解码 8-bit 非交错 RGB/RGBA PNG。"""

@@ -1,0 +1,1685 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>长征八号甲·千帆星座：任务视觉纪念系列</title>
+<style>:root {
+  --page-bg: #05070d;
+  --bg: #0b1020;
+  --surface: rgba(255,255,255,.075);
+  --surface-2: rgba(255,255,255,.12);
+  --text: #f5f7fb;
+  --muted: #aab4c8;
+  --inverse: #ffffff;
+  --accent: #4dd4ac;
+  --accent-2: #f4c95d;
+  --line: rgba(255,255,255,.16);
+  --shadow: 0 24px 70px rgba(0,0,0,.28);
+  --radius: 8px;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Noto Serif CJK SC", "Songti SC", Georgia, serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --slide-padding: 86px;
+  --cover-size: 106px;
+  --title-size: 72px;
+  --body-size: 32px;
+  --texture: radial-gradient(circle at 78% 12%, rgba(77,212,172,.18), transparent 26%), linear-gradient(135deg, rgba(244,201,93,.08), transparent 38%);
+  --hairline-opacity: .82;
+}
+.panel, .content-list li, .takeaway {
+  backdrop-filter: blur(18px);
+  box-shadow: 0 22px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.role-cover h1::after, .role-section h2::after {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}
+
+:root {
+  --fs-display: 144px;
+  --fs-cover: var(--cover-size, 112px);
+  --fs-title: var(--title-size, 70px);
+  --fs-subtitle: 40px;
+  --fs-body: var(--body-size, 31px);
+  --fs-support: 22px;
+  --fs-caption: 17px;
+  --lh-tight: .96;
+  --lh-title: 1.05;
+  --lh-body: 1.36;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --grid-gap: 24px;
+}
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.deckline {
+  height: 1px;
+  background: var(--line);
+  transform-origin: left center;
+}
+
+.outline-number {
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  font: 900 var(--fs-display)/.8 var(--font-mono);
+  opacity: .38;
+}
+
+.slide .watermark-word {
+  position: absolute;
+  right: 50px;
+  bottom: 8px;
+  z-index: 0;
+  max-width: 1000px;
+  color: var(--text);
+  opacity: .045;
+  font: 900 190px/.82 var(--font-sans);
+  text-transform: uppercase;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.accent-bar {
+  width: 6px;
+  min-height: 104px;
+  background: var(--accent);
+}
+
+.quote-deco {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+
+.slide .takeaway {
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  bottom: 48px;
+  z-index: 4;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  border-left: 6px solid var(--accent);
+  border-radius: min(var(--radius), 8px);
+  font: 700 var(--fs-support)/1.22 var(--font-sans);
+}
+
+.caption-bar {
+  position: absolute;
+  left: 44px;
+  right: 44px;
+  bottom: 40px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px 18px;
+  color: #fff;
+  background: rgba(0,0,0,.56);
+  backdrop-filter: blur(10px);
+  font: 600 var(--fs-caption)/1.25 var(--font-sans);
+}
+
+.caption-source {
+  color: rgba(255,255,255,.72);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* TASK-001: 文本内部升级工具类(对标 guizang .hi/.mark、autoppt 语义强调;规则见 references/page-logic-patterns.md 第 17 节)
+   .hl  关键词高亮:accent 色 + 加粗,每卡 ≤3 处,只动 color/weight 不打断行高
+   .num 数据突出:accent 色 + 等宽 + 加粗 + 禁换行,数字必须带口径 */
+.hl {
+  color: var(--accent);
+  font-weight: 800;
+}
+.num {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* accent 填充面上的反色墨文字(对比度纪律:禁止白字压浅金) */
+:root { --on-accent: #171106; }
+
+:root {
+  --deck-width: 1920;
+  --deck-height: 1080;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: #080a0f;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+.deck-shell {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  place-items: center;
+  justify-content: center;
+  align-content: center;
+  background: var(--page-bg, #080a0f);
+}
+.deck-stage {
+  position: relative;
+  width: calc(var(--deck-width) * 1px);
+  height: calc(var(--deck-height) * 1px);
+  transform: scale(var(--deck-scale, 1));
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 30px 90px rgba(0,0,0,.35);
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  padding: var(--slide-padding);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .42s ease, transform .42s ease, filter .42s ease;
+  transform: translateX(46px);
+  overflow: hidden;
+}
+body.transition-fade .slide { transform: none; filter: blur(8px); }
+body.transition-scale-fade .slide { transform: scale(.975); }
+.slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  filter: none;
+}
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--texture);
+  background-size: var(--texture-size, auto);
+  opacity: .92;
+}
+.slide::after {
+  content: "";
+  position: absolute;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  top: 40px;
+  height: 1px;
+  background: var(--line);
+  opacity: var(--hairline-opacity, .65);
+}
+.slide > * { position: relative; z-index: 1; }
+.slide h1, .slide h2 {
+  margin: 0;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.slide h1 { font-size: var(--fs-cover); line-height: var(--lh-tight); max-width: 1300px; }
+.slide h2 { font-size: var(--fs-title); line-height: var(--lh-title); max-width: 1230px; }
+.subtitle {
+  margin: 30px 0 0;
+  max-width: 1000px;
+  color: var(--muted);
+  font-size: var(--fs-subtitle);
+  line-height: 1.32;
+}
+.eyebrow, .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: var(--accent);
+  font: 800 21px/1 var(--font-mono);
+  text-transform: uppercase;
+}
+.body, .slide p, .slide li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text);
+}
+.muted { color: var(--muted); }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.content-list {
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 18px;
+}
+.content-list li {
+  position: relative;
+  min-height: 54px;
+  padding: 12px 18px 12px 38px;
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.content-list li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+}
+.body {
+  max-width: 1120px;
+  margin: 26px 0 0;
+}
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.project-image-container {
+  isolation: isolate;
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 12px 34px rgba(0,0,0,.16);
+}
+.project-image-container::before,
+.project-image-container::after { display: none !important; }
+.slide figure { margin: 0; }
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: var(--fit, cover);
+}
+.image-frame.screenshot-frame {
+  padding: 34px;
+  background:
+    radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 30%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 88%, #fff 12%), var(--surface));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.18);
+}
+.image-frame.screenshot-frame img {
+  border-radius: max(4px, calc(var(--radius) - 2px));
+  box-shadow: 0 20px 46px rgba(0,0,0,.28);
+}
+.role-cover {
+  display: grid;
+  align-content: end;
+  gap: 26px;
+}
+.role-cover .meta-line {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font: 700 24px/1 var(--font-mono);
+}
+.role-cover .outline-number {
+  position: absolute;
+  right: 80px;
+  top: 96px;
+}
+.role-section {
+  display: grid;
+  align-content: center;
+  justify-content: start;
+}
+.role-section h2 { font-size: 118px; max-width: 1320px; }
+.role-section .outline-number {
+  position: absolute;
+  right: 88px;
+  bottom: 86px;
+}
+.role-bullets, .role-table, .role-quote, .role-timeline, .role-kpi, .role-toc, .role-closing {
+  display: grid;
+  align-content: start;
+  padding-bottom: 112px;
+}
+.role-gallery {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding-bottom: 112px;
+}
+.role-gallery .gallery-grid { margin-top: 34px; min-height: 0; }
+.role-bullets .content-list, .role-toc .content-list { max-width: 1180px; }
+.role-two-column, .role-image-side, .role-compare {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 34px;
+  align-items: center;
+  padding-bottom: 92px;
+}
+.role-compare > h2 { grid-column: 1 / -1; }
+.role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
+.role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
+/* TASK-003: 语义信息组的独立视觉区块（组卡片），组标题可见 */
+.group-card {
+  padding: 24px 26px;
+  align-self: start;
+  text-align: left;
+}
+.group-card .group-title {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.group-card .group-list { margin-top: 0; gap: 12px; }
+.group-card .group-list li { min-height: 0; padding-top: 10px; padding-bottom: 10px; }
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin-top: 32px;
+}
+.role-two-column .group-stack { display: grid; gap: 20px; align-content: center; }
+.role-two-column .copy > .group-stack { margin-top: 30px; }
+.visual .image-frame.group-image { height: 220px; margin-bottom: 20px; }
+.role-image-hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 28px 34px;
+  padding-bottom: 92px;
+}
+/* 封面场景图背景：风格检测选出的高权重场景图做全幅底图，蒙版保证文字可读 */
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .55;
+  z-index: 0;
+}
+.cover-bg-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 45%, transparent), color-mix(in srgb, var(--bg) 86%, transparent) 80%),
+    linear-gradient(90deg, color-mix(in srgb, var(--bg) 45%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.hero-image {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.hero-copy {
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  min-width: 0;
+}
+.hero-visual { grid-column: 5 / -1; grid-row: 1 / span 2; min-width: 0; min-height: 0; }
+.role-image-hero > .takeaway { grid-column: 1 / -1; grid-row: 3; }
+.side-image, .visual .image-frame {
+  width: 100%;
+  height: 690px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 34px;
+}
+.gallery-grid.gallery-small { grid-template-rows: minmax(0, 1fr); }
+.gallery-grid .image-frame { min-width: 0; min-height: 0; height: auto; }
+.gallery-grid figure { margin: 0; }
+.gallery-grid .caption-bar {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0;
+}
+.gallery-index {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 2;
+  min-width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--accent);
+  font: 900 18px/1 var(--font-mono);
+}
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 40px;
+}
+.kpi-card {
+  min-height: 216px;
+  padding: 30px;
+  display: grid;
+  align-content: space-between;
+}
+.kpi-number {
+  color: var(--accent);
+  font: 900 82px/1 var(--font-mono);
+}
+.kpi-card small {
+  color: var(--muted);
+  font: 700 19px/1.3 var(--font-sans);
+}
+.quote-mark {
+  color: var(--accent);
+  font: 900 150px/.72 var(--font-serif);
+}
+.quote-text {
+  font: 800 64px/1.12 var(--font-serif);
+  max-width: 1260px;
+}
+.compare-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 28px;
+}
+.compare-card {
+  min-height: 480px;
+  padding: 38px;
+  overflow: hidden;
+}
+.compare-card .image-frame {
+  height: auto;
+  max-height: 430px;
+}
+.compare-card .image-frame img {
+  height: auto;
+  max-height: 430px;
+}
+.compare-card h3 {
+  margin: 0 0 24px;
+  color: var(--accent);
+  font: 900 36px/1.08 var(--font-sans);
+}
+.timeline-row {
+  margin-top: 54px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.timeline-item {
+  min-height: 264px;
+  padding: 26px;
+  border-top: 7px solid var(--accent);
+}
+.timeline-item .date {
+  color: var(--accent);
+  font: 900 24px/1 var(--font-mono);
+}
+.timeline-item p { font-size: 25px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 34px;
+  font-size: 28px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+th, td { padding: 14px 22px; border-bottom: 1px solid var(--line); text-align: left; }
+th { color: var(--accent); background: color-mix(in srgb, var(--surface) 70%, var(--accent) 12%); }
+tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
+.fx-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .34;
+  pointer-events: none;
+}
+.deck-ui {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--inverse);
+  background: rgba(0,0,0,.72);
+  font: 700 13px/1 system-ui, sans-serif;
+}
+.notes { display: none; }
+.overview {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 42px;
+  overflow: auto;
+  background: rgba(8,10,15,.94);
+}
+.overview.is-open { display: grid; }
+.overview button {
+  height: 154px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  padding: 14px;
+  color: #fff;
+  background: #151923;
+  text-align: left;
+  font: 700 18px/1.25 system-ui, sans-serif;
+  cursor: pointer;
+}
+.overview button span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+@media print {
+  html, body { overflow: visible; background: #fff; }
+  .deck-shell { display: block; width: auto; height: auto; background: #fff; }
+  .deck-stage { transform: none !important; width: 100%; height: auto; box-shadow: none; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
+  .deck-ui, .overview { display: none !important; }
+}
+
+[data-animate] { animation-fill-mode: both; }
+.slide.is-active [data-animate="fade-up"] { animation: fadeUp .55s ease both; }
+.slide.is-active [data-animate="blur-in"] { animation: blurIn .68s ease both; }
+.slide.is-active [data-animate="rise-in"] { animation: riseIn .56s cubic-bezier(.2,.8,.2,1) both; }
+.slide.is-active [data-animate="zoom-pop"] { animation: zoomPop .5s cubic-bezier(.2,.9,.25,1.2) both; }
+.slide.is-active [data-animate="kenburns"] img,
+.slide.is-active [data-animate="kenburns"] { animation: kenburns 11s ease both; }
+.slide.is-active [data-animate="gradient-flow"] { animation: gradientFlow 7s linear infinite; }
+.slide.is-active [data-animate="shimmer-sweep"] { position: relative; overflow: hidden; }
+.slide.is-active [data-animate="shimmer-sweep"]::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -30%;
+  z-index: 4;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+  transform: skewX(-16deg);
+  animation: shimmerSweep .72s ease both;
+}
+.slide.is-active [data-animate="stagger-list"] > * {
+  animation: fadeUp .45s ease both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.slide.is-active [data-animate="typewriter"] {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent);
+  animation: typewriter .72s steps(22,end) both, caret .7s steps(1,end) infinite;
+}
+.slide.is-active [data-animate="path-draw"] path,
+.slide.is-active [data-animate="path-draw"] line,
+.slide.is-active [data-animate="path-draw"] polyline {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: pathDraw .75s ease both;
+}
+.slide.is-active [data-animate="ripple-reveal"] { animation: rippleReveal .62s ease both; }
+.slide.is-active table tr {
+  animation: fadeUp .42s ease both;
+  animation-delay: calc(var(--row, 0) * 55ms);
+}
+.slide.is-active .timeline-item {
+  animation: riseIn .48s ease both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+.slide.is-active .compare-card:first-child { animation: splitLeft .55s ease both; }
+.slide.is-active .compare-card:last-child { animation: splitRight .55s ease both; }
+body.no-motion [data-animate],
+body.no-motion [data-animate] > *,
+body.no-motion .slide.is-active * {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+body.no-motion .fx-canvas { display: none; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(18px); transform: scale(.985); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(46px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes zoomPop {
+  0% { opacity: 0; transform: scale(.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes gradientFlow {
+  from { background-position: 0 0; }
+  to { background-position: 160px 160px; }
+}
+@keyframes shimmerSweep {
+  from { left: -30%; }
+  to { left: 120%; }
+}
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+@keyframes caret {
+  50% { border-color: transparent; }
+}
+@keyframes pathDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes rippleReveal {
+  from { opacity: 0; clip-path: circle(0% at 50% 50%); }
+  to { opacity: 1; clip-path: circle(142% at 50% 50%); }
+}
+@keyframes splitLeft {
+  from { opacity: 0; transform: translateX(-46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes splitRight {
+  from { opacity: 0; transform: translateX(46px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ==========================================================================
+   场景基因装饰层 deco.css（v3）
+   从场景图提取的四类设计基因，为主题色自适应（全部从 --accent 派生）：
+     · 奖牌圆环  —— 刻度圆环 + 高亮弧段（封面 / 章节页 / 结尾页）
+     · 数据光柱  —— 发光柱阵，暖色柱 + 冰蓝柱点缀，呼吸动画
+     · 流动动线  —— 渐变 S 曲线贯穿页面（描边动画）
+     · 铭牌矩阵  —— 铭牌条 / 点阵 / 结尾页检查点铭牌卡
+   由 scripts/render_deck.py 生成配套 inline SVG（class="deco"）。
+   ========================================================================== */
+
+:root {
+  --ho: var(--accent, #ff9572);
+  --ho-deep: color-mix(in srgb, var(--accent, #ff9572) 72%, #c03505);
+  --ho-gold: color-mix(in srgb, var(--accent, #ff9572) 45%, #ffd76a);
+  --ho-ice: #8fc1ff;
+}
+
+.deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* TASK-013 fix: artDrift 动画（scale 1.01→1.035 + translate）使背景图四边越出页界，
+   越界部分会向上计入 .slide 的 scrollable overflow（scrollHeight/scrollWidth 实测 +5/+6）。
+   增加 .project-art-frame 裁切层（overflow:hidden）截断溢出传播，动画本身不变 */
+.project-art-frame { position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+.project-art-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:.82; z-index:0; animation:artDrift 18s ease-in-out infinite alternate; }
+.project-art-toc, .project-art-bullets, .project-art-two-column, .project-art-image-side, .project-art-gallery, .project-art-table, .project-art-kpi, .project-art-quote, .project-art-compare, .project-art-timeline { opacity:.58; }
+.project-art-section { opacity:.76; }
+.slide > .project-art-frame ~ *, .slide > .project-art-bg ~ * { z-index:2; } /* TASK-013 fix: art 层已包进 frame，兄弟层级选择器同步 */
+.slide:has(.project-art-bg) .panel, .slide:has(.project-art-bg) .content-list li, .slide:has(.project-art-bg) .takeaway { background:rgba(5,15,28,.72); border-color:rgba(211,163,82,.25); }
+.slide:has(.project-art-bg)::after { background:linear-gradient(90deg,transparent,rgba(222,178,95,.5),transparent); }
+@keyframes artDrift { from { transform:scale(1.01) translate3d(-4px,0,0); } to { transform:scale(1.035) translate3d(7px,-4px,0); } }
+body.no-motion .project-art-bg { animation:none; }
+
+/* SVG 内部元素配色（currentColor / stop-color 通过 CSS 注入，保证主题自适应） */
+.deco { color: var(--ho); }
+.deco-ring-outer { stroke: color-mix(in srgb, var(--ho-gold) 55%, transparent); stroke-width: 1; fill: none; }
+.deco-ring-mid { stroke: color-mix(in srgb, var(--ho) 16%, transparent); stroke-width: 1.5; fill: none; }
+.deco-ring-tick { stroke: color-mix(in srgb, var(--ho) 30%, transparent); stroke-width: 2; fill: none; }
+.deco-ring-hi { stroke: var(--ho); stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.deco-path-ghost { stroke: color-mix(in srgb, var(--ho) 20%, transparent); stroke-width: 1.5; fill: none; }
+.deco-dot { fill: var(--ho-gold); }
+.deco-stem { stroke: color-mix(in srgb, var(--ho) 62%, #ffffff 14%); stroke-width: 2; }
+.deco-stem-ice { stroke: rgba(143,193,255,.6); stroke-width: 2; }
+.deco-tip-warm { fill: color-mix(in srgb, var(--ho) 78%, #ffffff 22%); }
+.deco-tip-ice { fill: #a9d0ff; }
+.deco-plaque { fill: color-mix(in srgb, var(--ho) 10%, transparent); stroke: color-mix(in srgb, var(--ho) 40%, transparent); }
+.deco-plaque-on { fill: color-mix(in srgb, var(--ho) 85%, transparent); }
+.deco-plaque-line { stroke: rgba(255,220,200,.5); stroke-width: 3; stroke-linecap: round; }
+.deco-plaque-line-on { stroke: rgba(120,45,18,.6); stroke-width: 3; stroke-linecap: round; }
+.deco-quiet-path { stroke: color-mix(in srgb, var(--ho) 12%, transparent); stroke-width: 2; fill: none; }
+.deco-quiet-path2 { stroke: color-mix(in srgb, var(--ho) 6%, transparent); stroke-width: 1.5; fill: none; }
+.deco-quiet-dot { fill: color-mix(in srgb, var(--ho) 9%, transparent); }
+.deco-quiet-stem { stroke: color-mix(in srgb, var(--ho) 18%, transparent); stroke-width: 2; }
+.deco-quiet-tip { fill: color-mix(in srgb, var(--ho) 50%, transparent); }
+.deco-quiet-tip-ice { fill: rgba(143,193,255,.55); }
+
+/* 渐变 stop 颜色（inline SVG 的 <stop> 通过 class 上色） */
+.gs0 { stop-color: var(--ho-deep); }
+.gs1 { stop-color: var(--ho); }
+.gs2 { stop-color: var(--ho-gold); }
+.gs-warm0 { stop-color: color-mix(in srgb, var(--ho) 66%, #ffffff 34%); stop-opacity: .9; }
+.gs-warm1 { stop-color: var(--ho); stop-opacity: 0; }
+.gs-ice0 { stop-color: #cfe4ff; stop-opacity: .9; }
+.gs-ice1 { stop-color: var(--ho-ice); stop-opacity: 0; }
+
+/* —— 封面排版强化 —— */
+.role-cover .eyebrow { letter-spacing: .34em; }
+.role-cover h1 .h1-line { display: block; }
+.role-cover h1 .h1-em {
+  display: block;
+  margin-top: 20px;
+  font-size: .6em;
+  letter-spacing: .1em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 52%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.role-cover h1::after {
+  width: 380px;
+  height: 3px;
+  margin-top: 32px;
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+.role-cover .subtitle { font-size: 30px; color: color-mix(in srgb, var(--text) 72%, transparent); }
+.role-cover .meta-line span {
+  border: 1px solid color-mix(in srgb, var(--ho) 38%, transparent);
+  border-radius: 6px;
+  padding: 12px 20px;
+  background: color-mix(in srgb, var(--ho) 8%, transparent);
+  font-size: 20px;
+  letter-spacing: .12em;
+}
+.role-cover .outline-number { top: 120px; right: 110px; opacity: .5; }
+
+/* 动线描边与光柱呼吸动画 */
+.deco-path { stroke-dasharray: 2400; stroke-dashoffset: 2400; fill: none; stroke-width: 3.5; stroke-linecap: round; }
+.slide.is-active .deco-path { animation: decoDraw 1.8s .35s cubic-bezier(.6,.05,.3,1) forwards; }
+@keyframes decoDraw { to { stroke-dashoffset: 0; } }
+.deco-tip { animation: tipPulse 3.4s ease-in-out infinite; }
+@keyframes tipPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+body.no-motion .deco-path { stroke-dashoffset: 0; animation: none; }
+body.no-motion .deco-tip { animation: none; }
+
+/* 章节下划线统一为主题渐变（避免与 accent-2 撞色） */
+.role-section h2::after, .role-section .deckline {
+  background: linear-gradient(90deg, var(--ho-deep), var(--ho-gold));
+}
+
+/* —— 结尾页：检查点做成铭牌卡 —— */
+.role-closing .content-list {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 26px;
+  max-width: 1500px;
+  margin-top: 48px;
+}
+.role-closing .content-list li {
+  min-height: 168px;
+  padding: 26px 28px;
+  border-left: 0;
+  border-top: 3px solid var(--ho);
+  border-radius: 4px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ho) 14%, transparent), color-mix(in srgb, var(--ho) 5%, transparent));
+  box-shadow: 0 18px 44px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);
+  font-size: 27px;
+  line-height: 1.5;
+}
+.closing-echo {
+  margin-top: 54px;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  background: linear-gradient(92deg, var(--ho-deep), var(--ho) 55%, var(--ho-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.closing-echo small {
+  display: block;
+  margin-top: 16px;
+  font: 700 19px/1 var(--font-mono);
+  letter-spacing: .4em;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+}
+
+/* ==========================================================================
+   TASK-009: 视觉布局决策引擎——layout-* 变体样式层
+   每个变体对应 references/layout-patterns.md 中 pattern 的可辨识空间构图；
+   由 render_deck.py 按 IR 的 layout_variant 输出 layout-<variant> 类。
+   纯 CSS 实现，print 兼容，无 JS 依赖。
+   ========================================================================== */
+
+/* ── 通栏格阵/链式容器（render 单容器分支）────────────────────────────── */
+/* TASK-009 fix: role-two-column 父级是 12 列 grid，单容器分支（grid-系、chain-系、
+   loop-系、ascend-系）的 h2/容器/takeaway 必须 span 全宽，否则卡片会被压扁在左列出现竖排文字。
+   直接用具体类名而非属性选择器，确保所有浏览器一致匹配。
+   注意：本注释内严禁出现星号紧跟斜杠的序列，否则会提前闭合注释并作废下方规则。 */
+.slide.role-two-column.layout-grid-2x2 > h2,
+.slide.role-two-column.layout-grid-2x2 > .takeaway,
+.slide.role-two-column.layout-grid-2x2 > p,
+.slide.role-two-column.layout-grid-2x2 > .group-grid,
+.slide.role-two-column.layout-grid-2x3 > h2,
+.slide.role-two-column.layout-grid-2x3 > .takeaway,
+.slide.role-two-column.layout-grid-2x3 > p,
+.slide.role-two-column.layout-grid-2x3 > .group-grid,
+.slide.role-two-column.layout-chain-3 > h2,
+.slide.role-two-column.layout-chain-3 > .takeaway,
+.slide.role-two-column.layout-chain-3 > p,
+.slide.role-two-column.layout-chain-3 > .group-grid,
+.slide.role-two-column.layout-chain-4 > h2,
+.slide.role-two-column.layout-chain-4 > .takeaway,
+.slide.role-two-column.layout-chain-4 > p,
+.slide.role-two-column.layout-chain-4 > .group-grid,
+.slide.role-two-column.layout-loop-3 > h2,
+.slide.role-two-column.layout-loop-3 > .takeaway,
+.slide.role-two-column.layout-loop-3 > p,
+.slide.role-two-column.layout-loop-3 > .loop-stage,
+.slide.role-two-column.layout-loop-4 > h2,
+.slide.role-two-column.layout-loop-4 > .takeaway,
+.slide.role-two-column.layout-loop-4 > p,
+.slide.role-two-column.layout-loop-4 > .loop-stage,
+.slide.role-two-column.layout-ascend-4 > h2,
+.slide.role-two-column.layout-ascend-4 > .takeaway,
+.slide.role-two-column.layout-ascend-4 > p,
+.slide.role-two-column.layout-ascend-4 > .group-stack,
+.slide.role-two-column.layout-ascend-4 > .group-grid {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-grid-2x2,
+.slide.role-two-column.layout-grid-2x3,
+.slide.role-two-column.layout-chain-3,
+.slide.role-two-column.layout-chain-4,
+.slide.role-two-column.layout-loop-3,
+.slide.role-two-column.layout-loop-4,
+.slide.role-two-column.layout-ascend-4 {
+  align-items: start;
+  align-content: center;
+}
+.group-grid.layout-canvas {
+  margin-top: 46px;
+  align-content: center;
+  width: 100%;
+}
+
+/* ── ⑦ 矩阵：grid-2x2 ───────────────────────────────────────────────── */
+.layout-grid-2x2 .group-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x2 .group-card {
+  position: relative;
+  /* TASK-023 fix: 330px×2 + 标题/导语/takeaway 在 1080px 屏高下必然溢出 ~44px，降至 300px 保 grid-2x2 页不溢出 */
+  min-height: 300px;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x2 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+
+/* ── ⑦ 矩阵：grid-2x3（两组卡片通栏堆叠，组内条目 3 列成阵）──────────── */
+.layout-grid-2x3 .group-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px;
+  counter-reset: cell;
+}
+.layout-grid-2x3 .group-card {
+  position: relative;
+  border-top: 5px solid var(--accent);
+  counter-increment: cell;
+}
+.layout-grid-2x3 .group-card::after {
+  content: "0" counter(cell);
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+.layout-grid-2x3 .group-card .group-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.layout-grid-2x3 .group-card .group-list li {
+  min-height: 0;
+}
+
+/* ── ⑨ 非对称图文：asym-cards（5:7 非对称，首卡为焦点块）────────────── */
+.layout-asym-cards > .copy { grid-column: span 5; }
+.layout-asym-cards > .visual { grid-column: 6 / span 7; }
+.layout-asym-cards > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-asym-cards > .copy .group-card:first-child .group-title {
+  font-size: 31px;
+}
+
+/* ── ⑨ 非对称图文：anchor-right（右栏焦点锚定，镜像 7:5）────────────── */
+.layout-anchor-right > .copy { grid-column: span 5; }
+.layout-anchor-right > .visual { grid-column: 6 / span 7; }
+.layout-anchor-right > .visual.panel {
+  border: 2px solid var(--accent-2);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ⑨ 非对称图文：cause-effect（左因右果，果区青蓝强调 + 方向箭头）─── */
+.layout-cause-effect > .visual.panel {
+  position: relative;
+  border: 2px solid var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 8%, var(--surface));
+}
+.layout-cause-effect > .visual.panel::before {
+  content: "→";
+  position: absolute;
+  left: -64px;
+  top: 46%;
+  color: var(--accent-2);
+  font: 900 58px/1 var(--font-sans);
+}
+.layout-cause-effect > .visual.panel .group-title {
+  color: var(--accent);
+  font-size: 31px;
+}
+
+/* ── ① 中心节点+分支：hub-left（左栏深蓝大中心核，右栏分支）────────── */
+.layout-hub-left > .copy .group-card:first-child {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 24px 60px rgba(18, 58, 107, .28);
+}
+.layout-hub-left > .copy .group-card:first-child .group-title {
+  color: #fff;
+  font-size: 32px;
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li {
+  color: #eaf2fb;
+  background: rgba(255, 255, 255, .10);
+  border-left-color: rgba(255, 255, 255, .32);
+}
+.layout-hub-left > .copy .group-card:first-child .group-list li::before {
+  background: var(--accent-2);
+}
+
+/* ── ① 中心节点+分支：hub-radiate（中心核光晕 + 分支辐射线）────────── */
+.layout-hub-radiate > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow), 0 0 0 12px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-hub-radiate > .copy .group-card:first-child .group-title {
+  font-size: 32px;
+}
+.layout-hub-radiate > .visual.panel {
+  position: relative;
+  border-left: 4px solid var(--accent-2);
+}
+.layout-hub-radiate > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 20%;
+  bottom: 20%;
+  width: 30px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent-2) 35%, transparent));
+}
+
+/* ── ① 中心节点+分支：hub-return（回授中心，闭环逻辑的替代承载）────── */
+.layout-hub-return > .copy .group-card:first-child {
+  border: 2px solid var(--accent);
+  border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 10px color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.layout-hub-return > .visual.panel {
+  position: relative;
+}
+.layout-hub-return > .visual.panel::after {
+  content: "↺";
+  position: absolute;
+  right: 18px;
+  top: 10px;
+  color: var(--accent-2);
+  font: 900 54px/1 var(--font-sans);
+  opacity: .8;
+}
+
+/* ── ⑤ 对比构图：vs-split（中央分界 + VS 徽标）────────────────────── */
+.layout-vs-split > .visual.panel {
+  position: relative;
+}
+.layout-vs-split > .visual.panel::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 6%;
+  bottom: 6%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+.layout-vs-split > .visual.panel::after {
+  content: "VS";
+  position: absolute;
+  left: -47px;
+  top: 44%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font: 900 19px/1 var(--font-mono);
+  box-shadow: 0 10px 26px rgba(18, 58, 107, .3);
+}
+
+/* ── ② 三模块闭环：loop-3/loop-4（环形 SVG 回授箭头 + 节点 + 中心主张）─ */
+.loop-stage {
+  position: relative;
+  height: 660px;
+  margin-top: 14px;
+}
+.loop-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent-2);
+}
+.loop-arc {
+  stroke: currentColor;
+  stroke-width: 4;
+  fill: none;
+  opacity: .85;
+}
+.loop-arrow {
+  fill: var(--accent-2);
+}
+.loop-node {
+  position: absolute;
+  z-index: 2;
+  width: 450px;
+  padding: 20px 26px;
+  border-top: 4px solid var(--accent);
+}
+.loop-node p {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.42;
+}
+.loop-node-1 { left: 3%; top: 3%; }
+.loop-node-2 { right: 3%; top: 3%; }
+.loop-node-3 { left: 50%; bottom: 1%; transform: translateX(-50%); }
+.loop-node-4 { right: 5%; bottom: 16%; }
+/* TASK-001 fix: 提权压过 project-art 场景下面板深色底;accent 面文字用 --on-accent(见 THEMES.md 深色主题配色纪律) */
+.slide .panel.loop-claim {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  max-width: 560px;
+  padding: 26px 44px;
+  background: var(--accent);
+  color: var(--on-accent, #171106);
+  border: 0;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.3;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, .35);
+}
+
+/* ── ③ 路径式流程：ascend-4（阶梯上行，最高级为焦点）───────────────── */
+.layout-ascend-4 .timeline-row {
+  margin-top: 30px;
+  padding-bottom: 116px;
+}
+.layout-ascend-4 .timeline-item:nth-child(1) { margin-top: 108px; }
+.layout-ascend-4 .timeline-item:nth-child(2) { margin-top: 72px; }
+.layout-ascend-4 .timeline-item:nth-child(3) { margin-top: 36px; }
+.layout-ascend-4 .timeline-item:nth-child(4) {
+  margin-top: 0;
+  border-top-color: var(--accent-2);
+  border-top-width: 10px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent-2) 8%, transparent);
+}
+
+/* ── ③ 路径式流程：chain-3（横向链式三节点 + 连接线 + 编号徽标）────── */
+.layout-chain-3 .group-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  position: relative;
+  margin-top: 84px;
+  counter-reset: chain;
+}
+.layout-chain-3 .group-grid::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: -36px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.layout-chain-3 .group-grid::after {
+  content: "";
+  position: absolute;
+  right: calc(5% - 16px);
+  top: -44px;
+  border: 10px solid transparent;
+  border-left: 16px solid var(--accent-2);
+}
+.layout-chain-3 .group-card {
+  position: relative;
+  min-height: 300px;
+  counter-increment: chain;
+}
+.layout-chain-3 .group-card::before {
+  content: "0" counter(chain);
+  position: absolute;
+  top: -52px;
+  left: 22px;
+  padding: 4px 14px;
+  background: var(--bg);
+  border: 2px solid var(--accent-2);
+  border-radius: 999px;
+  color: var(--accent);
+  font: 900 20px/1.2 var(--font-mono);
+}
+
+/* ── ⑨ 非对称图文:ed-strip(编辑式动线条,TASK-001 新增变体,登记见 references/layout-patterns.md)── */
+.slide.role-two-column.layout-ed-strip > h2,
+.slide.role-two-column.layout-ed-strip > .takeaway,
+.slide.role-two-column.layout-ed-strip > .ed-flow,
+.slide.role-two-column.layout-ed-strip > .ed-brand {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-ed-strip { align-items: start; align-content: center; }
+.ed-flow { display: grid; gap: 18px; margin-top: 40px; counter-reset: ed; }
+.ed-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: 110px 320px minmax(0, 1fr);
+  align-items: center;
+  gap: 26px;
+  padding: 24px 30px;
+  counter-increment: ed;
+}
+.ed-strip::before {
+  content: "0" counter(ed);
+  color: var(--accent-2);
+  font: 900 44px/1 var(--font-mono);
+}
+.ed-strip .ed-name { color: var(--accent); font: 900 30px/1.25 var(--font-sans); }
+.ed-strip .ed-text { font-size: 25px; line-height: 1.4; margin: 0; }
+.ed-flow .ed-strip:not(:last-child)::after {
+  content: "↓";
+  position: absolute;
+  left: 52px;
+  bottom: -24px;
+  color: var(--accent-2);
+  font: 900 24px/1 var(--font-sans);
+  opacity: .8;
+}
+.ed-brand {
+  margin-top: 30px;
+  padding: 22px 30px;
+  border-left: 6px solid var(--accent-2);
+  font-size: 25px;
+  line-height: 1.4;
+}
+
+/* ── ⑫ 层级空间结构：layers（分层条 L1…Ln，自上而下递缩）───────────── */
+[class*="layout-layers"] .group-stack {
+  counter-reset: layer;
+}
+[class*="layout-layers"] .group-card {
+  position: relative;
+  counter-increment: layer;
+  border-left: 6px solid var(--accent);
+}
+[class*="layout-layers"] .group-card::before {
+  content: "L" counter(layer);
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+}
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(2) { margin-left: 34px; }
+[class*="layout-layers"] > .copy .group-stack .group-card:nth-child(3) { margin-left: 68px; }
+
+/* ── 打印兼容：变体的绝对定位元素在打印下保持静态流 ─────────────────── */
+@media print {
+  .loop-stage { height: auto; }
+  .loop-node, .slide .panel.loop-claim { position: static; transform: none; margin: 12px 0; width: auto; }
+  .loop-ring { display: none; }
+  .layout-ascend-4 .timeline-item { margin-top: 0 !important; }
+}
+
+/* ==========================================================================
+   TASK-018: 结构级变体（登记见 references/layout-patterns.md §12.5）
+   五个变体的渲染级签名四元组互异，用于全 deck 结构配额下的差异化落版。
+   另含 hub-left 金面内高亮对比度修复（.hl/.num 金上金字 ≈1:1 → 深墨暗片）。
+   ========================================================================== */
+
+/* ── P9 对比度修复：hub-left 金面中心核内强调件改深墨暗片 ─────────────── */
+.layout-hub-left > .copy .group-card:first-child .hl,
+.layout-hub-left > .copy .group-card:first-child .num {
+  color: var(--on-accent);
+  background: rgba(23, 17, 6, .16);
+  padding: 0 .18em;
+  border-radius: 4px;
+}
+
+/* ── 全宽行：五个新变体的 h2 / 容器 / takeaway 通栏 ──────────────────── */
+.slide.role-two-column.layout-gather-3 > h2,
+.slide.role-two-column.layout-gather-3 > .takeaway,
+.slide.role-two-column.layout-gather-3 > .group-grid,
+.slide.role-two-column.layout-hub-top > h2,
+.slide.role-two-column.layout-hub-top > .takeaway,
+.slide.role-two-column.layout-hub-top > .group-grid,
+.slide.role-two-column.layout-hub-spoke > h2,
+.slide.role-two-column.layout-hub-spoke > .takeaway,
+.slide.role-two-column.layout-hub-spoke > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > h2,
+.slide.role-two-column.layout-checkpoint-3 > .takeaway,
+.slide.role-two-column.layout-checkpoint-3 > .group-grid,
+.slide.role-two-column.layout-checkpoint-3 > .cp-note,
+.slide.role-two-column[class*="layout-layers"] > h2,
+.slide.role-two-column[class*="layout-layers"] > .takeaway,
+.slide.role-two-column[class*="layout-layers"] > .copy {
+  grid-column: 1 / -1;
+}
+.slide.role-two-column.layout-gather-3,
+.slide.role-two-column.layout-hub-top,
+.slide.role-two-column.layout-hub-spoke,
+.slide.role-two-column.layout-checkpoint-3,
+.slide.role-two-column[class*="layout-layers"] {
+  align-items: start;
+  align-content: center;
+}
+
+/* ── ① 聚合收束 gather-3：上 N 格 + 聚合方向符行 + 底部中心核 ────────── */
+/* TASK-018 fix: 复位 .group-grid 的 auto-fit 列模板，避免子容器被压成等宽列 */
+.layout-gather-3 .gather-rows { display: grid; grid-template-columns: none; gap: 16px; width: 100%; }
+.layout-gather-3 .gather-needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.layout-gather-3 .gather-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-gather-3 .gather-core {
+  position: relative; max-width: 1080px; width: 100%; margin: 0 auto;
+  text-align: center; border: 2px solid var(--accent); border-top-width: 8px;
+}
+
+/* ── ① 通栏核总分 hub-top：顶部通栏核 + 分叉方向符 + 下双分支 ────────── */
+/* TASK-018 fix: 同上，复位列模板 */
+.layout-hub-top .hub-top-rows { display: grid; grid-template-columns: none; gap: 16px; width: 100%; }
+.layout-hub-top .hub-top-core {
+  position: relative; width: 100%; text-align: center;
+  border: 2px solid var(--accent); border-top-width: 8px; padding: 26px 34px;
+}
+.layout-hub-top .hub-top-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.layout-hub-top .hub-top-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+.layout-hub-top .hub-top-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+
+/* ── ① 左右夹核辐射 hub-spoke：左列卡 + 中心核 + 右列卡 + 对向连接符 ─── */
+.layout-hub-spoke .spoke-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 24px; width: 100%; align-items: center;
+}
+.layout-hub-spoke .spoke-col { display: grid; gap: 20px; align-content: center; }
+.layout-hub-spoke .spoke-core {
+  position: relative; text-align: center; padding: 40px 30px;
+  border: 2px solid var(--accent); border-top-width: 8px;
+}
+.layout-hub-spoke .spoke-core::before,
+.layout-hub-spoke .spoke-core::after {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  color: var(--accent-2); font: 900 44px/1 var(--font-sans);
+}
+.layout-hub-spoke .spoke-core::before { content: "→"; left: -56px; }
+.layout-hub-spoke .spoke-core::after { content: "←"; right: -56px; }
+
+/* ── ⑨ 数字焦点锚定 num-anchor：左编号纵列 + 右大数字面板 ────────────── */
+.layout-num-anchor > .copy { grid-column: span 5; }
+.layout-num-anchor > .visual { grid-column: 6 / span 7; }
+.layout-num-anchor .goal-chain { counter-reset: goal; }
+.layout-num-anchor .goal-chain .group-card { position: relative; counter-increment: goal; padding-left: 92px; }
+.layout-num-anchor .goal-chain .group-card::before {
+  content: "0" counter(goal); position: absolute; left: 24px; top: 24px;
+  color: var(--accent-2); font: 900 30px/1 var(--font-mono);
+}
+.layout-num-anchor .num-panel { text-align: center; padding: 40px 34px; }
+.layout-num-anchor .num-big {
+  display: block; color: var(--accent);
+  font: 900 118px/1 var(--font-mono); letter-spacing: -2px;
+}
+.layout-num-anchor .num-big small { font-size: 34px; letter-spacing: 0; }
+.layout-num-anchor .num-note { margin-top: 12px; color: var(--muted); font-size: 22px; }
+.layout-num-anchor .tag-pill-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+.layout-num-anchor .tag-pill {
+  padding: 8px 18px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); font-size: 20px;
+}
+
+/* ── ④ 检查点轴 checkpoint-3：日期徽章节点 + 字符箭头 + 当前锁定焦点 ─── */
+.layout-checkpoint-3 .checkpoint-flow {
+  display: grid; grid-template-columns: minmax(0, 1fr) 62px minmax(0, 1fr) 62px minmax(0, 1fr);
+  gap: 0 8px; width: 100%; margin-top: 40px; align-items: stretch;
+}
+.layout-checkpoint-3 .checkpoint-node { position: relative; padding: 28px 24px; border-top: 5px solid var(--accent-2); }
+.layout-checkpoint-3 .checkpoint-node.is-current {
+  border: 2px solid var(--accent); border-top-width: 8px;
+  box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.layout-checkpoint-3 .cp-date {
+  display: inline-block; margin-bottom: 14px; padding: 6px 16px;
+  background: var(--bg); border: 2px solid var(--accent-2); border-radius: 999px;
+  color: var(--accent); font: 900 22px/1.2 var(--font-mono);
+}
+.layout-checkpoint-3 .is-current .cp-date { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.layout-checkpoint-3 .cp-link { display: grid; place-items: center; color: var(--accent-2); font: 900 44px/1 var(--font-sans); }
+.layout-checkpoint-3 .cp-current-tag {
+  position: absolute; right: 18px; top: 16px;
+  color: var(--accent); font: 700 18px/1 var(--font-mono);
+}
+.layout-checkpoint-3 .cp-note { color: var(--muted); font-size: 20px; margin-top: 6px; }
+
+/* ── 打印兼容：新变体连接符静态化 ───────────────────────────────────── */
+@media print {
+  .layout-hub-spoke .spoke-core::before,
+  .layout-hub-spoke .spoke-core::after { position: static; transform: none; }
+}
+
+:root{--bg:#06101d;--page-bg:#02070d;--accent:#ccb49c;--accent-2:#0c0c3c;--line:color-mix(in srgb,#ccb49c 30%,transparent);--surface:rgba(5,15,28,.70);--surface-2:rgba(9,25,44,.82);}
+
+/* TASK-017: 首尾页融合背景对比度配套 */
+.role-cover,.role-closing{background:var(--bg);--ho:var(--accent);--ho-deep:color-mix(in srgb,var(--accent) 72%,#c03505);--ho-gold:color-mix(in srgb,var(--accent) 45%,#ffd76a);}
+</style>
+</head>
+<body>
+<main class="deck-shell"><div class="deck-stage"><section class="slide role-cover" data-role="cover" data-page="1"><div class="project-art-frame"><img class="project-art-bg project-art-cover" src="art/project-cover.svg" alt="" aria-hidden="true"></div><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="outline-number">01</div><div class="watermark-word">DECK</div><div class="eyebrow">CZ-8A · QIANFAN CONSTELLATION</div><h1 data-animate="fade-up"><span class="h1-line">长征八号甲·千帆星座</span><span class="h1-em">任务视觉纪念系列</span></h1><p class="subtitle" data-animate="blur-in">从一枚徽章，到一片星座——五种工艺，同一种航天精神</p><div class="meta-line"><span>5款纪念徽章</span><span>5种工艺路线</span><span>1次首飞部署任务</span></div><aside class="notes">这一页先直接给出结论：长征八号甲·千帆星座：任务视觉纪念系列。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：开场说明演示目标、对象与预期收获。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-toc" data-role="toc" data-page="2"><div class="project-art-frame"><img class="project-art-bg project-art-toc" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="watermark-word">AGENDA</div><h2>6 个叙事节点从判断走向行动</h2><ul class="content-list" data-animate="stagger-list"><li style="--i:0">序章与系列总览</li><li style="--i:1">作品深读</li><li style="--i:2">任务纪实</li><li style="--i:3">工艺解码</li><li style="--i:4">收藏生态</li><li style="--i:5">未来回望</li></ul>
+<p class="body" data-animate="fade-up">目录先建立判断路径，再按证据与行动推进。</p><aside class="notes">这一页先直接给出结论：目录建立完整叙事路径。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：序章与系列总览；作品深读；任务纪实；目录先建立判断路径，再按证据与行动推进。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="3"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">01</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">序章与系列总览</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：序章与系列总览。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-bullets layout-asym-cards" data-role="bullets" data-page="4" data-pattern="asym-mix" data-variant="asym-cards"><div class="project-art-frame"><img class="project-art-bg project-art-bullets" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>5款徽章5种工艺，1次任务凝成完整纪念体系</h2><p class="body" data-animate="fade-up">本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于&quot;从地球到星辰&quot;的核心叙事。</p><div class="group-grid"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">系列规模</h3><ul class="content-list group-list"><li style="--i:0">5 款纪念徽章构成完整视觉系列</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">工艺矩阵</h3><ul class="content-list group-list"><li style="--i:0">5 种工艺路线各立美学标杆</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">任务原点</h3><ul class="content-list group-list"><li style="--i:0">1 次首飞部署任务作为纪念原点</li></ul></div></div><div class="takeaway" data-animate="rise-in">So-what：本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于&quot;从地球到星辰。</div><aside class="notes">这一页先直接给出结论：5款徽章5种工艺，1次任务凝成完整纪念体系。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于&quot;从地球到星辰&quot;的核心叙事。；5 款纪念徽章构成完整视觉系列；5 种工艺路线各立美学标杆；1 次首飞部署任务作为纪念原点。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-gallery layout-grid-2x3" data-role="gallery" data-page="5" data-pattern="matrix" data-variant="grid-2x3"><div class="project-art-frame"><img class="project-art-bg project-art-gallery" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>5款作品同场列阵，建立系列完整视觉识别</h2><p class="body" data-animate="fade-up">五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。</p><div class="gallery-grid"><figure class="image-frame project-image-container" data-image-slot="badge-01-gold-enamel" style="--fit:contain" data-animate="fade-up"><span class="gallery-index">01</span><img src="badge-01-gold-enamel.jpg" alt="图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕" loading="eager"><figcaption class="caption-bar"><span>金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体</span><span class="caption-source">illustration</span></figcaption></figure><figure class="image-frame project-image-container" data-image-slot="badge-02-silver-minimal" style="--fit:contain" data-animate="fade-up"><span class="gallery-index">02</span><img src="badge-02-silver-minimal.jpg" alt="图二 银质极简科技徽章：磨砂银圆章中央深蓝矢量火箭，金色星座连线构成拓扑网络" loading="eager"><figcaption class="caption-bar"><span>银质极简科技徽章——磨砂银底、UV印刷深蓝火箭、撒金尾焰与星座拓扑连线</span><span class="caption-source">illustration</span></figcaption></figure><figure class="image-frame project-image-container" data-image-slot="badge-03-dual-scene" style="--fit:contain" data-animate="fade-up"><span class="gallery-index">03</span><img src="badge-03-dual-scene.jpg" alt="图三 双景叙事纪念徽章：左侧高浮雕银币徽章与右侧火箭发射实景卡并置" loading="eager"><figcaption class="caption-bar"><span>双景叙事纪念徽章——高浮雕银币与发射实景卡并置，从蓝图到星辰的档案式铭刻</span><span class="caption-source">illustration</span></figcaption></figure><figure class="image-frame project-image-container" data-image-slot="badge-04-champagne-orbit" style="--fit:contain" data-animate="fade-up"><span class="gallery-index">04</span><img src="badge-04-champagne-orbit.jpg" alt="图四 香槟金轨道阵列徽章：香槟金徽章居中，八颗卫星等距阵列环绕成轨道网络" loading="eager"><figcaption class="caption-bar"><span>香槟金轨道阵列徽章——香槟金电镀与拉丝火箭，八星阵列与轨道网格背景</span><span class="caption-source">illustration</span></figcaption></figure><figure class="image-frame project-image-container" data-image-slot="badge-05-fusion-culture" style="--fit:contain" data-animate="fade-up"><span class="gallery-index">05</span><img src="badge-05-fusion-culture.jpg" alt="图五 虚实融合文化徽章：拉丝银徽章竖排篆字前景，半透明信息面板与真实发射场景三层叠影" loading="eager"><figcaption class="caption-bar"><span>虚实融合文化徽章——拉丝银同心圆底、竖排长征八号甲火箭篆字、三层空间虚实同构</span><span class="caption-source">illustration</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。</div><aside class="notes">这一页先直接给出结论：5款作品同场列阵，建立系列完整视觉识别。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="6"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">02</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">作品深读</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：作品深读。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-hero layout-anchor-right" data-role="image-hero" data-page="7" data-pattern="product-hero" data-variant="anchor-right"><div class="project-art-frame"><img class="project-art-bg project-art-image-hero" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="hero-copy"><h2>图一金珐琅：0.8mm高浮雕把火箭腾空刻进星空</h2><p class="body" data-animate="fade-up">奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工点蓝，底衬金属拉丝增强层次。</p>
+<ul class="content-list" data-animate="stagger-list"><li style="--i:0">祥云纹与金环：青云直上寓意圆满循环</li><li style="--i:1">星尘底：深空蓝珐琅手工点蓝</li><li style="--i:2">卫星链：等距阵列象征千帆竞发</li></ul></div><div class="hero-visual"><figure class="image-frame hero-image project-image-container" data-image-slot="badge-01-gold-enamel" style="--fit:contain" data-animate="fade-up"><img src="badge-01-gold-enamel.jpg" alt="图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕" loading="eager"><figcaption class="caption-bar"><span>金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体</span><span class="caption-source">illustration</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工。</div><aside class="notes">这一页先直接给出结论：图一金珐琅：0.8mm高浮雕把火箭腾空刻进星空。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工点蓝，底衬金属拉丝增强层次。；祥云纹与金环：青云直上寓意圆满循环；星尘底：深空蓝珐琅手工点蓝；卫星链：等距阵列象征千帆竞发。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-side layout-text-left" data-role="image-side" data-page="8" data-pattern="text-image" data-variant="text-left"><div class="project-art-frame"><img class="project-art-bg project-art-image-side" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="copy"><h2>图二银质极简：磨砂银与航天蓝完成冷峻表达</h2><p class="body" data-animate="fade-up">极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密，极简是因为自信。</p>
+<ul class="content-list" data-animate="stagger-list"><li style="--i:0">色彩解码：银灰底配深蓝火箭亮金尾焰</li><li style="--i:1">工艺路线：锌合金压铸加电镀哑光银</li><li style="--i:2">拓扑解析：星座连线对应轨道面设计</li></ul></div><div class="visual"><figure class="image-frame side-image project-image-container" data-image-slot="badge-02-silver-minimal" style="--fit:contain" data-animate="fade-up"><img src="badge-02-silver-minimal.jpg" alt="图二 银质极简科技徽章：磨砂银圆章中央深蓝矢量火箭，金色星座连线构成拓扑网络" loading="eager"><figcaption class="caption-bar"><span>银质极简科技徽章——磨砂银底、UV印刷深蓝火箭、撒金尾焰与星座拓扑连线</span><span class="caption-source">illustration</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密。</div><aside class="notes">这一页先直接给出结论：图二银质极简：磨砂银与航天蓝完成冷峻表达。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密，极简是因为自信。；色彩解码：银灰底配深蓝火箭亮金尾焰；工艺路线：锌合金压铸加电镀哑光银；拓扑解析：星座连线对应轨道面设计。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-side layout-image-left" data-role="image-side" data-page="9" data-pattern="text-image" data-variant="image-left"><div class="project-art-frame"><img class="project-art-bg project-art-image-side" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="copy"><h2>图三双景并置：1.2mm浮雕铭刻从蓝图到星辰</h2><p class="body" data-animate="fade-up">历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射的铭记。</p>
+<ul class="content-list" data-animate="stagger-list"><li style="--i:0">左景银币呈现理想，右景实景卡定格现实</li><li style="--i:1">浮雕深度1.2mm以上配细密齿纹</li><li style="--i:2">渐变金火焰从橙黄过渡到炽白</li></ul></div><div class="visual"><figure class="image-frame side-image project-image-container" data-image-slot="badge-03-dual-scene" style="--fit:contain" data-animate="fade-up"><img src="badge-03-dual-scene.jpg" alt="图三 双景叙事纪念徽章：左侧高浮雕银币徽章与右侧火箭发射实景卡并置" loading="eager"><figcaption class="caption-bar"><span>双景叙事纪念徽章——高浮雕银币与发射实景卡并置，从蓝图到星辰的档案式铭刻</span><span class="caption-source">illustration</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射。</div><aside class="notes">这一页先直接给出结论：图三双景并置：1.2mm浮雕铭刻从蓝图到星辰。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射的铭记。；左景银币呈现理想，右景实景卡定格现实；浮雕深度1.2mm以上配细密齿纹；渐变金火焰从橙黄过渡到炽白。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-image-hero layout-anchor-left" data-role="image-hero" data-page="10" data-pattern="hero-details" data-variant="anchor-left"><div class="project-art-frame"><img class="project-art-bg project-art-image-hero" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="hero-copy"><h2>图四香槟金：8星阵列排布出道轨道秩序美学</h2><p class="body" data-animate="fade-up">殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精密。</p>
+<ul class="content-list" data-animate="stagger-list"><li style="--i:0">中央徽章：香槟金边内嵌深蓝珐琅星空</li><li style="--i:1">外围阵列：8颗卫星等距环绕成网</li><li style="--i:2">材质工艺：18K香槟金电镀加金属拉丝</li></ul></div><div class="hero-visual"><figure class="image-frame hero-image project-image-container" data-image-slot="badge-04-champagne-orbit" style="--fit:contain" data-animate="fade-up"><img src="badge-04-champagne-orbit.jpg" alt="图四 香槟金轨道阵列徽章：香槟金徽章居中，八颗卫星等距阵列环绕成轨道网络" loading="eager"><figcaption class="caption-bar"><span>香槟金轨道阵列徽章——香槟金电镀与拉丝火箭，八星阵列与轨道网格背景</span><span class="caption-source">illustration</span></figcaption></figure></div><div class="takeaway" data-animate="rise-in">So-what：殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精。</div><aside class="notes">这一页先直接给出结论：图四香槟金：8星阵列排布出道轨道秩序美学。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精密。；中央徽章：香槟金边内嵌深蓝珐琅星空；外围阵列：8颗卫星等距环绕成网；材质工艺：18K香槟金电镀加金属拉丝。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-anchor-right" data-role="two-column" data-page="11" data-pattern="asym-mix" data-variant="anchor-right"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="copy"><h2>图五虚实融合：3层空间叠印航天史</h2><p class="body" data-animate="fade-up">竖排&quot;长征八号甲火箭&quot;金属蚀刻，三层空间构成设计符号与工程实体的同构。</p><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">前景层</h3><ul class="content-list group-list"><li style="--i:0">前景：拉丝银徽章配宝石蓝珐琅火箭</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">背景层</h3><ul class="content-list group-list"><li style="--i:0">背景：真实发射场景形成虚实同构</li></ul></div></div></div><div class="visual panel" style="padding:34px"><div class="group-stack"><figure class="image-frame side-image group-image project-image-container" data-image-slot="badge-05-fusion-culture" style="--fit:contain" data-animate="fade-up"><img src="badge-05-fusion-culture.jpg" alt="图五 虚实融合文化徽章：拉丝银徽章竖排篆字前景，半透明信息面板与真实发射场景三层叠影" loading="eager"><figcaption class="caption-bar"><span>虚实融合文化徽章——拉丝银同心圆底、竖排长征八号甲火箭篆字、三层空间虚实同构</span><span class="caption-source">illustration</span></figcaption></figure><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">中景层</h3><ul class="content-list group-list"><li style="--i:0">中景：半透明面板悬浮星座拓扑</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：竖排&quot;长征八号甲火箭&quot;金属蚀刻，三层空间构成设计符号与工程实体的同构。</div><aside class="notes">这一页先直接给出结论：图五虚实融合：3层空间叠印航天史。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：竖排&quot;长征八号甲火箭&quot;金属蚀刻，三层空间构成设计符号与工程实体的同构。；前景：拉丝银徽章配宝石蓝珐琅火箭；中景：半透明面板悬浮星座拓扑；背景：真实发射场景形成虚实同构。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="12"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">03</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">任务纪实</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：任务纪实。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-grid-2x2" data-role="two-column" data-page="13" data-pattern="matrix" data-variant="grid-2x2"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>长征八号甲×千帆星座形成技术底座</h2><p class="body" data-animate="fade-up">纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。</p><div class="group-grid layout-canvas"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">火箭能力</h3><ul class="content-list group-list"><li style="--i:0">中型液体火箭适配低轨组网发射</li><li style="--i:1">整流罩扩容支持一箭多星部署</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">星座能力</h3><ul class="content-list group-list"><li style="--i:0">低轨宽带星座规划全球覆盖</li><li style="--i:1">多频段链路服务天地通信</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">发射场保障</h3><ul class="content-list group-list"><li style="--i:0">文昌低纬度发射场利于入轨</li><li style="--i:1">沿海区位保障航落区安全</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:3"><h3 class="group-title">测控网络</h3><ul class="content-list group-list"><li style="--i:0">陆上测控站接力全弧段跟踪</li><li style="--i:1">测量船与中继星补足海上测控</li></ul></div></div><div class="takeaway" data-animate="rise-in">So-what：纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。</div><aside class="notes">这一页先直接给出结论：长征八号甲×千帆星座形成技术底座。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。；中型液体火箭适配低轨组网发射；整流罩扩容支持一箭多星部署；低轨宽带星座规划全球覆盖。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-timeline layout-checkpoint-6" data-role="timeline" data-page="14" data-pattern="timeline" data-variant="checkpoint-6"><div class="project-art-frame"><img class="project-art-bg project-art-timeline" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>6个节点还原首飞部署从转场到星箭分离</h2><div class="timeline-row"><div class="panel timeline-item" style="--i:0"><div class="date">T-8h</div><p>T-8h｜火箭转场至发射工位｜塔架合拢完成</p></div><div class="panel timeline-item" style="--i:1"><div class="date">T-2h</div><p>T-2h｜推进剂加注就绪｜全箭状态确认</p></div><div class="panel timeline-item" style="--i:2"><div class="date">T-0</div><p>T-0｜点火起飞｜尾焰照亮文昌夜空</p></div><div class="panel timeline-item" style="--i:3"><div class="date">T+3min</div><p>T+3min｜助推器分离｜芯一级继续爬升</p></div><div class="panel timeline-item" style="--i:4"><div class="date">T+10min</div><p>T+10min｜星箭分离｜千帆卫星精准入轨</p></div><div class="panel timeline-item" style="--i:5"><div class="date">T+30min</div><p>T+30min｜太阳翼展开｜部署任务达成</p></div></div><div class="takeaway" data-animate="rise-in">So-what：以垂直时间轴还原发射日关键时序，每个节点都是徽章背面值得铭刻的工程瞬间。</div><aside class="notes">这一页先直接给出结论：6个节点还原首飞部署从转场到星箭分离。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：以垂直时间轴还原发射日关键时序，每个节点都是徽章背面值得铭刻的工程瞬间。；T-8h｜火箭转场至发射工位｜塔架合拢完成；T-2h｜推进剂加注就绪｜全箭状态确认；T-0｜点火起飞｜尾焰照亮文昌夜空。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="15"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">04</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">工艺解码</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：工艺解码。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-table layout-table-matrix" data-role="table" data-page="16" data-pattern="matrix" data-variant="table-matrix"><div class="project-art-frame"><img class="project-art-bg project-art-table" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>5种工艺路线同台对比各立材质标杆</h2><p class="body" data-animate="fade-up">五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的差异与互补。</p>
+<table><tr style="--row:0"><th>作品</th><th>基底材质</th><th>表面处理</th><th>着色工艺</th><th>浮雕深度</th></tr><tr style="--row:2"><td>图一金珐琅</td><td>铜合金</td><td>电镀18K金</td><td>低温掐丝珐琅</td><td>0.8mm</td></tr><tr style="--row:3"><td>图二银质</td><td>锌合金</td><td>电镀哑光银</td><td>UV印刷</td><td>平面</td></tr><tr style="--row:4"><td>图三浮雕银币</td><td>纯银/铜镀银</td><td>高浮雕+抛光</td><td>局部镀金</td><td>1.2mm+</td></tr><tr style="--row:5"><td>图四香槟金</td><td>锌合金</td><td>电镀香槟金</td><td>低温珐琅</td><td>0.5mm</td></tr><tr style="--row:6" class="highlight"><td>图五拉丝银</td><td>铜合金</td><td>同心圆拉丝</td><td>宝石蓝珐琅</td><td>0.3mm</td></tr></table><div class="takeaway" data-animate="rise-in">So-what：五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的。</div><aside class="notes">这一页先直接给出结论：5种工艺路线同台对比各立材质标杆。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的差异与互补。；表格里的目标、同比、合计或高亮行是本页的证据锚点。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="17"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">05</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">收藏生态</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：收藏生态。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-two-column layout-hub-spoke" data-role="two-column" data-page="18" data-pattern="center-hub" data-variant="hub-spoke"><div class="project-art-frame"><img class="project-art-bg project-art-two-column" src="art/project-content.svg" alt="" aria-hidden="true"></div><div class="copy"><h2>限量编号与数字孪生扩大实体徽章收藏边界</h2><p class="body" data-animate="fade-up">以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。</p><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">限量发行</h3><ul class="content-list group-list"><li style="--i:0">限量发行：五款统一编号配收藏证书</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">数字孪生</h3><ul class="content-list group-list"><li style="--i:0">数字孪生：3D模型支持AR与虚拟展厅</li></ul></div></div></div><div class="visual panel" style="padding:34px"><div class="group-stack"><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">配套包装</h3><ul class="content-list group-list"><li style="--i:0">配套包装：航天主题收藏盒附任务手册</li></ul></div>
+<div class="panel group-card" data-animate="fade-up" style="--i:3"><h3 class="group-title">收藏社区</h3><ul class="content-list group-list"><li style="--i:0">收藏社区：爱好者论坛与二次创作开放</li></ul></div></div></div><div class="takeaway" data-animate="rise-in">So-what：以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。</div><aside class="notes">这一页先直接给出结论：限量编号与数字孪生扩大实体徽章收藏边界。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。；限量发行：五款统一编号配收藏证书；配套包装：航天主题收藏盒附任务手册；数字孪生：3D模型支持AR与虚拟展厅。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-section" data-role="section" data-page="19"><div class="project-art-frame"><img class="project-art-bg project-art-section" src="art/project-section.svg" alt="" aria-hidden="true"></div><div class="outline-number">06</div><div class="eyebrow">Section</div><h2 data-animate="blur-in">未来回望</h2><div class="deckline" data-animate="path-draw"></div><aside class="notes">这一页先直接给出结论：未来回望。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-timeline layout-milestone-6" data-role="timeline" data-page="20" data-pattern="timeline" data-variant="milestone-6"><div class="project-art-frame"><img class="project-art-bg project-art-timeline" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>6个里程碑锁定从设计启动到社区开放链路</h2><div class="timeline-row"><div class="panel timeline-item" style="--i:0"><div class="date">2026-06</div><p>2026-06｜设计启动与评审｜锁定5款方向</p></div><div class="panel timeline-item" style="--i:1"><div class="date">2026-07</div><p>2026-07｜工艺打样完成｜校准浮雕与珐琅</p></div><div class="panel timeline-item" style="--i:2"><div class="date">2026-08</div><p>2026-08｜生产制作质检｜限量编号生成</p></div><div class="panel timeline-item" style="--i:3"><div class="date">2026-09</div><p>2026-09｜发射同步发布｜数字藏品上线</p></div><div class="panel timeline-item" style="--i:4"><div class="date">2026-10</div><p>2026-10｜收藏社区开放｜二期概念预告</p></div><div class="panel timeline-item" style="--i:5"><div class="date">2026-12</div><p>2026-12｜系列复盘归档｜资产包完整交付</p></div></div><div class="takeaway" data-animate="rise-in">So-what：把项目放进时间坐标：从设计启动到社区开放，每个里程碑都有明确交付物，确保纪念系列与任务节点同频发布。</div><aside class="notes">这一页先直接给出结论：6个里程碑锁定从设计启动到社区开放链路。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：把项目放进时间坐标：从设计启动到社区开放，每个里程碑都有明确交付物，确保纪念系列与任务节点同频发布。；2026-06｜设计启动与评审｜锁定5款方向；2026-07｜工艺打样完成｜校准浮雕与珐琅；2026-08｜生产制作质检｜限量编号生成。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-bullets layout-asym-cards" data-role="bullets" data-page="21" data-pattern="asym-mix" data-variant="asym-cards"><div class="project-art-frame"><img class="project-art-bg project-art-bullets" src="art/project-content.svg" alt="" aria-hidden="true"></div><h2>锁定3项行动完成打样验证与发布筹备</h2><p class="body" data-animate="fade-up">下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。</p><div class="group-grid"><div class="panel group-card" data-animate="fade-up" style="--i:0"><h3 class="group-title">打样验证</h3><ul class="content-list group-list"><li style="--i:0">打样验证：工艺组9月产出实物样章</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:1"><h3 class="group-title">发布筹备</h3><ul class="content-list group-list"><li style="--i:0">发布筹备：设计组锁定主视觉与排期</li></ul></div><div class="panel group-card" data-animate="fade-up" style="--i:2"><h3 class="group-title">资产交付</h3><ul class="content-list group-list"><li style="--i:0">资产交付：项目组输出徽章包装资产包</li></ul></div></div><div class="takeaway" data-animate="rise-in">So-what：下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。</div><aside class="notes">这一页先直接给出结论：锁定3项行动完成打样验证与发布筹备。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。；打样验证：工艺组9月产出实物样章；发布筹备：设计组锁定主视觉与排期；资产交付：项目组输出徽章包装资产包。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section>
+<section class="slide role-closing" data-role="closing" data-page="22"><div class="project-art-frame"><img class="project-art-bg project-art-closing" src="art/project-closing.svg" alt="" aria-hidden="true"></div><canvas class="fx-canvas" width="1920" height="1080"></canvas><div class="watermark-word">NEXT</div><div class="eyebrow">EPILOGUE · 星辰大海</div><h2>让下一步从今天开始</h2><p class="body" data-animate="fade-up">感谢聆听｜现在确认第一项行动。</p><div class="closing-echo" data-animate="fade-up">任务视觉纪念系列<small>CZ-8A · QIANFAN CONSTELLATION · MEMORIAL BADGE SERIES</small></div><aside class="notes">这一页先直接给出结论：让下一步从今天开始。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：感谢聆听｜现在确认第一项行动。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。
+
+转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。</aside></section></div></main>
+<div class="deck-ui"><span data-current>1</span><span>/</span><span data-total>22</span><span>← → / Space / S / O / F / B</span></div>
+<nav class="overview" aria-label="Slides overview"></nav>
+<script>(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.querySelector('.deck-stage');
+  const currentEl = document.querySelector('[data-current]');
+  const totalEl = document.querySelector('[data-total]');
+  const overview = document.querySelector('.overview');
+  const channel = 'BroadcastChannel' in window ? new BroadcastChannel('html-deck-sync') : null;
+  let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#/', '')) - 1 || 0));
+  let started = Date.now();
+  let speakerWin = null;
+
+  function scale() {
+    if (!stage) return;
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    document.documentElement.style.setProperty('--deck-scale', s.toFixed(4));
+  }
+
+  function slideData(i) {
+    const slide = slides[i];
+    return {
+      index: i,
+      total: slides.length,
+      title: slide?.querySelector('h1,h2')?.textContent || '',
+      notes: slide?.querySelector('.notes')?.innerHTML || '本页没有备注。',
+      nextTitle: slides[i + 1]?.querySelector('h1,h2')?.textContent || '结束',
+      elapsed: Math.floor((Date.now() - started) / 1000)
+    };
+  }
+
+  function publish() {
+    const data = slideData(index);
+    if (channel) channel.postMessage({type: 'state', data});
+    if (speakerWin && !speakerWin.closed) speakerWin.postMessage({type: 'state', data}, '*');
+  }
+
+  function show(i, silent) {
+    index = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((slide, n) => slide.classList.toggle('is-active', n === index));
+    if (currentEl) currentEl.textContent = String(index + 1);
+    if (totalEl) totalEl.textContent = String(slides.length);
+    history.replaceState(null, '', '#/' + (index + 1));
+    runCounters();
+    if (!silent) publish();
+  }
+
+  function runCounters() {
+    const nums = slides[index]?.querySelectorAll('[data-count-to]') || [];
+    nums.forEach((el) => {
+      const target = Number(el.getAttribute('data-count-to')) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (document.body.classList.contains('no-motion')) {
+        el.textContent = String(target) + suffix;
+        return;
+      }
+      const start = performance.now();
+      function tick(t) {
+        const p = Math.min(1, (t - start) / 700);
+        el.textContent = String(Math.round(target * p)) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+
+  function buildOverview() {
+    if (!overview || overview.children.length) return;
+    slides.forEach((slide, i) => {
+      const button = document.createElement('button');
+      button.innerHTML = '<span>' + String(i + 1).padStart(2, '0') + '</span>' + (slide.querySelector('h1,h2')?.textContent || 'Untitled');
+      button.addEventListener('click', () => {
+        overview.classList.remove('is-open');
+        show(i);
+      });
+      overview.appendChild(button);
+    });
+  }
+
+  function openSpeaker() {
+    if (speakerWin && !speakerWin.closed) {
+      speakerWin.focus();
+      publish();
+      return;
+    }
+    speakerWin = window.open('', 'html-deck-speaker', 'width=1180,height=760');
+    if (!speakerWin) return;
+    speakerWin.document.write(`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>Speaker</title><style>
+      *{box-sizing:border-box}body{margin:0;background:#090d14;color:#f8fafc;font-family:system-ui,"Microsoft YaHei",sans-serif}
+      main{height:100vh;display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:150px 1fr;gap:16px;padding:16px}
+      .card{border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#151b27;padding:18px;overflow:auto}
+      h1,h2,p{margin:0}.title{font-size:30px;line-height:1.18}.next{color:#7ee8fa;font-size:24px}
+      .timer{font:800 70px/1 ui-monospace,Consolas,monospace;color:#4dd4ac}.notes{font-size:25px;line-height:1.45}
+      .meta{color:#9aa8bd;font:700 16px/1 ui-monospace,Consolas,monospace}
+    </style></head><body><main>
+      <section class="card"><p class="meta" id="page"></p><h1 class="title" id="title"></h1></section>
+      <section class="card"><p class="meta">NEXT</p><h2 class="next" id="next"></h2></section>
+      <section class="card"><p class="meta">SCRIPT</p><div class="notes" id="notes"></div></section>
+      <section class="card"><p class="meta">TIMER</p><div class="timer" id="timer">00:00</div></section>
+    </main><script>
+      function pad(n){return String(n).padStart(2,'0')}
+      function render(d){if(!d)return;page.textContent=(d.index+1)+' / '+d.total;title.textContent=d.title;next.textContent=d.nextTitle;notes.innerHTML=d.notes;timer.textContent=pad(Math.floor(d.elapsed/60))+':'+pad(d.elapsed%60)}
+      addEventListener('message',e=>{if(e.data&&e.data.type==='state')render(e.data.data)})
+      if('BroadcastChannel' in window){const c=new BroadcastChannel('html-deck-sync');c.onmessage=e=>{if(e.data&&e.data.type==='state')render(e.data.data)}}
+    <\/script></body></html>`);
+    speakerWin.document.close();
+    setTimeout(publish, 80);
+  }
+
+  function drawFx() {
+    const canvas = document.querySelector('.fx-canvas');
+    if (!canvas || document.body.classList.contains('no-motion')) return;
+    const ctx = canvas.getContext('2d');
+    const ratio = devicePixelRatio || 1;
+    canvas.width = 1920 * ratio;
+    canvas.height = 1080 * ratio;
+    ctx.scale(ratio, ratio);
+    const points = Array.from({length: 42}, (_, i) => ({x: (i * 137) % 1920, y: (i * 89) % 1080, r: 1 + (i % 4)}));
+    let frame = 0;
+    function tick() {
+      ctx.clearRect(0, 0, 1920, 1080);
+      ctx.strokeStyle = 'rgba(126,232,250,.18)';
+      ctx.fillStyle = 'rgba(77,212,172,.35)';
+      points.forEach((p, i) => {
+        const x = p.x + Math.sin((frame + i * 12) / 80) * 24;
+        const y = p.y + Math.cos((frame + i * 8) / 90) * 18;
+        ctx.beginPath(); ctx.arc(x, y, p.r, 0, Math.PI * 2); ctx.fill();
+        if (i % 3 === 0) {
+          const q = points[(i + 7) % points.length];
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      });
+      frame += 1;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key.toLowerCase() === 'f' && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    if (e.key.toLowerCase() === 'b') { document.body.classList.toggle('no-motion'); publish(); }
+    if (e.key.toLowerCase() === 's') openSpeaker();
+    if (e.key.toLowerCase() === 'o') { buildOverview(); overview?.classList.toggle('is-open'); }
+    if (e.key === 'Escape') overview?.classList.remove('is-open');
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.overview')) return;
+    if (e.clientX > innerWidth / 2) next(); else prev();
+  });
+  setInterval(publish, 1000);
+  addEventListener('resize', scale);
+  scale();
+  drawFx();
+  show(index, true);
+  publish();
+})();
+</script>
+</body>
+</html>

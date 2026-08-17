@@ -65,7 +65,8 @@
 }
 .layout-grid-2x2 .group-card {
   position: relative;
-  min-height: 330px;
+  /* TASK-023 fix: 330px×2 + 标题/导语/takeaway 在 1080px 屏高下必然溢出 ~44px，降至 300px 保 grid-2x2 页不溢出 */
+  min-height: 300px;
   border-top: 5px solid var(--accent);
   counter-increment: cell;
 }

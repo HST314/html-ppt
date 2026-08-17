@@ -1,0 +1,1141 @@
+{
+ "schema": "SlidesPlan",
+ "version": "2.1",
+ "narrative_framework": "customer_report",
+ "title": "长征八号甲·千帆星座：任务视觉纪念系列",
+ "source": {
+  "deck": "deck.md",
+  "manifest": "images/manifest.json"
+ },
+ "theme_recommendation": "tech-dark",
+ "deck_style": "tech",
+ "slides": [
+  {
+   "page": 1,
+   "role": "cover",
+   "title": "长征八号甲·千帆星座：任务视觉纪念系列",
+   "section": null,
+   "blocks": [],
+   "images": [],
+   "bg_image": {
+    "id": "badge-01-gold-enamel",
+    "file": "badge-01-gold-enamel.jpg",
+    "alt": "图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕",
+    "description": "金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体",
+    "content_type": "illustration",
+    "width": 2560,
+    "height": 1440,
+    "aspect_ratio": "16:9",
+    "suggested_role": "hero",
+    "scene_tags": [
+     "徽章",
+     "珐琅",
+     "浮雕",
+     "航天"
+    ],
+    "weight": "high",
+    "group_id": "badge-series"
+   },
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：长征八号甲·千帆星座：任务视觉纪念系列。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：开场说明演示目标、对象与预期收获。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "level-1 title becomes cover",
+   "risk": {
+    "level": "low",
+    "issues": []
+   },
+   "eyebrow": "CZ-8A · QIANFAN CONSTELLATION",
+   "subtitle": "从一枚徽章，到一片星座——五种工艺，同一种航天精神",
+   "meta": [
+    "5款纪念徽章",
+    "5种工艺路线",
+    "1次首飞部署任务"
+   ]
+  },
+  {
+   "page": 2,
+   "role": "toc",
+   "title": "6 个叙事节点从判断走向行动",
+   "section": null,
+   "blocks": [
+    {
+     "type": "list",
+     "items": [
+      "序章与系列总览",
+      "作品深读",
+      "任务纪实",
+      "工艺解码",
+      "收藏生态",
+      "未来回望"
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "目录先建立判断路径，再按证据与行动推进。"
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。",
+   "notes": "这一页先直接给出结论：目录建立完整叙事路径。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：序章与系列总览；作品深读；任务纪实；目录先建立判断路径，再按证据与行动推进。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "mandatory toc derived from sections or slide titles",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 3,
+   "role": "section",
+   "title": "序章与系列总览",
+   "section": "序章与系列总览",
+   "section_index": 1,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：序章与系列总览。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 4,
+   "role": "bullets",
+   "title": "5款徽章5种工艺，1次任务凝成完整纪念体系",
+   "section": "序章与系列总览",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于\"从地球到星辰\"的核心叙事。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "5 款纪念徽章构成完整视觉系列",
+      "5 种工艺路线各立美学标杆",
+      "1 次首飞部署任务作为纪念原点"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于\"从地球到星辰。",
+   "notes": "这一页先直接给出结论：5款徽章5种工艺，1次任务凝成完整纪念体系。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：本项目围绕长征八号甲火箭首飞部署千帆星座这一里程碑任务，推出五款风格各异的纪念徽章，统一于\"从地球到星辰\"的核心叙事。；5 款纪念徽章构成完整视觉系列；5 种工艺路线各立美学标杆；1 次首飞部署任务作为纪念原点。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | semantics groups: 3 组 | layout: asym-mix/asym-cards",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P01",
+   "semantic_role": "bullets",
+   "groups": [
+    {
+     "title": "系列规模",
+     "items": [
+      "5 款纪念徽章构成完整视觉系列"
+     ]
+    },
+    {
+     "title": "工艺矩阵",
+     "items": [
+      "5 种工艺路线各立美学标杆"
+     ]
+    },
+    {
+     "title": "任务原点",
+     "items": [
+      "1 次首飞部署任务作为纪念原点"
+     ]
+    }
+   ],
+   "layout_pattern": "asym-mix",
+   "layout_variant": "asym-cards",
+   "blueprint": {
+    "focus": "系列规模首张锚点卡（左起首位）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "三锚点卡组横排（系列规模/工艺矩阵/任务原点）",
+    "aux_area": "导语段落+底部takeaway强调栏",
+    "whitespace": "≥40%",
+    "svg_need": "否",
+    "image_need": "否（0%，文字承载）",
+    "reason": "本页为数据页：证据主体是5/5/1三组系列数字，kpi大数字组件标签为商业口径不适配文化内容，故选⑨混合非对称——asym-cards变体三卡组并列承载系列/工艺/任务三锚点，与P2矩阵格阵区隔签名。"
+   }
+  },
+  {
+   "page": 5,
+   "role": "gallery",
+   "title": "5款作品同场列阵，建立系列完整视觉识别",
+   "section": "序章与系列总览",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。"
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-01-gold-enamel",
+     "file": "badge-01-gold-enamel.jpg",
+     "alt": "图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕",
+     "description": "金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "hero",
+     "scene_tags": [
+      "徽章",
+      "珐琅",
+      "浮雕",
+      "航天"
+     ],
+     "weight": "high",
+     "group_id": "badge-series"
+    },
+    {
+     "id": "badge-02-silver-minimal",
+     "file": "badge-02-silver-minimal.jpg",
+     "alt": "图二 银质极简科技徽章：磨砂银圆章中央深蓝矢量火箭，金色星座连线构成拓扑网络",
+     "description": "银质极简科技徽章——磨砂银底、UV印刷深蓝火箭、撒金尾焰与星座拓扑连线",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "银质",
+      "极简",
+      "星座"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    },
+    {
+     "id": "badge-03-dual-scene",
+     "file": "badge-03-dual-scene.jpg",
+     "alt": "图三 双景叙事纪念徽章：左侧高浮雕银币徽章与右侧火箭发射实景卡并置",
+     "description": "双景叙事纪念徽章——高浮雕银币与发射实景卡并置，从蓝图到星辰的档案式铭刻",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "浮雕",
+      "叙事",
+      "发射"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    },
+    {
+     "id": "badge-04-champagne-orbit",
+     "file": "badge-04-champagne-orbit.jpg",
+     "alt": "图四 香槟金轨道阵列徽章：香槟金徽章居中，八颗卫星等距阵列环绕成轨道网络",
+     "description": "香槟金轨道阵列徽章——香槟金电镀与拉丝火箭，八星阵列与轨道网格背景",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "hero",
+     "scene_tags": [
+      "徽章",
+      "香槟金",
+      "轨道",
+      "阵列"
+     ],
+     "weight": "high",
+     "group_id": "badge-series"
+    },
+    {
+     "id": "badge-05-fusion-culture",
+     "file": "badge-05-fusion-culture.jpg",
+     "alt": "图五 虚实融合文化徽章：拉丝银徽章竖排篆字前景，半透明信息面板与真实发射场景三层叠影",
+     "description": "虚实融合文化徽章——拉丝银同心圆底、竖排长征八号甲火箭篆字、三层空间虚实同构",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "拉丝银",
+      "文化",
+      "叠影"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。",
+   "notes": "这一页先直接给出结论：5款作品同场列阵，建立系列完整视觉识别。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：五款作品分别对应不同美学定位与工艺路线，从一枚徽章到一片星座，五种工艺承载同一种航天精神。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: matrix/grid-2x3",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P02",
+   "semantic_role": "gallery",
+   "layout_pattern": "matrix",
+   "layout_variant": "grid-2x3",
+   "blueprint": {
+    "focus": "五款徽章阵列整体（最大面积）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "2×3图集格阵（5张作品图）",
+    "aux_area": "底部takeaway归纳栏",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（5张成品图，≥50%，contain保真）",
+    "reason": "本页为成果展示页：任务是用5款已成型作品立信，故选⑦矩阵grid-2x3——成果图集逐项落§1格阵，系列感由阵列整体承载。"
+   }
+  },
+  {
+   "page": 6,
+   "role": "section",
+   "title": "作品深读",
+   "section": "作品深读",
+   "section_index": 2,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：作品深读。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 7,
+   "role": "image-hero",
+   "title": "图一金珐琅：0.8mm高浮雕把火箭腾空刻进星空",
+   "section": "作品深读",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工点蓝，底衬金属拉丝增强层次。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "祥云纹与金环：青云直上寓意圆满循环",
+      "星尘底：深空蓝珐琅手工点蓝",
+      "卫星链：等距阵列象征千帆竞发"
+     ]
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-01-gold-enamel",
+     "file": "badge-01-gold-enamel.jpg",
+     "alt": "图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕",
+     "description": "金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "hero",
+     "scene_tags": [
+      "徽章",
+      "珐琅",
+      "浮雕",
+      "航天"
+     ],
+     "weight": "high",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工。",
+   "notes": "这一页先直接给出结论：图一金珐琅：0.8mm高浮雕把火箭腾空刻进星空。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：奢华航天美学与传统珐琅工艺的交汇：火箭主体高浮雕凸起约0.8mm，18K香槟金边宽约3mm，星空部分手工点蓝，底衬金属拉丝增强层次。；祥云纹与金环：青云直上寓意圆满循环；星尘底：深空蓝珐琅手工点蓝；卫星链：等距阵列象征千帆竞发。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: product-hero/anchor-right",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P03",
+   "semantic_role": "image-hero",
+   "layout_pattern": "product-hero",
+   "layout_variant": "anchor-right",
+   "blueprint": {
+    "focus": "图一徽章大图（右侧≥50%面积）",
+    "title_pos": "左上通栏",
+    "main_area": "右侧英雄图独立容器+左侧信息栏",
+    "aux_area": "元素拆解3条+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（1张，contain，独立容器）",
+    "reason": "本页为产品介绍页：主角是图一徽章本体，故选⑩产品英雄图——anchor-right变体主体图占≥50%进§3独立容器，卖点压缩为3条环绕标注。"
+   }
+  },
+  {
+   "page": 8,
+   "role": "image-side",
+   "title": "图二银质极简：磨砂银与航天蓝完成冷峻表达",
+   "section": "作品深读",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密，极简是因为自信。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "色彩解码：银灰底配深蓝火箭亮金尾焰",
+      "工艺路线：锌合金压铸加电镀哑光银",
+      "拓扑解析：星座连线对应轨道面设计"
+     ]
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-02-silver-minimal",
+     "file": "badge-02-silver-minimal.jpg",
+     "alt": "图二 银质极简科技徽章：磨砂银圆章中央深蓝矢量火箭，金色星座连线构成拓扑网络",
+     "description": "银质极简科技徽章——磨砂银底、UV印刷深蓝火箭、撒金尾焰与星座拓扑连线",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "银质",
+      "极简",
+      "星座"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密。",
+   "notes": "这一页先直接给出结论：图二银质极简：磨砂银与航天蓝完成冷峻表达。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：极简航天科技语言：锌合金压铸底坯电镀哑光银，火箭UV印刷高饱和航天蓝，尾焰局部撒金压印，冷峻是因为精密，极简是因为自信。；色彩解码：银灰底配深蓝火箭亮金尾焰；工艺路线：锌合金压铸加电镀哑光银；拓扑解析：星座连线对应轨道面设计。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: text-image/text-left",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P04",
+   "semantic_role": "image-side",
+   "layout_pattern": "text-image",
+   "layout_variant": "text-left",
+   "blueprint": {
+    "focus": "图二徽章侧图（右栏图容器）",
+    "title_pos": "左上通栏",
+    "main_area": "左文栏（色彩/工艺/拓扑）+右图容器",
+    "aux_area": "3条解读+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（1张，contain）",
+    "reason": "本页为产品介绍页：论述与图并重，故选⑧左文右图text-left变体——文栏分层解读、图栏定比容器锚定场，与P5以左右镜像区隔布局签名。"
+   }
+  },
+  {
+   "page": 9,
+   "role": "image-side",
+   "title": "图三双景并置：1.2mm浮雕铭刻从蓝图到星辰",
+   "section": "作品深读",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射的铭记。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "左景银币呈现理想，右景实景卡定格现实",
+      "浮雕深度1.2mm以上配细密齿纹",
+      "渐变金火焰从橙黄过渡到炽白"
+     ]
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-03-dual-scene",
+     "file": "badge-03-dual-scene.jpg",
+     "alt": "图三 双景叙事纪念徽章：左侧高浮雕银币徽章与右侧火箭发射实景卡并置",
+     "description": "双景叙事纪念徽章——高浮雕银币与发射实景卡并置，从蓝图到星辰的档案式铭刻",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "浮雕",
+      "叙事",
+      "发射"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射。",
+   "notes": "这一页先直接给出结论：图三双景并置：1.2mm浮雕铭刻从蓝图到星辰。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：历史叙事档案风格：左侧高浮雕银币代表设计的理想，右侧发射实景卡代表实现的现实，每一道浮雕阴影都是一次发射的铭记。；左景银币呈现理想，右景实景卡定格现实；浮雕深度1.2mm以上配细密齿纹；渐变金火焰从橙黄过渡到炽白。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: text-image/image-left",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P05",
+   "semantic_role": "image-side",
+   "layout_pattern": "text-image",
+   "layout_variant": "image-left",
+   "blueprint": {
+    "focus": "图三双景大图（左栏图容器）",
+    "title_pos": "右上通栏",
+    "main_area": "左图容器+右文栏（双景对照解读）",
+    "aux_area": "3条对照与工艺+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（1张，contain）",
+    "reason": "本页为产品介绍页：双景并置即对比关系，故选⑧左文右图image-left镜像变体——图先声夺人锚定\"理想vs现实\"，文栏对位解读，与P4签名区隔。"
+   }
+  },
+  {
+   "page": 10,
+   "role": "image-hero",
+   "title": "图四香槟金：8星阵列排布出道轨道秩序美学",
+   "section": "作品深读",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精密。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "中央徽章：香槟金边内嵌深蓝珐琅星空",
+      "外围阵列：8颗卫星等距环绕成网",
+      "材质工艺：18K香槟金电镀加金属拉丝"
+     ]
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-04-champagne-orbit",
+     "file": "badge-04-champagne-orbit.jpg",
+     "alt": "图四 香槟金轨道阵列徽章：香槟金徽章居中，八颗卫星等距阵列环绕成轨道网络",
+     "description": "香槟金轨道阵列徽章——香槟金电镀与拉丝火箭，八星阵列与轨道网格背景",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "hero",
+     "scene_tags": [
+      "徽章",
+      "香槟金",
+      "轨道",
+      "阵列"
+     ],
+     "weight": "high",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精。",
+   "notes": "这一页先直接给出结论：图四香槟金：8星阵列排布出道轨道秩序美学。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：殿堂级秩序美学：香槟金徽章居于轨道坐标系中心，外围8颗卫星等距阵列环绕成网，传递大规模星座组网的宏伟与精密。；中央徽章：香槟金边内嵌深蓝珐琅星空；外围阵列：8颗卫星等距环绕成网；材质工艺：18K香槟金电镀加金属拉丝。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: hero-details/anchor-left",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P06",
+   "semantic_role": "image-hero",
+   "layout_pattern": "hero-details",
+   "layout_variant": "anchor-left",
+   "blueprint": {
+    "focus": "图四阵列大图（左侧≥50%面积）",
+    "title_pos": "右上通栏",
+    "main_area": "左侧主图容器+右侧细节信息栏",
+    "aux_area": "3条细节+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（1张，contain）",
+    "reason": "本页为产品介绍页：主角是图四阵列徽章本体，故选⑪主图+细节anchor-left变体——主图占≥50%锚定左场，细节栏承接阵列与工艺解读，与P3产品英雄图变体区隔。"
+   }
+  },
+  {
+   "page": 11,
+   "role": "two-column",
+   "title": "图五虚实融合：3层空间叠印航天史",
+   "section": "作品深读",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "竖排\"长征八号甲火箭\"金属蚀刻，三层空间构成设计符号与工程实体的同构。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "前景：拉丝银徽章配宝石蓝珐琅火箭",
+      "中景：半透明面板悬浮星座拓扑",
+      "背景：真实发射场景形成虚实同构"
+     ]
+    }
+   ],
+   "images": [
+    {
+     "id": "badge-05-fusion-culture",
+     "file": "badge-05-fusion-culture.jpg",
+     "alt": "图五 虚实融合文化徽章：拉丝银徽章竖排篆字前景，半透明信息面板与真实发射场景三层叠影",
+     "description": "虚实融合文化徽章——拉丝银同心圆底、竖排长征八号甲火箭篆字、三层空间虚实同构",
+     "content_type": "illustration",
+     "width": 2560,
+     "height": 1440,
+     "aspect_ratio": "16:9",
+     "suggested_role": "inline",
+     "scene_tags": [
+      "徽章",
+      "拉丝银",
+      "文化",
+      "叠影"
+     ],
+     "weight": "medium",
+     "group_id": "badge-series"
+    }
+   ],
+   "takeaway": "So-what：竖排\"长征八号甲火箭\"金属蚀刻，三层空间构成设计符号与工程实体的同构。",
+   "notes": "这一页先直接给出结论：图五虚实融合：3层空间叠印航天史。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：竖排\"长征八号甲火箭\"金属蚀刻，三层空间构成设计符号与工程实体的同构。；前景：拉丝银徽章配宝石蓝珐琅火箭；中景：半透明面板悬浮星座拓扑；背景：真实发射场景形成虚实同构。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | semantics groups: 3 组 | layout: asym-mix/anchor-right",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P07",
+   "semantic_role": "two-column",
+   "groups": [
+    {
+     "title": "前景层",
+     "items": [
+      "前景：拉丝银徽章配宝石蓝珐琅火箭"
+     ]
+    },
+    {
+     "title": "中景层",
+     "items": [
+      "中景：半透明面板悬浮星座拓扑"
+     ]
+    },
+    {
+     "title": "背景层",
+     "items": [
+      "背景：真实发射场景形成虚实同构"
+     ]
+    }
+   ],
+   "layout_pattern": "asym-mix",
+   "layout_variant": "anchor-right",
+   "blueprint": {
+    "focus": "右侧徽章图锚焦点面板（7列强调描边）",
+    "title_pos": "左上栏内",
+    "main_area": "左栏分层卡组（前景/中景/背景3组）+右栏图锚面板",
+    "aux_area": "导语段落+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否",
+    "image_need": "是（1张右栏图，40–50%，contain）",
+    "reason": "本页为产品介绍页：主角是图五徽章本体、正文为三层空间分层解读，故选⑨非对称图文anchor-right变体——徽章图进7列焦点面板定场、3层分组卡落左栏，与P13的asym-cards变体区隔签名。"
+   }
+  },
+  {
+   "page": 12,
+   "role": "section",
+   "title": "任务纪实",
+   "section": "任务纪实",
+   "section_index": 3,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：任务纪实。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 13,
+   "role": "two-column",
+   "title": "长征八号甲×千帆星座形成技术底座",
+   "section": "任务纪实",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "中型液体火箭适配低轨组网发射",
+      "整流罩扩容支持一箭多星部署",
+      "低轨宽带星座规划全球覆盖",
+      "多频段链路服务天地通信",
+      "文昌低纬度发射场利于入轨",
+      "沿海区位保障航落区安全",
+      "陆上测控站接力全弧段跟踪",
+      "测量船与中继星补足海上测控"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。",
+   "notes": "这一页先直接给出结论：长征八号甲×千帆星座形成技术底座。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：纪念徽章背后是完整工程闭环：火箭、星座、发射场与测控网。；中型液体火箭适配低轨组网发射；整流罩扩容支持一箭多星部署；低轨宽带星座规划全球覆盖。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | semantics groups: 4 组 | layout: matrix/grid-2x2",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "too_many_bullets",
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P08",
+   "semantic_role": "two-column",
+   "groups": [
+    {
+     "title": "火箭能力",
+     "items": [
+      "中型液体火箭适配低轨组网发射",
+      "整流罩扩容支持一箭多星部署"
+     ]
+    },
+    {
+     "title": "星座能力",
+     "items": [
+      "低轨宽带星座规划全球覆盖",
+      "多频段链路服务天地通信"
+     ]
+    },
+    {
+     "title": "发射场保障",
+     "items": [
+      "文昌低纬度发射场利于入轨",
+      "沿海区位保障航落区安全"
+     ]
+    },
+    {
+     "title": "测控网络",
+     "items": [
+      "陆上测控站接力全弧段跟踪",
+      "测量船与中继星补足海上测控"
+     ]
+    }
+   ],
+   "layout_pattern": "matrix",
+   "layout_variant": "grid-2x2",
+   "blueprint": {
+    "focus": "火箭能力组卡（首组，左上主格）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "2×2组卡格阵（火箭/星座/发射场/测控）",
+    "aux_area": "导语+组间引导段+底部takeaway",
+    "whitespace": "≥35%",
+    "svg_need": "否",
+    "image_need": "否（0%，结构承载）",
+    "reason": "本页为项目方案页：内容是4组平等并列的技术模块，故选⑦矩阵grid-2x2——组卡落§1格阵、组标题可见，首组火箭能力为主格焦点。"
+   }
+  },
+  {
+   "page": 14,
+   "role": "timeline",
+   "title": "6个节点还原首飞部署从转场到星箭分离",
+   "section": "任务纪实",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "以垂直时间轴还原发射日关键时序，每个节点都是徽章背面值得铭刻的工程瞬间。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "T-8h｜火箭转场至发射工位｜塔架合拢完成",
+      "T-2h｜推进剂加注就绪｜全箭状态确认",
+      "T-0｜点火起飞｜尾焰照亮文昌夜空",
+      "T+3min｜助推器分离｜芯一级继续爬升",
+      "T+10min｜星箭分离｜千帆卫星精准入轨",
+      "T+30min｜太阳翼展开｜部署任务达成"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：以垂直时间轴还原发射日关键时序，每个节点都是徽章背面值得铭刻的工程瞬间。",
+   "notes": "这一页先直接给出结论：6个节点还原首飞部署从转场到星箭分离。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：以垂直时间轴还原发射日关键时序，每个节点都是徽章背面值得铭刻的工程瞬间。；T-8h｜火箭转场至发射工位｜塔架合拢完成；T-2h｜推进剂加注就绪｜全箭状态确认；T-0｜点火起飞｜尾焰照亮文昌夜空。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: timeline/checkpoint-6",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P09",
+   "semantic_role": "timeline",
+   "layout_pattern": "timeline",
+   "layout_variant": "checkpoint-6",
+   "blueprint": {
+    "focus": "T-0点火节点（轴中点高潮）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "6节点水平时间轴（时刻+事件+结果）",
+    "aux_area": "导语段落+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否（组件自带轴与节点）",
+    "image_need": "否（0%，符号动线承载）",
+    "reason": "本页为流程页：内容是有严格先后的发射时序6节点链路，故选④时间轴checkpoint-6变体——节点含时刻/事件/结果三要素，T-0点火为焦点。"
+   }
+  },
+  {
+   "page": 15,
+   "role": "section",
+   "title": "工艺解码",
+   "section": "工艺解码",
+   "section_index": 4,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：工艺解码。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 16,
+   "role": "table",
+   "title": "5种工艺路线同台对比各立材质标杆",
+   "section": "工艺解码",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的差异与互补。"
+    },
+    {
+     "type": "table",
+     "rows": [
+      [
+       "作品",
+       "基底材质",
+       "表面处理",
+       "着色工艺",
+       "浮雕深度"
+      ],
+      [
+       "---",
+       "---",
+       "---",
+       "---",
+       "---"
+      ],
+      [
+       "图一金珐琅",
+       "铜合金",
+       "电镀18K金",
+       "低温掐丝珐琅",
+       "0.8mm"
+      ],
+      [
+       "图二银质",
+       "锌合金",
+       "电镀哑光银",
+       "UV印刷",
+       "平面"
+      ],
+      [
+       "图三浮雕银币",
+       "纯银/铜镀银",
+       "高浮雕+抛光",
+       "局部镀金",
+       "1.2mm+"
+      ],
+      [
+       "图四香槟金",
+       "锌合金",
+       "电镀香槟金",
+       "低温珐琅",
+       "0.5mm"
+      ],
+      [
+       "图五拉丝银",
+       "铜合金",
+       "同心圆拉丝",
+       "宝石蓝珐琅",
+       "0.3mm"
+      ]
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的。",
+   "notes": "这一页先直接给出结论：5种工艺路线同台对比各立材质标杆。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：五款作品纳入统一工艺分析框架：基底、处理、着色与浮雕深度各有所长，文化元素与技术元素的取舍构成系列内部的差异与互补。；表格里的目标、同比、合计或高亮行是本页的证据锚点。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: matrix/table-matrix",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P10",
+   "semantic_role": "table",
+   "layout_pattern": "matrix",
+   "layout_variant": "table-matrix",
+   "blueprint": {
+    "focus": "图三1.2mm+最深浮雕行（高亮行）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "5列6行工艺对比表（含表头）",
+    "aux_area": "导语段落+底部takeaway",
+    "whitespace": "≥25%",
+    "svg_need": "否",
+    "image_need": "否（0%，表格承载）",
+    "reason": "本页为数据页：证据主体是五款工艺明细台账，故选⑦矩阵table-matrix变体——明细格阵以表格role完整呈现两维交叉对比。"
+   }
+  },
+  {
+   "page": 17,
+   "role": "section",
+   "title": "收藏生态",
+   "section": "收藏生态",
+   "section_index": 5,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：收藏生态。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 18,
+   "role": "two-column",
+   "title": "限量编号与数字孪生扩大实体徽章收藏边界",
+   "section": "收藏生态",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "限量发行：五款统一编号配收藏证书",
+      "配套包装：航天主题收藏盒附任务手册",
+      "数字孪生：3D模型支持AR与虚拟展厅",
+      "收藏社区：爱好者论坛与二次创作开放"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。",
+   "notes": "这一页先直接给出结论：限量编号与数字孪生扩大实体徽章收藏边界。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：以实体徽章为原点，向数字藏品与收藏者社区延伸，建立从拥有到共创的完整收藏生态。；限量发行：五款统一编号配收藏证书；配套包装：航天主题收藏盒附任务手册；数字孪生：3D模型支持AR与虚拟展厅。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | semantics groups: 4 组 | layout: center-hub/hub-spoke",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P11",
+   "semantic_role": "two-column",
+   "groups": [
+    {
+     "title": "限量发行",
+     "items": [
+      "限量发行：五款统一编号配收藏证书"
+     ]
+    },
+    {
+     "title": "配套包装",
+     "items": [
+      "配套包装：航天主题收藏盒附任务手册"
+     ]
+    },
+    {
+     "title": "数字孪生",
+     "items": [
+      "数字孪生：3D模型支持AR与虚拟展厅"
+     ]
+    },
+    {
+     "title": "收藏社区",
+     "items": [
+      "收藏社区：爱好者论坛与二次创作开放"
+     ]
+    }
+   ],
+   "layout_pattern": "center-hub",
+   "layout_variant": "hub-spoke",
+   "blueprint": {
+    "focus": "收藏生态中心核主张（页首导语区）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "双栏分支卡组（发行/包装/数字/社区4组）",
+    "aux_area": "导语+底部takeaway",
+    "whitespace": "≥35%",
+    "svg_need": "可选（中心核与分支辐射细线）",
+    "image_need": "否（0%，结构承载）",
+    "reason": "本页为项目方案页：内容是一核多点的收藏生态体系，故选①中心节点+分支hub-spoke变体——中心主张统领、4分支卡组环绕承载，与P8格阵签名区隔。"
+   }
+  },
+  {
+   "page": 19,
+   "role": "section",
+   "title": "未来回望",
+   "section": "未来回望",
+   "section_index": 6,
+   "blocks": [],
+   "images": [],
+   "takeaway": "",
+   "notes": "这一页先直接给出结论：未来回望。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：章节过渡。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "new level-2 section",
+   "risk": {
+    "level": "low",
+    "issues": []
+   }
+  },
+  {
+   "page": 20,
+   "role": "timeline",
+   "title": "6个里程碑锁定从设计启动到社区开放链路",
+   "section": "未来回望",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "把项目放进时间坐标：从设计启动到社区开放，每个里程碑都有明确交付物，确保纪念系列与任务节点同频发布。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "2026-06｜设计启动与评审｜锁定5款方向",
+      "2026-07｜工艺打样完成｜校准浮雕与珐琅",
+      "2026-08｜生产制作质检｜限量编号生成",
+      "2026-09｜发射同步发布｜数字藏品上线",
+      "2026-10｜收藏社区开放｜二期概念预告",
+      "2026-12｜系列复盘归档｜资产包完整交付"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：把项目放进时间坐标：从设计启动到社区开放，每个里程碑都有明确交付物，确保纪念系列与任务节点同频发布。",
+   "notes": "这一页先直接给出结论：6个里程碑锁定从设计启动到社区开放链路。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：把项目放进时间坐标：从设计启动到社区开放，每个里程碑都有明确交付物，确保纪念系列与任务节点同频发布。；2026-06｜设计启动与评审｜锁定5款方向；2026-07｜工艺打样完成｜校准浮雕与珐琅；2026-08｜生产制作质检｜限量编号生成。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | layout: timeline/milestone-6",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P12",
+   "semantic_role": "timeline",
+   "layout_pattern": "timeline",
+   "layout_variant": "milestone-6",
+   "blueprint": {
+    "focus": "2026-09发布节点（链路高潮）",
+    "title_pos": "顶部通栏一行",
+    "main_area": "6节点水平里程碑轴（日期+事件+交付）",
+    "aux_area": "导语段落+底部takeaway",
+    "whitespace": "≥30%",
+    "svg_need": "否（组件自带轴与节点）",
+    "image_need": "否（0%，符号动线承载）",
+    "reason": "本页为流程页：内容是有先后的项目里程碑6节点路线图，故选④时间轴milestone-6变体——节点含日期/事件/交付物，发布节点为焦点，与P9以内容域区隔。"
+   }
+  },
+  {
+   "page": 21,
+   "role": "bullets",
+   "title": "锁定3项行动完成打样验证与发布筹备",
+   "section": "未来回望",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。"
+    },
+    {
+     "type": "list",
+     "items": [
+      "打样验证：工艺组9月产出实物样章",
+      "发布筹备：设计组锁定主视觉与排期",
+      "资产交付：项目组输出徽章包装资产包"
+     ]
+    }
+   ],
+   "images": [],
+   "takeaway": "So-what：下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。",
+   "notes": "这一页先直接给出结论：锁定3项行动完成打样验证与发布筹备。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：下一步把视觉方向转化为可检验的实物与排期，三项行动均明确责任侧、时间点与交付物。；打样验证：工艺组9月产出实物样章；发布筹备：设计组锁定主视觉与排期；资产交付：项目组输出徽章包装资产包。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "explicit role directive | semantics groups: 3 组 | layout: asym-mix/asym-cards | moved to pre-closing decision page",
+   "risk": {
+    "level": "high",
+    "issues": [
+     "content_blocks_below_3"
+    ]
+   },
+   "semantics_page": "P13",
+   "semantic_role": "closing",
+   "groups": [
+    {
+     "title": "打样验证",
+     "items": [
+      "打样验证：工艺组9月产出实物样章"
+     ]
+    },
+    {
+     "title": "发布筹备",
+     "items": [
+      "发布筹备：设计组锁定主视觉与排期"
+     ]
+    },
+    {
+     "title": "资产交付",
+     "items": [
+      "资产交付：项目组输出徽章包装资产包"
+     ]
+    }
+   ],
+   "layout_pattern": "asym-mix",
+   "layout_variant": "asym-cards",
+   "blueprint": {
+    "focus": "首行动项\"打样验证\"焦点块",
+    "title_pos": "顶部通栏一行",
+    "main_area": "非对称双栏3行动卡组（责任/时间/交付三要素）",
+    "aux_area": "导语段落+底部takeaway",
+    "whitespace": "≥35%",
+    "svg_need": "否",
+    "image_need": "否（0%，结构承载）",
+    "reason": "本页为总结页（行动形式）：收束段首页要把前文压缩为可执行事项，故选⑨非对称图文asym-cards变体——首行动项占焦点块，3项行动三要素齐全落卡列。"
+   },
+   "echo": null
+  },
+  {
+   "page": 22,
+   "role": "closing",
+   "title": "让下一步从今天开始",
+   "section": null,
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "感谢聆听｜现在确认第一项行动。"
+    }
+   ],
+   "images": [],
+   "takeaway": "",
+   "echo": "任务视觉纪念系列",
+   "notes": "这一页先直接给出结论：让下一步从今天开始。讲的时候不要从组件开始解释，而是先把听众带到业务语境里，说明为什么这个变化值得关注。关键证据包括：感谢聆听｜现在确认第一项行动。。这些信息要按“目标、变化、原因、影响”的顺序讲，让客户能听出当前进展不是孤立数字，而是可以复用到下一阶段的经营判断。\n\n转场句：基于这个结论，下一页进入更具体的过程、证据或行动安排。",
+   "decision": "automatic low-load closing after decision page",
+   "risk": {
+    "level": "low",
+    "issues": []
+   },
+   "eyebrow": "EPILOGUE · 星辰大海",
+   "echo_sub": "CZ-8A · QIANFAN CONSTELLATION · MEMORIAL BADGE SERIES"
+  }
+ ]
+}

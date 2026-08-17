@@ -1,0 +1,100 @@
+{
+  "version": "1.0",
+  "images": [
+    {
+      "id": "badge-01-gold-enamel",
+      "file": "badge-01-gold-enamel.jpg",
+      "alt": "图一 金珐琅星空浮雕徽章：金边圆形徽章内长征八号甲火箭高浮雕，深空蓝珐琅星空与祥云纹环绕",
+      "description": "金珐琅星空浮雕徽章——掐丝珐琅与高浮雕工艺，祥云纹、星尘底、金环与卫星链环绕火箭主体",
+      "content_type": "illustration",
+      "width": 2560,
+      "height": 1440,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": [
+        "徽章",
+        "珐琅",
+        "浮雕",
+        "航天"
+      ],
+      "weight": "high",
+      "group_id": "badge-series"
+    },
+    {
+      "id": "badge-02-silver-minimal",
+      "file": "badge-02-silver-minimal.jpg",
+      "alt": "图二 银质极简科技徽章：磨砂银圆章中央深蓝矢量火箭，金色星座连线构成拓扑网络",
+      "description": "银质极简科技徽章——磨砂银底、UV印刷深蓝火箭、撒金尾焰与星座拓扑连线",
+      "content_type": "illustration",
+      "width": 2560,
+      "height": 1440,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "徽章",
+        "银质",
+        "极简",
+        "星座"
+      ],
+      "weight": "medium",
+      "group_id": "badge-series"
+    },
+    {
+      "id": "badge-03-dual-scene",
+      "file": "badge-03-dual-scene.jpg",
+      "alt": "图三 双景叙事纪念徽章：左侧高浮雕银币徽章与右侧火箭发射实景卡并置",
+      "description": "双景叙事纪念徽章——高浮雕银币与发射实景卡并置，从蓝图到星辰的档案式铭刻",
+      "content_type": "illustration",
+      "width": 2560,
+      "height": 1440,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "徽章",
+        "浮雕",
+        "叙事",
+        "发射"
+      ],
+      "weight": "medium",
+      "group_id": "badge-series"
+    },
+    {
+      "id": "badge-04-champagne-orbit",
+      "file": "badge-04-champagne-orbit.jpg",
+      "alt": "图四 香槟金轨道阵列徽章：香槟金徽章居中，八颗卫星等距阵列环绕成轨道网络",
+      "description": "香槟金轨道阵列徽章——香槟金电镀与拉丝火箭，八星阵列与轨道网格背景",
+      "content_type": "illustration",
+      "width": 2560,
+      "height": 1440,
+      "aspect_ratio": "16:9",
+      "suggested_role": "hero",
+      "scene_tags": [
+        "徽章",
+        "香槟金",
+        "轨道",
+        "阵列"
+      ],
+      "weight": "high",
+      "group_id": "badge-series"
+    },
+    {
+      "id": "badge-05-fusion-culture",
+      "file": "badge-05-fusion-culture.jpg",
+      "alt": "图五 虚实融合文化徽章：拉丝银徽章竖排篆字前景，半透明信息面板与真实发射场景三层叠影",
+      "description": "虚实融合文化徽章——拉丝银同心圆底、竖排长征八号甲火箭篆字、三层空间虚实同构",
+      "content_type": "illustration",
+      "width": 2560,
+      "height": 1440,
+      "aspect_ratio": "16:9",
+      "suggested_role": "inline",
+      "scene_tags": [
+        "徽章",
+        "拉丝银",
+        "文化",
+        "叠影"
+      ],
+      "weight": "medium",
+      "group_id": "badge-series"
+    }
+  ]
+}

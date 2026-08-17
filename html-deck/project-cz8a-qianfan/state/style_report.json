@@ -1,0 +1,42 @@
+{
+  "deck_style": "tech",
+  "recommended_theme": "tech-dark",
+  "accent": "#1864ff",
+  "accent_2": "#ff2f78",
+  "cover_image_id": "badge-01-gold-enamel",
+  "votes": {
+    "tech": 12
+  },
+  "per_image": {
+    "badge-01-gold-enamel": {
+      "luma": 0.247,
+      "saturation": 0.617,
+      "hue": 0.612,
+      "style": "tech"
+    },
+    "badge-02-silver-minimal": {
+      "luma": 0.16,
+      "saturation": 0.773,
+      "hue": 0.594,
+      "style": "tech"
+    },
+    "badge-03-dual-scene": {
+      "luma": 0.287,
+      "saturation": 0.462,
+      "hue": 0.655,
+      "style": "tech"
+    },
+    "badge-04-champagne-orbit": {
+      "luma": 0.185,
+      "saturation": 0.772,
+      "hue": 0.601,
+      "style": "tech"
+    },
+    "badge-05-fusion-culture": {
+      "luma": 0.316,
+      "saturation": 0.637,
+      "hue": 0.598,
+      "style": "tech"
+    }
+  }
+}
