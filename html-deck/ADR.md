@@ -39,3 +39,10 @@
 - 动画表现：`animations.css` 登记 12 个命名动画，runtime 支持 B 键静态降级和 prefers-reduced-motion；KPI count-up、表格逐行、timeline 依次点亮、compare 左右入场均为声明式。
 - 运行时：S 键打开独立演讲者窗口，O 键打开缩略图总览，#/N 深链接仍可恢复页码。所有运行时代码内联、离线、无构建。
 - QA：`qa_render.py` 的结构化降级检查已加入 action title、takeaway、notes、截图美化、caption 和关键动画；Playwright 可用时仍输出逐页截图供人工并排比对。
+
+## 2026-08-21：图片 PDF 独立 QA 与蓝图消费
+
+- 图片渲染消费 `layout_pattern`、`layout_variant`、`blueprint`、主题与 art DNA，再按语义 role 回退；登记 pattern 对应不同视觉骨架。
+- QA 直接读取 IR、manifest 和逐页 PNG 内嵌审计信息，独立核对页面身份、源文本、素材覆盖、蓝图/role、溢出、16:9 比例与 PDF 页数。
+- `scripts/test_image_pdf.py` 覆盖支持矩阵正例，以及重复 PNG、超长标题、manifest 漏用三个必须失败的反例。
+- 徽章资料的完整可复跑项目与 PDF 产物登记在 `examples/badge-poster-image-pdf/`。

@@ -1,0 +1,21 @@
+{
+  "schema": "SlidesPlan", "version": "2.1", "title": "荣誉有形：把徽章变成团队共同记忆",
+  "theme_recommendation": "warm-human",
+  "art_dna": {"palette":{"ink":"#233443","paper":"#F1E2C8","paper_2":"#FFF8EC","red":"#C94843","gold":"#E0A73B","blue":"#2B7D8C","muted":"#716E68","white":"#FFFDF7"}},
+  "source": {"deck":"deck.md","manifest":"images/manifest.json","blueprints":"state/visual_blueprints.md"},
+  "slides": [
+    {"page":1,"role":"cover","title":"荣誉有形：把徽章变成团队共同记忆","section":null,"blocks":[],"images":[],"bg_image":{"id":"badge-10"},"takeaway":""},
+    {"page":2,"role":"toc","title":"三个判断节点从识别走向落地","section":null,"blocks":[],"toc_cards":[{"num":"01","title":"识别系统","desc":"锁定共同视觉语言"},{"num":"02","title":"场景证据","desc":"让素材成为叙事证据"},{"num":"03","title":"落地检查","desc":"用独立 QA 完成交付"}],"images":[],"takeaway":""},
+    {"page":3,"role":"section","title":"识别系统","section":"识别系统","section_index":1,"blocks":[],"images":[],"takeaway":""},
+    {"page":4,"role":"two-column","title":"一套主视觉统一勋章、绶带与荣誉墙","section":"识别系统","blocks":[{"type":"list","items":["红金蓝色谱建立识别","几何徽章承担记忆点","绶带与星芒形成仪式感"]}],"images":[],"takeaway":"","layout_pattern":"center-hub","layout_variant":"hub-left","blueprint":{"focus":"核心徽章主张","title_pos":"顶部","main_area":"左侧中心核","aux_area":"右侧三分支","whitespace":"30%","svg_need":"否","image_need":"否","reason":"主张向原则辐射"}},
+    {"page":5,"role":"two-column","title":"三项设计原则形成完整视觉闭环","section":"识别系统","blocks":[{"type":"list","items":["识别：远距离可辨认","秩序：信息层级清晰","延展：多媒介可复用"]}],"images":[],"takeaway":"","layout_pattern":"tri-loop","layout_variant":"loop-3","blueprint":{"focus":"三项设计原则","title_pos":"顶部","main_area":"中部闭环","aux_area":"底部说明","whitespace":"30%","svg_need":"是","image_need":"否","reason":"三项原则相互支撑"}},
+    {"page":6,"role":"section","title":"场景证据","section":"场景证据","section_index":2,"blocks":[],"images":[],"takeaway":""},
+    {"page":7,"role":"gallery","title":"十张素材覆盖多种荣誉表达场景","section":"场景证据","blocks":[],"images":[{"id":"badge-01"},{"id":"badge-02"},{"id":"badge-03"},{"id":"badge-05"},{"id":"badge-06"},{"id":"badge-07"}],"takeaway":""},
+    {"page":8,"role":"image-hero","title":"一张主图与三项细节共同建立仪式感","section":"场景证据","blocks":[{"type":"list","items":["完整保留画面主体","统一红金荣誉语言","细节进入安全区"]}],"images":[{"id":"badge-08"},{"id":"badge-09"}],"takeaway":"","layout_pattern":"hero-details","layout_variant":"anchor-right","blueprint":{"focus":"系列主图","title_pos":"顶部","main_area":"左侧主图","aux_area":"右侧说明","whitespace":"25%","svg_need":"否","image_need":"是","reason":"主图与细节同时可见"}},
+    {"page":9,"role":"image-side","title":"主视觉与文字说明保持各自清晰","section":"场景证据","blocks":[{"type":"list","items":["图片完整进入安全区","文字只承担判断与说明","页面保留稳定留白"]}],"images":[{"id":"badge-04"}],"takeaway":"","layout_pattern":"text-image","layout_variant":"anchor-right","blueprint":{"focus":"人物海报","title_pos":"顶部","main_area":"右侧图片","aux_area":"左侧说明","whitespace":"30%","svg_need":"否","image_need":"是","reason":"图文职责分离"}},
+    {"page":10,"role":"section","title":"落地检查","section":"落地检查","section_index":3,"blocks":[],"images":[],"takeaway":""},
+    {"page":11,"role":"timeline","title":"交付从规范到复验分三步完成","section":"落地检查","blocks":[{"type":"list","items":["锁定徽章母版","适配不同媒介","用独立 QA 复验"]}],"images":[],"takeaway":"","layout_pattern":"path-flow","layout_variant":"chain-3","blueprint":{"focus":"三步落地路径","title_pos":"顶部","main_area":"中部流程轴","aux_area":"底部节点","whitespace":"30%","svg_need":"是","image_need":"否","reason":"强化先后顺序"}},
+    {"page":12,"role":"kpi","title":"三项数字证明素材与页面均可追溯","section":"落地检查","blocks":[{"type":"list","items":["10 张原始素材","13 页图片演示","100% manifest 覆盖"]}],"images":[],"takeaway":"","layout_pattern":"big-number","layout_variant":"num-anchor","blueprint":{"focus":"三项复验数字","title_pos":"顶部","main_area":"中部数字卡","aux_area":"底部口径","whitespace":"40%","svg_need":"否","image_need":"否","reason":"数字为唯一焦点"}},
+    {"page":13,"role":"closing","title":"让每一份荣誉都被看见","section":null,"blocks":[],"images":[],"takeaway":""}
+  ]
+}

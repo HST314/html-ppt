@@ -1,11 +1,18 @@
 ---
 name: html-deck
-description: 将标准 Markdown 文稿和带元数据的场景图片转换为可演示的单文件 HTML 网页 PPT。适用于客户汇报、产品发布、技术分享、培训教学等需要离线演示、演讲者模式、打印导出的场景。
+description: 将标准 Markdown 文稿和带元数据的场景图片转换为单文件 HTML 网页 PPT，或从同一大纲生成逐页图片并组装为 16:9 PDF。适用于离线演示、图片型审阅稿和打印交付。
 ---
 
 # html-deck
 
-html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `images/manifest.json`，输出固定 16:9 舞台的单文件 HTML deck。所有流程必须经过结构化 IR、逐页渲染和 QA 门禁。
+html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/manifest.json`，先生成统一 SlidesPlan IR，再选择固定 16:9 舞台的单文件 HTML deck，或逐页栅格图片与图片型 PDF。两条路线共享语义、蓝图、图片零遗漏和 QA 门禁。
+
+## 输出路线
+
+- 默认选择 `html`：`render_deck.py` → `inline_assets.py` → `qa_render.py`。
+- 用户需要“图片 PPT”“逐页图片”或 PDF 审阅/打印稿时，选择 `image-pdf`：`render_image_pdf.py --strict-images` → `qa_image_pdf.py`。
+- 图片路线必须交付 PDF、逐页 PNG、渲染报告和 `qa_image_pdf.json`。QA 必须直接读取 IR 与 manifest，独立重算图片覆盖、蓝图/role、文本容量和逐页 PNG 身份，不信任渲染报告中的汇总字段。
+- 图片路线依赖 Pillow、reportlab、pypdf：`python3 -m pip install Pillow reportlab pypdf`。依赖缺失时不得把 PDF 标记为已验证。
 
 ## 运行原则
 
@@ -47,7 +54,7 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
   ↓
 ⑤ 视觉结构选择    → state/visual_blueprints.md
   ↓
-⑥ HTML 生成       → outline.json → dist/deck.single.html
+⑥ 目标格式生成    → outline.json → dist/deck.single.html 或 dist/deck.image.pdf
   ↓
 ⑦ 质量检查        → state/qa_report.md（含流程门禁）
 ```
@@ -87,10 +94,10 @@ html-deck 是一个零依赖交付优先的 Agent Skill：输入 `deck.md` 与 `
 - 门禁：沿用布局引擎门禁（<!-- TASK-007 fix -->蓝图九字段空缺、连页签名相同、计数变体节点数不符均判失败）。
 - 对应原机制：「视觉布局决策引擎（四步强制链路）」全节；其第①步即本总线④，第④步即本总线⑥。
 
-### ⑥ HTML 生成
+### ⑥ 目标格式生成
 
-- 动作：按阶段 2 工具链运行 `build_ir.py` → `render_deck.py` → `inline_assets.py`；渲染以蓝图与显式 role 指令为准，禁止绕开蓝图临场拼版式。
-- 落盘：`outline.json`、`dist/deck.single.html`。
+- 动作：先运行 `build_ir.py` 产出唯一 IR；HTML 路线继续运行 `render_deck.py` → `inline_assets.py`，图片 PDF 路线运行 `render_image_pdf.py --strict-images`。两条路线均以蓝图与显式 role 指令为准。
+- 落盘：`outline.json`，以及 `dist/deck.single.html` 或 `dist/deck.image.pdf` + `dist/image-slides/*.png` + 渲染报告。
 - 对应原机制：阶段 2「工具系统」、阶段 3「执行编排」、阶段 4「状态与记忆」。
 
 ### ⑦ 质量检查
@@ -224,6 +231,8 @@ python3 scripts/render_deck.py --ir outline.json --theme $(python3 -c "import js
 python3 scripts/inline_assets.py --html dist/deck.html --manifest images/manifest.json --mode inline --output dist/deck.single.html
 python3 scripts/audit_images.py --manifest images/manifest.json --html dist/deck.single.html --output state/image_coverage.md
 python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --output state/qa_report.md --history state/qa_history.jsonl --manifest images/manifest.json --art-dna state/art_dna.json
+python3 scripts/render_image_pdf.py --ir outline.json --manifest images/manifest.json --output dist/deck.image.pdf --slides-dir dist/image-slides --report state/image_pdf_render.json --strict-images
+python3 scripts/qa_image_pdf.py --pdf dist/deck.image.pdf --ir outline.json --manifest images/manifest.json --render-report state/image_pdf_render.json --output state/qa_image_pdf.json
 ```
 
 工具退出码：`0` 成功，`1` 可恢复输入/质量问题，`2` 阻断性工具错误。所有工具必须支持 `--help`。
@@ -320,7 +329,7 @@ python3 scripts/qa_render.py --html dist/deck.single.html --ir outline.json --ou
 - 工具错：重试一次，失败则降级或使用上个 checkpoint，退出码 2。
 - 质量不达标：最多 3 轮自动修复；仍失败则交付半成品与缺陷清单。
 
-完成标准：生成 `dist/deck.single.html`、两套主题验证产物、QA 报告、ADR，且 example 能端到端跑通。
+完成标准：HTML 路线生成 `dist/deck.single.html`、两套主题验证产物、QA 报告与 ADR；图片 PDF 路线生成 PDF、逐页 PNG、渲染报告与独立 QA 报告，并通过真实项目端到端复跑。
 
 ## 推荐一键示例
 
@@ -334,4 +343,7 @@ python3 scripts/render_deck.py --ir example/outline.json --theme minimal-white -
 python3 scripts/inline_assets.py --html example/dist/business-dark.html --manifest example/images/manifest.json --mode inline --output example/dist/business-dark.single.html
 python3 scripts/audit_images.py --manifest example/images/manifest.json --html example/dist/business-dark.single.html --output example/state/image_coverage.md
 python3 scripts/qa_render.py --html example/dist/business-dark.single.html --ir example/outline.json --output example/state/qa_report.md --history example/state/qa_history.jsonl --manifest example/images/manifest.json
+python3 scripts/render_image_pdf.py --ir example/outline.json --manifest example/images/manifest.json --output example/dist/deck.image.pdf --slides-dir example/dist/image-slides --report example/state/image_pdf_render.json --strict-images
+python3 scripts/qa_image_pdf.py --pdf example/dist/deck.image.pdf --ir example/outline.json --manifest example/images/manifest.json --render-report example/state/image_pdf_render.json --output example/state/qa_image_pdf.json
+python3 scripts/test_image_pdf.py
 ```
