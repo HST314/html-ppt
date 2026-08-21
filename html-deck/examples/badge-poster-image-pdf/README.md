@@ -2,7 +2,7 @@
 
 这是 `image-pdf` 路线的可复跑真实项目。`images/` 保存用户提供的 10 张原始素材及 manifest；`deck.md`、`outline.json`、`state/visual_blueprints.md` 是源文件；`dist/`、`state/image_pdf_render.json`、`state/qa_image_pdf.json` 是同一次运行产物。
 
-从 `30_SKILL_html-deck/` 执行：
+从 `html-deck/` 执行：
 
 ```bash
 python3 scripts/render_image_pdf.py \
