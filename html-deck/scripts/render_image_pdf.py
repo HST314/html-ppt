@@ -36,6 +36,7 @@ USED_MOTIFS = []
 VISUAL_ELEMENTS = []
 IMAGE_PLACEMENTS = []
 DERIVED_COMPONENTS = []
+WORD_ART_AUDIT = []
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -153,6 +154,12 @@ def record_container(box, texts, kind="card", padding=12):
     })
 
 
+def boxes_overlap(first, second, margin=0):
+    ax1, ay1, ax2, ay2 = map(float, first)
+    bx1, by1, bx2, by2 = map(float, second)
+    return ax1 - margin < bx2 and ax2 + margin > bx1 and ay1 - margin < by2 and ay2 + margin > by1
+
+
 def draw_semantic_motifs(page, page_no):
     """Draw small vector motifs selected by project semantics, never stock decoration."""
     motifs = list(dict.fromkeys(ACTIVE_SEMANTICS.get("motifs") or []))[:2]
@@ -170,17 +177,19 @@ def draw_semantic_motifs(page, page_no):
     for motif_index, motif in enumerate(motifs):
         candidates = preferred_anchors[min(motif_index, len(preferred_anchors) - 1)]
         cx, cy = candidates[0]
+        protected = [[row["x"], row["y"], row["x"] + row["width"], row["y"] + row["height"]] for row in TEXT_BOX_AUDIT]
+        protected.extend(row.get("bbox") for row in VISIBLE_CONTAINERS if len(row.get("bbox") or []) == 4)
+        protected.extend(row.get("rendered_bbox") for row in IMAGE_PLACEMENTS if len(row.get("rendered_bbox") or []) == 4)
+        safe_anchor = None
         for candidate_x, candidate_y in candidates:
             candidate_bbox = (candidate_x - 58, candidate_y - 55, candidate_x + 58, candidate_y + 55)
-            if not any(
-                candidate_bbox[0] < placement["rendered_bbox"][2]
-                and candidate_bbox[2] > placement["rendered_bbox"][0]
-                and candidate_bbox[1] < placement["rendered_bbox"][3]
-                and candidate_bbox[3] > placement["rendered_bbox"][1]
-                for placement in IMAGE_PLACEMENTS
-            ):
-                cx, cy = candidate_x, candidate_y
+            if not any(boxes_overlap(candidate_bbox, box, 10) for box in protected):
+                safe_anchor = (candidate_x, candidate_y)
                 break
+        # If no decoration position clears the copy, omit the decoration.
+        if safe_anchor is None:
+            continue
+        cx, cy = safe_anchor
         bbox = [cx - 58, cy - 55, cx + 58, cy + 55]
         if motif in {"badge", "medal", "徽章", "勋章"}:
             draw.polygon(((cx - 20, cy - 35), (cx, cy + 5), (cx + 20, cy - 35)), fill=color)
@@ -315,32 +324,36 @@ def draw_derived_background(page, role):
     blue = hex_rgb(PALETTE["blue"]) + ((92 if dark else 42),)
     gold = hex_rgb(PALETTE["gold"]) + ((76 if dark else 34),)
     paper = hex_rgb(PALETTE["paper_2"]) + ((22 if dark else 92),)
-    # Starfield and coordinate grid come directly from the MD descriptions.
-    for i in range(38):
+    # Content-heavy gallery and TOC pages use a deliberately restrained field.
+    restrained = role in {"toc", "gallery"}
+    for i in range(14 if restrained else 38):
         x, y = (i * 271 + 53) % w, (i * 149 + 31) % h
         radius = 1 + i % 3
         draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=paper)
-    if role not in {"cover", "closing"}:
+    if role not in {"cover", "closing", "toc", "gallery"}:
         for x in range(70, w, 126):
             draw.line((x, 76, x, h-60), fill=hex_rgb(PALETTE["blue"]) + (13,), width=1)
         for y in range(94, h, 108):
             draw.line((54, y, w-54, y), fill=hex_rgb(PALETTE["blue"]) + (13,), width=1)
     # Asymmetric orbit map: no fixed badge/ribbon stock decoration remains.
     cx, cy = (int(w * .78), int(h * .42)) if role != "closing" else (int(w * .72), int(h * .52))
-    for rx, ry, color, width in ((430, 210, blue, 7), (315, 118, gold, 4), (210, 68, paper, 3)):
+    orbit_layers = ((365, 165, blue, 4),) if restrained else ((430, 210, blue, 7), (315, 118, gold, 4), (210, 68, paper, 3))
+    for rx, ry, color, width in orbit_layers:
         draw.ellipse((cx-rx, cy-ry, cx+rx, cy+ry), outline=color, width=width)
-    for angle in (18, 77, 139, 212, 286, 337):
+    for angle in ((36, 216) if restrained else (18, 77, 139, 212, 286, 337)):
         x = cx + math.cos(math.radians(angle)) * 315
         y = cy + math.sin(math.radians(angle)) * 118
         draw.rectangle((x-7, y-7, x+7, y+7), fill=gold)
     # Launch corridor / plume builds the diagonal motion shared by every role.
-    draw.polygon(((0, h), (0, h-95), (w*.72, 0), (w*.83, 0)), fill=hex_rgb(PALETTE["blue"]) + (24,))
-    draw.polygon(((w*.10, h), (w*.17, h), (w*.78, 0), (w*.74, 0)), fill=hex_rgb(PALETTE["gold"]) + (20,))
+    if not restrained:
+        draw.polygon(((0, h), (0, h-95), (w*.72, 0), (w*.83, 0)), fill=hex_rgb(PALETTE["blue"]) + (24,))
+        draw.polygon(((w*.10, h), (w*.17, h), (w*.78, 0), (w*.74, 0)), fill=hex_rgb(PALETTE["gold"]) + (20,))
     DERIVED_COMPONENTS.extend([
         {"type": "theme-background", "source_motif": "starfield", "bbox": [0, 0, w, h]},
         {"type": "orbital-field", "source_motif": "orbit", "bbox": [max(0, cx-430), max(0, cy-210), w, min(h, cy+210)]},
-        {"type": "launch-corridor", "source_motif": "rocket", "bbox": [0, 0, w, h]},
     ])
+    if not restrained:
+        DERIVED_COMPONENTS.append({"type": "launch-corridor", "source_motif": "rocket", "bbox": [0, 0, w, h]})
     return Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
 
 
@@ -365,10 +378,14 @@ def draw_word_art(draw, xy, text, size, role, max_width, variant=0):
     line_height = size + 12
     for index, line in enumerate(lines):
         ly = y + index * line_height
+        line_width = min(max_width, text_width(draw, line, face))
+        text_bbox = [x, ly, x + line_width, ly + size]
+        ornaments = []
         if role in {"cover", "closing"}:
             draw.text((x+7, ly+7), line, font=face, fill=PALETTE["blue"], stroke_width=2, stroke_fill=PALETTE["ink"])
             draw.text((x, ly), line, font=face, fill=PALETTE["white"], stroke_width=2, stroke_fill=PALETTE["gold"])
             draw.line((x, ly+size+7, x+min(max_width, text_width(draw, line, face)), ly+size+7), fill=PALETTE["gold"], width=4)
+            ornaments.append([x, ly + size + 5, x + line_width, ly + size + 9])
         elif role == "section":
             # Four chapters deliberately use different, theme-derived display
             # treatments: launch ascent, orbital seal, engineering cut and
@@ -378,22 +395,27 @@ def draw_word_art(draw, xy, text, size, role, max_width, variant=0):
                 rule_width = min(max_width, text_width(draw, line, face))
                 draw.text((x+10, ly-4), line, font=face, fill=PALETTE["paper"], stroke_width=4, stroke_fill=PALETTE["blue"])
                 draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["gold"])
-                draw.line((x-18, ly+size//2, x+rule_width, ly+size//2), fill=PALETTE["gold"], width=3)
+                draw.line((x-18, ly+size+10, x+rule_width, ly+size+10), fill=PALETTE["gold"], width=3)
+                ornaments.append([x - 18, ly + size + 8, x + rule_width, ly + size + 12])
             elif chapter_style == 2:
                 draw.rounded_rectangle((x-18, ly-12, x+min(max_width, text_width(draw, line, face))+26, ly+size+16), radius=24, outline=PALETTE["blue"], width=5)
                 draw.text((x+4, ly+4), line, font=face, fill=PALETTE["gold"])
                 draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["paper_2"])
+                ornaments.extend([[x - 18, ly - 14, x + line_width + 26, ly - 7], [x - 18, ly + size + 12, x + line_width + 26, ly + size + 19]])
             elif chapter_style == 3:
-                draw.polygon(((x-20, ly-10), (x+26, ly-10), (x+8, ly+size+14), (x-38, ly+size+14)), fill=PALETTE["gold"])
-                draw.text((x+8, ly+6), line, font=face, fill=PALETTE["blue"], stroke_width=2, stroke_fill=PALETTE["paper_2"])
+                draw.polygon(((x-36, ly-10), (x-18, ly-10), (x-34, ly+size+14), (x-52, ly+size+14)), fill=PALETTE["gold"])
+                ornaments.append([x - 52, ly - 10, x - 18, ly + size + 14])
+                draw.text((x+6, ly+5), line, font=face, fill=PALETTE["blue"], stroke_width=2, stroke_fill=PALETTE["paper_2"])
                 draw.text((x, ly), line, font=face, fill=PALETTE["ink"])
             else:
                 draw.text((x+8, ly+7), line, font=face, fill=PALETTE["blue"])
                 draw.text((x, ly), line, font=face, fill=PALETTE["paper_2"], stroke_width=3, stroke_fill=PALETTE["ink"])
                 draw.line((x, ly+size+10, x+min(max_width, text_width(draw, line, face)), ly+size+10), fill=PALETTE["gold"], width=7)
+                ornaments.append([x, ly + size + 6, x + line_width, ly + size + 14])
         else:
             draw.text((x+4, ly+4), line, font=face, fill="#B7D8E8")
             draw.text((x, ly), line, font=face, fill=PALETTE["ink"])
+        WORD_ART_AUDIT.append({"role": role, "style_variant": int(variant or 0), "text": line, "text_bbox": text_bbox, "ornament_bboxes": ornaments})
     if lines:
         widths = [text_width(draw, line, face) for line in lines]
         frame_width = max(widths)
@@ -921,6 +943,7 @@ def main():
         VISUAL_ELEMENTS.clear()
         IMAGE_PLACEMENTS.clear()
         DERIVED_COMPONENTS.clear()
+        WORD_ART_AUDIT.clear()
         images = resolve_slide_images(slide, index)
         used_ids.update(image_id(item) for item in images if image_id(item))
         page = render_slide(slide, images, (args.width, args.height), page_no, total)
@@ -944,6 +967,7 @@ def main():
             "visual_elements": list(VISUAL_ELEMENTS),
             "image_placements": list(IMAGE_PLACEMENTS),
             "derived_components": list(DERIVED_COMPONENTS),
+            "word_art": list(WORD_ART_AUDIT),
             "rendered_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(),
         }
         pnginfo = PngImagePlugin.PngInfo()
@@ -951,7 +975,7 @@ def main():
         page.save(png_path, "PNG", optimize=True, pnginfo=pnginfo)
         page.save(jpg_path, "JPEG", quality=args.quality, optimize=True, progressive=True)
         jpegs.append(jpg_path)
-        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS), "visual_language_sha256": audit["visual_language_sha256"]})
+        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS), "word_art": list(WORD_ART_AUDIT), "visual_language_sha256": audit["visual_language_sha256"]})
     build_pdf(jpegs, output, args.width, args.height)
     manifest_ids = set(index)
     missing_ids = sorted(manifest_ids - used_ids)

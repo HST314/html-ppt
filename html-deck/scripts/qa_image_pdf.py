@@ -12,7 +12,7 @@ from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image, ImageChops, ImageDraw, ImageOps, ImageStat
+    from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps, ImageStat
     from pypdf import PdfReader
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -254,6 +254,81 @@ def box_iou(first, second):
     intersection = max(0, min(ax2, bx2) - max(ax1, bx1)) * max(0, min(ay2, by2) - max(ay1, by1))
     union = max(1, (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - intersection)
     return intersection / union
+
+
+def boxes_overlap(first, second, margin=0):
+    ax1, ay1, ax2, ay2 = map(float, first)
+    bx1, by1, bx2, by2 = map(float, second)
+    return ax1 - margin < bx2 and ax2 + margin > bx1 and ay1 - margin < by2 and ay2 + margin > by1
+
+
+def background_edge_density(image, audit):
+    """Estimate residual background busyness after masking narrative objects."""
+    sample = image.convert("RGB").resize((320, 180))
+    mask_draw = ImageDraw.Draw(sample)
+    protected = []
+    protected.extend(row.get("bbox") for row in audit.get("visible_containers") or [])
+    protected.extend(row.get("rendered_bbox") for row in audit.get("image_placements") or [])
+    protected.extend(row.get("bbox") for row in audit.get("visual_elements") or [])
+    protected.extend([row.get("x"), row.get("y"), row.get("x", 0) + row.get("width", 0), row.get("y", 0) + row.get("height", 0)] for row in audit.get("text_boxes") or [])
+    for box in protected:
+        if len(box or []) == 4:
+            scaled = tuple(int(value / 5) for value in box)
+            mask_draw.rectangle(scaled, fill=(128, 128, 128))
+    edges = sample.convert("L").filter(ImageFilter.FIND_EDGES)
+    return ImageStat.Stat(edges).mean[0] / 255.0
+
+
+CHINESE_NUMBERS = {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+
+
+def title_body_correspondence_failures(slide, page):
+    """Independently verify count-bearing action titles against visible evidence."""
+    role = effective_role(slide)
+    if role == "kpi":
+        return []
+    title = str(slide.get("title") or "")
+    match = re.search(r"([一二两三四五六七八九十]|\d+)\s*(种|步|段|款|项|张|组)", title)
+    if not match:
+        return []
+    expected = int(match.group(1)) if match.group(1).isdigit() else CHINESE_NUMBERS[match.group(1)]
+    if role == "gallery":
+        actual, noun = len(slide.get("images") or []), "项目证据图"
+    elif role in {"timeline", "compare", "two-column", "bullets"}:
+        actual, noun = len(flatten_blocks(slide.get("blocks"))), "正文证据项"
+    elif role == "toc":
+        actual, noun = len(slide.get("toc_cards") or []), "目录节点"
+    else:
+        return []
+    return [f"第 {page} 页标题承诺 {expected}{match.group(2)}，正文仅提供 {actual} 个{noun}"] if actual != expected else []
+
+
+def new_visual_rule_failures(slide, image, audit, report_row, page):
+    failures = []
+    text_boxes = [[row.get("x", 0), row.get("y", 0), row.get("x", 0) + row.get("width", 0), row.get("y", 0) + row.get("height", 0)] for row in audit.get("text_boxes") or []]
+    for element in audit.get("visual_elements") or []:
+        bbox = element.get("bbox") or []
+        if len(bbox) == 4 and any(boxes_overlap(bbox, text_box, 4) for text_box in text_boxes):
+            failures.append(f"第 {page} 页图标插图遮挡文字；装饰元素必须删除或避让")
+    word_art = audit.get("word_art") or []
+    if word_art != (report_row.get("word_art") or []):
+        failures.append(f"第 {page} 页艺术字几何在 PNG 与渲染报告间不一致")
+    if not word_art:
+        failures.append(f"第 {page} 页缺少艺术字主体几何审计")
+    for row in word_art:
+        text_bbox = row.get("text_bbox") or []
+        if len(text_bbox) != 4:
+            failures.append(f"第 {page} 页艺术字缺少文字主体边界")
+            continue
+        if any(len(box or []) == 4 and boxes_overlap(text_bbox, box) for box in row.get("ornament_bboxes") or []):
+            failures.append(f"第 {page} 页艺术字字体与装饰线条重叠，文字主体性不足")
+    narrative_load = len(audit.get("visible_containers") or []) + len(audit.get("image_placements") or [])
+    if effective_role(slide) in {"toc", "gallery"} or narrative_load >= 4:
+        density = background_edge_density(image, audit)
+        if density > 0.105:
+            failures.append(f"第 {page} 页叙事元素较多但背景未删减（独立边缘密度 {density:.1%}）")
+    failures.extend(title_body_correspondence_failures(slide, page))
+    return failures
 
 
 def container_discovery_failures(image, containers, page):
@@ -519,7 +594,10 @@ def project_image_failures(slide, audit, report_row, manifest_index, page, page_
     if components != (report_row.get("derived_components") or []):
         failures.append(f"第 {page} 页衍生设计组件清单在 PNG 与渲染报告间不一致")
     component_types = {str(row.get("type") or "") for row in components}
-    if not {"theme-background", "orbital-field", "launch-corridor"}.issubset(component_types):
+    required_background = {"theme-background", "orbital-field"}
+    if effective_role(slide) not in {"toc", "gallery"}:
+        required_background.add("launch-corridor")
+    if not required_background.issubset(component_types):
         failures.append(f"第 {page} 页缺少贯穿背景的项目母题衍生组件")
     if effective_role(slide) in {"timeline", "toc"} and "theme-flow" not in component_types:
         failures.append(f"第 {page} 页时间轴未从项目母题衍生")
@@ -654,6 +732,9 @@ def main():
             failures.extend(audit_design_failures(audit, index, semantic_keywords, semantic_motifs, semantic_evidence))
             failures.extend(visible_design_failures(image, audit, rows[index - 1], index, semantic_motifs))
             failures.extend(project_image_failures(slide, audit, rows[index - 1], manifest_index, index, image))
+            # Geometry and pixels are checked after the legacy gates so these
+            # four user rules remain independent final-QA decisions.
+            failures.extend(new_visual_rule_failures(slide, image, audit, rows[index - 1], index))
             if index <= len(pdf.pages):
                 binding_failure = pdf_page_binding_failure(pdf.pages[index - 1], image, rows[index - 1], index)
                 if binding_failure:
@@ -680,9 +761,13 @@ def main():
         "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value or "元素清单" in value or "可见元素" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
         "project_images_intact_and_not_backgrounds": not any("项目原图" in value or "项目图片" in value or "衍生设计" in value or "项目母题衍生" in value for value in failures),
         "md_visual_language_applied": not any("视觉语言" in value or "艺术字语言" in value or "非规则构成" in value or "旧元素提取流程" in value for value in failures),
+        "icons_and_illustrations_do_not_obscure_text": not any("图标插图遮挡文字" in value for value in failures),
+        "busy_narrative_pages_use_restrained_backgrounds": not any("背景未删减" in value for value in failures),
+        "word_art_preserves_text_primacy": not any("艺术字" in value and ("重叠" in value or "主体" in value or "几何" in value) for value in failures),
+        "body_content_matches_title_claim": not any("标题承诺" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.5", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.6", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

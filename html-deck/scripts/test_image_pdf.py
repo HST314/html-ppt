@@ -93,7 +93,7 @@ def fixture(root):
     toc["toc_cards"] = [{"num": f"0{i}", "title": title, "desc": "完整章节"} for i, title in enumerate(("定位", "结构", "证据", "落地"), 1)]
     slides = [slide(1, "cover", "图片路线独立复验", section=None), toc]
     chapter_pages = [
-        ("定位", slide(4, "two-column", "中心结论向四项证据展开", "center-hub", "hub-left", section="定位")),
+        ("定位", slide(4, "two-column", "中心结论向四项证据展开", "center-hub", "hub-left", blocks=[{"type": "list", "items": ["结论一", "证据二", "证据三", "行动四"]}], section="定位")),
         ("结构", slide(6, "two-column", "三项能力形成交付闭环", "tri-loop", "loop-3", section="结构")),
         ("证据", slide(8, "image-side", "左文右图保留完整证据", "text-image", "anchor-right", images=[{"id": "img-1"}], section="证据")),
         ("落地", slide(10, "image-hero", "英雄主图承载核心视觉", "product-hero", None, images=[{"id": "img-2"}], section="落地")),
@@ -214,6 +214,77 @@ def main():
         assert unrelated_result["checks"]["visual_elements_semantically_grounded"] is False
         assert "QA 独立 badge 允许特征不匹配" in "\n".join(unrelated_result["failures"])
 
+        # New final-QA rule 1: move a real semantic icon onto a real text box,
+        # then synchronize renderer-controlled artifacts. Project images are
+        # deliberately not part of this decorative-overlap rule.
+        overlap_report = json.loads(report.read_text(encoding="utf-8"))
+        overlap_row = overlap_report["slides"][0]
+        with Image.open(overlap_row["png"]) as original:
+            overlap_audit = json.loads(original.info["image_pdf_audit"])
+            overlap_pixels = original.convert("RGB")
+        source_box = overlap_audit["visual_elements"][0]["bbox"]
+        target_text = overlap_audit["text_boxes"][0]
+        target_box = [int(target_text["x"]), int(target_text["y"]), int(target_text["x"] + source_box[2] - source_box[0]), int(target_text["y"] + source_box[3] - source_box[1])]
+        icon = overlap_pixels.crop(tuple(source_box))
+        overlap_pixels.paste(icon, (target_box[0], target_box[1]))
+        icon_hash = hashlib.sha256(overlap_pixels.crop(tuple(target_box)).tobytes()).hexdigest()
+        overlap_audit["visual_elements"][0].update({"bbox": target_box, "pixel_sha256": icon_hash})
+        overlap_row["visual_elements"][0].update({"bbox": target_box, "pixel_sha256": icon_hash})
+        overlap_pdf = sync_mutated_page(overlap_report, overlap_row, overlap_pixels, overlap_audit, root, "icon-over-text")
+        overlap_report_path, overlap_qa = root / "icon-over-text-render.json", root / "icon-over-text-qa.json"
+        write_json(overlap_report_path, overlap_report)
+        run(QA, "--pdf", overlap_pdf, "--ir", plan, "--manifest", manifest, "--render-report", overlap_report_path, "--output", overlap_qa, ok=False)
+        overlap_result = json.loads(overlap_qa.read_text(encoding="utf-8"))
+        assert overlap_result["checks"]["icons_and_illustrations_do_not_obscure_text"] is False
+
+        # New rule 2: synchronize a genuinely busy line field behind a TOC.
+        busy_report = json.loads(report.read_text(encoding="utf-8"))
+        busy_row = next(row for row in busy_report["slides"] if row["role"] == "toc")
+        with Image.open(busy_row["png"]) as original:
+            busy_audit = json.loads(original.info["image_pdf_audit"])
+            busy_pixels = original.convert("RGB")
+        busy_draw = ImageDraw.Draw(busy_pixels)
+        for offset in range(-900, 1600, 18):
+            busy_draw.line((offset, 0, offset + 900, 900), fill="#6C93A2", width=3)
+        busy_pdf = sync_mutated_page(busy_report, busy_row, busy_pixels, busy_audit, root, "busy-toc-background")
+        busy_report_path, busy_qa = root / "busy-toc-render.json", root / "busy-toc-qa.json"
+        write_json(busy_report_path, busy_report)
+        run(QA, "--pdf", busy_pdf, "--ir", plan, "--manifest", manifest, "--render-report", busy_report_path, "--output", busy_qa, ok=False)
+        busy_result = json.loads(busy_qa.read_text(encoding="utf-8"))
+        assert busy_result["checks"]["busy_narrative_pages_use_restrained_backgrounds"] is False
+
+        # New rule 3: a real display-rule is drawn through the word face and
+        # declared consistently; geometry still rejects the lost text primacy.
+        art_report = json.loads(report.read_text(encoding="utf-8"))
+        art_row = next(row for row in art_report["slides"] if row["source_role"] == "section")
+        with Image.open(art_row["png"]) as original:
+            art_audit = json.loads(original.info["image_pdf_audit"])
+            art_pixels = original.convert("RGB")
+        text_box = art_audit["word_art"][0]["text_bbox"]
+        crossing = [text_box[0], (text_box[1] + text_box[3]) // 2 - 3, text_box[2], (text_box[1] + text_box[3]) // 2 + 3]
+        ImageDraw.Draw(art_pixels).rectangle(tuple(crossing), fill="#FFC857")
+        art_audit["word_art"][0]["ornament_bboxes"].append(crossing)
+        art_row["word_art"][0]["ornament_bboxes"].append(crossing)
+        art_pdf = sync_mutated_page(art_report, art_row, art_pixels, art_audit, root, "word-art-crossing")
+        art_report_path, art_qa = root / "word-art-crossing-render.json", root / "word-art-crossing-qa.json"
+        write_json(art_report_path, art_report)
+        run(QA, "--pdf", art_pdf, "--ir", plan, "--manifest", manifest, "--render-report", art_report_path, "--output", art_qa, ok=False)
+        art_result = json.loads(art_qa.read_text(encoding="utf-8"))
+        assert art_result["checks"]["word_art_preserves_text_primacy"] is False
+
+        # New rule 4: render a title that promises four steps while retaining
+        # only three real timeline nodes; the mismatch must be independently visible.
+        mismatch_plan = json.loads(plan.read_text(encoding="utf-8"))
+        mismatch_timeline = next(row for row in mismatch_plan["slides"] if row.get("role") == "timeline")
+        mismatch_timeline["title"] = "四步形成可复跑路径"
+        mismatch_path = root / "title-body-mismatch.json"
+        write_json(mismatch_path, mismatch_plan)
+        mismatch_pdf, mismatch_report, mismatch_qa = root / "title-body-mismatch.pdf", root / "title-body-mismatch-render.json", root / "title-body-mismatch-qa.json"
+        run(RENDER, "--ir", mismatch_path, "--manifest", manifest, "--output", mismatch_pdf, "--slides-dir", root / "title-body-mismatch-slides", "--report", mismatch_report, "--strict-images")
+        run(QA, "--pdf", mismatch_pdf, "--ir", mismatch_path, "--manifest", manifest, "--render-report", mismatch_report, "--output", mismatch_qa, ok=False)
+        mismatch_result = json.loads(mismatch_qa.read_text(encoding="utf-8"))
+        assert mismatch_result["checks"]["body_content_matches_title_claim"] is False
+
         # A clean regeneration must still fail when a project original enters
         # through bg_image: originals are content evidence, never backgrounds.
         background_plan = json.loads(plan.read_text(encoding="utf-8"))
@@ -270,7 +341,7 @@ def main():
         unsupported_qa = root / "unsupported-qa.json"
         run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
         assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: eleven checks + four synced attacks (real KPI empty-card, leaf-as-badge, raw-background, same-ratio center-crop) + regressions passed")
+    print("image-pdf tests: fifteen checks + eight adversarial cases + regressions passed")
     return 0
 
 
