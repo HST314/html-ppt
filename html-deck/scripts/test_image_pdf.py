@@ -172,15 +172,15 @@ def main():
         assert "manifest 图片未被 IR 覆盖" in "\n".join(json.loads(missing_qa.read_text(encoding="utf-8"))["failures"])
 
         loose_report = json.loads(report.read_text(encoding="utf-8"))
-        loose_row = next(row for row in loose_report["slides"] if row["role"] == "compare")
+        loose_row = next(row for row in loose_report["slides"] if row["role"] == "kpi")
         with Image.open(loose_row["png"]) as original:
             loose_audit = json.loads(original.info["image_pdf_audit"])
             loose_pixels = original.convert("RGB")
-        # Hostile-renderer case: add a real empty card but omit it from
-        # visible_containers, then consistently update PNG/report/JPEG/PDF.
+        # Hostile-renderer case: add a real KPI-sized empty card but omit it
+        # from visible_containers, then synchronize PNG/report/JPEG/PDF/hashes.
         loose_draw = ImageDraw.Draw(loose_pixels)
-        loose_draw.rounded_rectangle((390, 650, 1210, 835), radius=24, fill="#D9ECF2", outline="#287E91", width=3)
-        loose_pdf = sync_mutated_page(loose_report, loose_row, loose_pixels, loose_audit, root, "unreported-empty-card")
+        loose_draw.rounded_rectangle((390, 690, 1210, 840), radius=24, fill="#D9ECF2", outline="#28C2D1", width=3)
+        loose_pdf = sync_mutated_page(loose_report, loose_row, loose_pixels, loose_audit, root, "unreported-kpi-empty-card")
         loose_report_path = root / "loose-text-render.json"
         write_json(loose_report_path, loose_report)
         loose_qa = root / "loose-text-qa.json"
@@ -270,7 +270,7 @@ def main():
         unsupported_qa = root / "unsupported-qa.json"
         run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
         assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: ten checks + four synced attacks (empty-card, leaf-as-badge, raw-background, same-ratio center-crop) + regressions passed")
+    print("image-pdf tests: eleven checks + four synced attacks (real KPI empty-card, leaf-as-badge, raw-background, same-ratio center-crop) + regressions passed")
     return 0
 
 

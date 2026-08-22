@@ -357,7 +357,7 @@ def derived_card(draw, box, radius, fill, outline=None, width=1):
     DERIVED_COMPONENTS.append({"type": "theme-container", "source_motif": "satellite", "bbox": [x1, y1, x2, y2]})
 
 
-def draw_word_art(draw, xy, text, size, role, max_width):
+def draw_word_art(draw, xy, text, size, role, max_width, variant=0):
     """Render theme-fit display type with ascent, orbit and metal-layer cues."""
     x, y = map(int, xy)
     face = font(size, True)
@@ -370,8 +370,27 @@ def draw_word_art(draw, xy, text, size, role, max_width):
             draw.text((x, ly), line, font=face, fill=PALETTE["white"], stroke_width=2, stroke_fill=PALETTE["gold"])
             draw.line((x, ly+size+7, x+min(max_width, text_width(draw, line, face)), ly+size+7), fill=PALETTE["gold"], width=4)
         elif role == "section":
-            draw.text((x+6, ly+5), line, font=face, fill=PALETTE["silver"] if "silver" in PALETTE else PALETTE["paper"])
-            draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["gold"])
+            # Four chapters deliberately use different, theme-derived display
+            # treatments: launch ascent, orbital seal, engineering cut and
+            # horizon convergence. They remain blue/white/gold as one family.
+            chapter_style = int(variant or 0) % 4
+            if chapter_style == 1:
+                rule_width = min(max_width, text_width(draw, line, face))
+                draw.text((x+10, ly-4), line, font=face, fill=PALETTE["paper"], stroke_width=4, stroke_fill=PALETTE["blue"])
+                draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["gold"])
+                draw.line((x-18, ly+size//2, x+rule_width, ly+size//2), fill=PALETTE["gold"], width=3)
+            elif chapter_style == 2:
+                draw.rounded_rectangle((x-18, ly-12, x+min(max_width, text_width(draw, line, face))+26, ly+size+16), radius=24, outline=PALETTE["blue"], width=5)
+                draw.text((x+4, ly+4), line, font=face, fill=PALETTE["gold"])
+                draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["paper_2"])
+            elif chapter_style == 3:
+                draw.polygon(((x-20, ly-10), (x+26, ly-10), (x+8, ly+size+14), (x-38, ly+size+14)), fill=PALETTE["gold"])
+                draw.text((x+8, ly+6), line, font=face, fill=PALETTE["blue"], stroke_width=2, stroke_fill=PALETTE["paper_2"])
+                draw.text((x, ly), line, font=face, fill=PALETTE["ink"])
+            else:
+                draw.text((x+8, ly+7), line, font=face, fill=PALETTE["blue"])
+                draw.text((x, ly), line, font=face, fill=PALETTE["paper_2"], stroke_width=3, stroke_fill=PALETTE["ink"])
+                draw.line((x, ly+size+10, x+min(max_width, text_width(draw, line, face)), ly+size+10), fill=PALETTE["gold"], width=7)
         else:
             draw.text((x+4, ly+4), line, font=face, fill="#B7D8E8")
             draw.text((x, ly), line, font=face, fill=PALETTE["ink"])
@@ -384,7 +403,8 @@ def draw_word_art(draw, xy, text, size, role, max_width):
             "text": str(text), "x": x, "y": y, "width": frame_width,
             "height": frame_height, "font_size": size, "line_count": len(lines),
             "ink_fill_ratio": round(min(1.0, ink_area / max(1, frame_width * frame_height)), 4),
-            "style": ACTIVE_VISUAL_LANGUAGE.get("word_art", {}).get(role, role),
+            "style": (ACTIVE_VISUAL_LANGUAGE.get("word_art", {}).get(role, role)
+                      + (f"-chapter-{int(variant or 0) % 4 + 1}" if role == "section" else "")),
         })
     DERIVED_COMPONENTS.append({"type": "word-art", "source_motif": "rocket", "bbox": [x, y, x+max_width, y+max(1, len(lines))*line_height]})
     return y + len(lines) * line_height
@@ -533,7 +553,7 @@ def render_section(slide, images, size, page_no, total):
     slide_chrome(page, page_no, total, slide.get("section"))
     number = str(slide.get("section_index") or page_no).zfill(2)
     draw.text((82, 130), number, font=font(150, True), fill=PALETTE["blue"])
-    draw_word_art(draw, (88, 350), slide.get("title", "章节"), 66, "section", int(w * 0.48))
+    draw_word_art(draw, (88, 350), slide.get("title", "章节"), 66, "section", int(w * 0.48), int(slide.get("section_index") or page_no) - 1)
     draw.line((92, h - 142, 480, h - 142), fill=PALETTE["blue"], width=3)
     draw.text((92, h - 112), "CHAPTER TRANSITION", font=font(18, True), fill=PALETTE["muted"])
     return page
@@ -561,6 +581,22 @@ def render_gallery(slide, images, size, page_no, total):
         # Reserve a separate header strip: labels and decorative motifs must
         # never cover the source-derived rendered_bbox used for intactness QA.
         place_project_image(page, item, (x + 10, y + 54, x + cell_w - 10, y + cell_h - 10), "gallery-evidence", PALETTE["ink"])
+    if len(images) == 1:
+        # A single evidence image anchors the left; the right becomes an
+        # information-bearing orbit instrument rather than decorative void.
+        panel = (int(w*.55), y0, w-78, h-72)
+        derived_card(draw, panel, 24, PALETTE["ink"], PALETTE["gold"], 3)
+        record_container(panel, ["ORBITAL ORDER", "阵列", "精度", "协同"], "gallery-orbit-instrument", padding=22)
+        px1, py1, px2, py2 = panel
+        draw.text((px1+30, py1+24), "ORBITAL ORDER", font=font(22, True), fill=PALETTE["gold"])
+        cx, cy = (px1+px2)//2, (py1+py2)//2+20
+        for radius, color, width in ((150, PALETTE["blue"], 5), (104, PALETTE["gold"], 3), (58, PALETTE["paper"], 2)):
+            draw.ellipse((cx-radius, cy-radius//2, cx+radius, cy+radius//2), outline=color, width=width)
+        labels = (("阵列", cx-118, cy-22), ("精度", cx-24, cy-82), ("协同", cx+78, cy+18))
+        for label, lx, ly in labels:
+            draw.ellipse((lx-10, ly-10, lx+10, ly+10), fill=PALETTE["gold"])
+            draw.text((lx+16, ly-16), label, font=font(22, True), fill=PALETTE["white"])
+        DERIVED_COMPONENTS.append({"type": "theme-flow", "source_motif": "orbit", "bbox": [px1, py1, px2, py2]})
     return page
 
 
@@ -631,7 +667,7 @@ def render_kpi(slide, images, size, page_no, total):
     for index, value in enumerate(items):
         match = re.search(r"[-+]?\d[\d,.]*\s*(?:%|倍|万|亿|天|项|个)?", value)
         number = match.group(0) if match else f"0{index + 1}"
-        natural_heights.append(compact_panel_height(draw, [number, value], body_font, card_w - 48, padding=34, line_gap=7, item_gap=28, minimum=238, maximum=330))
+        natural_heights.append(compact_panel_height(draw, [number, value], body_font, card_w - 48, padding=24, line_gap=7, item_gap=18, minimum=166, maximum=216))
     card_h = max(natural_heights)
     card_y = top + max(8, (h - 80 - top - card_h) // 2)
     for index, value in enumerate(items):
@@ -641,8 +677,8 @@ def render_kpi(slide, images, size, page_no, total):
         match = re.search(r"[-+]?\d[\d,.]*\s*(?:%|倍|万|亿|天|项|个)?", value)
         number = match.group(0) if match else f"0{index + 1}"
         record_container(box, [number, value], "kpi-card")
-        draw_text(draw, (x + 24, card_y + 38), number, number_font, PALETTE["gold"] if index == 0 else PALETTE["red"], card_w - 48, 6, 2)
-        draw_text(draw, (x + 24, card_y + 142), value, body_font, PALETTE["white"] if index == 0 else PALETTE["ink"], card_w - 48, 7, 6)
+        draw_text(draw, (x + 24, card_y + 24), number, number_font, PALETTE["gold"] if index == 0 else PALETTE["red"], card_w - 48, 6, 2)
+        draw_text(draw, (x + 24, card_y + 102), value, body_font, PALETTE["white"] if index == 0 else PALETTE["ink"], card_w - 48, 7, 4)
     return page
 
 

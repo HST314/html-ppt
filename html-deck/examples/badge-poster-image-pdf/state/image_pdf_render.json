@@ -454,8 +454,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.jpg",
-      "png_rgb_sha256": "2d47c22f0410fc26daae15a90f3858340e312d072020cb019b90ddd3f7cb656c",
-      "jpg_sha256": "317706189adfe69b2dbb4cb9800a97d85559f9d1ff95a4ca990b25910f009fb2",
+      "png_rgb_sha256": "f07e5b614f4aa16452538047986b502fc03db87b25eae9275d59c97ba08a473a",
+      "jpg_sha256": "9751a5538e81d1f6eefcf7be13f4fff427f0ab17da9a4e422f6e7fcbd5bea0a2",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -842,8 +842,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.jpg",
-      "png_rgb_sha256": "77e00e88a9f3d3a5b9c652960e7d23b14bc353401656e9f06c5c07d7c55eab99",
-      "jpg_sha256": "a7f2a0236f0ab960b68300cb22de2df4dc41b43b1d90d74866d19d61c990b83d",
+      "png_rgb_sha256": "cc95fc0a96a7fa83bbf10ca2d4b25722b866a6c50a3c8016e30f0f5a2902bdd2",
+      "jpg_sha256": "08b90e5e01cef903c798859d5b434c754ea153a4435fd87a1a111f132d6c8359",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -1233,8 +1233,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.jpg",
-      "png_rgb_sha256": "a5f766223e50879100f2e1b88acb6dd4a920b203fe144f6fee762bb08aa60797",
-      "jpg_sha256": "76bf6732cdb8335b058b70dcd0c3525698b8533e3623ac4d7466c4ad85fba7dd",
+      "png_rgb_sha256": "e9f83f7d96d8b39b97b38228a9fd6c5dcbda3d9e98f6120776b13dc1d6540eba",
+      "jpg_sha256": "5311b936c036e281dda0e22d68a83a0ecde1e65e9e4c13f13ea5b1c54c40167f",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -1333,11 +1333,28 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
-      "png_rgb_sha256": "f2472d32ed2718b4a2d94f61364f5a9e7804f8a6b301fef3aa636814bd28ebbf",
-      "jpg_sha256": "349ecd1afb0b55d59a2444a15df2f136436431d505fca9ebf7d8bf639a081a45",
+      "png_rgb_sha256": "dc6d674b7be609e5b65a9492895caeb9fc9d3903f2e691779dcbafc3e0a3ece8",
+      "jpg_sha256": "259178c152165620bfc0c68aec0dd27a4f45ae7fb7cd668fe88d70ff0a402471",
       "text_overflows": [],
       "text_box_count": 1,
-      "visible_containers": [],
+      "visible_containers": [
+        {
+          "kind": "gallery-orbit-instrument",
+          "bbox": [
+            880,
+            226,
+            1522,
+            828
+          ],
+          "padding": 22,
+          "texts": [
+            "ORBITAL ORDER",
+            "阵列",
+            "精度",
+            "协同"
+          ]
+        }
+      ],
       "visual_elements": [
         {
           "type": "semantic-motif",
@@ -1437,6 +1454,26 @@
             78,
             226,
             791,
+            828
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            880,
+            226,
+            1522,
+            828
+          ]
+        },
+        {
+          "type": "theme-flow",
+          "source_motif": "orbit",
+          "bbox": [
+            880,
+            226,
+            1522,
             828
           ]
         }
@@ -1644,8 +1681,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.jpg",
-      "png_rgb_sha256": "aad9667f0ac7446a38b37753188d0f35ff7a8e582550936ff5a93f8728ef1b12",
-      "jpg_sha256": "8ac5ba0d814da32547c28e5352ac93db056cfc18bfd47bb1a4ea4bef02b4768f",
+      "png_rgb_sha256": "a88456421894c9027d51f07ac2f231fafb719fcff35dc2825a7a35822abaa626",
+      "jpg_sha256": "729e4a0f4a7da638e913b6960a998e95c484d8f116dc63bcb78c3d00a03acf40",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -1864,8 +1901,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.jpg",
-      "png_rgb_sha256": "73ce9854d0c05b4cdb5ef727c7efb57af9ed7ebb005ab088ba2daa7c3b3dd460",
-      "jpg_sha256": "e6cd0667b394dce637aff7519c8b8d278a2f65fe6d09eb80d18ffbbb2a14e3eb",
+      "png_rgb_sha256": "947903798b9c9b32b257498d62b86398421b559af9be6661ce1507835d5f057c",
+      "jpg_sha256": "ea89490489ded4b118fc459efc35b6ab213c46ccd23efc7ef5d9fa3fcf79a01f",
       "text_overflows": [],
       "text_box_count": 7,
       "visible_containers": [
@@ -1873,9 +1910,9 @@
           "kind": "kpi-card",
           "bbox": [
             78,
-            413,
+            449,
             544,
-            651
+            615
           ],
           "padding": 12,
           "texts": [
@@ -1887,9 +1924,9 @@
           "kind": "kpi-card",
           "bbox": [
             566,
-            413,
+            449,
             1032,
-            651
+            615
           ],
           "padding": 12,
           "texts": [
@@ -1901,9 +1938,9 @@
           "kind": "kpi-card",
           "bbox": [
             1054,
-            413,
+            449,
             1520,
-            651
+            615
           ],
           "padding": 12,
           "texts": [
@@ -1987,9 +2024,9 @@
           "source_motif": "satellite",
           "bbox": [
             78,
-            413,
+            449,
             544,
-            651
+            615
           ]
         },
         {
@@ -1997,9 +2034,9 @@
           "source_motif": "satellite",
           "bbox": [
             566,
-            413,
+            449,
             1032,
-            651
+            615
           ]
         },
         {
@@ -2007,9 +2044,9 @@
           "source_motif": "satellite",
           "bbox": [
             1054,
-            413,
+            449,
             1520,
-            651
+            615
           ]
         }
       ],
