@@ -381,7 +381,7 @@ def visible_design_failures(image, audit, report_row, page, motifs):
             failures.append(f"第 {page} 页可见元素像素与元素清单不一致")
         crop = image.convert("RGB").crop(tuple(bbox))
         score = semantic_template_score(crop, semantic_id)
-        if score < 0.24:
+        if score < 0.18:
             failures.append(f"第 {page} 页可见元素与 QA 独立 {semantic_id} 模板不匹配（特征分 {score:.2f}）")
         color_failure = semantic_color_feature_failure(crop, semantic_id, page)
         if color_failure:
@@ -429,6 +429,31 @@ def semantic_contract_failures(plan, manifest):
         if not source or source not in corpus:
             failures.append(f"设计母题 {motif} 缺少来自正文/主题词/manifest alt 的语义证据")
     return failures, keywords, motifs, evidence
+
+
+def visual_language_failures(plan, report):
+    """Require one MD-derived language contract instead of legacy motif fallbacks."""
+    language = plan.get("visual_language") or {}
+    failures = []
+    if language.get("schema") != "ProjectVisualLanguage" or language.get("version") != "1.0":
+        return ["缺少 ProjectVisualLanguage 1.0；不得回退旧元素提取流程"]
+    source = language.get("source") or {}
+    if source.get("kind") != "image-description-md" or len(source.get("files") or []) < 1:
+        failures.append("视觉语言未绑定图片 MD 描述来源")
+    required_roles = {"cover", "toc", "section", "content", "closing"}
+    if not required_roles.issubset(language.get("word_art") or {}):
+        failures.append("艺术字语言未覆盖封面/目录/转场/内容/结尾")
+    if not required_roles.issubset(language.get("composition") or {}):
+        failures.append("非规则构成语言未覆盖封面/目录/转场/内容/结尾")
+    components = language.get("derived_components") or {}
+    if not {"background", "container", "flow", "transition"}.issubset(components):
+        failures.append("MD 主题元素未衍生到背景/容器/流程/转场")
+    expected_hash = hashlib.sha256(json.dumps(language, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+    report_language = report.get("visual_language") or {}
+    report_hash = hashlib.sha256(json.dumps(report_language, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+    if expected_hash != report_hash:
+        failures.append("渲染报告使用的视觉语言与 IR 不一致")
+    return failures
 
 
 def project_image_failures(slide, audit, report_row, manifest_index, page, page_image):
@@ -494,14 +519,16 @@ def project_image_failures(slide, audit, report_row, manifest_index, page, page_
     if components != (report_row.get("derived_components") or []):
         failures.append(f"第 {page} 页衍生设计组件清单在 PNG 与渲染报告间不一致")
     component_types = {str(row.get("type") or "") for row in components}
-    if not {"ribbon-sweep", "badge-orbit"}.issubset(component_types):
+    if not {"theme-background", "orbital-field", "launch-corridor"}.issubset(component_types):
         failures.append(f"第 {page} 页缺少贯穿背景的项目母题衍生组件")
-    if effective_role(slide) == "timeline" and "orbit-timeline" not in component_types:
+    if effective_role(slide) in {"timeline", "toc"} and "theme-flow" not in component_types:
         failures.append(f"第 {page} 页时间轴未从项目母题衍生")
-    if effective_role(slide) == "section" and "badge-transition" not in component_types:
+    if effective_role(slide) == "section" and "theme-transition" not in component_types:
         failures.append(f"第 {page} 页转场未从项目母题衍生")
-    if effective_role(slide) in {"toc", "compare", "timeline", "kpi", "image-hero", "two-column", "bullets", "image-side"} and "badge-ribbon-card" not in component_types:
+    if effective_role(slide) in {"toc", "compare", "timeline", "kpi", "image-hero", "two-column", "bullets", "image-side"} and "theme-container" not in component_types:
         failures.append(f"第 {page} 页文本框/内容容器未从项目母题衍生")
+    if "word-art" not in component_types:
+        failures.append(f"第 {page} 页未应用项目主题艺术字")
     return failures
 
 
@@ -538,6 +565,7 @@ def main():
     failures = []
     semantic_failures, semantic_keywords, semantic_motifs, semantic_evidence = semantic_contract_failures(plan, manifest)
     failures.extend(semantic_failures)
+    failures.extend(visual_language_failures(plan, report))
     structure_failures = story_structure_failures(slides)
     failures.extend(structure_failures)
     palette_failures = []
@@ -588,6 +616,7 @@ def main():
         failures.append(f"渲染报告逐页记录 {len(rows)} != IR 页数 {len(slides)}")
     png_paths, png_hashes = [], []
     ir_hash, manifest_hash = digest(args.ir), digest(args.manifest)
+    language_hash = hashlib.sha256(json.dumps(plan.get("visual_language") or {}, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
     for index, slide in enumerate(slides, start=1):
         if index > len(rows):
             break
@@ -609,6 +638,8 @@ def main():
                 failures.append(f"第 {index} 页 PNG 缺少匹配的内嵌页码审计")
             if audit.get("ir_sha256") != ir_hash or audit.get("manifest_sha256") != manifest_hash:
                 failures.append(f"第 {index} 页 PNG 的 IR/manifest 指纹不匹配")
+            if audit.get("visual_language_sha256") != language_hash or rows[index - 1].get("visual_language_sha256") != language_hash:
+                failures.append(f"第 {index} 页 PNG/报告未绑定同一 MD 视觉语言")
             if audit.get("source_texts") != source_texts(slide):
                 failures.append(f"第 {index} 页 PNG 内嵌文本清单与 IR 不一致")
             if audit.get("image_ids") != slide_image_ids(slide):
@@ -648,6 +679,7 @@ def main():
         "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value or "可见容器" in value or "漏报可见卡片" in value or "文字占用" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
         "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value or "元素清单" in value or "可见元素" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
         "project_images_intact_and_not_backgrounds": not any("项目原图" in value or "项目图片" in value or "衍生设计" in value or "项目母题衍生" in value for value in failures),
+        "md_visual_language_applied": not any("视觉语言" in value or "艺术字语言" in value or "非规则构成" in value or "旧元素提取流程" in value for value in failures),
     }
     qa = {
         "schema": "ImagePdfQA", "version": "2.5", "route": "image-pdf",

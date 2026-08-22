@@ -1,50 +1,429 @@
 {
   "schema": "SlidesPlan",
-  "version": "2.2",
-  "title": "荣誉有形：把徽章变成团队共同记忆",
-  "theme_recommendation": "business-dark",
-  "art_dna": {
-    "palette": {
-      "ink": "#123A6B",
-      "paper": "#E9F2FA",
-      "paper_2": "#F7FAFD",
-      "red": "#C94843",
-      "gold": "#D6A441",
-      "blue": "#1F78A8",
-      "muted": "#55677F",
-      "white": "#FFFFFF"
+  "version": "3.0",
+  "title": "长征八号甲 · 千帆星座：从地球点火到星座组网",
+  "theme_recommendation": "tech-dark",
+  "visual_semantics": {
+    "keywords": [
+      "长征八号甲",
+      "千帆星座",
+      "火箭",
+      "卫星",
+      "轨道"
+    ],
+    "motifs": [
+      "rocket",
+      "orbit",
+      "satellite"
+    ],
+    "evidence": {
+      "rocket": "火箭",
+      "orbit": "轨道",
+      "satellite": "卫星"
     }
   },
-  "visual_semantics": {
-    "keywords": ["徽章", "荣誉", "团队记忆", "仪式感"],
-    "motifs": ["badge", "starburst"],
-    "evidence": {"badge": "徽章", "starburst": "星芒"}
+  "visual_language": {
+    "schema": "ProjectVisualLanguage",
+    "version": "1.0",
+    "source": {
+      "kind": "image-description-md",
+      "files": [
+        "图一_金珐琅星空浮雕徽章.md",
+        "图三_双景叙事纪念徽章.md",
+        "图二_银质极简科技徽章.md",
+        "图五_虚实融合文化徽章.md",
+        "图四_香槟金轨道阵列徽章.md"
+      ]
+    },
+    "narrative": "从地球点火，经轨道组网，抵达千帆星座",
+    "keywords": [
+      "长征八号甲",
+      "千帆星座",
+      "火箭",
+      "卫星",
+      "轨道"
+    ],
+    "motifs": [
+      "rocket",
+      "orbit",
+      "satellite",
+      "starfield",
+      "plume",
+      "grid",
+      "cloud-wave",
+      "seal-script"
+    ],
+    "evidence": {
+      "rocket": "中央徽章**：采用圆形金边浮雕结构，主体为长征八号甲火箭垂直居中，呈现蓄势待发之态",
+      "orbit": "# 图四：香槟金轨道阵列徽章",
+      "satellite": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+      "starfield": "# 图一：金珐琅星空浮雕徽章",
+      "plume": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+      "grid": "背景网格**：深蓝色背景叠加浅灰色网格线与节点方块，构成轨道坐标系的抽象表达，强化\"精确测量、精准入轨\"的航天工程属性",
+      "cloud-wave": "火箭两侧以对称式抽象云纹/水纹装饰，既似腾飞之翼，又暗合中国传统祥云意象，形成\"火箭破浪而出\"的视觉隐喻",
+      "seal-script": "徽章右侧以竖排篆体/魏碑风格刻印\"长征八号甲火箭\"，字形修长有力，增添文化厚重感与历史纵深感"
+    },
+    "palette": {
+      "deep_space": "#061A33",
+      "space_blue": "#0B4F8A",
+      "ion_blue": "#35B8E8",
+      "champagne_gold": "#D8B56A",
+      "silver": "#DCE7EF",
+      "paper": "#F2F7FA",
+      "plume": "#F28C3B"
+    },
+    "word_art": {
+      "cover": "rocket-ascent",
+      "toc": "orbital-title",
+      "section": "vertical-seal",
+      "content": "precision-cut",
+      "closing": "stellar-convergence"
+    },
+    "composition": {
+      "cover": "diagonal-launch-corridor",
+      "toc": "asymmetric-orbit-map",
+      "section": "split-orbit-gate",
+      "content": "chamfered-mission-panels",
+      "closing": "converging-star-trails"
+    },
+    "derived_components": {
+      "background": [
+        "starfield",
+        "orbit",
+        "grid",
+        "plume"
+      ],
+      "container": [
+        "seal-rim",
+        "satellite-panel",
+        "trajectory-notch"
+      ],
+      "flow": [
+        "orbit",
+        "satellite",
+        "rocket"
+      ],
+      "transition": [
+        "rocket",
+        "orbit",
+        "seal-script"
+      ]
+    }
   },
-  "source": {"deck": "deck.md", "manifest": "images/manifest.json", "blueprints": "state/visual_blueprints.md"},
   "slides": [
-    {"page": 1, "role": "cover", "title": "荣誉有形：把徽章变成团队共同记忆", "section": null, "blocks": [], "images": [{"id": "badge-10"}], "takeaway": ""},
-    {"page": 2, "role": "toc", "title": "四个部分构成完整的徽章叙事", "section": null, "blocks": [], "toc_cards": [
-      {"num": "01", "title": "品牌识别", "desc": "建立统一视觉语言"},
-      {"num": "02", "title": "视觉构成", "desc": "拆解徽章设计方法"},
-      {"num": "03", "title": "场景应用", "desc": "覆盖多种荣誉表达"},
-      {"num": "04", "title": "交付落地", "desc": "形成可复验成果"}
-    ], "images": [], "takeaway": ""},
-
-    {"page": 3, "role": "section", "title": "品牌识别", "section": "品牌识别", "section_index": 1, "blocks": [], "images": [], "takeaway": ""},
-    {"page": 4, "role": "two-column", "title": "一套主视觉统一勋章、绶带与荣誉墙", "section": "品牌识别", "blocks": [{"type": "list", "items": ["红金蓝色谱建立识别", "几何徽章承担记忆点", "绶带与星芒形成仪式感"]}], "images": [], "takeaway": "统一识别先于单张海报表达。", "layout_pattern": "center-hub", "layout_variant": "hub-left", "blueprint": {"focus": "核心徽章主张", "title_pos": "顶部", "main_area": "左侧中心核", "aux_area": "右侧三分支", "whitespace": "30%", "svg_need": "否", "image_need": "否", "reason": "主张向原则辐射"}},
-    {"page": 5, "role": "two-column", "title": "三项品牌原则让荣誉表达稳定延展", "section": "品牌识别", "blocks": [{"type": "list", "items": ["统一：所有载体共享母版", "清晰：远距离仍能辨认", "专属：名称与荣誉等级可替换"]}], "images": [], "takeaway": "母版稳定，系列表达才不会失焦。", "layout_pattern": "tri-loop", "layout_variant": "loop-3", "blueprint": {"focus": "三项品牌原则", "title_pos": "顶部", "main_area": "中部闭环", "aux_area": "底部说明", "whitespace": "30%", "svg_need": "是", "image_need": "否", "reason": "三项原则相互支撑"}},
-
-    {"page": 6, "role": "section", "title": "视觉构成", "section": "视觉构成", "section_index": 2, "blocks": [], "images": [], "takeaway": ""},
-    {"page": 7, "role": "compare", "title": "四类视觉元素分工明确又彼此协同", "section": "视觉构成", "blocks": [{"type": "list", "items": ["徽章：承载荣誉等级", "绶带：承载姓名与称号", "星芒：建立仪式焦点", "底纹：维持系列秩序"]}], "images": [], "takeaway": "每个元素只承担一种主要职责。", "layout_pattern": "compare", "layout_variant": "vs-split", "blueprint": {"focus": "元素职责对照", "title_pos": "顶部", "main_area": "左右对照", "aux_area": "中央关系标记", "whitespace": "28%", "svg_need": "是", "image_need": "否", "reason": "对照呈现视觉职责"}},
-    {"page": 8, "role": "timeline", "title": "从母版到成品遵循四步设计路径", "section": "视觉构成", "blocks": [{"type": "list", "items": ["确定徽章轮廓", "建立信息层级", "配置色彩材质", "完成多尺寸适配"]}], "images": [], "takeaway": "先定结构，再做装饰。", "layout_pattern": "path-flow", "layout_variant": "chain-4", "blueprint": {"focus": "四步设计路径", "title_pos": "顶部", "main_area": "中部流程轴", "aux_area": "底部节点", "whitespace": "30%", "svg_need": "是", "image_need": "否", "reason": "强化先后顺序"}},
-
-    {"page": 9, "role": "section", "title": "场景应用", "section": "场景应用", "section_index": 3, "blocks": [], "images": [], "takeaway": ""},
-    {"page": 10, "role": "gallery", "title": "十张素材覆盖多种荣誉表达场景", "section": "场景应用", "blocks": [], "images": [{"id": "badge-01"}, {"id": "badge-02"}, {"id": "badge-03"}, {"id": "badge-05"}, {"id": "badge-06"}, {"id": "badge-07"}], "takeaway": ""},
-    {"page": 11, "role": "image-hero", "title": "主图、人物与细节共同建立仪式感", "section": "场景应用", "blocks": [{"type": "list", "items": ["主图承担第一视觉焦点", "人物信息保持清晰", "细节统一进入安全区"]}], "images": [{"id": "badge-08"}, {"id": "badge-09"}, {"id": "badge-04"}], "takeaway": "不同场景共享同一荣誉语言。", "layout_pattern": "hero-details", "layout_variant": "anchor-right", "blueprint": {"focus": "系列主图", "title_pos": "顶部", "main_area": "左侧主图", "aux_area": "右侧细节与说明", "whitespace": "25%", "svg_need": "否", "image_need": "是", "reason": "主图与细节同时可见"}},
-
-    {"page": 12, "role": "section", "title": "交付落地", "section": "交付落地", "section_index": 4, "blocks": [], "images": [], "takeaway": ""},
-    {"page": 13, "role": "timeline", "title": "交付从规范、适配到复验分三步完成", "section": "交付落地", "blocks": [{"type": "list", "items": ["锁定徽章母版", "适配不同媒介", "用独立 QA 复验"]}], "images": [], "takeaway": "每一步都有可核验产物。", "layout_pattern": "timeline", "layout_variant": "checkpoint-3", "blueprint": {"focus": "三步交付路径", "title_pos": "顶部", "main_area": "中部时间轴", "aux_area": "底部检查点", "whitespace": "30%", "svg_need": "是", "image_need": "否", "reason": "展示交付检查点"}},
-    {"page": 14, "role": "kpi", "title": "三项数字证明素材与页面均可追溯", "section": "交付落地", "blocks": [{"type": "list", "items": ["10 张原始素材", "15 页完整演示", "100% manifest 覆盖"]}], "images": [], "takeaway": "目录四章、素材十张、交付一套全部闭环。", "layout_pattern": "big-number", "layout_variant": "num-anchor", "blueprint": {"focus": "三项复验数字", "title_pos": "顶部", "main_area": "中部数字卡", "aux_area": "底部口径", "whitespace": "40%", "svg_need": "否", "image_need": "否", "reason": "数字为唯一焦点"}},
-    {"page": 15, "role": "closing", "title": "让每一份荣誉都被看见", "section": null, "blocks": [], "images": [], "takeaway": ""}
+    {
+      "page": 1,
+      "role": "cover",
+      "title": "长征八号甲 · 千帆星座",
+      "subtitle": "从地球点火，到低轨组网的任务视觉纪念",
+      "section": null,
+      "blocks": [],
+      "images": [
+        {
+          "id": "cz8a-gold-enamel"
+        }
+      ],
+      "takeaway": ""
+    },
+    {
+      "page": 2,
+      "role": "toc",
+      "title": "沿一条轨道，读懂一次任务",
+      "section": null,
+      "blocks": [],
+      "toc_cards": [
+        {
+          "num": "01",
+          "title": "任务起源",
+          "desc": "点火：里程碑如何成为视觉"
+        },
+        {
+          "num": "02",
+          "title": "五器同轨",
+          "desc": "并轨：五款徽章组成系列"
+        },
+        {
+          "num": "03",
+          "title": "工艺解码",
+          "desc": "入轨：材质与符号精确咬合"
+        },
+        {
+          "num": "04",
+          "title": "未来回望",
+          "desc": "组网：实体纪念连接长期记忆"
+        }
+      ],
+      "images": [],
+      "takeaway": ""
+    },
+    {
+      "page": 3,
+      "role": "section",
+      "title": "任务起源",
+      "section": "任务起源",
+      "section_index": 1,
+      "blocks": [],
+      "images": [],
+      "takeaway": ""
+    },
+    {
+      "page": 4,
+      "role": "image-hero",
+      "title": "一枚徽章，封存火箭冲出地平线的瞬间",
+      "section": "任务起源",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "长征八号甲垂直上升建立主轴",
+            "尾焰把地球与深空连接成一条路径",
+            "卫星链预告千帆星座的规模部署"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "cz8a-dual-story"
+        }
+      ],
+      "takeaway": "设计不是装饰任务，而是铭刻任务。",
+      "layout_pattern": "hero-details",
+      "layout_variant": "launch-left",
+      "blueprint": {
+        "focus": "火箭发射主图",
+        "title_pos": "顶部斜切",
+        "main_area": "左侧完整主图",
+        "aux_area": "右侧轨道说明",
+        "whitespace": "24%",
+        "svg_need": "轨道与尾焰",
+        "image_need": "完整 contain",
+        "reason": "任务起源场景以发射证据为焦点"
+      }
+    },
+    {
+      "page": 5,
+      "role": "timeline",
+      "title": "点火、入轨、组网，三段动作构成核心叙事",
+      "section": "任务起源",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "点火：火箭尾焰撕开深空",
+            "入轨：轨道环建立精确秩序",
+            "组网：卫星节点扩展为千帆阵列"
+          ]
+        }
+      ],
+      "images": [],
+      "takeaway": "从单点上升到网络展开，视觉动势与任务过程一致。",
+      "layout_pattern": "path-flow",
+      "layout_variant": "orbit-chain-3",
+      "blueprint": {
+        "focus": "三段轨道链",
+        "title_pos": "顶部",
+        "main_area": "中部弧形轨道",
+        "aux_area": "节点说明",
+        "whitespace": "30%",
+        "svg_need": "轨道链",
+        "image_need": "否",
+        "reason": "任务起源场景以时间顺序呈现"
+      }
+    },
+    {
+      "page": 6,
+      "role": "section",
+      "title": "五器同轨",
+      "section": "五器同轨",
+      "section_index": 2,
+      "blocks": [],
+      "images": [],
+      "takeaway": ""
+    },
+    {
+      "page": 7,
+      "role": "gallery",
+      "title": "五种美学路线，共用同一条航天主轴",
+      "section": "五器同轨",
+      "blocks": [],
+      "images": [
+        {
+          "id": "cz8a-silver-tech"
+        },
+        {
+          "id": "cz8a-gold-enamel"
+        }
+      ],
+      "takeaway": ""
+    },
+    {
+      "page": 8,
+      "role": "compare",
+      "title": "奢华与冷峻不是冲突，而是任务精神的两面",
+      "section": "五器同轨",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "香槟金与珐琅：承载荣耀和仪式",
+            "银灰与拓扑线：表达工程精密",
+            "星尘与祥云：连接深空与文化",
+            "卫星阵列与网格：呈现规模化组网"
+          ]
+        }
+      ],
+      "images": [],
+      "takeaway": "色彩与工艺各异，火箭—轨道—卫星语法始终一致。",
+      "layout_pattern": "compare",
+      "layout_variant": "material-orbit-split",
+      "blueprint": {
+        "focus": "冷暖双轨对照",
+        "title_pos": "顶部",
+        "main_area": "左右非对称切面",
+        "aux_area": "中央轨道连接",
+        "whitespace": "27%",
+        "svg_need": "双轨",
+        "image_need": "否",
+        "reason": "系列展示场景需要对照五器共同语法"
+      }
+    },
+    {
+      "page": 9,
+      "role": "section",
+      "title": "工艺解码",
+      "section": "工艺解码",
+      "section_index": 3,
+      "blocks": [],
+      "images": [],
+      "takeaway": ""
+    },
+    {
+      "page": 10,
+      "role": "gallery",
+      "title": "轨道阵列把精密工程翻译成殿堂秩序",
+      "section": "工艺解码",
+      "blocks": [],
+      "images": [
+        {
+          "id": "cz8a-orbit-array"
+        }
+      ],
+      "takeaway": ""
+    },
+    {
+      "page": 11,
+      "role": "timeline",
+      "title": "从金属基底到珐琅封层，工艺沿轨道逐级成形",
+      "section": "工艺解码",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "压铸与拉丝建立工业骨架",
+            "珐琅填色形成深空层次",
+            "浮雕与金箔强化火箭动势",
+            "网格与节点完成星座秩序"
+          ]
+        }
+      ],
+      "images": [],
+      "takeaway": "每一层工艺都对应一层航天叙事。",
+      "layout_pattern": "timeline",
+      "layout_variant": "process-orbit-4",
+      "blueprint": {
+        "focus": "四级工艺轨道",
+        "title_pos": "顶部",
+        "main_area": "斜向流程轨",
+        "aux_area": "四个工艺节点",
+        "whitespace": "28%",
+        "svg_need": "轨道节点",
+        "image_need": "否",
+        "reason": "工艺解码场景按形成顺序展开"
+      }
+    },
+    {
+      "page": 12,
+      "role": "section",
+      "title": "未来回望",
+      "section": "未来回望",
+      "section_index": 4,
+      "blocks": [],
+      "images": [],
+      "takeaway": ""
+    },
+    {
+      "page": 13,
+      "role": "image-hero",
+      "title": "当工程、文化与记忆叠合，徽章成为时间坐标",
+      "section": "未来回望",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "火箭实体与徽章符号虚实同构",
+            "卫星信息面板连接当下与未来",
+            "竖排汉字为技术纪念注入文化纵深"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "cz8a-virtual-real"
+        }
+      ],
+      "takeaway": "纪念品的价值，在于让技术事件持续被讲述。",
+      "layout_pattern": "product-hero",
+      "layout_variant": "culture-right",
+      "blueprint": {
+        "focus": "虚实融合完整主图",
+        "title_pos": "顶部",
+        "main_area": "左侧完整证据",
+        "aux_area": "右侧文化纵轴",
+        "whitespace": "24%",
+        "svg_need": "信息轨道",
+        "image_need": "完整 contain",
+        "reason": "成果展示场景以虚实同构为焦点"
+      }
+    },
+    {
+      "page": 14,
+      "role": "kpi",
+      "title": "五款徽章、四类衍生、一个完整任务记忆",
+      "section": "未来回望",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "5 款视觉作品",
+            "4 类主题衍生组件",
+            "100% 原图完整展示"
+          ]
+        }
+      ],
+      "images": [],
+      "takeaway": "从元素提取到页面应用，全部有 MD 证据与 QA 约束。",
+      "layout_pattern": "big-number",
+      "layout_variant": "mission-metrics",
+      "blueprint": {
+        "focus": "5 / 4 / 100%",
+        "title_pos": "顶部",
+        "main_area": "三枚轨道数字节点",
+        "aux_area": "底部结论",
+        "whitespace": "36%",
+        "svg_need": "卫星节点",
+        "image_need": "否",
+        "reason": "总结场景以可验证数字收束"
+      }
+    },
+    {
+      "page": 15,
+      "role": "closing",
+      "title": "向星辰进发，把此刻留给未来",
+      "subtitle": "长征八号甲 · 千帆星座任务视觉纪念",
+      "section": null,
+      "blocks": [],
+      "images": [],
+      "takeaway": ""
+    }
   ]
 }

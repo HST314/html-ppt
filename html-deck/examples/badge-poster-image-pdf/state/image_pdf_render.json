@@ -7,38 +7,124 @@
     1600,
     900
   ],
-  "manifest_image_count": 10,
-  "used_image_count": 10,
-  "ir_sha256": "66d5ba1c9101e4564dca235bcf9642b109724ed3335eb66fa748d5bc99350ed0",
-  "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
-  "theme": "business-dark",
+  "manifest_image_count": 5,
+  "used_image_count": 5,
+  "ir_sha256": "4078935f9c2da1a4ac3a93a2977ae3f6e1605b544b92a5353b59485fddd0e718",
+  "manifest_sha256": "ac9184d447cbb3494beb588f8d9b97b7abd27a14589cb84eb46ce468085a8ead",
+  "theme": "tech-dark",
   "visual_semantics": {
     "keywords": [
-      "徽章",
-      "荣誉",
-      "团队记忆",
-      "仪式感"
+      "长征八号甲",
+      "千帆星座",
+      "火箭",
+      "卫星",
+      "轨道"
     ],
     "motifs": [
-      "badge",
-      "starburst"
+      "rocket",
+      "orbit",
+      "satellite"
     ],
     "evidence": {
-      "badge": "徽章",
-      "starburst": "星芒"
+      "rocket": "火箭",
+      "orbit": "轨道",
+      "satellite": "卫星"
+    }
+  },
+  "visual_language": {
+    "schema": "ProjectVisualLanguage",
+    "version": "1.0",
+    "source": {
+      "kind": "image-description-md",
+      "files": [
+        "图一_金珐琅星空浮雕徽章.md",
+        "图三_双景叙事纪念徽章.md",
+        "图二_银质极简科技徽章.md",
+        "图五_虚实融合文化徽章.md",
+        "图四_香槟金轨道阵列徽章.md"
+      ]
+    },
+    "narrative": "从地球点火，经轨道组网，抵达千帆星座",
+    "keywords": [
+      "长征八号甲",
+      "千帆星座",
+      "火箭",
+      "卫星",
+      "轨道"
+    ],
+    "motifs": [
+      "rocket",
+      "orbit",
+      "satellite",
+      "starfield",
+      "plume",
+      "grid",
+      "cloud-wave",
+      "seal-script"
+    ],
+    "evidence": {
+      "rocket": "中央徽章**：采用圆形金边浮雕结构，主体为长征八号甲火箭垂直居中，呈现蓄势待发之态",
+      "orbit": "# 图四：香槟金轨道阵列徽章",
+      "satellite": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+      "starfield": "# 图一：金珐琅星空浮雕徽章",
+      "plume": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+      "grid": "背景网格**：深蓝色背景叠加浅灰色网格线与节点方块，构成轨道坐标系的抽象表达，强化\"精确测量、精准入轨\"的航天工程属性",
+      "cloud-wave": "火箭两侧以对称式抽象云纹/水纹装饰，既似腾飞之翼，又暗合中国传统祥云意象，形成\"火箭破浪而出\"的视觉隐喻",
+      "seal-script": "徽章右侧以竖排篆体/魏碑风格刻印\"长征八号甲火箭\"，字形修长有力，增添文化厚重感与历史纵深感"
+    },
+    "palette": {
+      "deep_space": "#061A33",
+      "space_blue": "#0B4F8A",
+      "ion_blue": "#35B8E8",
+      "champagne_gold": "#D8B56A",
+      "silver": "#DCE7EF",
+      "paper": "#F2F7FA",
+      "plume": "#F28C3B"
+    },
+    "word_art": {
+      "cover": "rocket-ascent",
+      "toc": "orbital-title",
+      "section": "vertical-seal",
+      "content": "precision-cut",
+      "closing": "stellar-convergence"
+    },
+    "composition": {
+      "cover": "diagonal-launch-corridor",
+      "toc": "asymmetric-orbit-map",
+      "section": "split-orbit-gate",
+      "content": "chamfered-mission-panels",
+      "closing": "converging-star-trails"
+    },
+    "derived_components": {
+      "background": [
+        "starfield",
+        "orbit",
+        "grid",
+        "plume"
+      ],
+      "container": [
+        "seal-rim",
+        "satellite-panel",
+        "trajectory-notch"
+      ],
+      "flow": [
+        "orbit",
+        "satellite",
+        "rocket"
+      ],
+      "transition": [
+        "rocket",
+        "orbit",
+        "seal-script"
+      ]
     }
   },
   "used_image_ids": [
-    "badge-01",
-    "badge-02",
-    "badge-03",
-    "badge-04",
-    "badge-05",
-    "badge-06",
-    "badge-07",
-    "badge-08",
-    "badge-09",
-    "badge-10"
+    "cz8a-dual-story",
+    "cz8a-gold-enamel",
+    "cz8a-orbit-array",
+    "cz8a-silver-tech",
+    "cz8a-virtual-real"
   ],
   "slides": [
     {
@@ -47,61 +133,61 @@
       "source_role": "cover",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "荣誉有形：把徽章变成团队共同记忆",
+      "title": "长征八号甲 · 千帆星座",
       "image_ids": [
-        "badge-10"
+        "cz8a-gold-enamel"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.jpg",
-      "png_rgb_sha256": "0f9900aa92c501010942a83e33570a2ca9ead821577d497f4cce0251ee3d3e36",
-      "jpg_sha256": "74a7572a0d3282943216a5b93dc2656ffef792e04d80b89d027b49886da47698",
+      "png_rgb_sha256": "c08e9680b01382254085b51a6fe9692c9637e11fd2e0838cc5ac307fd5cbe43e",
+      "jpg_sha256": "4cf8c03f3aa721fb7f9f587ec93e691cd335a3a7dd2685646039b6235ba5a566",
       "text_overflows": [],
       "text_box_count": 2,
       "visible_containers": [],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "a69433b475b4d16c74a9e3d647ceb9a49356382f75d11d72bc2669a305f8ba69"
+          "pixel_sha256": "584acf0b7e4c997c6b81ffa6ab2a239864d7b5defe0b0a3d66bc6ae814d4f102"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "6783cb3ed35650d21702a0de86b16cb07e874e9385cfabfdab1db43b32237c75"
+          "pixel_sha256": "71b26627f977b1c9083051e78530d56f6d727b0c3cb23493d7df08ee14d4a036"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [
         {
-          "image_id": "badge-10",
+          "image_id": "cz8a-gold-enamel",
           "purpose": "cover-evidence",
           "fit": "contain",
           "container_bbox": [
-            1000,
-            150,
-            1506,
-            770
+            900,
+            264,
+            1504,
+            604
           ],
           "rendered_bbox": [
-            1000,
-            317,
-            1506,
-            602
+            900,
+            264,
+            1504,
+            604
           ],
           "source_size": [
             2560,
@@ -111,36 +197,57 @@
       ],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
           "bbox": [
-            976,
-            132,
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            880,
+            250,
             1524,
-            788
+            640
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            88,
+            230,
+            840,
+            312
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
       "page": 2,
@@ -148,106 +255,194 @@
       "source_role": "toc",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "四个部分构成完整的徽章叙事",
+      "title": "沿一条轨道，读懂一次任务",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.jpg",
-      "png_rgb_sha256": "464077245726fdcdf9ee8de9d2f12cb07d7622e9601a8daee07d5dff5059d704",
-      "jpg_sha256": "7a99007d2722e8766b15e6b23d5f691f9ec6954c2cd2f8318c68e9587ffa8b91",
+      "png_rgb_sha256": "1a87a307d5c3be0f2f84c4082638155bb869e3f60c85a9195e1decc0096c66c2",
+      "jpg_sha256": "438315e6046d39bbfd2ae7bb605a884d36182dd5605e6dd21f2fb202d97e1389",
       "text_overflows": [],
       "text_box_count": 9,
-      "visible_containers": [],
+      "visible_containers": [
+        {
+          "kind": "toc-orbit-node",
+          "bbox": [
+            988,
+            220,
+            1252,
+            332
+          ],
+          "padding": 12,
+          "texts": [
+            "任务起源",
+            "点火：里程碑如何成为视觉"
+          ]
+        },
+        {
+          "kind": "toc-orbit-node",
+          "bbox": [
+            1280,
+            448,
+            1544,
+            560
+          ],
+          "padding": 12,
+          "texts": [
+            "五器同轨",
+            "并轨：五款徽章组成系列"
+          ]
+        },
+        {
+          "kind": "toc-orbit-node",
+          "bbox": [
+            988,
+            709,
+            1252,
+            821
+          ],
+          "padding": 12,
+          "texts": [
+            "工艺解码",
+            "入轨：材质与符号精确咬合"
+          ]
+        },
+        {
+          "kind": "toc-orbit-node",
+          "bbox": [
+            610,
+            448,
+            874,
+            560
+          ],
+          "padding": 12,
+          "texts": [
+            "未来回望",
+            "组网：实体纪念连接长期记忆"
+          ]
+        }
+      ],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "8cd15c763b3527530ac74841b59024a92e90b8cb432ed929979bf7faa745fd9a"
+          "pixel_sha256": "7bbfac776269b2c166ffb3e5fc94d5dec692663068de8a3151dc83842ea82e8e"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "ca765ee5153f5c52a5a44964ec884143c00d828f095a95f059f93b34c701cd04"
+          "pixel_sha256": "fc4569d448d946ae1d9824bd10a5a04810e95c48560dbb28c1630031681758c8"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
           "bbox": [
-            80,
-            376,
-            789,
-            546
+            0,
+            0,
+            1600,
+            900
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "word-art",
+          "source_motif": "rocket",
           "bbox": [
-            811,
-            376,
+            78,
+            148,
+            846,
+            207
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            988,
+            220,
+            1252,
+            332
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            1280,
+            448,
+            1544,
+            560
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            988,
+            709,
+            1252,
+            821
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            610,
+            448,
+            874,
+            560
+          ]
+        },
+        {
+          "type": "theme-flow",
+          "source_motif": "orbit",
+          "bbox": [
+            720,
+            243,
             1520,
-            546
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            80,
-            568,
-            789,
-            738
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            811,
-            568,
-            1520,
-            738
+            765
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
       "page": 3,
@@ -255,1024 +450,146 @@
       "source_role": "section",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "品牌识别",
+      "title": "任务起源",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.jpg",
-      "png_rgb_sha256": "15f764a0b763da4986ed489fa10afdb6e8ef6ab50c2b804cb1c358e80fc33eee",
-      "jpg_sha256": "32274f1497493cce236edd02ee055506f9219e6e47c3dc99e41992e3d8b77c7c",
+      "png_rgb_sha256": "2d47c22f0410fc26daae15a90f3858340e312d072020cb019b90ddd3f7cb656c",
+      "jpg_sha256": "317706189adfe69b2dbb4cb9800a97d85559f9d1ff95a4ca990b25910f009fb2",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
+          "pixel_sha256": "ec6cec1fdc60a478dda98091d0789789d060d609520b16a0f3d383505707121a"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
+          "pixel_sha256": "d1ae0f1fdf79186e162c38f0426bc2eead416c3b53b4480e611a982ad64ad3df"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "badge-transition",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "theme-transition",
+          "source_motif": "rocket",
           "bbox": [
             768,
             0,
             1600,
             900
           ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            88,
+            350,
+            856,
+            428
+          ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
       "page": 4,
-      "role": "two-column",
-      "source_role": "two-column",
-      "layout_pattern": "center-hub",
-      "layout_variant": "hub-left",
-      "title": "一套主视觉统一勋章、绶带与荣誉墙",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.jpg",
-      "png_rgb_sha256": "fe392cf291b1183d01fdf46bc96db71383a0f847214d4bb78548ee9c1805e1ff",
-      "jpg_sha256": "cb7309c4cababb38c89d3ce5886ce28f9df8af5ba38319590254f7afb8f12497",
-      "text_overflows": [],
-      "text_box_count": 4,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            78,
-            447,
-            688,
-            597
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            880,
-            273,
-            1522,
-            401
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            880,
-            423,
-            1522,
-            551
-          ]
-        }
-      ]
-    },
-    {
-      "page": 5,
-      "role": "two-column",
-      "source_role": "two-column",
-      "layout_pattern": "tri-loop",
-      "layout_variant": "loop-3",
-      "title": "三项品牌原则让荣誉表达稳定延展",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.jpg",
-      "png_rgb_sha256": "ffdeab05a8ffa2d6db10962b9e0ad1cf93b6536e7c7f7b12a95d0572e5ea6710",
-      "jpg_sha256": "ba813fdf447247e710ff6457c7de3ec3ca51d4ea83fa5be34bfc5e64194ae1b5",
-      "text_overflows": [],
-      "text_box_count": 4,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            610,
-            250,
-            950,
-            400
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            230,
-            485,
-            570,
-            635
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            1030,
-            485,
-            1370,
-            635
-          ]
-        }
-      ]
-    },
-    {
-      "page": 6,
-      "role": "section",
-      "source_role": "section",
-      "layout_pattern": null,
-      "layout_variant": null,
-      "title": "视觉构成",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.jpg",
-      "png_rgb_sha256": "59501800b5882d9daf7d8e77918ad3bcee7f26738bd351b2aee1dc4e3e01aaac",
-      "jpg_sha256": "80ed93a6066bdff701528a9692aa94bb9f1fe169cce4c95ddbcbdbba000e6f43",
-      "text_overflows": [],
-      "text_box_count": 1,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-transition",
-          "source_motif": "badge",
-          "bbox": [
-            768,
-            0,
-            1600,
-            900
-          ]
-        }
-      ]
-    },
-    {
-      "page": 7,
-      "role": "compare",
-      "source_role": "compare",
-      "layout_pattern": "compare",
-      "layout_variant": "vs-split",
-      "title": "四类视觉元素分工明确又彼此协同",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.jpg",
-      "png_rgb_sha256": "43e296d1dd9b900a8a95898b512dc9efec1e622eb61185ef666402ca1e483a5a",
-      "jpg_sha256": "11a0d0f793998c0fcb4fc82f3f97beedc055f2a703604d2377949727a3615ac4",
-      "text_overflows": [],
-      "text_box_count": 5,
-      "visible_containers": [
-        {
-          "kind": "compare-card",
-          "bbox": [
-            78,
-            448,
-            790,
-            620
-          ],
-          "padding": 12,
-          "texts": [
-            "A / BEFORE",
-            "徽章：承载荣誉等级",
-            "绶带：承载姓名与称号"
-          ]
-        },
-        {
-          "kind": "compare-card",
-          "bbox": [
-            810,
-            448,
-            1522,
-            620
-          ],
-          "padding": 12,
-          "texts": [
-            "B / AFTER",
-            "星芒：建立仪式焦点",
-            "底纹：维持系列秩序"
-          ]
-        }
-      ],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            78,
-            448,
-            790,
-            620
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            810,
-            448,
-            1522,
-            620
-          ]
-        }
-      ]
-    },
-    {
-      "page": 8,
-      "role": "timeline",
-      "source_role": "timeline",
-      "layout_pattern": "path-flow",
-      "layout_variant": "chain-4",
-      "title": "从母版到成品遵循四步设计路径",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.jpg",
-      "png_rgb_sha256": "28e24e084809f4534139ac87cc6bde91a6804dd9cce934c0830368c2ff78e7df",
-      "jpg_sha256": "7273ee09f26cf6d5538416bce3f1a5695302749e45f57b73c00b9c5cb0959ab9",
-      "text_overflows": [],
-      "text_box_count": 5,
-      "visible_containers": [
-        {
-          "kind": "flow-card",
-          "bbox": [
-            78,
-            373,
-            318,
-            457
-          ],
-          "padding": 12,
-          "texts": [
-            "确定徽章轮廓"
-          ]
-        },
-        {
-          "kind": "flow-card",
-          "bbox": [
-            456,
-            373,
-            696,
-            457
-          ],
-          "padding": 12,
-          "texts": [
-            "建立信息层级"
-          ]
-        },
-        {
-          "kind": "flow-card",
-          "bbox": [
-            903,
-            373,
-            1143,
-            457
-          ],
-          "padding": 12,
-          "texts": [
-            "配置色彩材质"
-          ]
-        },
-        {
-          "kind": "flow-card",
-          "bbox": [
-            1282,
-            373,
-            1522,
-            457
-          ],
-          "padding": 12,
-          "texts": [
-            "完成多尺寸适配"
-          ]
-        }
-      ],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "orbit-timeline",
-          "source_motif": "badge",
-          "bbox": [
-            90,
-            245,
-            1510,
-            415
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            78,
-            373,
-            318,
-            457
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            456,
-            373,
-            696,
-            457
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            903,
-            373,
-            1143,
-            457
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            1282,
-            373,
-            1522,
-            457
-          ]
-        }
-      ]
-    },
-    {
-      "page": 9,
-      "role": "section",
-      "source_role": "section",
-      "layout_pattern": null,
-      "layout_variant": null,
-      "title": "场景应用",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.jpg",
-      "png_rgb_sha256": "111bfde7ec1f1860db625bb50c0ee40f830802dccc131fa1b8229d7fbf3b54cf",
-      "jpg_sha256": "05b6c1d195ce35bef8a88b06848c350b3ecc02996c402c787ff1f3f37ddbdc45",
-      "text_overflows": [],
-      "text_box_count": 1,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-transition",
-          "source_motif": "badge",
-          "bbox": [
-            768,
-            0,
-            1600,
-            900
-          ]
-        }
-      ]
-    },
-    {
-      "page": 10,
-      "role": "gallery",
-      "source_role": "gallery",
-      "layout_pattern": null,
-      "layout_variant": null,
-      "title": "十张素材覆盖多种荣誉表达场景",
-      "image_ids": [
-        "badge-01",
-        "badge-02",
-        "badge-03",
-        "badge-05",
-        "badge-06",
-        "badge-07"
-      ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
-      "png_rgb_sha256": "07090a695828c7b4b6a0965689d8b8424b7c88f292ee770b2058aa70e877b5e4",
-      "jpg_sha256": "435af592b59a4bf903d83b9046b29062743348ec596f1e5cc37f9c8b134b8efc",
-      "text_overflows": [],
-      "text_box_count": 1,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            67,
-            150,
-            177
-          ],
-          "pixel_sha256": "dbca913e561731f488db5761f9a68651e5272a229a2953c8e47422b0a3d2a000"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [
-        {
-          "image_id": "badge-01",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            88,
-            280,
-            537,
-            508
-          ],
-          "rendered_bbox": [
-            110,
-            280,
-            515,
-            508
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-02",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            575,
-            280,
-            1024,
-            508
-          ],
-          "rendered_bbox": [
-            597,
-            280,
-            1002,
-            508
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-03",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            1062,
-            280,
-            1511,
-            508
-          ],
-          "rendered_bbox": [
-            1084,
-            280,
-            1489,
-            508
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-05",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            88,
-            590,
-            537,
-            818
-          ],
-          "rendered_bbox": [
-            110,
-            590,
-            515,
-            818
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-06",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            575,
-            590,
-            1024,
-            818
-          ],
-          "rendered_bbox": [
-            597,
-            590,
-            1002,
-            818
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-07",
-          "purpose": "gallery-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            1062,
-            590,
-            1511,
-            818
-          ],
-          "rendered_bbox": [
-            1084,
-            590,
-            1489,
-            818
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        }
-      ],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            78,
-            226,
-            547,
-            518
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            565,
-            226,
-            1034,
-            518
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            1052,
-            226,
-            1521,
-            518
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            78,
-            536,
-            547,
-            828
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            565,
-            536,
-            1034,
-            828
-          ]
-        },
-        {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
-          "bbox": [
-            1052,
-            536,
-            1521,
-            828
-          ]
-        }
-      ]
-    },
-    {
-      "page": 11,
       "role": "image-hero",
       "source_role": "image-hero",
       "layout_pattern": "hero-details",
-      "layout_variant": "anchor-right",
-      "title": "主图、人物与细节共同建立仪式感",
+      "layout_variant": "launch-left",
+      "title": "一枚徽章，封存火箭冲出地平线的瞬间",
       "image_ids": [
-        "badge-08",
-        "badge-09",
-        "badge-04"
+        "cz8a-dual-story"
       ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.jpg",
-      "png_rgb_sha256": "df94f1998ec0a05eb4b21f3c1c5e334a93ab3862136f72a347e71dc865248598",
-      "jpg_sha256": "4c99a6ea4d9c9164a742bdb5cd3d563f59957a734a052b4385f397bd631a660f",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.jpg",
+      "png_rgb_sha256": "ee80e4b44e134b6eeb95ffa20138545676d9b9446b7f6cac31d0324ad242631a",
+      "jpg_sha256": "17f4c143e8162c0f69d29812d8bc8b4a1144fc352c6fe42594ea680043c02415",
       "text_overflows": [],
       "text_box_count": 2,
       "visible_containers": [],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             1450,
             753,
             1566,
             863
           ],
-          "pixel_sha256": "116105c0cc25697fa9690cd96eda1768b533117954f84a6784f9baa864492058"
+          "pixel_sha256": "cd009dfcde810235b33ce5ca76e149a35557cee600d9cf63c5578010f51b3359"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [
         {
-          "image_id": "badge-08",
+          "image_id": "cz8a-dual-story",
           "purpose": "hero-evidence",
           "fit": "contain",
           "container_bbox": [
@@ -1291,74 +608,52 @@
             2560,
             1440
           ]
-        },
-        {
-          "image_id": "badge-09",
-          "purpose": "detail-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            1332,
-            271,
-            1480,
-            365
-          ],
-          "rendered_bbox": [
-            1332,
-            276,
-            1480,
-            359
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
-        },
-        {
-          "image_id": "badge-04",
-          "purpose": "detail-evidence",
-          "fit": "contain",
-          "container_bbox": [
-            1162,
-            271,
-            1310,
-            365
-          ],
-          "rendered_bbox": [
-            1162,
-            276,
-            1310,
-            359
-          ],
-          "source_size": [
-            2560,
-            1440
-          ]
         }
       ],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             78,
             245,
@@ -1366,97 +661,21 @@
             824
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
-      "page": 12,
-      "role": "section",
-      "source_role": "section",
-      "layout_pattern": null,
-      "layout_variant": null,
-      "title": "交付落地",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.jpg",
-      "png_rgb_sha256": "25fd6e8d1f69d82161735a8f7362835e9caf8f66d339b48df991373fb64938d8",
-      "jpg_sha256": "6002922fbdb72411c9631f4e7f4ae8a67eacf4bbb6b6a2d0633ce18894f50d70",
-      "text_overflows": [],
-      "text_box_count": 1,
-      "visible_containers": [],
-      "visual_elements": [
-        {
-          "type": "semantic-motif",
-          "semantic_id": "badge",
-          "bbox": [
-            1387,
-            67,
-            1503,
-            177
-          ],
-          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
-        },
-        {
-          "type": "semantic-motif",
-          "semantic_id": "starburst",
-          "bbox": [
-            34,
-            753,
-            150,
-            863
-          ],
-          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
-        }
-      ],
-      "used_motifs": [
-        "badge",
-        "starburst"
-      ],
-      "image_placements": [],
-      "derived_components": [
-        {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
-          "bbox": [
-            0,
-            480,
-            1600,
-            900
-          ]
-        },
-        {
-          "type": "badge-orbit",
-          "source_motif": "badge",
-          "bbox": [
-            1162,
-            2,
-            1590,
-            430
-          ]
-        },
-        {
-          "type": "badge-transition",
-          "source_motif": "badge",
-          "bbox": [
-            768,
-            0,
-            1600,
-            900
-          ]
-        }
-      ]
-    },
-    {
-      "page": 13,
+      "page": 5,
       "role": "timeline",
       "source_role": "timeline",
-      "layout_pattern": "timeline",
-      "layout_variant": "checkpoint-3",
-      "title": "交付从规范、适配到复验分三步完成",
+      "layout_pattern": "path-flow",
+      "layout_variant": "orbit-chain-3",
+      "title": "点火、入轨、组网，三段动作构成核心叙事",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
-      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.jpg",
-      "png_rgb_sha256": "3f0c029a49e16b1cce5dd94a5d6c82eefde7aeb80bc8c2d691fd8e346a447e11",
-      "jpg_sha256": "4577c1217ed2a6248564599f3a4825273de0e7b5ab04f44c0d448c9bd318e8df",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.jpg",
+      "png_rgb_sha256": "2550fb3e43bed70892fab874f1d1b5c173437740b765f64dda5ec8d7a89071c0",
+      "jpg_sha256": "cebcdfdf57fb98a27e7f203f11fd1bdcf156e2b7f84cb4e1b1b57b240831bf05",
       "text_overflows": [],
       "text_box_count": 4,
       "visible_containers": [
@@ -1466,11 +685,11 @@
             78,
             373,
             318,
-            457
+            463
           ],
           "padding": 12,
           "texts": [
-            "锁定徽章母版"
+            "点火：火箭尾焰撕开深空"
           ]
         },
         {
@@ -1479,11 +698,11 @@
             680,
             373,
             920,
-            457
+            463
           ],
           "padding": 12,
           "texts": [
-            "适配不同媒介"
+            "入轨：轨道环建立精确秩序"
           ]
         },
         {
@@ -1492,67 +711,87 @@
             1282,
             373,
             1522,
-            457
+            463
           ],
           "padding": 12,
           "texts": [
-            "用独立 QA 复验"
+            "组网：卫星节点扩展为千帆阵列"
           ]
         }
       ],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+          "pixel_sha256": "3ac6b2d7be023e46d09d8466705a917d483150c1d3b0347df686cc267c5a5908"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "orbit-timeline",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-flow",
+          "source_motif": "orbit",
           "bbox": [
             90,
             245,
@@ -1561,49 +800,1072 @@
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             78,
             373,
             318,
-            457
+            463
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             680,
             373,
             920,
-            457
+            463
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             1282,
             373,
             1522,
-            457
+            463
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 6,
+      "role": "section",
+      "source_role": "section",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "五器同轨",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.jpg",
+      "png_rgb_sha256": "77e00e88a9f3d3a5b9c652960e7d23b14bc353401656e9f06c5c07d7c55eab99",
+      "jpg_sha256": "a7f2a0236f0ab960b68300cb22de2df4dc41b43b1d90d74866d19d61c990b83d",
+      "text_overflows": [],
+      "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "ec6cec1fdc60a478dda98091d0789789d060d609520b16a0f3d383505707121a"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "d1ae0f1fdf79186e162c38f0426bc2eead416c3b53b4480e611a982ad64ad3df"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "theme-transition",
+          "source_motif": "rocket",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            88,
+            350,
+            856,
+            428
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 7,
+      "role": "gallery",
+      "source_role": "gallery",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "五种美学路线，共用同一条航天主轴",
+      "image_ids": [
+        "cz8a-silver-tech",
+        "cz8a-gold-enamel"
+      ],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.jpg",
+      "png_rgb_sha256": "f930d75c453ab3bf347074027de5cad851c03bd9963533f45b4d6e4cdccbd6bd",
+      "jpg_sha256": "b4ce94677bdb2a3465a1b5b39262f484a6d355fa6768893fb13e86ee98cd25d7",
+      "text_overflows": [],
+      "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "3106fbd2e3e82759396dde5f8ed57bf6a4892c6271816f834a52f69b0bdb7f0d"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [
+        {
+          "image_id": "cz8a-silver-tech",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            88,
+            280,
+            781,
+            818
+          ],
+          "rendered_bbox": [
+            88,
+            354,
+            781,
+            744
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "cz8a-gold-enamel",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            819,
+            280,
+            1512,
+            818
+          ],
+          "rendered_bbox": [
+            819,
+            354,
+            1512,
+            744
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            103,
+            1522,
+            160
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            78,
+            226,
+            791,
+            828
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            809,
+            226,
+            1522,
+            828
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 8,
+      "role": "compare",
+      "source_role": "compare",
+      "layout_pattern": "compare",
+      "layout_variant": "material-orbit-split",
+      "title": "奢华与冷峻不是冲突，而是任务精神的两面",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.jpg",
+      "png_rgb_sha256": "49afde5ee64f4422672bee6f49218b7c0cffae3e6bb4e3abbaaf91a422f47382",
+      "jpg_sha256": "9837eca8ccd882f3ca11b5b61844c630c425e207c0305a7431fc167c65343521",
+      "text_overflows": [],
+      "text_box_count": 5,
+      "visible_containers": [
+        {
+          "kind": "compare-card",
+          "bbox": [
+            78,
+            448,
+            790,
+            620
+          ],
+          "padding": 12,
+          "texts": [
+            "A / BEFORE",
+            "香槟金与珐琅：承载荣耀和仪式",
+            "银灰与拓扑线：表达工程精密"
+          ]
+        },
+        {
+          "kind": "compare-card",
+          "bbox": [
+            810,
+            448,
+            1522,
+            620
+          ],
+          "padding": 12,
+          "texts": [
+            "B / AFTER",
+            "星尘与祥云：连接深空与文化",
+            "卫星阵列与网格：呈现规模化组网"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "3ac6b2d7be023e46d09d8466705a917d483150c1d3b0347df686cc267c5a5908"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            78,
+            448,
+            790,
+            620
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            810,
+            448,
+            1522,
+            620
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 9,
+      "role": "section",
+      "source_role": "section",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "工艺解码",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.jpg",
+      "png_rgb_sha256": "a5f766223e50879100f2e1b88acb6dd4a920b203fe144f6fee762bb08aa60797",
+      "jpg_sha256": "76bf6732cdb8335b058b70dcd0c3525698b8533e3623ac4d7466c4ad85fba7dd",
+      "text_overflows": [],
+      "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "ec6cec1fdc60a478dda98091d0789789d060d609520b16a0f3d383505707121a"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "d1ae0f1fdf79186e162c38f0426bc2eead416c3b53b4480e611a982ad64ad3df"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "theme-transition",
+          "source_motif": "rocket",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            88,
+            350,
+            856,
+            428
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 10,
+      "role": "gallery",
+      "source_role": "gallery",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "轨道阵列把精密工程翻译成殿堂秩序",
+      "image_ids": [
+        "cz8a-orbit-array"
+      ],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
+      "png_rgb_sha256": "f2472d32ed2718b4a2d94f61364f5a9e7804f8a6b301fef3aa636814bd28ebbf",
+      "jpg_sha256": "349ecd1afb0b55d59a2444a15df2f136436431d505fca9ebf7d8bf639a081a45",
+      "text_overflows": [],
+      "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "3106fbd2e3e82759396dde5f8ed57bf6a4892c6271816f834a52f69b0bdb7f0d"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [
+        {
+          "image_id": "cz8a-orbit-array",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            88,
+            280,
+            781,
+            818
+          ],
+          "rendered_bbox": [
+            88,
+            354,
+            781,
+            744
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            103,
+            1522,
+            160
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            78,
+            226,
+            791,
+            828
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 11,
+      "role": "timeline",
+      "source_role": "timeline",
+      "layout_pattern": "timeline",
+      "layout_variant": "process-orbit-4",
+      "title": "从金属基底到珐琅封层，工艺沿轨道逐级成形",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.jpg",
+      "png_rgb_sha256": "beb335310aa95bad2a88705e9b8572d97985097eed68eebd5deabc04cb93a697",
+      "jpg_sha256": "91ed89c2420f60ac9012f07d75ba79172de308286e481df718a7e2d32323bc1d",
+      "text_overflows": [],
+      "text_box_count": 5,
+      "visible_containers": [
+        {
+          "kind": "flow-card",
+          "bbox": [
+            78,
+            373,
+            318,
+            463
+          ],
+          "padding": 12,
+          "texts": [
+            "压铸与拉丝建立工业骨架"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            456,
+            373,
+            696,
+            463
+          ],
+          "padding": 12,
+          "texts": [
+            "珐琅填色形成深空层次"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            903,
+            373,
+            1143,
+            463
+          ],
+          "padding": 12,
+          "texts": [
+            "浮雕与金箔强化火箭动势"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            463
+          ],
+          "padding": 12,
+          "texts": [
+            "网格与节点完成星座秩序"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "3ac6b2d7be023e46d09d8466705a917d483150c1d3b0347df686cc267c5a5908"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-flow",
+          "source_motif": "orbit",
+          "bbox": [
+            90,
+            245,
+            1510,
+            415
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            78,
+            373,
+            318,
+            463
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            456,
+            373,
+            696,
+            463
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            903,
+            373,
+            1143,
+            463
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            463
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 12,
+      "role": "section",
+      "source_role": "section",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "未来回望",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.jpg",
+      "png_rgb_sha256": "aad9667f0ac7446a38b37753188d0f35ff7a8e582550936ff5a93f8728ef1b12",
+      "jpg_sha256": "8ac5ba0d814da32547c28e5352ac93db056cfc18bfd47bb1a4ea4bef02b4768f",
+      "text_overflows": [],
+      "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "ec6cec1fdc60a478dda98091d0789789d060d609520b16a0f3d383505707121a"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "d1ae0f1fdf79186e162c38f0426bc2eead416c3b53b4480e611a982ad64ad3df"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "theme-transition",
+          "source_motif": "rocket",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            88,
+            350,
+            856,
+            428
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
+    },
+    {
+      "page": 13,
+      "role": "image-hero",
+      "source_role": "image-hero",
+      "layout_pattern": "product-hero",
+      "layout_variant": "culture-right",
+      "title": "当工程、文化与记忆叠合，徽章成为时间坐标",
+      "image_ids": [
+        "cz8a-virtual-real"
+      ],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.jpg",
+      "png_rgb_sha256": "db15dec05ae3b114822fd0448bc987f8456f16a89855793d0a5d14d1ddf92f09",
+      "jpg_sha256": "9b7e0f667a2eb200c260211f1f7da0f0b39373923013572e0e95e089d30afa1c",
+      "text_overflows": [],
+      "text_box_count": 2,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "rocket",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "orbit",
+          "bbox": [
+            1450,
+            753,
+            1566,
+            863
+          ],
+          "pixel_sha256": "cd009dfcde810235b33ce5ca76e149a35557cee600d9cf63c5578010f51b3359"
+        }
+      ],
+      "used_motifs": [
+        "rocket",
+        "orbit"
+      ],
+      "image_placements": [
+        {
+          "image_id": "cz8a-virtual-real",
+          "purpose": "hero-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            92,
+            259,
+            1090,
+            810
+          ],
+          "rendered_bbox": [
+            101,
+            259,
+            1081,
+            810
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "theme-background",
+          "source_motif": "starfield",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "orbital-field",
+          "source_motif": "orbit",
+          "bbox": [
+            818,
+            168,
+            1600,
+            588
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
+          "bbox": [
+            78,
+            245,
+            1104,
+            824
+          ]
+        }
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
       "page": 14,
       "role": "kpi",
       "source_role": "kpi",
       "layout_pattern": "big-number",
-      "layout_variant": "num-anchor",
-      "title": "三项数字证明素材与页面均可追溯",
+      "layout_variant": "mission-metrics",
+      "title": "五款徽章、四类衍生、一个完整任务记忆",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.jpg",
-      "png_rgb_sha256": "97a93c849297c391ce098d3c9259f5392817bb1f7aaf7d4fd3336a4e9210391a",
-      "jpg_sha256": "93b68f036123ed2b4b2c7750dcc17848883a5d2d0e77fdd9f31cef48af27c978",
+      "png_rgb_sha256": "73ce9854d0c05b4cdb5ef727c7efb57af9ed7ebb005ab088ba2daa7c3b3dd460",
+      "jpg_sha256": "e6cd0667b394dce637aff7519c8b8d278a2f65fe6d09eb80d18ffbbb2a14e3eb",
       "text_overflows": [],
       "text_box_count": 7,
       "visible_containers": [
@@ -1617,8 +1879,8 @@
           ],
           "padding": 12,
           "texts": [
-            "10 ",
-            "10 张原始素材"
+            "5 ",
+            "5 款视觉作品"
           ]
         },
         {
@@ -1631,8 +1893,8 @@
           ],
           "padding": 12,
           "texts": [
-            "15 ",
-            "15 页完整演示"
+            "4 ",
+            "4 类主题衍生组件"
           ]
         },
         {
@@ -1646,63 +1908,83 @@
           "padding": 12,
           "texts": [
             "100%",
-            "100% manifest 覆盖"
+            "100% 原图完整展示"
           ]
         }
       ],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
+          "pixel_sha256": "6742df18c4b0a77abab96febb9047b3c0b8ec1f1726cd81e4a6fca5af3efb955"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+          "pixel_sha256": "3ac6b2d7be023e46d09d8466705a917d483150c1d3b0347df686cc267c5a5908"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            818,
+            168,
+            1600,
+            588
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            140,
+            1522,
+            197
+          ]
+        },
+        {
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             78,
             413,
@@ -1711,8 +1993,8 @@
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             566,
             413,
@@ -1721,8 +2003,8 @@
           ]
         },
         {
-          "type": "badge-ribbon-card",
-          "source_motif": "badge",
+          "type": "theme-container",
+          "source_motif": "satellite",
           "bbox": [
             1054,
             413,
@@ -1730,7 +2012,8 @@
             651
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
       "page": 15,
@@ -1738,66 +2021,87 @@
       "source_role": "closing",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "让每一份荣誉都被看见",
+      "title": "向星辰进发，把此刻留给未来",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.jpg",
-      "png_rgb_sha256": "a26e40076f153c56b16bf94c1d117bdf8ccd8d0ecce59079a09970305b82dbef",
-      "jpg_sha256": "2937c2dcadb233653e95c8d7b4b48ebcce2b5075bdfd3363aa5420570f3b8993",
+      "png_rgb_sha256": "44fe670cadc18659d1726993b332a4c46b83ea2b96786acfc3ef312a793f8710",
+      "jpg_sha256": "a68519c88d303e080bf352c4bf4ada96a1897923b0d0eb0c3615f053d8fe84c4",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
       "visual_elements": [
         {
           "type": "semantic-motif",
-          "semantic_id": "badge",
+          "semantic_id": "rocket",
           "bbox": [
             1387,
             67,
             1503,
             177
           ],
-          "pixel_sha256": "6844386dcfa6948511e265f7b2d571c778fb1ebb2ea4767238b35c03fa48d232"
+          "pixel_sha256": "584acf0b7e4c997c6b81ffa6ab2a239864d7b5defe0b0a3d66bc6ae814d4f102"
         },
         {
           "type": "semantic-motif",
-          "semantic_id": "starburst",
+          "semantic_id": "orbit",
           "bbox": [
             34,
             753,
             150,
             863
           ],
-          "pixel_sha256": "29b1d702e2999e643ba51e1562ae0a00766de0810b1304160dbed9b4442b0975"
+          "pixel_sha256": "b022589e0815df40a724922020f8a51e51e7a6b032e1a475c8f95ed5b53d77dc"
         }
       ],
       "used_motifs": [
-        "badge",
-        "starburst"
+        "rocket",
+        "orbit"
       ],
       "image_placements": [],
       "derived_components": [
         {
-          "type": "ribbon-sweep",
-          "source_motif": "badge",
+          "type": "theme-background",
+          "source_motif": "starfield",
           "bbox": [
             0,
-            480,
+            0,
             1600,
             900
           ]
         },
         {
-          "type": "badge-orbit",
-          "source_motif": "badge",
+          "type": "orbital-field",
+          "source_motif": "orbit",
           "bbox": [
-            1162,
-            2,
-            1590,
-            430
+            722,
+            258,
+            1600,
+            678
+          ]
+        },
+        {
+          "type": "launch-corridor",
+          "source_motif": "rocket",
+          "bbox": [
+            0,
+            0,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "word-art",
+          "source_motif": "rocket",
+          "bbox": [
+            78,
+            260,
+            1378,
+            342
           ]
         }
-      ]
+      ],
+      "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     }
   ]
 }

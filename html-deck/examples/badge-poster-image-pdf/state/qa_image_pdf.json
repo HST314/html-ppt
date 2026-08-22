@@ -4,11 +4,11 @@
   "route": "image-pdf",
   "status": "pass",
   "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
-  "ir_sha256": "66d5ba1c9101e4564dca235bcf9642b109724ed3335eb66fa748d5bc99350ed0",
-  "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
+  "ir_sha256": "4078935f9c2da1a4ac3a93a2977ae3f6e1605b544b92a5353b59485fddd0e718",
+  "manifest_sha256": "ac9184d447cbb3494beb588f8d9b97b7abd27a14589cb84eb46ce468085a8ead",
   "page_count": 15,
-  "manifest_image_count": 10,
-  "ir_used_image_count": 10,
+  "manifest_image_count": 5,
+  "ir_used_image_count": 5,
   "project_image_pixel_policy": {
     "orientation": "EXIF transpose",
     "color_mode": "RGB",
@@ -26,6 +26,7 @@
     "section_palette_consistent": true,
     "text_boxes_fit_content": true,
     "visual_elements_semantically_grounded": true,
-    "project_images_intact_and_not_backgrounds": true
+    "project_images_intact_and_not_backgrounds": true,
+    "md_visual_language_applied": true
   }
 }

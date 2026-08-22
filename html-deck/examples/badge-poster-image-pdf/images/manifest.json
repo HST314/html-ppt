@@ -1,15 +1,11 @@
 {
-  "version": "1.0",
+  "version": "2.0",
+  "description_source": "../descriptions",
   "images": [
-    {"id":"badge-01","file":"23a0ca70d1f8dfa39669b0e50335cfc3a72f7779518ba835e9eb4c02032574bf.jpg","alt":"红金徽章主题海报一","description":"徽章主题视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"hero","scene_tags":["徽章","荣誉"],"weight":"high"},
-    {"id":"badge-02","file":"5a64f3463521c16fbf9a0b6145fa239f5aca53a9927a3b61bd265cd77c4610ea.jpg","alt":"红金徽章主题海报二","description":"徽章主题视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["徽章","荣誉"],"weight":"medium"},
-    {"id":"badge-03","file":"5e1a19763cbba0e70640d0c17f33ea0a8f88d0c5470e0460915e8d54859c1a77.jpg","alt":"蓝色荣誉主题海报","description":"徽章主题视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["徽章","蓝色"],"weight":"medium"},
-    {"id":"badge-04","file":"6298d8ab29ecd2098fac1b2c79b9804e240cf3a30985c774d8884065c16a3be0.jpg","alt":"人物荣誉主题海报","description":"人物荣誉视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"hero","scene_tags":["人物","荣誉"],"weight":"high"},
-    {"id":"badge-05","file":"6612238bc4e23f5c3cb11e95000e0bfa6ad9853ce501da26cb26e7dfea53276d.jpg","alt":"团队表彰主题海报","description":"团队表彰视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["团队","表彰"],"weight":"medium"},
-    {"id":"badge-06","file":"85babd8edea9a30333607dc5ed9e25c8ab18ea43363602eed634269e4b4d4a93.jpg","alt":"系列徽章场景一","description":"系列徽章视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["系列","徽章"],"weight":"medium"},
-    {"id":"badge-07","file":"86c768104905fdfe76da93eb0eee08ff9cfbe772d925c0c870bf13672e61487c.jpg","alt":"系列徽章场景二","description":"系列徽章视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["系列","徽章"],"weight":"medium"},
-    {"id":"badge-08","file":"88c8dfea9ed4619e4574f99648ffad49fe81bea63613659d24d46e3886b3f5c3.jpg","alt":"系列徽章场景三","description":"系列徽章视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["系列","徽章"],"weight":"medium"},
-    {"id":"badge-09","file":"bfff20ba19bebaa88d801b421fa327e2c174306ae112897ca0a68a573a5c26be.jpg","alt":"系列徽章场景四","description":"系列徽章视觉素材","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["系列","徽章"],"weight":"medium"},
-    {"id":"badge-10","file":"f1f240951b9b428315da519d0392b8f95e38b20365a2d2bcccda04fe1ae7457a.png","alt":"徽章视觉总览","description":"徽章主题视觉总览","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"background","scene_tags":["徽章","总览"],"weight":"high"}
+    {"id":"cz8a-gold-enamel","file":"new-pack/图一_金珐琅星空浮雕徽章.jpg","alt":"长征八号甲火箭、卫星链、星空与祥云构成的金珐琅徽章","description_md":"../descriptions/图一_金珐琅星空浮雕徽章.md","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"hero","scene_tags":["火箭","卫星","星空","祥云"],"weight":"high"},
+    {"id":"cz8a-silver-tech","file":"new-pack/图二_银质极简科技徽章.jpg","alt":"长征八号甲蓝色火箭与千帆卫星拓扑轨道构成的银质徽章","description_md":"../descriptions/图二_银质极简科技徽章.md","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["火箭","卫星","轨道","拓扑"],"weight":"medium"},
+    {"id":"cz8a-dual-story","file":"new-pack/图三_双景叙事纪念徽章.jpg","alt":"火箭徽章与真实发射场景并置的双景叙事设计","description_md":"../descriptions/图三_双景叙事纪念徽章.md","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["火箭","发射","浮雕","档案"],"weight":"medium"},
+    {"id":"cz8a-orbit-array","file":"new-pack/图四_香槟金轨道阵列徽章.jpg","alt":"火箭居中、八颗卫星沿轨道阵列组网的香槟金徽章","description_md":"../descriptions/图四_香槟金轨道阵列徽章.md","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"gallery","scene_tags":["火箭","卫星","轨道","阵列"],"weight":"high"},
+    {"id":"cz8a-virtual-real","file":"new-pack/图五_虚实融合文化徽章.jpg","alt":"火箭、卫星信息面板与竖排汉字叠合的文化徽章","description_md":"../descriptions/图五_虚实融合文化徽章.md","content_type":"illustration","width":2560,"height":1440,"aspect_ratio":"16:9","suggested_role":"hero","scene_tags":["火箭","卫星","竖排汉字","虚实同构"],"weight":"high"}
   ]
 }

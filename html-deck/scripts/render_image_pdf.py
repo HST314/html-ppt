@@ -31,6 +31,7 @@ TEXT_OVERFLOWS = []
 TEXT_BOX_AUDIT = []
 VISIBLE_CONTAINERS = []
 ACTIVE_SEMANTICS = {"keywords": [], "motifs": [], "evidence": {}}
+ACTIVE_VISUAL_LANGUAGE = {}
 USED_MOTIFS = []
 VISUAL_ELEMENTS = []
 IMAGE_PLACEMENTS = []
@@ -54,6 +55,7 @@ def parse_args():
     parser.add_argument("--height", type=int, default=900)
     parser.add_argument("--quality", type=int, default=94)
     parser.add_argument("--strict-images", action="store_true", help="清单图片未全部使用时失败")
+    parser.add_argument("--visual-language", help="由图片 MD 描述提取的 ProjectVisualLanguage JSON")
     return parser.parse_args()
 
 
@@ -163,8 +165,8 @@ def draw_semantic_motifs(page, page_no):
         ((w - 155, 122), (92, 122), (w - 92, h - 92), (92, h - 92)),
         ((92, h - 92), (w - 92, h - 92), (92, 122), (w - 155, 122)),
     )
-    color = hex_rgb(PALETTE["blue"]) + (72,)
-    accent = hex_rgb(PALETTE["gold"]) + (92,)
+    color = hex_rgb(PALETTE["blue"]) + (196,)
+    accent = hex_rgb(PALETTE["gold"]) + (224,)
     for motif_index, motif in enumerate(motifs):
         candidates = preferred_anchors[min(motif_index, len(preferred_anchors) - 1)]
         cx, cy = candidates[0]
@@ -305,43 +307,87 @@ def add_texture(page):
 
 
 def draw_derived_background(page, role):
-    """Build a page background from project motifs, never from a project bitmap."""
+    """Build a role-aware spaceflight field from the MD-derived language."""
     overlay = Image.new("RGBA", page.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
     w, h = page.size
-    dark = role in {"cover", "closing"}
+    dark = role in {"cover", "closing", "toc"}
     blue = hex_rgb(PALETTE["blue"]) + ((92 if dark else 42),)
     gold = hex_rgb(PALETTE["gold"]) + ((76 if dark else 34),)
     paper = hex_rgb(PALETTE["paper_2"]) + ((22 if dark else 92),)
-    # Ribbon-derived sweep: the same family shapes cards, timelines and transitions.
-    for offset, width in ((0, 18), (30, 7), (58, 3)):
-        draw.arc((-220, h - 390 - offset, w + 260, h + 330 - offset), 198, 344, fill=blue, width=width)
-    # Badge/orbit embossing is intentionally low contrast so content remains primary.
-    cx, cy = int(w * .86), int(h * .24)
-    for radius, color, width in ((210, paper, 3), (154, blue, 5), (92, gold, 3)):
-        draw.ellipse((cx-radius, cy-radius, cx+radius, cy+radius), outline=color, width=width)
-    for angle in range(0, 360, 30):
-        inner, outer = 46, 72
-        x1 = cx + math.cos(math.radians(angle)) * inner
-        y1 = cy + math.sin(math.radians(angle)) * inner
-        x2 = cx + math.cos(math.radians(angle)) * outer
-        y2 = cy + math.sin(math.radians(angle)) * outer
-        draw.line((x1, y1, x2, y2), fill=gold, width=3)
+    # Starfield and coordinate grid come directly from the MD descriptions.
+    for i in range(38):
+        x, y = (i * 271 + 53) % w, (i * 149 + 31) % h
+        radius = 1 + i % 3
+        draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=paper)
+    if role not in {"cover", "closing"}:
+        for x in range(70, w, 126):
+            draw.line((x, 76, x, h-60), fill=hex_rgb(PALETTE["blue"]) + (13,), width=1)
+        for y in range(94, h, 108):
+            draw.line((54, y, w-54, y), fill=hex_rgb(PALETTE["blue"]) + (13,), width=1)
+    # Asymmetric orbit map: no fixed badge/ribbon stock decoration remains.
+    cx, cy = (int(w * .78), int(h * .42)) if role != "closing" else (int(w * .72), int(h * .52))
+    for rx, ry, color, width in ((430, 210, blue, 7), (315, 118, gold, 4), (210, 68, paper, 3)):
+        draw.ellipse((cx-rx, cy-ry, cx+rx, cy+ry), outline=color, width=width)
+    for angle in (18, 77, 139, 212, 286, 337):
+        x = cx + math.cos(math.radians(angle)) * 315
+        y = cy + math.sin(math.radians(angle)) * 118
+        draw.rectangle((x-7, y-7, x+7, y+7), fill=gold)
+    # Launch corridor / plume builds the diagonal motion shared by every role.
+    draw.polygon(((0, h), (0, h-95), (w*.72, 0), (w*.83, 0)), fill=hex_rgb(PALETTE["blue"]) + (24,))
+    draw.polygon(((w*.10, h), (w*.17, h), (w*.78, 0), (w*.74, 0)), fill=hex_rgb(PALETTE["gold"]) + (20,))
     DERIVED_COMPONENTS.extend([
-        {"type": "ribbon-sweep", "source_motif": "badge", "bbox": [0, h-420, w, h]},
-        {"type": "badge-orbit", "source_motif": "badge", "bbox": [cx-214, cy-214, cx+214, cy+214]},
+        {"type": "theme-background", "source_motif": "starfield", "bbox": [0, 0, w, h]},
+        {"type": "orbital-field", "source_motif": "orbit", "bbox": [max(0, cx-430), max(0, cy-210), w, min(h, cy+210)]},
+        {"type": "launch-corridor", "source_motif": "rocket", "bbox": [0, 0, w, h]},
     ])
     return Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
 
 
 def derived_card(draw, box, radius, fill, outline=None, width=1):
-    """A compact card derived from a badge rim and ribbon notch."""
-    rounded(draw, box, radius, fill, outline, width)
-    x1, y1, x2, _ = map(int, box)
-    notch = min(18, max(8, (x2 - x1) // 24))
-    draw.polygon(((x1, y1 + notch), (x1 + notch, y1), (x1 + notch * 2, y1)), fill=PALETTE["gold"])
-    draw.line((x1 + notch * 2, y1, min(x2 - 12, x1 + notch * 5), y1), fill=PALETTE["blue"], width=3)
-    DERIVED_COMPONENTS.append({"type": "badge-ribbon-card", "source_motif": "badge", "bbox": [x1, y1, x2, int(box[3])]})
+    """A chamfered mission panel derived from satellite wings and trajectory cuts."""
+    x1, y1, x2, y2 = map(int, box)
+    cut = min(24, max(10, (x2 - x1) // 20))
+    points = ((x1+cut, y1), (x2, y1), (x2, y2-cut), (x2-cut, y2), (x1, y2), (x1, y1+cut))
+    draw.polygon(points, fill=fill, outline=outline)
+    if outline:
+        draw.line(points + (points[0],), fill=outline, width=width)
+    draw.line((x1+cut, y1, min(x2-16, x1+cut*5), y1), fill=PALETTE["gold"], width=4)
+    draw.rectangle((x2-cut-8, y2-cut-8, x2-cut+8, y2-cut+8), fill=PALETTE["blue"])
+    DERIVED_COMPONENTS.append({"type": "theme-container", "source_motif": "satellite", "bbox": [x1, y1, x2, y2]})
+
+
+def draw_word_art(draw, xy, text, size, role, max_width):
+    """Render theme-fit display type with ascent, orbit and metal-layer cues."""
+    x, y = map(int, xy)
+    face = font(size, True)
+    lines = wrap_text(draw, text, face, max_width, 4 if role in {"cover", "closing"} else 2)
+    line_height = size + 12
+    for index, line in enumerate(lines):
+        ly = y + index * line_height
+        if role in {"cover", "closing"}:
+            draw.text((x+7, ly+7), line, font=face, fill=PALETTE["blue"], stroke_width=2, stroke_fill=PALETTE["ink"])
+            draw.text((x, ly), line, font=face, fill=PALETTE["white"], stroke_width=2, stroke_fill=PALETTE["gold"])
+            draw.line((x, ly+size+7, x+min(max_width, text_width(draw, line, face)), ly+size+7), fill=PALETTE["gold"], width=4)
+        elif role == "section":
+            draw.text((x+6, ly+5), line, font=face, fill=PALETTE["silver"] if "silver" in PALETTE else PALETTE["paper"])
+            draw.text((x, ly), line, font=face, fill=PALETTE["ink"], stroke_width=1, stroke_fill=PALETTE["gold"])
+        else:
+            draw.text((x+4, ly+4), line, font=face, fill="#B7D8E8")
+            draw.text((x, ly), line, font=face, fill=PALETTE["ink"])
+    if lines:
+        widths = [text_width(draw, line, face) for line in lines]
+        frame_width = max(widths)
+        frame_height = len(lines) * line_height - 12
+        ink_area = sum(max(1, width) * size for width in widths)
+        TEXT_BOX_AUDIT.append({
+            "text": str(text), "x": x, "y": y, "width": frame_width,
+            "height": frame_height, "font_size": size, "line_count": len(lines),
+            "ink_fill_ratio": round(min(1.0, ink_area / max(1, frame_width * frame_height)), 4),
+            "style": ACTIVE_VISUAL_LANGUAGE.get("word_art", {}).get(role, role),
+        })
+    DERIVED_COMPONENTS.append({"type": "word-art", "source_motif": "rocket", "bbox": [x, y, x+max_width, y+max(1, len(lines))*line_height]})
+    return y + len(lines) * line_height
 
 
 def flatten_blocks(blocks):
@@ -380,8 +426,8 @@ def effective_role(slide):
     return mapping.get(pattern, slide.get("role") or "bullets")
 
 
-def apply_theme(plan):
-    global ACTIVE_SEMANTICS
+def apply_theme(plan, visual_language=None):
+    global ACTIVE_SEMANTICS, ACTIVE_VISUAL_LANGUAGE
     chosen = THEMES.get(plan.get("theme_recommendation"))
     if chosen:
         PALETTE.update(chosen)
@@ -392,7 +438,18 @@ def apply_theme(plan):
             value = colors.get(key)
             if isinstance(value, str) and re.fullmatch(r"#[0-9a-fA-F]{6}", value):
                 PALETTE[key] = value
-    semantics = plan.get("visual_semantics") or {}
+    ACTIVE_VISUAL_LANGUAGE = visual_language or plan.get("visual_language") or {}
+    language_palette = ACTIVE_VISUAL_LANGUAGE.get("palette") or {}
+    palette_map = {"ink": "deep_space", "paper": "silver", "paper_2": "paper", "gold": "champagne_gold", "blue": "ion_blue", "red": "plume"}
+    for target, source in palette_map.items():
+        value = language_palette.get(source)
+        if isinstance(value, str) and re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+            PALETTE[target] = value
+    semantics = plan.get("visual_semantics") or {
+        "keywords": ACTIVE_VISUAL_LANGUAGE.get("keywords") or [],
+        "motifs": ACTIVE_VISUAL_LANGUAGE.get("motifs") or [],
+        "evidence": ACTIVE_VISUAL_LANGUAGE.get("evidence") or {},
+    }
     ACTIVE_SEMANTICS = {
         "keywords": [str(value).strip() for value in semantics.get("keywords") or [] if str(value).strip()],
         "motifs": [str(value).strip() for value in semantics.get("motifs") or [] if str(value).strip()],
@@ -416,11 +473,12 @@ def render_cover(slide, images, size, page_no, total):
     page = draw_derived_background(Image.new("RGB", size, PALETTE["ink"]), "cover")
     draw = ImageDraw.Draw(page)
     if images:
-        derived_card(draw, (w * .61, 132, w - 76, h - 112), 28, PALETTE["paper_2"], PALETTE["gold"], 3)
-        place_project_image(page, images[0], (w * .625, 150, w - 94, h - 130), "cover-evidence", PALETTE["ink"])
+        # A 16:9 mission window keeps the source complete without large matte bands.
+        derived_card(draw, (880, 250, w - 76, 640), 28, PALETTE["paper_2"], PALETTE["gold"], 3)
+        place_project_image(page, images[0], (900, 264, w - 96, 604), "cover-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"), dark=True)
     draw.text((90, 176), "VISUAL STORY · 图片演示", font=font(24, True), fill=PALETTE["gold"])
-    y = draw_text(draw, (88, 242), slide.get("title", "Untitled"), font(74, True), PALETTE["paper_2"], int(w * 0.47), 14, 4)
+    y = draw_word_art(draw, (88, 230), slide.get("title", "Untitled"), 70, "cover", int(w * 0.47))
     subtitle = slide.get("subtitle") or "从素材洞察到视觉叙事的完整表达"
     draw_text(draw, (92, y + 28), subtitle, font(28), "#D7D8CF", int(w * 0.43), 10, 3)
     draw.rectangle((92, h - 136, 330, h - 126), fill=PALETTE["red"])
@@ -429,38 +487,32 @@ def render_cover(slide, images, size, page_no, total):
 
 
 def render_toc(slide, size, page_no, total):
-    page = draw_derived_background(add_texture(Image.new("RGB", size, PALETTE["paper"])), "toc")
+    page = draw_derived_background(Image.new("RGB", size, PALETTE["ink"]), "toc")
     draw = ImageDraw.Draw(page)
     w, h = size
-    slide_chrome(page, page_no, total, slide.get("section"))
-    draw.text((80, 102), "目录 / STORY MAP", font=font(25, True), fill=PALETTE["red"])
-    draw_text(draw, (78, 150), slide.get("title", "叙事路径"), font(53, True), PALETTE["ink"], w - 156, 8, 2)
+    slide_chrome(page, page_no, total, slide.get("section"), dark=True)
+    draw.text((80, 102), "目录 / ORBITAL STORY MAP", font=font(23, True), fill=PALETTE["gold"])
+    draw_word_art(draw, (78, 148), slide.get("title", "叙事路径"), 47, "cover", int(w*.48))
     cards = slide.get("toc_cards") or []
     if not cards:
         items = flatten_blocks(slide.get("blocks"))[:6]
         cards = [{"num": f"{i + 1:02d}", "title": item, "desc": ""} for i, item in enumerate(items)]
     cards = cards[:6]
-    cols = 3 if len(cards) > 4 else 2
-    rows = max(1, math.ceil(len(cards) / cols))
-    gap, x0, y0 = 22, 80, 285
-    card_w = (w - 160 - gap * (cols - 1)) // cols
-    card_font = font(27, True)
-    desc_font = font(16)
-    natural_heights = []
-    for card in cards:
-        title_lines = wrap_text(draw, card.get("title", ""), card_font, card_w - 48, None) or [""]
-        desc_lines = wrap_text(draw, card.get("desc", ""), desc_font, card_w - 48, None) or [""]
-        natural_heights.append(58 + len(title_lines) * 32 + len(desc_lines) * 20 + 38)
-    card_h = max(170, min(218, max(natural_heights, default=170)))
-    grid_h = rows * card_h + gap * (rows - 1)
-    y0 += max(0, (h - 70 - y0 - grid_h) // 2)
+    cx, cy, rx, ry = int(w*.70), int(h*.56), int(w*.25), int(h*.29)
+    draw.ellipse((cx-rx, cy-ry, cx+rx, cy+ry), outline=PALETTE["gold"], width=5)
+    draw.ellipse((cx-rx+48, cy-ry+34, cx+rx-48, cy+ry-34), outline=PALETTE["blue"], width=3)
     for index, card in enumerate(cards):
-        col, row = index % cols, index // cols
-        x, y = x0 + col * (card_w + gap), y0 + row * (card_h + gap)
-        derived_card(draw, (x, y, x + card_w, y + card_h), 22, PALETTE["paper_2"], "#D7C6A4", 2)
-        draw.text((x + 24, y + 20), str(card.get("num") or f"{index + 1:02d}"), font=font(36, True), fill=PALETTE["red"])
-        title_end = draw_text(draw, (x + 24, y + 70), card.get("title", ""), card_font, PALETTE["ink"], card_w - 48, 5, 2)
-        draw_text(draw, (x + 24, max(title_end + 18, y + card_h - 46)), card.get("desc", ""), desc_font, PALETTE["muted"], card_w - 48, 4, 2)
+        angle = math.radians(-90 + index * 360 / max(1, len(cards)))
+        x, y = int(cx + rx*math.cos(angle)), int(cy + ry*math.sin(angle))
+        box_w, box_h = 264, 112
+        bx = max(610, min(w-box_w-56, x-box_w//2))
+        by = max(220, min(h-box_h-60, y-box_h//2))
+        derived_card(draw, (bx, by, bx+box_w, by+box_h), 18, PALETTE["paper_2"], PALETTE["gold"], 2)
+        record_container((bx, by, bx+box_w, by+box_h), [card.get("title", ""), card.get("desc", "")], "toc-orbit-node")
+        draw.text((bx+18, by+14), str(card.get("num") or f"{index+1:02d}"), font=font(25, True), fill=PALETTE["blue"])
+        draw_text(draw, (bx+62, by+17), card.get("title", ""), font(23, True), PALETTE["ink"], box_w-78, 4, 2)
+        draw_text(draw, (bx+20, by+68), card.get("desc", ""), font(15), PALETTE["muted"], box_w-40, 3, 2)
+    DERIVED_COMPONENTS.append({"type": "theme-flow", "source_motif": "orbit", "bbox": [cx-rx, cy-ry, cx+rx, cy+ry]})
     return page
 
 
@@ -474,14 +526,14 @@ def render_section(slide, images, size, page_no, total):
     draw.ellipse((w - 390, 130, w - 85, 435), outline=PALETTE["white"], width=5)
     draw.ellipse((w - 315, 205, w - 160, 360), outline=PALETTE["gold"], width=4)
     draw.line((w * 0.58, h - 125, w - 92, 132), fill=PALETTE["white"], width=3)
-    DERIVED_COMPONENTS.append({"type": "badge-transition", "source_motif": "badge", "bbox": [int(w*.48), 0, w, h]})
+    DERIVED_COMPONENTS.append({"type": "theme-transition", "source_motif": "rocket", "bbox": [int(w*.48), 0, w, h]})
     if images:
         derived_card(draw, (w * .69, 170, w - 92, h - 150), 22, PALETTE["paper_2"], PALETTE["gold"], 3)
         place_project_image(page, images[0], (w * .70, 184, w - 106, h - 164), "section-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"))
     number = str(slide.get("section_index") or page_no).zfill(2)
     draw.text((82, 130), number, font=font(150, True), fill=PALETTE["blue"])
-    draw_text(draw, (88, 350), slide.get("title", "章节"), font(68, True), PALETTE["ink"], int(w * 0.48), 12, 4)
+    draw_word_art(draw, (88, 350), slide.get("title", "章节"), 66, "section", int(w * 0.48))
     draw.line((92, h - 142, 480, h - 142), fill=PALETTE["blue"], width=3)
     draw.text((92, h - 112), "CHAPTER TRANSITION", font=font(18, True), fill=PALETTE["muted"])
     return page
@@ -492,7 +544,7 @@ def render_gallery(slide, images, size, page_no, total):
     draw = ImageDraw.Draw(page)
     w, h = size
     slide_chrome(page, page_no, total, slide.get("section"))
-    draw_text(draw, (78, 103), slide.get("title", "视觉证据"), font(47, True), PALETTE["ink"], w - 156, 8, 2)
+    draw_word_art(draw, (78, 103), slide.get("title", "视觉证据"), 45, "content", w - 156)
     images = images[:6]
     cols = 3 if len(images) > 4 else 2
     rows = max(1, math.ceil(len(images) / cols))
@@ -518,7 +570,7 @@ def content_frame(slide, size, page_no, total, label):
     w, _ = size
     slide_chrome(page, page_no, total, slide.get("section"))
     draw.text((78, 103), label, font=font(20, True), fill=PALETTE["red"])
-    title_y = draw_text(draw, (78, 140), slide.get("title", ""), font(47, True), PALETTE["ink"], w - 156, 8, 2)
+    title_y = draw_word_art(draw, (78, 140), slide.get("title", ""), 45, "content", w - 156)
     return page, draw, max(245, title_y + 22)
 
 
@@ -554,7 +606,7 @@ def render_timeline(slide, images, size, page_no, total):
         items = [slide.get("takeaway") or "确认关键检查点"]
     y = top + 70
     draw.arc((90, y - 70, w - 90, y + 100), 190, 350, fill=PALETTE["gold"], width=8)
-    DERIVED_COMPONENTS.append({"type": "orbit-timeline", "source_motif": "badge", "bbox": [90, y-70, w-90, y+100]})
+    DERIVED_COMPONENTS.append({"type": "theme-flow", "source_motif": "orbit", "bbox": [90, y-70, w-90, y+100]})
     step_w = (w - 260) / max(1, len(items) - 1)
     for index, value in enumerate(items):
         x = int(130 + index * step_w)
@@ -705,7 +757,7 @@ def render_content(slide, images, size, page_no, total):
     w, h = size
     slide_chrome(page, page_no, total, slide.get("section"))
     draw.text((78, 103), (slide.get("role") or "CONTENT").replace("-", " ").upper(), font=font(20, True), fill=PALETTE["red"])
-    title_y = draw_text(draw, (78, 140), slide.get("title", ""), font(49, True), PALETTE["ink"], w - 156, 8, 2)
+    title_y = draw_word_art(draw, (78, 140), slide.get("title", ""), 47, "content", w - 156)
     top = max(245, title_y + 22)
     items = flatten_blocks(slide.get("blocks"))
     if images:
@@ -752,7 +804,7 @@ def render_closing(slide, images, size, page_no, total):
         place_project_image(page, images[0], (w * .675, 178, w - 104, h - 144), "closing-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"), dark=True)
     draw.text((80, 198), "END NOTE · 收束", font=font(24, True), fill=PALETTE["gold"])
-    draw_text(draw, (78, 268), slide.get("title", "谢谢"), font(72, True), PALETTE["white"], w - 300, 14, 3)
+    draw_word_art(draw, (78, 260), slide.get("title", "谢谢"), 70, "closing", w - 300)
     draw.rectangle((80, h - 170, 420, h - 160), fill=PALETTE["red"])
     draw.text((80, h - 132), "让视觉成为叙事的证据。", font=font(25), fill="#D8DDD8")
     return page
@@ -811,7 +863,10 @@ def main():
     plan = load_json(args.ir)
     if plan.get("schema") != "SlidesPlan" or not isinstance(plan.get("slides"), list):
         raise SystemExit("--ir 必须是含 slides[] 的 SlidesPlan")
-    apply_theme(plan)
+    visual_language = load_json(args.visual_language) if args.visual_language else None
+    if visual_language and visual_language.get("schema") != "ProjectVisualLanguage":
+        raise SystemExit("--visual-language 必须是 ProjectVisualLanguage")
+    apply_theme(plan, visual_language)
     manifest = load_json(args.manifest)
     index = resolve_manifest(args.manifest, manifest)
     missing_files = [key for key, item in index.items() if not Path(item["_path"]).exists()]
@@ -848,6 +903,7 @@ def main():
             "semantic_keywords": list(ACTIVE_SEMANTICS["keywords"]),
             "approved_motifs": list(ACTIVE_SEMANTICS["motifs"]),
             "semantic_evidence": dict(ACTIVE_SEMANTICS["evidence"]),
+            "visual_language_sha256": hashlib.sha256(json.dumps(ACTIVE_VISUAL_LANGUAGE, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest(),
             "used_motifs": list(USED_MOTIFS),
             "visual_elements": list(VISUAL_ELEMENTS),
             "image_placements": list(IMAGE_PLACEMENTS),
@@ -859,7 +915,7 @@ def main():
         page.save(png_path, "PNG", optimize=True, pnginfo=pnginfo)
         page.save(jpg_path, "JPEG", quality=args.quality, optimize=True, progressive=True)
         jpegs.append(jpg_path)
-        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS)})
+        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS), "visual_language_sha256": audit["visual_language_sha256"]})
     build_pdf(jpegs, output, args.width, args.height)
     manifest_ids = set(index)
     missing_ids = sorted(manifest_ids - used_ids)
@@ -870,6 +926,7 @@ def main():
         "manifest_image_count": len(manifest_ids), "used_image_count": len(used_ids),
         "ir_sha256": hashlib.sha256(Path(args.ir).read_bytes()).hexdigest(), "manifest_sha256": hashlib.sha256(Path(args.manifest).read_bytes()).hexdigest(),
         "theme": plan.get("theme_recommendation"), "visual_semantics": ACTIVE_SEMANTICS,
+        "visual_language": ACTIVE_VISUAL_LANGUAGE,
         "used_image_ids": sorted(used_ids), "slides": slide_rows,
     }
     if missing_ids:

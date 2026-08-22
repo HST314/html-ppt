@@ -1,0 +1,88 @@
+{
+  "schema": "ProjectVisualLanguage",
+  "version": "1.0",
+  "source": {
+    "kind": "image-description-md",
+    "files": [
+      "图一_金珐琅星空浮雕徽章.md",
+      "图三_双景叙事纪念徽章.md",
+      "图二_银质极简科技徽章.md",
+      "图五_虚实融合文化徽章.md",
+      "图四_香槟金轨道阵列徽章.md"
+    ]
+  },
+  "narrative": "从地球点火，经轨道组网，抵达千帆星座",
+  "keywords": [
+    "长征八号甲",
+    "千帆星座",
+    "火箭",
+    "卫星",
+    "轨道"
+  ],
+  "motifs": [
+    "rocket",
+    "orbit",
+    "satellite",
+    "starfield",
+    "plume",
+    "grid",
+    "cloud-wave",
+    "seal-script"
+  ],
+  "evidence": {
+    "rocket": "中央徽章**：采用圆形金边浮雕结构，主体为长征八号甲火箭垂直居中，呈现蓄势待发之态",
+    "orbit": "# 图四：香槟金轨道阵列徽章",
+    "satellite": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+    "starfield": "# 图一：金珐琅星空浮雕徽章",
+    "plume": "虚实呼应**：徽章背景中，真实火箭发射尾焰从地平线升起，与徽章底部火焰纹样形成虚实叠影；两侧卫星链以等距阵列延伸，如项链般环绕画面，强化\"星座部署\"任务主题",
+    "grid": "背景网格**：深蓝色背景叠加浅灰色网格线与节点方块，构成轨道坐标系的抽象表达，强化\"精确测量、精准入轨\"的航天工程属性",
+    "cloud-wave": "火箭两侧以对称式抽象云纹/水纹装饰，既似腾飞之翼，又暗合中国传统祥云意象，形成\"火箭破浪而出\"的视觉隐喻",
+    "seal-script": "徽章右侧以竖排篆体/魏碑风格刻印\"长征八号甲火箭\"，字形修长有力，增添文化厚重感与历史纵深感"
+  },
+  "palette": {
+    "deep_space": "#061A33",
+    "space_blue": "#0B4F8A",
+    "ion_blue": "#35B8E8",
+    "champagne_gold": "#D8B56A",
+    "silver": "#DCE7EF",
+    "paper": "#F2F7FA",
+    "plume": "#F28C3B"
+  },
+  "word_art": {
+    "cover": "rocket-ascent",
+    "toc": "orbital-title",
+    "section": "vertical-seal",
+    "content": "precision-cut",
+    "closing": "stellar-convergence"
+  },
+  "composition": {
+    "cover": "diagonal-launch-corridor",
+    "toc": "asymmetric-orbit-map",
+    "section": "split-orbit-gate",
+    "content": "chamfered-mission-panels",
+    "closing": "converging-star-trails"
+  },
+  "derived_components": {
+    "background": [
+      "starfield",
+      "orbit",
+      "grid",
+      "plume"
+    ],
+    "container": [
+      "seal-rim",
+      "satellite-panel",
+      "trajectory-notch"
+    ],
+    "flow": [
+      "orbit",
+      "satellite",
+      "rocket"
+    ],
+    "transition": [
+      "rocket",
+      "orbit",
+      "seal-script"
+    ]
+  }
+}

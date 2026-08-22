@@ -19,6 +19,16 @@ BLUEPRINT = {
     "aux_area": "底部说明", "whitespace": "30%", "svg_need": "否",
     "image_need": "按页面角色", "reason": "让语义关系可视化",
 }
+VISUAL_LANGUAGE = {
+    "schema": "ProjectVisualLanguage", "version": "1.0",
+    "source": {"kind": "image-description-md", "files": ["fixture-image.md"]},
+    "keywords": ["卫星", "航天", "徽章"], "motifs": ["badge", "orbit"],
+    "evidence": {"badge": "徽章", "orbit": "航天"},
+    "palette": {},
+    "word_art": {"cover": "ascent", "toc": "orbit", "section": "seal", "content": "cut", "closing": "converge"},
+    "composition": {"cover": "launch", "toc": "orbit-map", "section": "gate", "content": "panels", "closing": "trails"},
+    "derived_components": {"background": ["orbit"], "container": ["satellite"], "flow": ["orbit"], "transition": ["rocket"]},
+}
 
 
 def write_json(path, value):
@@ -99,7 +109,7 @@ def fixture(root):
     slides.insert(landing_end, slide(11, "kpi", "三项数字绑定交付", "big-number", "cards", blocks=[{"type": "list", "items": ["2 张素材", "14 页演示", "100% 覆盖"]}], section="落地"))
     slides.append(slide(11, "closing", "整改证据链已经闭环", blocks=[], section=None))
     plan = root / "outline.json"
-    write_json(plan, {"schema": "SlidesPlan", "version": "2.1", "theme_recommendation": "tech-dark", "visual_semantics": {"keywords": ["卫星", "航天", "徽章"], "motifs": ["badge", "orbit"], "evidence": {"badge": "徽章", "orbit": "航天"}}, "slides": slides})
+    write_json(plan, {"schema": "SlidesPlan", "version": "3.0", "theme_recommendation": "tech-dark", "visual_language": VISUAL_LANGUAGE, "visual_semantics": {"keywords": ["卫星", "航天", "徽章"], "motifs": ["badge", "orbit"], "evidence": {"badge": "徽章", "orbit": "航天"}}, "slides": slides})
     return plan, manifest
 
 
