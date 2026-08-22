@@ -300,21 +300,28 @@ def render_toc(slide, size, page_no, total):
 
 def render_section(slide, images, size, page_no, total):
     w, h = size
-    page = Image.new("RGB", size, PALETTE["red"])
+    # Chapter transitions must stay inside the deck's blue/white visual system.
+    # Red remains a small accent elsewhere, never a full-page transition field.
+    page = Image.new("RGB", size, PALETTE["paper_2"])
     draw = ImageDraw.Draw(page)
     if images:
-        source = ImageEnhance.Color(open_rgb(images[0])).enhance(0.6).filter(ImageFilter.GaussianBlur(1.2))
+        source = ImageEnhance.Color(open_rgb(images[0])).enhance(0.45).filter(ImageFilter.GaussianBlur(1.2))
         paste_cover(page, source, (w * 0.50, 0, w, h))
         overlay = Image.new("RGBA", size, (0, 0, 0, 0))
-        ImageDraw.Draw(overlay).rectangle((w * 0.42, 0, w, h), fill=(203, 75, 67, 125))
+        ImageDraw.Draw(overlay).rectangle((w * 0.42, 0, w, h), fill=hex_rgb(PALETTE["blue"]) + (138,))
         page = Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
         draw = ImageDraw.Draw(page)
-    slide_chrome(page, page_no, total, slide.get("section"), dark=True)
+    else:
+        draw.polygon(((w * 0.57, 0), (w, 0), (w, h), (w * 0.43, h)), fill=PALETTE["blue"])
+        draw.ellipse((w - 390, 130, w - 85, 435), outline=PALETTE["white"], width=5)
+        draw.ellipse((w - 315, 205, w - 160, 360), outline=PALETTE["gold"], width=4)
+        draw.line((w * 0.58, h - 125, w - 92, 132), fill=PALETTE["white"], width=3)
+    slide_chrome(page, page_no, total, slide.get("section"))
     number = str(slide.get("section_index") or page_no).zfill(2)
-    draw.text((82, 130), number, font=font(150, True), fill="#E7B04B")
-    draw_text(draw, (88, 350), slide.get("title", "章节"), font(68, True), PALETTE["white"], int(w * 0.48), 12, 4)
-    draw.line((92, h - 142, 480, h - 142), fill=PALETTE["white"], width=3)
-    draw.text((92, h - 112), "CHAPTER TRANSITION", font=font(18, True), fill="#F3DCC9")
+    draw.text((82, 130), number, font=font(150, True), fill=PALETTE["blue"])
+    draw_text(draw, (88, 350), slide.get("title", "章节"), font(68, True), PALETTE["ink"], int(w * 0.48), 12, 4)
+    draw.line((92, h - 142, 480, h - 142), fill=PALETTE["blue"], width=3)
+    draw.text((92, h - 112), "CHAPTER TRANSITION", font=font(18, True), fill=PALETTE["muted"])
     return page
 
 

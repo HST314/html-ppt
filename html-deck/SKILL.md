@@ -12,6 +12,7 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 - 默认选择 `html`：`render_deck.py` → `inline_assets.py` → `qa_render.py`。
 - 用户需要“图片 PPT”“逐页图片”或 PDF 审阅/打印稿时，选择 `image-pdf`：`render_image_pdf.py --strict-images` → `qa_image_pdf.py`。
 - 图片路线必须交付 PDF、逐页 PNG、渲染报告和 `qa_image_pdf.json`。QA 必须直接读取 IR 与 manifest，独立重算图片覆盖、蓝图/role、文本容量和逐页 PNG 身份，不信任渲染报告中的汇总字段。
+- 图片路线的目录节点必须与章节转场按标题、顺序一一对应，每个目录章节至少包含一页归属正确的内容页；缺章、空章或跨章错挂均由 QA 阻断。章节转场必须继承全稿视觉体系，默认使用蓝白背景与少量金色强调，禁止红色主导的整页底色；QA 对转场 PNG 独立计算红色主导像素占比。
 - 图片路线依赖 Pillow、reportlab、pypdf：`python3 -m pip install Pillow reportlab pypdf`。依赖缺失时不得把 PDF 标记为已验证。
 
 ## 运行原则

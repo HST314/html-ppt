@@ -3,10 +3,10 @@
   "version": "2.0",
   "route": "image-pdf",
   "status": "pass",
-  "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
-  "ir_sha256": "bf946654cc13fc4a8e3e024070c1abb7b2df10ee641ee2042b4c667a368baa9c",
+  "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
+  "ir_sha256": "21cf25e0c87deef58200ab670081e8768b0bdb5e5fae805831c1e51328b2db56",
   "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
-  "page_count": 13,
+  "page_count": 15,
   "manifest_image_count": 10,
   "ir_used_image_count": 10,
   "checks": {
@@ -14,6 +14,8 @@
     "manifest_coverage_recomputed": true,
     "png_identity_and_provenance": true,
     "text_complete_and_within_capacity": true,
-    "blueprint_and_roles_supported": true
+    "blueprint_and_roles_supported": true,
+    "toc_sections_complete": true,
+    "section_palette_consistent": true
   }
 }

@@ -106,6 +106,42 @@ def text_capacity_failures(slide, page):
     return failures
 
 
+def story_structure_failures(slides):
+    """Ensure every TOC node expands into a real chapter with content."""
+    failures = []
+    toc_slides = [slide for slide in slides if slide.get("role") == "toc"]
+    if len(toc_slides) != 1:
+        return [f"目录页数量必须为 1，实际为 {len(toc_slides)}"]
+    toc_titles = [str(card.get("title") or "").strip() for card in toc_slides[0].get("toc_cards") or []]
+    section_rows = [(index, slide) for index, slide in enumerate(slides) if slide.get("role") == "section"]
+    section_titles = [str(slide.get("title") or slide.get("section") or "").strip() for _, slide in section_rows]
+    if not 3 <= len(toc_titles) <= 6:
+        failures.append(f"目录节点须为 3–6 个，实际为 {len(toc_titles)}")
+    if toc_titles != section_titles:
+        failures.append("目录节点与章节转场未按顺序一一对应")
+    for order, (start, section_slide) in enumerate(section_rows, start=1):
+        end = section_rows[order][0] if order < len(section_rows) else len(slides)
+        title = section_titles[order - 1]
+        if section_slide.get("section_index") != order:
+            failures.append(f"章节“{title}”的 section_index 应为 {order}")
+        content = [slide for slide in slides[start + 1:end] if slide.get("role") not in {"section", "closing"}]
+        if not content:
+            failures.append(f"目录章节“{title}”没有对应内容页")
+        mismatched = [slide.get("page") for slide in content if str(slide.get("section") or "").strip() != title]
+        if mismatched:
+            failures.append(f"章节“{title}”内容页归属不一致：{mismatched}")
+    return failures
+
+
+def section_palette_failure(image, page):
+    """Reject visually abrupt red-dominant chapter transitions."""
+    sample = image.convert("RGB").resize((160, 90))
+    pixels = list(sample.getdata())
+    red_dominant = sum(1 for red, green, blue in pixels if red > 120 and red > green * 1.18 and red > blue * 1.18)
+    ratio = red_dominant / max(1, len(pixels))
+    return f"第 {page} 页章节转场红色主导像素占比 {ratio:.1%}，未延续蓝白视觉体系" if ratio > 0.18 else None
+
+
 def main():
     args = parse_args()
     if DEPENDENCY_ERROR:
@@ -115,6 +151,9 @@ def main():
     manifest_rows = manifest.get("images") or []
     manifest_ids = [image_id(row) for row in manifest_rows]
     failures = []
+    structure_failures = story_structure_failures(slides)
+    failures.extend(structure_failures)
+    palette_failures = []
     if plan.get("schema") != "SlidesPlan":
         failures.append("IR schema 不是 SlidesPlan")
     duplicates = sorted(key for key, count in Counter(manifest_ids).items() if key and count > 1)
@@ -186,6 +225,11 @@ def main():
                 failures.append(f"第 {index} 页 PNG 未按蓝图/role 渲染")
             if audit.get("text_overflows"):
                 failures.append(f"第 {index} 页渲染发生文字截断/省略")
+            if slide.get("role") == "section":
+                palette_failure = section_palette_failure(image, index)
+                if palette_failure:
+                    palette_failures.append(palette_failure)
+                    failures.append(palette_failure)
     if len(set(png_paths)) != len(png_paths):
         failures.append("逐页 PNG 路径不唯一（疑似重复指向同一文件）")
     if len(set(png_hashes)) != len(png_hashes):
@@ -197,6 +241,8 @@ def main():
         "png_identity_and_provenance": not any("PNG" in value or "指纹" in value for value in failures),
         "text_complete_and_within_capacity": not any("文本" in value or "标题超过" in value or "截断" in value for value in failures),
         "blueprint_and_roles_supported": not any("blueprint" in value or "role/pattern" in value or "蓝图/role" in value for value in failures),
+        "toc_sections_complete": not structure_failures,
+        "section_palette_consistent": not palette_failures,
     }
     qa = {
         "schema": "ImagePdfQA", "version": "2.0", "route": "image-pdf",

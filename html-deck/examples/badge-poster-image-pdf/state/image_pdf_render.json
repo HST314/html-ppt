@@ -1,17 +1,17 @@
 {
   "route": "image-pdf",
   "status": "pass",
-  "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
-  "page_count": 13,
+  "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
+  "page_count": 15,
   "slide_size": [
     1600,
     900
   ],
   "manifest_image_count": 10,
   "used_image_count": 10,
-  "ir_sha256": "bf946654cc13fc4a8e3e024070c1abb7b2df10ee641ee2042b4c667a368baa9c",
+  "ir_sha256": "21cf25e0c87deef58200ab670081e8768b0bdb5e5fae805831c1e51328b2db56",
   "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
-  "theme": "warm-human",
+  "theme": "business-dark",
   "used_image_ids": [
     "badge-01",
     "badge-02",
@@ -35,7 +35,7 @@
       "image_ids": [
         "badge-10"
       ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
       "text_overflows": []
     },
     {
@@ -44,9 +44,9 @@
       "source_role": "toc",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "三个判断节点从识别走向落地",
+      "title": "四个部分构成完整的徽章叙事",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
       "text_overflows": []
     },
     {
@@ -55,9 +55,9 @@
       "source_role": "section",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "识别系统",
+      "title": "品牌识别",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
       "text_overflows": []
     },
     {
@@ -68,7 +68,7 @@
       "layout_variant": "hub-left",
       "title": "一套主视觉统一勋章、绶带与荣誉墙",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
       "text_overflows": []
     },
     {
@@ -77,9 +77,9 @@
       "source_role": "two-column",
       "layout_pattern": "tri-loop",
       "layout_variant": "loop-3",
-      "title": "三项设计原则形成完整视觉闭环",
+      "title": "三项品牌原则让荣誉表达稳定延展",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
       "text_overflows": []
     },
     {
@@ -88,13 +88,46 @@
       "source_role": "section",
       "layout_pattern": null,
       "layout_variant": null,
-      "title": "场景证据",
+      "title": "视觉构成",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
       "text_overflows": []
     },
     {
       "page": 7,
+      "role": "compare",
+      "source_role": "compare",
+      "layout_pattern": "compare",
+      "layout_variant": "vs-split",
+      "title": "四类视觉元素分工明确又彼此协同",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
+      "text_overflows": []
+    },
+    {
+      "page": 8,
+      "role": "timeline",
+      "source_role": "timeline",
+      "layout_pattern": "path-flow",
+      "layout_variant": "chain-4",
+      "title": "从母版到成品遵循四步设计路径",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
+      "text_overflows": []
+    },
+    {
+      "page": 9,
+      "role": "section",
+      "source_role": "section",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "场景应用",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
+      "text_overflows": []
+    },
+    {
+      "page": 10,
       "role": "gallery",
       "source_role": "gallery",
       "layout_pattern": null,
@@ -108,78 +141,66 @@
         "badge-06",
         "badge-07"
       ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
-      "text_overflows": []
-    },
-    {
-      "page": 8,
-      "role": "image-hero",
-      "source_role": "image-hero",
-      "layout_pattern": "hero-details",
-      "layout_variant": "anchor-right",
-      "title": "一张主图与三项细节共同建立仪式感",
-      "image_ids": [
-        "badge-08",
-        "badge-09"
-      ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
-      "text_overflows": []
-    },
-    {
-      "page": 9,
-      "role": "image-side",
-      "source_role": "image-side",
-      "layout_pattern": "text-image",
-      "layout_variant": "anchor-right",
-      "title": "主视觉与文字说明保持各自清晰",
-      "image_ids": [
-        "badge-04"
-      ],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
-      "text_overflows": []
-    },
-    {
-      "page": 10,
-      "role": "section",
-      "source_role": "section",
-      "layout_pattern": null,
-      "layout_variant": null,
-      "title": "落地检查",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
       "text_overflows": []
     },
     {
       "page": 11,
-      "role": "timeline",
-      "source_role": "timeline",
-      "layout_pattern": "path-flow",
-      "layout_variant": "chain-3",
-      "title": "交付从规范到复验分三步完成",
-      "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
+      "role": "image-hero",
+      "source_role": "image-hero",
+      "layout_pattern": "hero-details",
+      "layout_variant": "anchor-right",
+      "title": "主图、人物与细节共同建立仪式感",
+      "image_ids": [
+        "badge-08",
+        "badge-09",
+        "badge-04"
+      ],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
       "text_overflows": []
     },
     {
       "page": 12,
+      "role": "section",
+      "source_role": "section",
+      "layout_pattern": null,
+      "layout_variant": null,
+      "title": "交付落地",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
+      "text_overflows": []
+    },
+    {
+      "page": 13,
+      "role": "timeline",
+      "source_role": "timeline",
+      "layout_pattern": "timeline",
+      "layout_variant": "checkpoint-3",
+      "title": "交付从规范、适配到复验分三步完成",
+      "image_ids": [],
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
+      "text_overflows": []
+    },
+    {
+      "page": 14,
       "role": "kpi",
       "source_role": "kpi",
       "layout_pattern": "big-number",
       "layout_variant": "num-anchor",
       "title": "三项数字证明素材与页面均可追溯",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
       "text_overflows": []
     },
     {
-      "page": 13,
+      "page": 15,
       "role": "closing",
       "source_role": "closing",
       "layout_pattern": null,
       "layout_variant": null,
       "title": "让每一份荣誉都被看见",
       "image_ids": [],
-      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/860b966b/workdir/skill-base-construction-git/30_SKILL_html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
+      "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.png",
       "text_overflows": []
     }
   ]
