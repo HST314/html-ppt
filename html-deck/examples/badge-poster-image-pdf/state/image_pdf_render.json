@@ -979,8 +979,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
-      "png_rgb_sha256": "3123491e0aefbb21723eca511067ab04ce9d839f2643b5205bc70484909baf95",
-      "jpg_sha256": "af2654268e933016da74a759ae65d3f9f1ee523cf50636ada0db7bd5465e5122",
+      "png_rgb_sha256": "07090a695828c7b4b6a0965689d8b8424b7c88f292ee770b2058aa70e877b5e4",
+      "jpg_sha256": "435af592b59a4bf903d83b9046b29062743348ec596f1e5cc37f9c8b134b8efc",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -1001,11 +1001,11 @@
           "semantic_id": "starburst",
           "bbox": [
             34,
-            753,
+            67,
             150,
-            863
+            177
           ],
-          "pixel_sha256": "cbe35d78f92be03a22a065df76e5956b3367d7fe66239891dbad5bc7eb06a56f"
+          "pixel_sha256": "dbca913e561731f488db5761f9a68651e5272a229a2953c8e47422b0a3d2a000"
         }
       ],
       "used_motifs": [
@@ -1019,15 +1019,15 @@
           "fit": "contain",
           "container_bbox": [
             88,
-            236,
+            280,
             537,
             508
           ],
           "rendered_bbox": [
-            88,
-            245,
-            537,
-            498
+            110,
+            280,
+            515,
+            508
           ],
           "source_size": [
             2560,
@@ -1040,15 +1040,15 @@
           "fit": "contain",
           "container_bbox": [
             575,
-            236,
+            280,
             1024,
             508
           ],
           "rendered_bbox": [
-            575,
-            245,
-            1024,
-            498
+            597,
+            280,
+            1002,
+            508
           ],
           "source_size": [
             2560,
@@ -1061,15 +1061,15 @@
           "fit": "contain",
           "container_bbox": [
             1062,
-            236,
+            280,
             1511,
             508
           ],
           "rendered_bbox": [
-            1062,
-            245,
-            1511,
-            498
+            1084,
+            280,
+            1489,
+            508
           ],
           "source_size": [
             2560,
@@ -1082,15 +1082,15 @@
           "fit": "contain",
           "container_bbox": [
             88,
-            546,
+            590,
             537,
             818
           ],
           "rendered_bbox": [
-            88,
-            555,
-            537,
-            808
+            110,
+            590,
+            515,
+            818
           ],
           "source_size": [
             2560,
@@ -1103,15 +1103,15 @@
           "fit": "contain",
           "container_bbox": [
             575,
-            546,
+            590,
             1024,
             818
           ],
           "rendered_bbox": [
-            575,
-            555,
-            1024,
-            808
+            597,
+            590,
+            1002,
+            818
           ],
           "source_size": [
             2560,
@@ -1124,15 +1124,15 @@
           "fit": "contain",
           "container_bbox": [
             1062,
-            546,
+            590,
             1511,
             818
           ],
           "rendered_bbox": [
-            1062,
-            555,
-            1511,
-            808
+            1084,
+            590,
+            1489,
+            818
           ],
           "source_size": [
             2560,
@@ -1237,8 +1237,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.jpg",
-      "png_rgb_sha256": "939ef09e41bd3d01f3ab45d50527554809d0190d3f3465080c14c9d52222fe25",
-      "jpg_sha256": "bdd030f4d501b9ce18a34482487612858b64b0b6d0894309fcaa2c62a0d401c3",
+      "png_rgb_sha256": "df94f1998ec0a05eb4b21f3c1c5e334a93ab3862136f72a347e71dc865248598",
+      "jpg_sha256": "4c99a6ea4d9c9164a742bdb5cd3d563f59957a734a052b4385f397bd631a660f",
       "text_overflows": [],
       "text_box_count": 2,
       "visible_containers": [],
@@ -1258,12 +1258,12 @@
           "type": "semantic-motif",
           "semantic_id": "starburst",
           "bbox": [
-            34,
+            1450,
             753,
-            150,
+            1566,
             863
           ],
-          "pixel_sha256": "290bdb58385e2c2f55fe82c594e527973c3743a3a3a6fd9a53f311f8013ccd80"
+          "pixel_sha256": "116105c0cc25697fa9690cd96eda1768b533117954f84a6784f9baa864492058"
         }
       ],
       "used_motifs": [

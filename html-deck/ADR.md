@@ -58,5 +58,6 @@
 
 - QA v2.3 从缩小后的页面像素建立扁平填色连通域，独立发现卡片候选；候选必须能匹配 `visible_containers`，已登记容器则继续接受真实裁片占用检查，形成发现与登记的双向约束。
 - QA v2.4 将项目原图与衍生设计拆成两条可审计链路：项目原图只能以 `image_placements.fit=contain` 进入内容容器，QA 从 manifest 独立复算比例并拒绝 `bg_image`、背景式超大容器、裁切与变形；背景、卡片、时间轴和转场则登记 `derived_components`，证明其来自项目母题的重新绘制，而非把项目位图直接铺底。
+- QA v2.5 不再把“实际边界比例与原图一致”视为图片完整性的充分条件。QA 对 manifest 原图独立执行 EXIF 方向归一化、RGB 转换和 Pillow LANCZOS `contain`，在每个 `rendered_bbox` 生成完整像素基准并与页面裁片精确比较；保持原宽高比的中心裁切即使同步更新 PNG 审计、render report、JPEG、PDF 与全部哈希也必须拒绝。
 - QA 在自身代码中维护 badge、ribbon、star、orbit、satellite、rocket、leaf 的别名、允许形状模板与排他颜色特征，不引用渲染器的绘制函数或自报裁片哈希作为语义真值。
 - 对抗测试模拟不可信渲染侧：漏报大空卡与“绿色叶片伪装 badge”均同步更新 PNG 审计、渲染报告、JPEG、PDF 和相关指纹；只有 QA 的独立像素发现/模板门禁负责拒绝。

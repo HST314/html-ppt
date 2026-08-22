@@ -159,10 +159,26 @@ def draw_semantic_motifs(page, page_no):
     overlay = Image.new("RGBA", page.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
     w, h = page.size
-    anchors = [(w - 155, 122), (92, h - 92)]
+    preferred_anchors = (
+        ((w - 155, 122), (92, 122), (w - 92, h - 92), (92, h - 92)),
+        ((92, h - 92), (w - 92, h - 92), (92, 122), (w - 155, 122)),
+    )
     color = hex_rgb(PALETTE["blue"]) + (72,)
     accent = hex_rgb(PALETTE["gold"]) + (92,)
-    for motif, (cx, cy) in zip(motifs, anchors):
+    for motif_index, motif in enumerate(motifs):
+        candidates = preferred_anchors[min(motif_index, len(preferred_anchors) - 1)]
+        cx, cy = candidates[0]
+        for candidate_x, candidate_y in candidates:
+            candidate_bbox = (candidate_x - 58, candidate_y - 55, candidate_x + 58, candidate_y + 55)
+            if not any(
+                candidate_bbox[0] < placement["rendered_bbox"][2]
+                and candidate_bbox[2] > placement["rendered_bbox"][0]
+                and candidate_bbox[1] < placement["rendered_bbox"][3]
+                and candidate_bbox[3] > placement["rendered_bbox"][1]
+                for placement in IMAGE_PLACEMENTS
+            ):
+                cx, cy = candidate_x, candidate_y
+                break
         bbox = [cx - 58, cy - 55, cx + 58, cy + 55]
         if motif in {"badge", "medal", "徽章", "勋章"}:
             draw.polygon(((cx - 20, cy - 35), (cx, cy + 5), (cx + 20, cy - 35)), fill=color)
@@ -487,10 +503,12 @@ def render_gallery(slide, images, size, page_no, total):
         col, row = index % cols, index // cols
         x, y = x0 + col * (cell_w + gap), y0 + row * (cell_h + gap)
         derived_card(draw, (x, y, x + cell_w, y + cell_h), 18, "#E3D7BF", "#CFB990", 2)
-        place_project_image(page, item, (x + 10, y + 10, x + cell_w - 10, y + cell_h - 10), "gallery-evidence", PALETTE["ink"])
         badge = str(item.get("id") or index + 1)
-        rounded(draw, (x + 16, y + 16, x + 152, y + 51), 14, PALETTE["ink"])
-        draw.text((x + 30, y + 22), badge[:12], font=font(15, True), fill=PALETTE["white"])
+        rounded(draw, (x + 16, y + 12, x + 152, y + 47), 14, PALETTE["ink"])
+        draw.text((x + 30, y + 18), badge[:12], font=font(15, True), fill=PALETTE["white"])
+        # Reserve a separate header strip: labels and decorative motifs must
+        # never cover the source-derived rendered_bbox used for intactness QA.
+        place_project_image(page, item, (x + 10, y + 54, x + cell_w - 10, y + cell_h - 10), "gallery-evidence", PALETTE["ink"])
     return page
 
 

@@ -12,7 +12,7 @@ from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image, ImageChops, ImageDraw, ImageStat
+    from PIL import Image, ImageChops, ImageDraw, ImageOps, ImageStat
     from pypdf import PdfReader
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -431,7 +431,7 @@ def semantic_contract_failures(plan, manifest):
     return failures, keywords, motifs, evidence
 
 
-def project_image_failures(slide, audit, report_row, manifest_index, page, page_size):
+def project_image_failures(slide, audit, report_row, manifest_index, page, page_image):
     """Independently enforce intact, contained source images and derived backgrounds."""
     failures = []
     if slide.get("bg_image"):
@@ -443,7 +443,7 @@ def project_image_failures(slide, audit, report_row, manifest_index, page, page_
     placed_ids = [str(row.get("image_id") or "") for row in placements]
     if Counter(placed_ids) != Counter(expected_ids):
         failures.append(f"第 {page} 页项目图片放置清单未逐一覆盖 IR 图片")
-    width, height = page_size
+    width, height = page_image.size
     for placement in placements:
         image_id_value = str(placement.get("image_id") or "")
         row = manifest_index.get(image_id_value)
@@ -466,10 +466,28 @@ def project_image_failures(slide, audit, report_row, manifest_index, page, page_
             source_path = Path(str(row.get("_path") or ""))
             try:
                 with Image.open(source_path) as source:
+                    # This is intentionally QA-owned and mirrors a documented
+                    # file-format contract, not renderer output: normalize EXIF
+                    # orientation, convert to RGB, then LANCZOS-contain the full
+                    # manifest original into the declared rendered rectangle.
+                    source = ImageOps.exif_transpose(source).convert("RGB")
                     source_ratio = source.width / source.height
+                    target_size = (int(round(rx2-rx1)), int(round(ry2-ry1)))
+                    expected = ImageOps.contain(source, target_size, Image.Resampling.LANCZOS)
                 rendered_ratio = (rx2-rx1) / (ry2-ry1)
                 if abs(rendered_ratio / source_ratio - 1) > .015:
                     failures.append(f"第 {page} 页项目图片 {image_id_value} 实际边界比例与原图不一致（疑似变形）")
+                actual = page_image.convert("RGB").crop((int(round(rx1)), int(round(ry1)), int(round(rx2)), int(round(ry2))))
+                if actual.size != expected.size:
+                    failures.append(f"第 {page} 页项目图片 {image_id_value} 实际裁片尺寸与完整 contain 基准不一致")
+                else:
+                    difference = ImageChops.difference(actual, expected)
+                    if difference.getbbox() is not None:
+                        mean_delta = sum(ImageStat.Stat(difference).mean) / 3
+                        failures.append(
+                            f"第 {page} 页项目图片 {image_id_value} 实际裁片与 manifest 原图完整 contain 像素基准不一致"
+                            f"（平均色差 {mean_delta:.2f}）"
+                        )
             except Exception:
                 failures.append(f"第 {page} 页无法读取项目图片 {image_id_value} 以核验完整比例")
     components = audit.get("derived_components") or []
@@ -604,7 +622,7 @@ def main():
                 failures.append(f"第 {index} 页真实像素与 PNG/报告双侧指纹不一致")
             failures.extend(audit_design_failures(audit, index, semantic_keywords, semantic_motifs, semantic_evidence))
             failures.extend(visible_design_failures(image, audit, rows[index - 1], index, semantic_motifs))
-            failures.extend(project_image_failures(slide, audit, rows[index - 1], manifest_index, index, image.size))
+            failures.extend(project_image_failures(slide, audit, rows[index - 1], manifest_index, index, image))
             if index <= len(pdf.pages):
                 binding_failure = pdf_page_binding_failure(pdf.pages[index - 1], image, rows[index - 1], index)
                 if binding_failure:
@@ -632,10 +650,15 @@ def main():
         "project_images_intact_and_not_backgrounds": not any("项目原图" in value or "项目图片" in value or "衍生设计" in value or "项目母题衍生" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.4", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.5", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),
+        "project_image_pixel_policy": {
+            "orientation": "EXIF transpose", "color_mode": "RGB",
+            "scaling": "Pillow ImageOps.contain / LANCZOS",
+            "comparison": "exact RGB pixels within rendered_bbox", "max_mean_abs_delta": 0.0,
+        },
         "checks": checks,
     }
     if failures:
