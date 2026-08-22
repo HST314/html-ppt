@@ -70,7 +70,7 @@ def fixture(root):
         slides.extend((transition, content))
     slides.append(slide(11, "closing", "整改证据链已经闭环", blocks=[], section=None))
     plan = root / "outline.json"
-    write_json(plan, {"schema": "SlidesPlan", "version": "2.1", "theme_recommendation": "tech-dark", "slides": slides})
+    write_json(plan, {"schema": "SlidesPlan", "version": "2.1", "theme_recommendation": "tech-dark", "visual_semantics": {"keywords": ["卫星", "航天"], "motifs": ["satellite", "orbit"], "evidence": {"satellite": "卫星", "orbit": "航天"}}, "slides": slides})
     return plan, manifest
 
 
@@ -132,7 +132,51 @@ def main():
         missing_qa = root / "missing-qa.json"
         run(QA, "--pdf", pdf, "--ir", plan, "--manifest", missing_path, "--render-report", report, "--output", missing_qa, ok=False)
         assert "manifest 图片未被 IR 覆盖" in "\n".join(json.loads(missing_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: structure + palette + provenance + overflow + coverage passed")
+
+        loose_report = json.loads(report.read_text(encoding="utf-8"))
+        loose_row = loose_report["slides"][0]
+        loose_path = root / "loose-text-box.png"
+        with Image.open(loose_row["png"]) as original:
+            loose_audit = json.loads(original.info["image_pdf_audit"])
+            loose_pixels = original.convert("RGB")
+        loose_audit["text_boxes"][0]["ink_fill_ratio"] = 0.08
+        from PIL import PngImagePlugin
+        loose_info = PngImagePlugin.PngInfo()
+        loose_info.add_text("image_pdf_audit", json.dumps(loose_audit, ensure_ascii=False, sort_keys=True))
+        loose_pixels.save(loose_path, pnginfo=loose_info)
+        loose_row["png"] = str(loose_path)
+        loose_report_path = root / "loose-text-render.json"
+        write_json(loose_report_path, loose_report)
+        loose_qa = root / "loose-text-qa.json"
+        run(QA, "--pdf", pdf, "--ir", plan, "--manifest", manifest, "--render-report", loose_report_path, "--output", loose_qa, ok=False)
+        assert "过度留白" in "\n".join(json.loads(loose_qa.read_text(encoding="utf-8"))["failures"])
+
+        unrelated_report = json.loads(report.read_text(encoding="utf-8"))
+        unrelated_row = unrelated_report["slides"][0]
+        unrelated_path = root / "unrelated-decoration.png"
+        with Image.open(unrelated_row["png"]) as original:
+            unrelated_audit = json.loads(original.info["image_pdf_audit"])
+            unrelated_pixels = original.convert("RGB")
+        unrelated_audit["used_motifs"] = ["leaf"]
+        unrelated_info = PngImagePlugin.PngInfo()
+        unrelated_info.add_text("image_pdf_audit", json.dumps(unrelated_audit, ensure_ascii=False, sort_keys=True))
+        unrelated_pixels.save(unrelated_path, pnginfo=unrelated_info)
+        unrelated_row["png"] = str(unrelated_path)
+        unrelated_report_path = root / "unrelated-render.json"
+        write_json(unrelated_report_path, unrelated_report)
+        unrelated_qa = root / "unrelated-qa.json"
+        run(QA, "--pdf", pdf, "--ir", plan, "--manifest", manifest, "--render-report", unrelated_report_path, "--output", unrelated_qa, ok=False)
+        assert "未经项目语义批准" in "\n".join(json.loads(unrelated_qa.read_text(encoding="utf-8"))["failures"])
+
+        unsupported_plan = json.loads(plan.read_text(encoding="utf-8"))
+        unsupported_plan["visual_semantics"] = {"keywords": ["卫星", "航天"], "motifs": ["leaf"], "evidence": {"leaf": "叶片"}}
+        unsupported_path = root / "unsupported-semantics.json"
+        write_json(unsupported_path, unsupported_plan)
+        run(RENDER, "--ir", unsupported_path, "--manifest", manifest, "--output", root / "unsupported.pdf", "--slides-dir", root / "unsupported-slides", "--report", root / "unsupported-render.json", "--strict-images")
+        unsupported_qa = root / "unsupported-qa.json"
+        run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
+        assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
+    print("image-pdf tests: structure + palette + provenance + overflow + coverage + text-fit + semantics passed")
     return 0
 
 

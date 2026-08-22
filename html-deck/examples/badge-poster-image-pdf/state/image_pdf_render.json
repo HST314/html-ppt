@@ -9,9 +9,25 @@
   ],
   "manifest_image_count": 10,
   "used_image_count": 10,
-  "ir_sha256": "21cf25e0c87deef58200ab670081e8768b0bdb5e5fae805831c1e51328b2db56",
+  "ir_sha256": "c31831223c5ac8743479bd1114594bac635465b00e7aff6c51710a4830a16be8",
   "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
   "theme": "business-dark",
+  "visual_semantics": {
+    "keywords": [
+      "徽章",
+      "荣誉",
+      "团队记忆",
+      "仪式感"
+    ],
+    "motifs": [
+      "badge",
+      "starburst"
+    ],
+    "evidence": {
+      "badge": "徽章",
+      "starburst": "星芒"
+    }
+  },
   "used_image_ids": [
     "badge-01",
     "badge-02",
@@ -36,7 +52,12 @@
         "badge-10"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 2,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 2,
@@ -47,7 +68,12 @@
       "title": "四个部分构成完整的徽章叙事",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 9,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 3,
@@ -58,7 +84,12 @@
       "title": "品牌识别",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 4,
@@ -69,7 +100,12 @@
       "title": "一套主视觉统一勋章、绶带与荣誉墙",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 4,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 5,
@@ -80,7 +116,12 @@
       "title": "三项品牌原则让荣誉表达稳定延展",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 4,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 6,
@@ -91,7 +132,12 @@
       "title": "视觉构成",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 7,
@@ -102,7 +148,12 @@
       "title": "四类视觉元素分工明确又彼此协同",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 5,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 8,
@@ -113,7 +164,12 @@
       "title": "从母版到成品遵循四步设计路径",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 5,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 9,
@@ -124,7 +180,12 @@
       "title": "场景应用",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 10,
@@ -142,7 +203,12 @@
         "badge-07"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 11,
@@ -157,7 +223,12 @@
         "badge-04"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 2,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 12,
@@ -168,7 +239,12 @@
       "title": "交付落地",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 13,
@@ -179,7 +255,12 @@
       "title": "交付从规范、适配到复验分三步完成",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 4,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 14,
@@ -190,7 +271,12 @@
       "title": "三项数字证明素材与页面均可追溯",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 7,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     },
     {
       "page": 15,
@@ -201,7 +287,12 @@
       "title": "让每一份荣誉都被看见",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.png",
-      "text_overflows": []
+      "text_overflows": [],
+      "text_box_count": 1,
+      "used_motifs": [
+        "badge",
+        "starburst"
+      ]
     }
   ]
 }

@@ -142,6 +142,46 @@ def section_palette_failure(image, page):
     return f"第 {page} 页章节转场红色主导像素占比 {ratio:.1%}，未延续蓝白视觉体系" if ratio > 0.18 else None
 
 
+def semantic_contract_failures(plan, manifest):
+    semantics = plan.get("visual_semantics") or {}
+    keywords = [str(value).strip() for value in semantics.get("keywords") or [] if str(value).strip()]
+    motifs = [str(value).strip() for value in semantics.get("motifs") or [] if str(value).strip()]
+    evidence = {str(key): str(value).strip() for key, value in (semantics.get("evidence") or {}).items() if str(value).strip()}
+    corpus = " ".join(keywords + [value for slide in plan.get("slides") or [] for value in source_texts(slide)] + [str(row.get("alt") or "") for row in manifest.get("images") or []])
+    failures = []
+    if len(keywords) < 2:
+        failures.append("visual_semantics 至少需要 2 个项目主题关键词")
+    if not motifs:
+        failures.append("visual_semantics 未登记与项目主题关联的设计母题")
+    for motif in motifs:
+        source = evidence.get(motif)
+        if not source or source not in corpus:
+            failures.append(f"设计母题 {motif} 缺少来自正文/主题词/manifest alt 的语义证据")
+    return failures, keywords, motifs, evidence
+
+
+def audit_design_failures(audit, page, keywords, motifs, evidence):
+    failures = []
+    boxes = audit.get("text_boxes")
+    if not isinstance(boxes, list) or not boxes:
+        failures.append(f"第 {page} 页缺少紧致文本框审计")
+    else:
+        for box in boxes:
+            width, height = float(box.get("width") or 0), float(box.get("height") or 0)
+            fill = float(box.get("ink_fill_ratio") or 0)
+            if width <= 0 or height <= 0 or fill < 0.45:
+                failures.append(f"第 {page} 页文本框与文字量不协调（过度留白）")
+                break
+    if audit.get("semantic_keywords") != keywords or audit.get("approved_motifs") != motifs or audit.get("semantic_evidence") != evidence:
+        failures.append(f"第 {page} 页主题语义审计与 IR 不一致")
+    used = audit.get("used_motifs") or []
+    if not used:
+        failures.append(f"第 {page} 页未使用项目主题设计母题")
+    elif any(value not in motifs for value in used):
+        failures.append(f"第 {page} 页使用了未经项目语义批准的装饰元素")
+    return failures
+
+
 def main():
     args = parse_args()
     if DEPENDENCY_ERROR:
@@ -151,6 +191,8 @@ def main():
     manifest_rows = manifest.get("images") or []
     manifest_ids = [image_id(row) for row in manifest_rows]
     failures = []
+    semantic_failures, semantic_keywords, semantic_motifs, semantic_evidence = semantic_contract_failures(plan, manifest)
+    failures.extend(semantic_failures)
     structure_failures = story_structure_failures(slides)
     failures.extend(structure_failures)
     palette_failures = []
@@ -225,6 +267,7 @@ def main():
                 failures.append(f"第 {index} 页 PNG 未按蓝图/role 渲染")
             if audit.get("text_overflows"):
                 failures.append(f"第 {index} 页渲染发生文字截断/省略")
+            failures.extend(audit_design_failures(audit, index, semantic_keywords, semantic_motifs, semantic_evidence))
             if slide.get("role") == "section":
                 palette_failure = section_palette_failure(image, index)
                 if palette_failure:
@@ -243,9 +286,11 @@ def main():
         "blueprint_and_roles_supported": not any("blueprint" in value or "role/pattern" in value or "蓝图/role" in value for value in failures),
         "toc_sections_complete": not structure_failures,
         "section_palette_consistent": not palette_failures,
+        "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value for value in failures),
+        "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.0", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.1", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

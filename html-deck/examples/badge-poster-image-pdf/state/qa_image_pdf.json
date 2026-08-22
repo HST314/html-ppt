@@ -1,10 +1,10 @@
 {
   "schema": "ImagePdfQA",
-  "version": "2.0",
+  "version": "2.1",
   "route": "image-pdf",
   "status": "pass",
   "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",
-  "ir_sha256": "21cf25e0c87deef58200ab670081e8768b0bdb5e5fae805831c1e51328b2db56",
+  "ir_sha256": "c31831223c5ac8743479bd1114594bac635465b00e7aff6c51710a4830a16be8",
   "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
   "page_count": 15,
   "manifest_image_count": 10,
@@ -16,6 +16,8 @@
     "text_complete_and_within_capacity": true,
     "blueprint_and_roles_supported": true,
     "toc_sections_complete": true,
-    "section_palette_consistent": true
+    "section_palette_consistent": true,
+    "text_boxes_fit_content": true,
+    "visual_elements_semantically_grounded": true
   }
 }

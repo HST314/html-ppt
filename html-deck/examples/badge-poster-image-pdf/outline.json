@@ -15,6 +15,11 @@
       "white": "#FFFFFF"
     }
   },
+  "visual_semantics": {
+    "keywords": ["徽章", "荣誉", "团队记忆", "仪式感"],
+    "motifs": ["badge", "starburst"],
+    "evidence": {"badge": "徽章", "starburst": "星芒"}
+  },
   "source": {"deck": "deck.md", "manifest": "images/manifest.json", "blueprints": "state/visual_blueprints.md"},
   "slides": [
     {"page": 1, "role": "cover", "title": "荣誉有形：把徽章变成团队共同记忆", "section": null, "blocks": [], "images": [], "bg_image": {"id": "badge-10"}, "takeaway": ""},

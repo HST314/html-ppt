@@ -21,6 +21,8 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 - Agent 只能选择 `references/COMPONENTS.md` 中登记的 role 组件和 `assets/components/typography.css` 中登记的装饰组件，禁止临场发明版式。
 <!-- TASK-003 -->- 所有 PPT 生成必须走「执行流程总线」七阶段流水线：项目理解 → 故事线分析 → 页面任务定义 → 页面逻辑判断 → 视觉结构选择 → HTML 生成 → 质量检查；页面逻辑分析（总线③④步）为必经阶段，任何 deck 不得跳过。
 - 所有中间产物落盘：`outline.json`、`state/run_state.json`、`state/qa_history.jsonl`、`qa_report.md`；<!-- TASK-003 -->流程产物另含 `state/storyline.md`、`state/page_semantics.md`、`state/visual_blueprints.md`。
+- 图片 PDF 路线的 IR 必须登记 `visual_semantics.keywords`（至少 2 个项目主题词）、`visual_semantics.motifs`（项目专属插图/装饰母题）与逐母题 `visual_semantics.evidence`。每条 evidence 必须能在项目正文、主题词或 manifest alt 中逐字找到；例如卫星项目可用卫星/轨道/火箭，不得套用无关叶片、城市或抽象库存装饰。渲染器只使用登记母题，逐页将实际使用项写入 PNG 审计。
+- 图片 PDF 路线的文本框必须由文字实际行数和字形边界确定紧致尺寸；禁止把整列/整卡预留区登记为文本框。逐页 PNG 审计必须写入 `text_boxes` 的实际宽高、字号、行数与墨迹填充率；填充率低于 45% 视为过度留白，须调整字号、换行或位置后重渲染。
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
