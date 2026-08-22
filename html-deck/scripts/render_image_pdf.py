@@ -29,8 +29,10 @@ THEMES = {
 }
 TEXT_OVERFLOWS = []
 TEXT_BOX_AUDIT = []
+VISIBLE_CONTAINERS = []
 ACTIVE_SEMANTICS = {"keywords": [], "motifs": [], "evidence": {}}
 USED_MOTIFS = []
+VISUAL_ELEMENTS = []
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -138,6 +140,15 @@ def compact_panel_height(draw, texts, typeface, width, padding=44, line_gap=8, i
     return max(minimum, min(maximum, needed))
 
 
+def record_container(box, texts, kind="card", padding=12):
+    """Register the boundary users actually see, not a synthetic glyph frame."""
+    x1, y1, x2, y2 = (int(round(value)) for value in box)
+    VISIBLE_CONTAINERS.append({
+        "kind": kind, "bbox": [x1, y1, x2, y2], "padding": int(padding),
+        "texts": [str(value) for value in texts if str(value).strip()],
+    })
+
+
 def draw_semantic_motifs(page, page_no):
     """Draw small vector motifs selected by project semantics, never stock decoration."""
     motifs = list(dict.fromkeys(ACTIVE_SEMANTICS.get("motifs") or []))[:2]
@@ -150,6 +161,7 @@ def draw_semantic_motifs(page, page_no):
     color = hex_rgb(PALETTE["blue"]) + (72,)
     accent = hex_rgb(PALETTE["gold"]) + (92,)
     for motif, (cx, cy) in zip(motifs, anchors):
+        bbox = [cx - 58, cy - 55, cx + 58, cy + 55]
         if motif in {"badge", "medal", "徽章", "勋章"}:
             draw.polygon(((cx - 20, cy - 35), (cx, cy + 5), (cx + 20, cy - 35)), fill=color)
             draw.ellipse((cx - 29, cy - 10, cx + 29, cy + 48), outline=accent, width=6)
@@ -181,7 +193,12 @@ def draw_semantic_motifs(page, page_no):
         else:
             continue
         USED_MOTIFS.append(motif)
-    return Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
+        VISUAL_ELEMENTS.append({"type": "semantic-motif", "semantic_id": motif, "bbox": bbox})
+    composed = Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
+    for element in VISUAL_ELEMENTS:
+        crop = composed.crop(tuple(element["bbox"]))
+        element["pixel_sha256"] = hashlib.sha256(crop.tobytes()).hexdigest()
+    return composed
 
 
 def rounded(draw, box, radius, fill, outline=None, width=1):
@@ -456,9 +473,10 @@ def render_compare(slide, images, size, page_no, total):
     for col, group in enumerate(groups):
         x1 = 78 + col * ((w - 176) // 2 + 20)
         x2 = 78 + (col + 1) * ((w - 176) // 2) + col * 20
-        panel_h = compact_panel_height(draw, ["• " + value for value in group], body_font, x2 - x1 - 56, padding=28, item_gap=18, minimum=200, maximum=h - top - 80) + 52
+        panel_h = compact_panel_height(draw, ["• " + value for value in group], body_font, x2 - x1 - 56, padding=24, item_gap=16, minimum=120, maximum=h - top - 80) + 52
         panel_y = top + max(0, (h - 76 - top - panel_h) // 2)
         rounded(draw, (x1, panel_y, x2, panel_y + panel_h), 24, PALETTE["paper"], PALETTE["red"] if col == 0 else PALETTE["blue"], 3)
+        record_container((x1, panel_y, x2, panel_y + panel_h), ["A / BEFORE" if col == 0 else "B / AFTER", *group], "compare-card")
         draw.text((x1 + 26, panel_y + 24), "A / BEFORE" if col == 0 else "B / AFTER", font=font(22, True), fill=PALETTE["red"] if col == 0 else PALETTE["blue"])
         y = panel_y + 78
         for value in group[:4]:
@@ -483,8 +501,9 @@ def render_timeline(slide, images, size, page_no, total):
         draw.ellipse((x - 28, y - 28, x + 28, y + 28), fill=PALETTE["red"] if index % 2 == 0 else PALETTE["blue"])
         draw.text((x - 10, y - 18), str(index + 1), font=font(24, True), fill=PALETTE["white"])
         box_x = max(78, min(x - 120, w - 318))
-        panel_h = compact_panel_height(draw, [value], font(21, index == 0), 204, padding=24, minimum=128, maximum=225)
+        panel_h = compact_panel_height(draw, [value], font(21, index == 0), 204, padding=20, minimum=84, maximum=170)
         rounded(draw, (box_x, y + 58, box_x + 240, y + 58 + panel_h), 18, PALETTE["paper"], "#D2C09E", 2)
+        record_container((box_x, y + 58, box_x + 240, y + 58 + panel_h), [value], "flow-card")
         draw_text(draw, (box_x + 18, y + 82), value, font(21, index == 0), PALETTE["ink"], 204, 6, 5)
     return page
 
@@ -494,13 +513,24 @@ def render_kpi(slide, images, size, page_no, total):
     w, h = size
     items = flatten_blocks(slide.get("blocks"))[:4] or [slide.get("takeaway") or "关键指标"]
     card_w = (w - 156 - 22 * (len(items) - 1)) // len(items)
+    body_font = font(22)
+    number_font = font(54, True)
+    natural_heights = []
     for index, value in enumerate(items):
-        x = 78 + index * (card_w + 22)
-        rounded(draw, (x, top, x + card_w, h - 80), 24, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
         match = re.search(r"[-+]?\d[\d,.]*\s*(?:%|倍|万|亿|天|项|个)?", value)
         number = match.group(0) if match else f"0{index + 1}"
-        draw_text(draw, (x + 24, top + 55), number, font(54, True), PALETTE["gold"] if index == 0 else PALETTE["red"], card_w - 48, 6, 2)
-        draw_text(draw, (x + 24, top + 175), value, font(22), PALETTE["white"] if index == 0 else PALETTE["ink"], card_w - 48, 7, 6)
+        natural_heights.append(compact_panel_height(draw, [number, value], body_font, card_w - 48, padding=34, line_gap=7, item_gap=28, minimum=238, maximum=330))
+    card_h = max(natural_heights)
+    card_y = top + max(8, (h - 80 - top - card_h) // 2)
+    for index, value in enumerate(items):
+        x = 78 + index * (card_w + 22)
+        box = (x, card_y, x + card_w, card_y + card_h)
+        rounded(draw, box, 24, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
+        match = re.search(r"[-+]?\d[\d,.]*\s*(?:%|倍|万|亿|天|项|个)?", value)
+        number = match.group(0) if match else f"0{index + 1}"
+        record_container(box, [number, value], "kpi-card")
+        draw_text(draw, (x + 24, card_y + 38), number, number_font, PALETTE["gold"] if index == 0 else PALETTE["red"], card_w - 48, 6, 2)
+        draw_text(draw, (x + 24, card_y + 142), value, body_font, PALETTE["white"] if index == 0 else PALETTE["ink"], card_w - 48, 7, 6)
     return page
 
 
@@ -740,7 +770,9 @@ def main():
     for page_no, slide in enumerate(plan["slides"], start=1):
         TEXT_OVERFLOWS.clear()
         TEXT_BOX_AUDIT.clear()
+        VISIBLE_CONTAINERS.clear()
         USED_MOTIFS.clear()
+        VISUAL_ELEMENTS.clear()
         images = resolve_slide_images(slide, index)
         used_ids.update(image_id(item) for item in images if image_id(item))
         page = render_slide(slide, images, (args.width, args.height), page_no, total)
@@ -755,17 +787,20 @@ def main():
             "source_texts": source_texts(slide), "image_ids": [image_id(item) for item in images],
             "text_overflows": list(TEXT_OVERFLOWS),
             "text_boxes": list(TEXT_BOX_AUDIT),
+            "visible_containers": list(VISIBLE_CONTAINERS),
             "semantic_keywords": list(ACTIVE_SEMANTICS["keywords"]),
             "approved_motifs": list(ACTIVE_SEMANTICS["motifs"]),
             "semantic_evidence": dict(ACTIVE_SEMANTICS["evidence"]),
             "used_motifs": list(USED_MOTIFS),
+            "visual_elements": list(VISUAL_ELEMENTS),
+            "rendered_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(),
         }
         pnginfo = PngImagePlugin.PngInfo()
         pnginfo.add_text("image_pdf_audit", json.dumps(audit, ensure_ascii=False, sort_keys=True))
         page.save(png_path, "PNG", optimize=True, pnginfo=pnginfo)
         page.save(jpg_path, "JPEG", quality=args.quality, optimize=True, progressive=True)
         jpegs.append(jpg_path)
-        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "used_motifs": list(USED_MOTIFS)})
+        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS)})
     build_pdf(jpegs, output, args.width, args.height)
     manifest_ids = set(index)
     missing_ids = sorted(manifest_ids - used_ids)

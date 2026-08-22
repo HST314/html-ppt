@@ -11,7 +11,7 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 
 - 默认选择 `html`：`render_deck.py` → `inline_assets.py` → `qa_render.py`。
 - 用户需要“图片 PPT”“逐页图片”或 PDF 审阅/打印稿时，选择 `image-pdf`：`render_image_pdf.py --strict-images` → `qa_image_pdf.py`。
-- 图片路线必须交付 PDF、逐页 PNG、渲染报告和 `qa_image_pdf.json`。QA 必须直接读取 IR 与 manifest，独立重算图片覆盖、蓝图/role、文本容量和逐页 PNG 身份，不信任渲染报告中的汇总字段。
+- 图片路线必须交付 PDF、逐页 PNG/JPEG、渲染报告和 `qa_image_pdf.json`。QA 必须直接读取 IR 与 manifest，独立重算图片覆盖、蓝图/role、文本容量和逐页 PNG 身份；渲染报告只作为逐页路径、容器/元素清单与像素指纹的交叉取证源，不得信任其汇总结论。QA 还必须提取 PDF 每页内嵌栅格，与对应 JPEG 文件及 PNG 像素逐页绑定，任一侧不一致即拒绝。
 - 图片路线的目录节点必须与章节转场按标题、顺序一一对应，每个目录章节至少包含一页归属正确的内容页；缺章、空章或跨章错挂均由 QA 阻断。章节转场必须继承全稿视觉体系，默认使用蓝白背景与少量金色强调，禁止红色主导的整页底色；QA 对转场 PNG 独立计算红色主导像素占比。
 - 图片路线依赖 Pillow、reportlab、pypdf：`python3 -m pip install Pillow reportlab pypdf`。依赖缺失时不得把 PDF 标记为已验证。
 
@@ -22,7 +22,8 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 <!-- TASK-003 -->- 所有 PPT 生成必须走「执行流程总线」七阶段流水线：项目理解 → 故事线分析 → 页面任务定义 → 页面逻辑判断 → 视觉结构选择 → HTML 生成 → 质量检查；页面逻辑分析（总线③④步）为必经阶段，任何 deck 不得跳过。
 - 所有中间产物落盘：`outline.json`、`state/run_state.json`、`state/qa_history.jsonl`、`qa_report.md`；<!-- TASK-003 -->流程产物另含 `state/storyline.md`、`state/page_semantics.md`、`state/visual_blueprints.md`。
 - 图片 PDF 路线的 IR 必须登记 `visual_semantics.keywords`（至少 2 个项目主题词）、`visual_semantics.motifs`（项目专属插图/装饰母题）与逐母题 `visual_semantics.evidence`。每条 evidence 必须能在项目正文、主题词或 manifest alt 中逐字找到；例如卫星项目可用卫星/轨道/火箭，不得套用无关叶片、城市或抽象库存装饰。渲染器只使用登记母题，逐页将实际使用项写入 PNG 审计。
-- 图片 PDF 路线的文本框必须由文字实际行数和字形边界确定紧致尺寸；禁止把整列/整卡预留区登记为文本框。逐页 PNG 审计必须写入 `text_boxes` 的实际宽高、字号、行数与墨迹填充率；填充率低于 45% 视为过度留白，须调整字号、换行或位置后重渲染。
+- 图片 PDF 路线必须按文字实际行数确定用户真实可见卡片/面板的紧致尺寸，禁止只把字形自身边界登记为“文本框”来绕过卡片留白。逐页 PNG 与渲染报告必须同时写入 `visible_containers`（可见边界、关联文字、内边距）；QA 从容器内部真实像素独立复算文字占用，宽/高占用不足或清单两侧不一致即拒绝。
+- 每个主题插图/装饰必须写入 `visual_elements`（语义 ID、真实边界、裁片像素指纹），并与 `visual_semantics.motifs`、PNG 实际裁片和渲染报告逐项交叉核验。真实像素发生未绑定变化时，`visual_elements_semantically_grounded` 不得通过；“大空卡”“无关叶片”反例必须直接修改渲染像素，不得仅改 PNG 元数据。
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。

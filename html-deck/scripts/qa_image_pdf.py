@@ -11,7 +11,7 @@ from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image
+    from PIL import Image, ImageChops, ImageStat
     from pypdf import PdfReader
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -40,7 +40,7 @@ def parse_args():
     parser.add_argument("--pdf", required=True)
     parser.add_argument("--ir", required=True)
     parser.add_argument("--manifest", required=True)
-    parser.add_argument("--render-report", required=True, help="仅用于定位逐页 PNG；覆盖结论不从报告读取")
+    parser.add_argument("--render-report", required=True, help="用于定位逐页 PNG/JPEG 并与 PNG 内嵌审计交叉核验；不读取其汇总结论")
     parser.add_argument("--output", required=True)
     parser.add_argument("--min-width", type=int, default=1600)
     parser.add_argument("--min-height", type=int, default=900)
@@ -142,6 +142,87 @@ def section_palette_failure(image, page):
     return f"第 {page} 页章节转场红色主导像素占比 {ratio:.1%}，未延续蓝白视觉体系" if ratio > 0.18 else None
 
 
+def rgb_sha256(image):
+    return hashlib.sha256(image.convert("RGB").tobytes()).hexdigest()
+
+
+def pixel_content_extent(image, bbox, padding):
+    """Measure visible ink inside a flat rendered container from pixels alone."""
+    x1, y1, x2, y2 = (int(value) for value in bbox)
+    pad = max(8, int(padding or 0))
+    crop = image.convert("RGB").crop((x1 + pad, y1 + pad, x2 - pad, y2 - pad))
+    if crop.width <= 0 or crop.height <= 0:
+        return 0.0, 0.0
+    colors = Counter(crop.resize((max(1, crop.width // 4), max(1, crop.height // 4))).getdata())
+    background = colors.most_common(1)[0][0]
+    points = []
+    for y in range(crop.height):
+        for x in range(crop.width):
+            pixel = crop.getpixel((x, y))
+            if sum(abs(pixel[channel] - background[channel]) for channel in range(3)) >= 80:
+                points.append((x, y))
+    if not points:
+        return 0.0, 0.0
+    xs, ys = zip(*points)
+    return (max(xs) - min(xs) + 1) / crop.width, (max(ys) - min(ys) + 1) / crop.height
+
+
+def visible_design_failures(image, audit, report_row, page, motifs):
+    failures = []
+    containers = audit.get("visible_containers") or []
+    if containers != (report_row.get("visible_containers") or []):
+        failures.append(f"第 {page} 页可见容器清单在 PNG 与渲染报告间不一致")
+    required = audit.get("role") in {"compare", "timeline", "kpi"}
+    if required and not containers:
+        failures.append(f"第 {page} 页缺少真实可见容器清单")
+    for container in containers:
+        bbox = container.get("bbox") or []
+        if len(bbox) != 4 or bbox[2] <= bbox[0] or bbox[3] <= bbox[1]:
+            failures.append(f"第 {page} 页可见容器几何无效")
+            continue
+        width_ratio, height_ratio = pixel_content_extent(image, bbox, container.get("padding"))
+        if not container.get("texts") or height_ratio < 0.34 or width_ratio < 0.10:
+            failures.append(f"第 {page} 页可见容器文字占用过低（像素宽 {width_ratio:.1%} / 高 {height_ratio:.1%}）")
+    elements = audit.get("visual_elements") or []
+    if elements != (report_row.get("visual_elements") or []):
+        failures.append(f"第 {page} 页可核验元素清单在 PNG 与渲染报告间不一致")
+    used = []
+    for element in elements:
+        bbox = element.get("bbox") or []
+        semantic_id = element.get("semantic_id")
+        if len(bbox) != 4 or semantic_id not in motifs:
+            failures.append(f"第 {page} 页存在未获语义批准的可见元素")
+            continue
+        actual = hashlib.sha256(image.convert("RGB").crop(tuple(bbox)).tobytes()).hexdigest()
+        if actual != element.get("pixel_sha256"):
+            failures.append(f"第 {page} 页可见元素像素与元素清单不一致")
+        used.append(semantic_id)
+    if used != (audit.get("used_motifs") or []):
+        failures.append(f"第 {page} 页实际元素清单与设计母题声明不一致")
+    return failures
+
+
+def pdf_page_binding_failure(pdf_page, png_image, report_row, page):
+    """Bind each PDF page to its PNG through the actual embedded raster."""
+    try:
+        candidates = list(pdf_page.images)
+    except Exception as exc:
+        return f"PDF 第 {page} 页无法提取内嵌页面图像：{exc}"
+    if len(candidates) != 1:
+        return f"PDF 第 {page} 页应恰好包含 1 张页面图像，实际 {len(candidates)}"
+    embedded = candidates[0]
+    jpg_path = Path(str(report_row.get("jpg") or ""))
+    if not jpg_path.exists() or digest(jpg_path) != report_row.get("jpg_sha256"):
+        return f"PDF 第 {page} 页对应 JPEG 文件与渲染报告不一致"
+    decoded = embedded.image.convert("RGB")
+    expected = png_image.convert("RGB")
+    if decoded.size != expected.size:
+        return f"PDF 第 {page} 页像素尺寸与逐页 PNG 不一致"
+    difference = ImageChops.difference(decoded, expected)
+    mean_delta = sum(ImageStat.Stat(difference).mean) / 3
+    return f"PDF 第 {page} 页像素与逐页 PNG 不一致（平均色差 {mean_delta:.2f}）" if mean_delta > 5.0 else None
+
+
 def semantic_contract_failures(plan, manifest):
     semantics = plan.get("visual_semantics") or {}
     keywords = [str(value).strip() for value in semantics.get("keywords") or [] if str(value).strip()]
@@ -229,8 +310,8 @@ def main():
     pdf = PdfReader(args.pdf)
     if len(pdf.pages) != len(slides):
         failures.append(f"PDF 页数 {len(pdf.pages)} != IR 页数 {len(slides)}")
-    for index, page in enumerate(pdf.pages, start=1):
-        width, height = float(page.mediabox.width), float(page.mediabox.height)
+    for index, pdf_page in enumerate(pdf.pages, start=1):
+        width, height = float(pdf_page.mediabox.width), float(pdf_page.mediabox.height)
         if height <= 0 or abs(width / height - 16 / 9) > 0.01:
             failures.append(f"PDF 第 {index} 页不是 16:9：{width:.2f}×{height:.2f}pt")
 
@@ -249,6 +330,7 @@ def main():
             continue
         png_hashes.append(digest(path))
         with Image.open(path) as image:
+            image.load()
             if image.width < args.min_width or image.height < args.min_height or abs(image.width / image.height - 16 / 9) > 0.01:
                 failures.append(f"第 {index} 页 PNG 尺寸/比例不合格：{image.size}")
             try:
@@ -267,7 +349,15 @@ def main():
                 failures.append(f"第 {index} 页 PNG 未按蓝图/role 渲染")
             if audit.get("text_overflows"):
                 failures.append(f"第 {index} 页渲染发生文字截断/省略")
+            actual_rgb_hash = rgb_sha256(image)
+            if actual_rgb_hash != audit.get("rendered_rgb_sha256") or actual_rgb_hash != rows[index - 1].get("png_rgb_sha256"):
+                failures.append(f"第 {index} 页真实像素与 PNG/报告双侧指纹不一致")
             failures.extend(audit_design_failures(audit, index, semantic_keywords, semantic_motifs, semantic_evidence))
+            failures.extend(visible_design_failures(image, audit, rows[index - 1], index, semantic_motifs))
+            if index <= len(pdf.pages):
+                binding_failure = pdf_page_binding_failure(pdf.pages[index - 1], image, rows[index - 1], index)
+                if binding_failure:
+                    failures.append(binding_failure)
             if slide.get("role") == "section":
                 palette_failure = section_palette_failure(image, index)
                 if palette_failure:
@@ -286,11 +376,11 @@ def main():
         "blueprint_and_roles_supported": not any("blueprint" in value or "role/pattern" in value or "蓝图/role" in value for value in failures),
         "toc_sections_complete": not structure_failures,
         "section_palette_consistent": not palette_failures,
-        "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value for value in failures),
-        "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value for value in failures),
+        "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value or "可见容器" in value or "文字占用" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
+        "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value or "元素清单" in value or "可见元素" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.1", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.2", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

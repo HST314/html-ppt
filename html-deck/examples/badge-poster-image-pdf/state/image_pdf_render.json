@@ -52,8 +52,36 @@
         "badge-10"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.jpg",
+      "png_rgb_sha256": "9a52530e5c6087d00dcdbc888267fdd4bafbeb9eccc9e65326b659dae17ecc56",
+      "jpg_sha256": "1daf9e9f1602ee03fd5acbbd195541e8fcd7d18e6fab2d9c15c87080f684204e",
       "text_overflows": [],
       "text_box_count": 2,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "0c359b497df42fa049068437a333fdf11db1cf5cb38d695297f6c87efcf3deef"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "6783cb3ed35650d21702a0de86b16cb07e874e9385cfabfdab1db43b32237c75"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -68,8 +96,36 @@
       "title": "四个部分构成完整的徽章叙事",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.jpg",
+      "png_rgb_sha256": "f270f4e18e23ef0ddddb0b88321fba273a2b0ea0ef812773aba70908a5e193af",
+      "jpg_sha256": "a20a009105e4e02419fa5d5902aa77bc8dd0a2e5244b02bedd58b3ef7182d3b0",
       "text_overflows": [],
       "text_box_count": 9,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "f59931ed093cf8b3ade6c66893f8ab983bbd8bc9b7c25eb519dda1d066261c9d"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "ca765ee5153f5c52a5a44964ec884143c00d828f095a95f059f93b34c701cd04"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -84,8 +140,36 @@
       "title": "品牌识别",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.jpg",
+      "png_rgb_sha256": "082408106d6ff3476ddf3171176632bcf548c27fae7cc5bf8171546e63caf52b",
+      "jpg_sha256": "e0c2c8e6975dab5a87c36248367c889bd492385bde67d9f5f67159a6a85c9b33",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -100,8 +184,36 @@
       "title": "一套主视觉统一勋章、绶带与荣誉墙",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.jpg",
+      "png_rgb_sha256": "041283b03803229884730359d5ffae2473f0a13e2eb76fd0f578c0a1c5c80bf6",
+      "jpg_sha256": "a84ac5411f9d62a040e326751540306e59f50b2cfac8dc00945831200d2dd28b",
       "text_overflows": [],
       "text_box_count": 4,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -116,8 +228,36 @@
       "title": "三项品牌原则让荣誉表达稳定延展",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.jpg",
+      "png_rgb_sha256": "8f2920a2a34494b1e38d17e5d4764fb6a6a4eae86db7d22a8cdf661ae23eb175",
+      "jpg_sha256": "307fa776e69f1687ff127ad7fc36c1ad9f7f0ec399a36bdb0905fdb3a44d6f36",
       "text_overflows": [],
       "text_box_count": 4,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -132,8 +272,36 @@
       "title": "视觉构成",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.jpg",
+      "png_rgb_sha256": "1319c8d20da6ca4dd87d091ec033b551f1201cb5d512dab1f70de8891bf1efd8",
+      "jpg_sha256": "557694fbd923bf7142c8d3de5c7827a1801caeaff0f7e2251265227f07ceb3c2",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -148,8 +316,67 @@
       "title": "四类视觉元素分工明确又彼此协同",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.jpg",
+      "png_rgb_sha256": "0824ae4285014538614457da50e2b7d2fea3a7c5e8398878063f98eb3144c15f",
+      "jpg_sha256": "161dd95871afd89a4feb0182beee7e0592202e32353a58acc21e633df056ec05",
       "text_overflows": [],
       "text_box_count": 5,
+      "visible_containers": [
+        {
+          "kind": "compare-card",
+          "bbox": [
+            78,
+            448,
+            790,
+            620
+          ],
+          "padding": 12,
+          "texts": [
+            "A / BEFORE",
+            "徽章：承载荣誉等级",
+            "绶带：承载姓名与称号"
+          ]
+        },
+        {
+          "kind": "compare-card",
+          "bbox": [
+            810,
+            448,
+            1522,
+            620
+          ],
+          "padding": 12,
+          "texts": [
+            "B / AFTER",
+            "星芒：建立仪式焦点",
+            "底纹：维持系列秩序"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -164,8 +391,89 @@
       "title": "从母版到成品遵循四步设计路径",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.jpg",
+      "png_rgb_sha256": "256314cd369ae0b6e904275dd710a9c4e4ff9e4fd70c81a24a3737eacc3dc431",
+      "jpg_sha256": "219f6cd073af1fff831c9f0b8fd4187b10138e22f6e640c9df22324e066d8e22",
       "text_overflows": [],
       "text_box_count": 5,
+      "visible_containers": [
+        {
+          "kind": "flow-card",
+          "bbox": [
+            78,
+            373,
+            318,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "确定徽章轮廓"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            456,
+            373,
+            696,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "建立信息层级"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            903,
+            373,
+            1143,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "配置色彩材质"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "完成多尺寸适配"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -180,8 +488,36 @@
       "title": "场景应用",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.jpg",
+      "png_rgb_sha256": "46ae17f7354ddf97512c8446df01b871a9dca1b58fb27a238795419197f0bfa7",
+      "jpg_sha256": "2fc05c895780170ac1312286135d9e1e28bdf48bc52d844394949a0b327f5156",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -203,8 +539,36 @@
         "badge-07"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
+      "png_rgb_sha256": "d53a2dfce9bbf63e667a170ba20f0198446559f926271402fe43b14e1cde105a",
+      "jpg_sha256": "5ee21f0476ae26cc32d537e958df5846449b0d2c2431647c149c11a1385c820a",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "cbe35d78f92be03a22a065df76e5956b3367d7fe66239891dbad5bc7eb06a56f"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -223,8 +587,36 @@
         "badge-04"
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.jpg",
+      "png_rgb_sha256": "02edb0cd5a59075cd281f0a889cd613d90da4705fea7348f72be9e50da3665cd",
+      "jpg_sha256": "ee799ca8fe0e6a0b138f6a3fb3b0979deae0ffbc0d992089e75e153d6d772915",
       "text_overflows": [],
       "text_box_count": 2,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "596470d3ad2e486a4f332cc22433b7d7c3d3172d6ffd4bbaf56b76f295f66f6f"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -239,8 +631,36 @@
       "title": "交付落地",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.jpg",
+      "png_rgb_sha256": "b82d89ea9cd36438ace315e8f47bdba31500889e43abb61a3d064baed60b010d",
+      "jpg_sha256": "98065d7c403f302a3a5f102d912def187ee73002d05fb8b3860b384e62bc8e73",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "8707bd9234c5de4434eb00cf7021aa6c41d5123420aa821f85988cac808dd610"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "8af9ad68e9cf1d4d9ef1ebb4a1453721a50d81184eabdeca819bff2de27ef74e"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -255,8 +675,76 @@
       "title": "交付从规范、适配到复验分三步完成",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.jpg",
+      "png_rgb_sha256": "8a25d67053f29bcfdb370300c5f5f6364885e1e1a9536f59dad8c8bea8ef6811",
+      "jpg_sha256": "a6226a54219de888505b4ed82da8d23e1fd16500b368c1144caac470b113169c",
       "text_overflows": [],
       "text_box_count": 4,
+      "visible_containers": [
+        {
+          "kind": "flow-card",
+          "bbox": [
+            78,
+            373,
+            318,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "锁定徽章母版"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            680,
+            373,
+            920,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "适配不同媒介"
+          ]
+        },
+        {
+          "kind": "flow-card",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            457
+          ],
+          "padding": 12,
+          "texts": [
+            "用独立 QA 复验"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -271,8 +759,79 @@
       "title": "三项数字证明素材与页面均可追溯",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.jpg",
+      "png_rgb_sha256": "f26ff110024dba18a0fbeb41a39ef123527958378f65f79e4f6a6314ab137f5c",
+      "jpg_sha256": "0a4b8872daf96f42e58e916b39cd243766ab0f9bd1a6acff1307e323c776127e",
       "text_overflows": [],
       "text_box_count": 7,
+      "visible_containers": [
+        {
+          "kind": "kpi-card",
+          "bbox": [
+            78,
+            413,
+            544,
+            651
+          ],
+          "padding": 12,
+          "texts": [
+            "10 ",
+            "10 张原始素材"
+          ]
+        },
+        {
+          "kind": "kpi-card",
+          "bbox": [
+            566,
+            413,
+            1032,
+            651
+          ],
+          "padding": 12,
+          "texts": [
+            "15 ",
+            "15 页完整演示"
+          ]
+        },
+        {
+          "kind": "kpi-card",
+          "bbox": [
+            1054,
+            413,
+            1520,
+            651
+          ],
+          "padding": 12,
+          "texts": [
+            "100%",
+            "100% manifest 覆盖"
+          ]
+        }
+      ],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "88472003588bd73cb3c033028eba229ba503778c58a2b4cd08c824db34915695"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
@@ -287,8 +846,36 @@
       "title": "让每一份荣誉都被看见",
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.png",
+      "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.jpg",
+      "png_rgb_sha256": "b1e59d1645b5ef140c2e10d98f798da3af3b2307fc7a29fad70ff0f4310c679b",
+      "jpg_sha256": "6ee134bd7c873e51cfe49b91345ed56f1d794fb280901f2757c20bf2b778f8ca",
       "text_overflows": [],
       "text_box_count": 1,
+      "visible_containers": [],
+      "visual_elements": [
+        {
+          "type": "semantic-motif",
+          "semantic_id": "badge",
+          "bbox": [
+            1387,
+            67,
+            1503,
+            177
+          ],
+          "pixel_sha256": "11a2d5aa8fec167cd4b1a21f0577206a26bbb0a3839bb228a3c8da2b0c9840f3"
+        },
+        {
+          "type": "semantic-motif",
+          "semantic_id": "starburst",
+          "bbox": [
+            34,
+            753,
+            150,
+            863
+          ],
+          "pixel_sha256": "29b1d702e2999e643ba51e1562ae0a00766de0810b1304160dbed9b4442b0975"
+        }
+      ],
       "used_motifs": [
         "badge",
         "starburst"
