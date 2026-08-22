@@ -11,7 +11,7 @@ from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps, PngImagePlugin
+    from PIL import Image, ImageDraw, ImageFont, ImageOps, PngImagePlugin
     from reportlab.pdfgen import canvas
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -33,6 +33,8 @@ VISIBLE_CONTAINERS = []
 ACTIVE_SEMANTICS = {"keywords": [], "motifs": [], "evidence": {}}
 USED_MOTIFS = []
 VISUAL_ELEMENTS = []
+IMAGE_PLACEMENTS = []
+DERIVED_COMPONENTS = []
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -249,18 +251,29 @@ def paste_contain(canvas_image, source, box, background=None):
     x1, y1, x2, y2 = map(int, box)
     target = (max(1, x2 - x1), max(1, y2 - y1))
     fitted = ImageOps.contain(source, target, Image.Resampling.LANCZOS)
+    fitted_size = fitted.size
+    px = x1 + (target[0] - fitted.width) // 2
+    py = y1 + (target[1] - fitted.height) // 2
     if background:
         panel = Image.new("RGB", target, background)
         panel.paste(fitted, ((target[0] - fitted.width) // 2, (target[1] - fitted.height) // 2))
         fitted = panel
-    canvas_image.paste(fitted, (x1 + (target[0] - fitted.width) // 2, y1 + (target[1] - fitted.height) // 2))
+        canvas_image.paste(fitted, (x1, y1))
+    else:
+        canvas_image.paste(fitted, (px, py))
+    return [px, py, px + fitted_size[0], py + fitted_size[1]]
 
 
-def paste_cover(canvas_image, source, box):
-    x1, y1, x2, y2 = map(int, box)
-    target = (max(1, x2 - x1), max(1, y2 - y1))
-    fitted = ImageOps.fit(source, target, Image.Resampling.LANCZOS, centering=(0.5, 0.5))
-    canvas_image.paste(fitted, (x1, y1))
+def place_project_image(page, item, box, purpose="content-evidence", background=None):
+    """Place source material intact; project originals never become page backgrounds."""
+    source = open_rgb(item)
+    rendered = paste_contain(page, source, box, background)
+    IMAGE_PLACEMENTS.append({
+        "image_id": image_id(item), "purpose": purpose, "fit": "contain",
+        "container_bbox": [int(round(value)) for value in box],
+        "rendered_bbox": rendered, "source_size": list(source.size),
+    })
+    return rendered
 
 
 def add_texture(page):
@@ -273,6 +286,46 @@ def add_texture(page):
     draw.arc((w - 460, -220, w + 150, 390), 40, 245, fill=hex_rgb(PALETTE["gold"]) + (70,), width=5)
     draw.arc((-180, h - 300, 370, h + 240), 195, 355, fill=hex_rgb(PALETTE["red"]) + (48,), width=4)
     return Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
+
+
+def draw_derived_background(page, role):
+    """Build a page background from project motifs, never from a project bitmap."""
+    overlay = Image.new("RGBA", page.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+    w, h = page.size
+    dark = role in {"cover", "closing"}
+    blue = hex_rgb(PALETTE["blue"]) + ((92 if dark else 42),)
+    gold = hex_rgb(PALETTE["gold"]) + ((76 if dark else 34),)
+    paper = hex_rgb(PALETTE["paper_2"]) + ((22 if dark else 92),)
+    # Ribbon-derived sweep: the same family shapes cards, timelines and transitions.
+    for offset, width in ((0, 18), (30, 7), (58, 3)):
+        draw.arc((-220, h - 390 - offset, w + 260, h + 330 - offset), 198, 344, fill=blue, width=width)
+    # Badge/orbit embossing is intentionally low contrast so content remains primary.
+    cx, cy = int(w * .86), int(h * .24)
+    for radius, color, width in ((210, paper, 3), (154, blue, 5), (92, gold, 3)):
+        draw.ellipse((cx-radius, cy-radius, cx+radius, cy+radius), outline=color, width=width)
+    for angle in range(0, 360, 30):
+        inner, outer = 46, 72
+        x1 = cx + math.cos(math.radians(angle)) * inner
+        y1 = cy + math.sin(math.radians(angle)) * inner
+        x2 = cx + math.cos(math.radians(angle)) * outer
+        y2 = cy + math.sin(math.radians(angle)) * outer
+        draw.line((x1, y1, x2, y2), fill=gold, width=3)
+    DERIVED_COMPONENTS.extend([
+        {"type": "ribbon-sweep", "source_motif": "badge", "bbox": [0, h-420, w, h]},
+        {"type": "badge-orbit", "source_motif": "badge", "bbox": [cx-214, cy-214, cx+214, cy+214]},
+    ])
+    return Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
+
+
+def derived_card(draw, box, radius, fill, outline=None, width=1):
+    """A compact card derived from a badge rim and ribbon notch."""
+    rounded(draw, box, radius, fill, outline, width)
+    x1, y1, x2, _ = map(int, box)
+    notch = min(18, max(8, (x2 - x1) // 24))
+    draw.polygon(((x1, y1 + notch), (x1 + notch, y1), (x1 + notch * 2, y1)), fill=PALETTE["gold"])
+    draw.line((x1 + notch * 2, y1, min(x2 - 12, x1 + notch * 5), y1), fill=PALETTE["blue"], width=3)
+    DERIVED_COMPONENTS.append({"type": "badge-ribbon-card", "source_motif": "badge", "bbox": [x1, y1, x2, int(box[3])]})
 
 
 def flatten_blocks(blocks):
@@ -344,19 +397,11 @@ def slide_chrome(page, page_no, total, section=None, dark=False):
 
 def render_cover(slide, images, size, page_no, total):
     w, h = size
-    page = Image.new("RGB", size, PALETTE["ink"])
+    page = draw_derived_background(Image.new("RGB", size, PALETTE["ink"]), "cover")
     draw = ImageDraw.Draw(page)
     if images:
-        source = ImageEnhance.Color(open_rgb(images[0])).enhance(0.82)
-        paste_cover(page, source, (w * 0.55, 0, w, h))
-        veil = Image.new("RGBA", size, (0, 0, 0, 0))
-        vd = ImageDraw.Draw(veil)
-        vd.rectangle((w * 0.50, 0, w, h), fill=(16, 42, 58, 70))
-        for x in range(int(w * 0.42), int(w * 0.72)):
-            alpha = int(255 * (1 - (x - w * 0.42) / (w * 0.30)))
-            vd.line((x, 0, x, h), fill=(16, 42, 58, max(0, alpha)))
-        page = Image.alpha_composite(page.convert("RGBA"), veil).convert("RGB")
-        draw = ImageDraw.Draw(page)
+        derived_card(draw, (w * .61, 132, w - 76, h - 112), 28, PALETTE["paper_2"], PALETTE["gold"], 3)
+        place_project_image(page, images[0], (w * .625, 150, w - 94, h - 130), "cover-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"), dark=True)
     draw.text((90, 176), "VISUAL STORY · 图片演示", font=font(24, True), fill=PALETTE["gold"])
     y = draw_text(draw, (88, 242), slide.get("title", "Untitled"), font(74, True), PALETTE["paper_2"], int(w * 0.47), 14, 4)
@@ -368,7 +413,7 @@ def render_cover(slide, images, size, page_no, total):
 
 
 def render_toc(slide, size, page_no, total):
-    page = add_texture(Image.new("RGB", size, PALETTE["paper"]))
+    page = draw_derived_background(add_texture(Image.new("RGB", size, PALETTE["paper"])), "toc")
     draw = ImageDraw.Draw(page)
     w, h = size
     slide_chrome(page, page_no, total, slide.get("section"))
@@ -396,7 +441,7 @@ def render_toc(slide, size, page_no, total):
     for index, card in enumerate(cards):
         col, row = index % cols, index // cols
         x, y = x0 + col * (card_w + gap), y0 + row * (card_h + gap)
-        rounded(draw, (x, y, x + card_w, y + card_h), 22, PALETTE["paper_2"], "#D7C6A4", 2)
+        derived_card(draw, (x, y, x + card_w, y + card_h), 22, PALETTE["paper_2"], "#D7C6A4", 2)
         draw.text((x + 24, y + 20), str(card.get("num") or f"{index + 1:02d}"), font=font(36, True), fill=PALETTE["red"])
         title_end = draw_text(draw, (x + 24, y + 70), card.get("title", ""), card_font, PALETTE["ink"], card_w - 48, 5, 2)
         draw_text(draw, (x + 24, max(title_end + 18, y + card_h - 46)), card.get("desc", ""), desc_font, PALETTE["muted"], card_w - 48, 4, 2)
@@ -407,20 +452,16 @@ def render_section(slide, images, size, page_no, total):
     w, h = size
     # Chapter transitions must stay inside the deck's blue/white visual system.
     # Red remains a small accent elsewhere, never a full-page transition field.
-    page = Image.new("RGB", size, PALETTE["paper_2"])
+    page = draw_derived_background(Image.new("RGB", size, PALETTE["paper_2"]), "section")
     draw = ImageDraw.Draw(page)
+    draw.polygon(((w * 0.63, 0), (w, 0), (w, h), (w * 0.48, h)), fill=PALETTE["blue"])
+    draw.ellipse((w - 390, 130, w - 85, 435), outline=PALETTE["white"], width=5)
+    draw.ellipse((w - 315, 205, w - 160, 360), outline=PALETTE["gold"], width=4)
+    draw.line((w * 0.58, h - 125, w - 92, 132), fill=PALETTE["white"], width=3)
+    DERIVED_COMPONENTS.append({"type": "badge-transition", "source_motif": "badge", "bbox": [int(w*.48), 0, w, h]})
     if images:
-        source = ImageEnhance.Color(open_rgb(images[0])).enhance(0.45).filter(ImageFilter.GaussianBlur(1.2))
-        paste_cover(page, source, (w * 0.50, 0, w, h))
-        overlay = Image.new("RGBA", size, (0, 0, 0, 0))
-        ImageDraw.Draw(overlay).rectangle((w * 0.42, 0, w, h), fill=hex_rgb(PALETTE["blue"]) + (138,))
-        page = Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB")
-        draw = ImageDraw.Draw(page)
-    else:
-        draw.polygon(((w * 0.57, 0), (w, 0), (w, h), (w * 0.43, h)), fill=PALETTE["blue"])
-        draw.ellipse((w - 390, 130, w - 85, 435), outline=PALETTE["white"], width=5)
-        draw.ellipse((w - 315, 205, w - 160, 360), outline=PALETTE["gold"], width=4)
-        draw.line((w * 0.58, h - 125, w - 92, 132), fill=PALETTE["white"], width=3)
+        derived_card(draw, (w * .69, 170, w - 92, h - 150), 22, PALETTE["paper_2"], PALETTE["gold"], 3)
+        place_project_image(page, images[0], (w * .70, 184, w - 106, h - 164), "section-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"))
     number = str(slide.get("section_index") or page_no).zfill(2)
     draw.text((82, 130), number, font=font(150, True), fill=PALETTE["blue"])
@@ -431,7 +472,7 @@ def render_section(slide, images, size, page_no, total):
 
 
 def render_gallery(slide, images, size, page_no, total):
-    page = add_texture(Image.new("RGB", size, PALETTE["paper_2"]))
+    page = draw_derived_background(add_texture(Image.new("RGB", size, PALETTE["paper_2"])), "gallery")
     draw = ImageDraw.Draw(page)
     w, h = size
     slide_chrome(page, page_no, total, slide.get("section"))
@@ -445,8 +486,8 @@ def render_gallery(slide, images, size, page_no, total):
     for index, item in enumerate(images):
         col, row = index % cols, index // cols
         x, y = x0 + col * (cell_w + gap), y0 + row * (cell_h + gap)
-        rounded(draw, (x, y, x + cell_w, y + cell_h), 18, "#E3D7BF", "#CFB990", 2)
-        paste_contain(page, open_rgb(item), (x + 10, y + 10, x + cell_w - 10, y + cell_h - 10), PALETTE["ink"])
+        derived_card(draw, (x, y, x + cell_w, y + cell_h), 18, "#E3D7BF", "#CFB990", 2)
+        place_project_image(page, item, (x + 10, y + 10, x + cell_w - 10, y + cell_h - 10), "gallery-evidence", PALETTE["ink"])
         badge = str(item.get("id") or index + 1)
         rounded(draw, (x + 16, y + 16, x + 152, y + 51), 14, PALETTE["ink"])
         draw.text((x + 30, y + 22), badge[:12], font=font(15, True), fill=PALETTE["white"])
@@ -454,7 +495,7 @@ def render_gallery(slide, images, size, page_no, total):
 
 
 def content_frame(slide, size, page_no, total, label):
-    page = add_texture(Image.new("RGB", size, PALETTE["paper_2"]))
+    page = draw_derived_background(add_texture(Image.new("RGB", size, PALETTE["paper_2"])), effective_role(slide))
     draw = ImageDraw.Draw(page)
     w, _ = size
     slide_chrome(page, page_no, total, slide.get("section"))
@@ -475,7 +516,7 @@ def render_compare(slide, images, size, page_no, total):
         x2 = 78 + (col + 1) * ((w - 176) // 2) + col * 20
         panel_h = compact_panel_height(draw, ["• " + value for value in group], body_font, x2 - x1 - 56, padding=24, item_gap=16, minimum=120, maximum=h - top - 80) + 52
         panel_y = top + max(0, (h - 76 - top - panel_h) // 2)
-        rounded(draw, (x1, panel_y, x2, panel_y + panel_h), 24, PALETTE["paper"], PALETTE["red"] if col == 0 else PALETTE["blue"], 3)
+        derived_card(draw, (x1, panel_y, x2, panel_y + panel_h), 24, PALETTE["paper"], PALETTE["red"] if col == 0 else PALETTE["blue"], 3)
         record_container((x1, panel_y, x2, panel_y + panel_h), ["A / BEFORE" if col == 0 else "B / AFTER", *group], "compare-card")
         draw.text((x1 + 26, panel_y + 24), "A / BEFORE" if col == 0 else "B / AFTER", font=font(22, True), fill=PALETTE["red"] if col == 0 else PALETTE["blue"])
         y = panel_y + 78
@@ -494,7 +535,8 @@ def render_timeline(slide, images, size, page_no, total):
     if not items:
         items = [slide.get("takeaway") or "确认关键检查点"]
     y = top + 70
-    draw.line((130, y, w - 130, y), fill=PALETTE["gold"], width=8)
+    draw.arc((90, y - 70, w - 90, y + 100), 190, 350, fill=PALETTE["gold"], width=8)
+    DERIVED_COMPONENTS.append({"type": "orbit-timeline", "source_motif": "badge", "bbox": [90, y-70, w-90, y+100]})
     step_w = (w - 260) / max(1, len(items) - 1)
     for index, value in enumerate(items):
         x = int(130 + index * step_w)
@@ -502,7 +544,7 @@ def render_timeline(slide, images, size, page_no, total):
         draw.text((x - 10, y - 18), str(index + 1), font=font(24, True), fill=PALETTE["white"])
         box_x = max(78, min(x - 120, w - 318))
         panel_h = compact_panel_height(draw, [value], font(21, index == 0), 204, padding=20, minimum=84, maximum=170)
-        rounded(draw, (box_x, y + 58, box_x + 240, y + 58 + panel_h), 18, PALETTE["paper"], "#D2C09E", 2)
+        derived_card(draw, (box_x, y + 58, box_x + 240, y + 58 + panel_h), 18, PALETTE["paper"], "#D2C09E", 2)
         record_container((box_x, y + 58, box_x + 240, y + 58 + panel_h), [value], "flow-card")
         draw_text(draw, (box_x + 18, y + 82), value, font(21, index == 0), PALETTE["ink"], 204, 6, 5)
     return page
@@ -525,7 +567,7 @@ def render_kpi(slide, images, size, page_no, total):
     for index, value in enumerate(items):
         x = 78 + index * (card_w + 22)
         box = (x, card_y, x + card_w, card_y + card_h)
-        rounded(draw, box, 24, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
+        derived_card(draw, box, 24, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
         match = re.search(r"[-+]?\d[\d,.]*\s*(?:%|倍|万|亿|天|项|个)?", value)
         number = match.group(0) if match else f"0{index + 1}"
         record_container(box, [number, value], "kpi-card")
@@ -568,17 +610,14 @@ def render_image_hero(slide, images, size, page_no, total):
     page, draw, top = content_frame(slide, size, page_no, total, "HERO · 主视觉")
     w, h = size
     if images:
-        paste_cover(page, open_rgb(images[0]), (78, top, w - 78, h - 76))
-        veil = Image.new("RGBA", size, (0, 0, 0, 0))
-        ImageDraw.Draw(veil).rectangle((78, h - 265, w - 78, h - 76), fill=(16, 42, 58, 185))
-        page = Image.alpha_composite(page.convert("RGBA"), veil).convert("RGB")
-        draw = ImageDraw.Draw(page)
+        derived_card(draw, (78, top, int(w * .69), h - 76), 24, PALETTE["ink"], PALETTE["gold"], 2)
+        place_project_image(page, images[0], (92, top + 14, int(w * .69) - 14, h - 90), "hero-evidence", PALETTE["ink"])
         for index, extra in enumerate(images[1:4]):
             x1 = w - 98 - (index + 1) * 170
             rounded(draw, (x1 - 6, top + 20, x1 + 154, top + 126), 12, PALETTE["paper_2"], PALETTE["gold"], 2)
-            paste_contain(page, open_rgb(extra), (x1, top + 26, x1 + 148, top + 120), PALETTE["ink"])
+            place_project_image(page, extra, (x1, top + 26, x1 + 148, top + 120), "detail-evidence", PALETTE["ink"])
     items = flatten_blocks(slide.get("blocks"))[:3]
-    draw_text(draw, (112, h - 230), " · ".join(items), font(24, True), PALETTE["white"], w - 224, 7, 4)
+    draw_text(draw, (int(w * .72), top + 170), " · ".join(items), font(23, True), PALETTE["ink"], int(w * .23), 7, 7)
     return page
 
 
@@ -596,14 +635,14 @@ def render_two_column(slide, images, size, page_no, total):
         hub_font = font(30, True)
         hub_h = compact_panel_height(draw, [hub_value], hub_font, hub_w - 150, padding=42, minimum=150, maximum=280)
         hub_y = top + max(30, (h - 100 - top - hub_h) // 2)
-        rounded(draw, (78, hub_y, hub_w, hub_y + hub_h), 30, PALETTE["ink"], PALETTE["gold"], 3)
+        derived_card(draw, (78, hub_y, hub_w, hub_y + hub_h), 30, PALETTE["ink"], PALETTE["gold"], 3)
         draw_text(draw, (112, hub_y + (hub_h - hub_font.size) // 2 - 6), hub_value, hub_font, PALETTE["white"], hub_w - 150, 9, 5)
         branch_values = values[1:] or ["识别", "秩序", "延展"]
         branch_h = min(128, (h - top - 110) // len(branch_values))
         for index, value in enumerate(branch_values):
             y = top + 28 + index * (branch_h + 22)
             draw.line((hub_w, hub_y + hub_h // 2, int(w * 0.55), y + branch_h // 2), fill=PALETTE["gold"], width=4)
-            rounded(draw, (int(w * 0.55), y, w - 78, y + branch_h), 20, PALETTE["paper"], PALETTE["red"] if index == 0 else PALETTE["blue"], 2)
+            derived_card(draw, (int(w * 0.55), y, w - 78, y + branch_h), 20, PALETTE["paper"], PALETTE["red"] if index == 0 else PALETTE["blue"], 2)
             draw_text(draw, (int(w * 0.55) + 24, y + 22), value, font(22, index == 0), PALETTE["ink"], int(w * 0.37), 6, 3)
         return page
     if pattern == "tri-loop":
@@ -615,7 +654,7 @@ def render_two_column(slide, images, size, page_no, total):
         draw.ellipse((w // 2 - 82, top + 180, w // 2 + 82, top + 344), fill=PALETTE["ink"], outline=PALETTE["gold"], width=5)
         draw.text((w // 2 - 46, top + 242), "闭环", font=font(28, True), fill=PALETTE["white"])
         for index, (value, (x, y)) in enumerate(zip(loop_values, positions)):
-            rounded(draw, (x, y, x + 340, y + 150), 28, PALETTE["paper"], [PALETTE["red"], PALETTE["blue"], PALETTE["gold"]][index], 4)
+            derived_card(draw, (x, y, x + 340, y + 150), 28, PALETTE["paper"], [PALETTE["red"], PALETTE["blue"], PALETTE["gold"]][index], 4)
             draw_text(draw, (x + 26, y + 32), value, font(23, True), PALETTE["ink"], 288, 6, 4)
         return page
     if pattern == "hierarchy-space":
@@ -624,7 +663,7 @@ def render_two_column(slide, images, size, page_no, total):
             shrink = index * 70
             x1, x2 = 120 + shrink, w - 120 - shrink
             y1 = top + index * 105
-            rounded(draw, (x1, y1, x2, y1 + 82), 18, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
+            derived_card(draw, (x1, y1, x2, y1 + 82), 18, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
             draw_text(draw, (x1 + 26, y1 + 20), f"L{index + 1}  {value}", font(22, index == 0), PALETTE["white"] if index == 0 else PALETTE["ink"], x2 - x1 - 52, 5, 2)
         return page
     variant = slide.get("layout_variant") or "asym-cards"
@@ -637,13 +676,13 @@ def render_two_column(slide, images, size, page_no, total):
         cw = left_w if col == 0 else w - x - 78
         ch = 118
         y = top + row * (ch + 18)
-        rounded(draw, (x, y, x + cw, min(y + ch, h - 76)), 20, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
+        derived_card(draw, (x, y, x + cw, min(y + ch, h - 76)), 20, PALETTE["ink"] if index == 0 else PALETTE["paper"], PALETTE["gold"], 2)
         draw_text(draw, (x + 22, y + 22), value, font(22, index == 0), PALETTE["white"] if index == 0 else PALETTE["ink"], cw - 44, 5, 3)
     return page
 
 
 def render_content(slide, images, size, page_no, total):
-    page = add_texture(Image.new("RGB", size, PALETTE["paper_2"]))
+    page = draw_derived_background(add_texture(Image.new("RGB", size, PALETTE["paper_2"])), effective_role(slide))
     draw = ImageDraw.Draw(page)
     w, h = size
     slide_chrome(page, page_no, total, slide.get("section"))
@@ -653,8 +692,8 @@ def render_content(slide, images, size, page_no, total):
     items = flatten_blocks(slide.get("blocks"))
     if images:
         image_box = (78, top, int(w * 0.63), h - 76)
-        rounded(draw, image_box, 24, PALETTE["ink"], "#BDA67D", 2)
-        paste_contain(page, open_rgb(images[0]), (image_box[0] + 12, image_box[1] + 12, image_box[2] - 12, image_box[3] - 12), PALETTE["ink"])
+        derived_card(draw, image_box, 24, PALETTE["ink"], "#BDA67D", 2)
+        place_project_image(page, images[0], (image_box[0] + 12, image_box[1] + 12, image_box[2] - 12, image_box[3] - 12), "content-evidence", PALETTE["ink"])
         tx, ty = int(w * 0.67), top
         for index, item in enumerate(items[:5]):
             draw.ellipse((tx, ty + 5, tx + 18, ty + 23), fill=[PALETTE["red"], PALETTE["gold"], PALETTE["blue"]][index % 3])
@@ -663,8 +702,8 @@ def render_content(slide, images, size, page_no, total):
             thumb_w, thumb_h = 142, 96
             for index, extra in enumerate(images[1:4]):
                 x, y = w - 78 - (index + 1) * (thumb_w + 10), h - 78 - thumb_h
-                rounded(draw, (x - 5, y - 5, x + thumb_w + 5, y + thumb_h + 5), 10, PALETTE["paper"])
-                paste_contain(page, open_rgb(extra), (x, y, x + thumb_w, y + thumb_h), PALETTE["ink"])
+                derived_card(draw, (x - 5, y - 5, x + thumb_w + 5, y + thumb_h + 5), 10, PALETTE["paper"])
+                place_project_image(page, extra, (x, y, x + thumb_w, y + thumb_h), "detail-evidence", PALETTE["ink"])
     else:
         cards = items[:6] or [slide.get("takeaway") or "本页聚焦一个清晰结论。"]
         cols, rows, gap = 2, math.ceil(len(cards) / 2), 20
@@ -676,25 +715,23 @@ def render_content(slide, images, size, page_no, total):
         for index, item in enumerate(cards):
             col, row = index % cols, index // cols
             x, y = 78 + col * (card_w + gap), grid_y + row * (card_h + gap)
-            rounded(draw, (x, y, x + card_w, y + card_h), 22, PALETTE["paper"], "#D2C09E", 2)
+            derived_card(draw, (x, y, x + card_w, y + card_h), 22, PALETTE["paper"], "#D2C09E", 2)
             draw.text((x + 24, y + 18), f"{index + 1:02d}", font=font(28, True), fill=PALETTE["red"])
             draw_text(draw, (x + 24, y + 64), item, font(24, index == 0), PALETTE["ink"], card_w - 48, 7, 4)
     takeaway = slide.get("takeaway")
     if takeaway:
-        rounded(draw, (w * 0.64, h - 178, w - 78, h - 76), 18, PALETTE["ink"])
+        derived_card(draw, (w * 0.64, h - 178, w - 78, h - 76), 18, PALETTE["ink"])
         draw_text(draw, (w * 0.66, h - 157), takeaway, font(20, True), PALETTE["white"], int(w * 0.29), 5, 3)
     return page
 
 
 def render_closing(slide, images, size, page_no, total):
     w, h = size
-    page = Image.new("RGB", size, PALETTE["ink"])
+    page = draw_derived_background(Image.new("RGB", size, PALETTE["ink"]), "closing")
     draw = ImageDraw.Draw(page)
     if images:
-        source = open_rgb(images[0]).filter(ImageFilter.GaussianBlur(2))
-        paste_cover(page, source, (0, 0, w, h))
-        page = Image.alpha_composite(page.convert("RGBA"), Image.new("RGBA", size, (16, 42, 58, 195))).convert("RGB")
-        draw = ImageDraw.Draw(page)
+        derived_card(draw, (w * .66, 162, w - 88, h - 128), 26, PALETTE["paper_2"], PALETTE["gold"], 3)
+        place_project_image(page, images[0], (w * .675, 178, w - 104, h - 144), "closing-evidence", PALETTE["ink"])
     slide_chrome(page, page_no, total, slide.get("section"), dark=True)
     draw.text((80, 198), "END NOTE · 收束", font=font(24, True), fill=PALETTE["gold"])
     draw_text(draw, (78, 268), slide.get("title", "谢谢"), font(72, True), PALETTE["white"], w - 300, 14, 3)
@@ -773,6 +810,8 @@ def main():
         VISIBLE_CONTAINERS.clear()
         USED_MOTIFS.clear()
         VISUAL_ELEMENTS.clear()
+        IMAGE_PLACEMENTS.clear()
+        DERIVED_COMPONENTS.clear()
         images = resolve_slide_images(slide, index)
         used_ids.update(image_id(item) for item in images if image_id(item))
         page = render_slide(slide, images, (args.width, args.height), page_no, total)
@@ -793,6 +832,8 @@ def main():
             "semantic_evidence": dict(ACTIVE_SEMANTICS["evidence"]),
             "used_motifs": list(USED_MOTIFS),
             "visual_elements": list(VISUAL_ELEMENTS),
+            "image_placements": list(IMAGE_PLACEMENTS),
+            "derived_components": list(DERIVED_COMPONENTS),
             "rendered_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(),
         }
         pnginfo = PngImagePlugin.PngInfo()
@@ -800,7 +841,7 @@ def main():
         page.save(png_path, "PNG", optimize=True, pnginfo=pnginfo)
         page.save(jpg_path, "JPEG", quality=args.quality, optimize=True, progressive=True)
         jpegs.append(jpg_path)
-        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS)})
+        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS)})
     build_pdf(jpegs, output, args.width, args.height)
     manifest_ids = set(index)
     missing_ids = sorted(manifest_ids - used_ids)

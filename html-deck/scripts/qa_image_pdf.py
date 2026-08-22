@@ -431,6 +431,62 @@ def semantic_contract_failures(plan, manifest):
     return failures, keywords, motifs, evidence
 
 
+def project_image_failures(slide, audit, report_row, manifest_index, page, page_size):
+    """Independently enforce intact, contained source images and derived backgrounds."""
+    failures = []
+    if slide.get("bg_image"):
+        failures.append(f"第 {page} 页把项目原图登记为背景；项目原图只能完整等比展示")
+    placements = audit.get("image_placements") or []
+    if placements != (report_row.get("image_placements") or []):
+        failures.append(f"第 {page} 页项目图片放置清单在 PNG 与渲染报告间不一致")
+    expected_ids = slide_image_ids(slide)
+    placed_ids = [str(row.get("image_id") or "") for row in placements]
+    if Counter(placed_ids) != Counter(expected_ids):
+        failures.append(f"第 {page} 页项目图片放置清单未逐一覆盖 IR 图片")
+    width, height = page_size
+    for placement in placements:
+        image_id_value = str(placement.get("image_id") or "")
+        row = manifest_index.get(image_id_value)
+        container = placement.get("container_bbox") or []
+        rendered = placement.get("rendered_bbox") or []
+        if placement.get("fit") != "contain" or "background" in str(placement.get("purpose") or ""):
+            failures.append(f"第 {page} 页项目图片 {image_id_value} 未使用完整等比 contain 内容展示")
+            continue
+        if len(container) != 4 or len(rendered) != 4:
+            failures.append(f"第 {page} 页项目图片 {image_id_value} 缺少可核验容器/实际边界")
+            continue
+        cx1, cy1, cx2, cy2 = map(float, container)
+        rx1, ry1, rx2, ry2 = map(float, rendered)
+        if not (0 <= cx1 < cx2 <= width and 0 <= cy1 < cy2 <= height and cx1 <= rx1 < rx2 <= cx2 and cy1 <= ry1 < ry2 <= cy2):
+            failures.append(f"第 {page} 页项目图片 {image_id_value} 边界越界或疑似裁切")
+            continue
+        if ((cx2-cx1) * (cy2-cy1)) / max(1, width * height) > .72:
+            failures.append(f"第 {page} 页项目图片 {image_id_value} 占据页面主体背景区域")
+        if row:
+            source_path = Path(str(row.get("_path") or ""))
+            try:
+                with Image.open(source_path) as source:
+                    source_ratio = source.width / source.height
+                rendered_ratio = (rx2-rx1) / (ry2-ry1)
+                if abs(rendered_ratio / source_ratio - 1) > .015:
+                    failures.append(f"第 {page} 页项目图片 {image_id_value} 实际边界比例与原图不一致（疑似变形）")
+            except Exception:
+                failures.append(f"第 {page} 页无法读取项目图片 {image_id_value} 以核验完整比例")
+    components = audit.get("derived_components") or []
+    if components != (report_row.get("derived_components") or []):
+        failures.append(f"第 {page} 页衍生设计组件清单在 PNG 与渲染报告间不一致")
+    component_types = {str(row.get("type") or "") for row in components}
+    if not {"ribbon-sweep", "badge-orbit"}.issubset(component_types):
+        failures.append(f"第 {page} 页缺少贯穿背景的项目母题衍生组件")
+    if effective_role(slide) == "timeline" and "orbit-timeline" not in component_types:
+        failures.append(f"第 {page} 页时间轴未从项目母题衍生")
+    if effective_role(slide) == "section" and "badge-transition" not in component_types:
+        failures.append(f"第 {page} 页转场未从项目母题衍生")
+    if effective_role(slide) in {"toc", "compare", "timeline", "kpi", "image-hero", "two-column", "bullets", "image-side"} and "badge-ribbon-card" not in component_types:
+        failures.append(f"第 {page} 页文本框/内容容器未从项目母题衍生")
+    return failures
+
+
 def audit_design_failures(audit, page, keywords, motifs, evidence):
     failures = []
     boxes = audit.get("text_boxes")
@@ -474,9 +530,13 @@ def main():
         failures.append("manifest 图片 ID 重复：" + ", ".join(duplicates))
     manifest_set = set(manifest_ids)
     manifest_root = Path(args.manifest).resolve().parent
+    manifest_index = {}
     for row in manifest_rows:
         path = Path(str(row.get("file") or ""))
         path = path if path.is_absolute() else manifest_root / path
+        enriched = dict(row)
+        enriched["_path"] = str(path.resolve())
+        manifest_index[image_id(row)] = enriched
         if not path.exists():
             failures.append(f"manifest 图片文件不存在：{image_id(row)} -> {path}")
     ir_refs = [value for slide in slides for value in slide_image_ids(slide)]
@@ -544,6 +604,7 @@ def main():
                 failures.append(f"第 {index} 页真实像素与 PNG/报告双侧指纹不一致")
             failures.extend(audit_design_failures(audit, index, semantic_keywords, semantic_motifs, semantic_evidence))
             failures.extend(visible_design_failures(image, audit, rows[index - 1], index, semantic_motifs))
+            failures.extend(project_image_failures(slide, audit, rows[index - 1], manifest_index, index, image.size))
             if index <= len(pdf.pages):
                 binding_failure = pdf_page_binding_failure(pdf.pages[index - 1], image, rows[index - 1], index)
                 if binding_failure:
@@ -568,9 +629,10 @@ def main():
         "section_palette_consistent": not palette_failures,
         "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value or "可见容器" in value or "漏报可见卡片" in value or "文字占用" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
         "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value or "元素清单" in value or "可见元素" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
+        "project_images_intact_and_not_backgrounds": not any("项目原图" in value or "项目图片" in value or "衍生设计" in value or "项目母题衍生" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.3", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.4", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

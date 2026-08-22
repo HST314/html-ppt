@@ -9,7 +9,7 @@
   ],
   "manifest_image_count": 10,
   "used_image_count": 10,
-  "ir_sha256": "c31831223c5ac8743479bd1114594bac635465b00e7aff6c51710a4830a16be8",
+  "ir_sha256": "66d5ba1c9101e4564dca235bcf9642b109724ed3335eb66fa748d5bc99350ed0",
   "manifest_sha256": "802ee423df102486a33903d5002367751199cd2dcb26e0e74ac1759f73235ffa",
   "theme": "business-dark",
   "visual_semantics": {
@@ -53,8 +53,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-01.jpg",
-      "png_rgb_sha256": "9a52530e5c6087d00dcdbc888267fdd4bafbeb9eccc9e65326b659dae17ecc56",
-      "jpg_sha256": "1daf9e9f1602ee03fd5acbbd195541e8fcd7d18e6fab2d9c15c87080f684204e",
+      "png_rgb_sha256": "0f9900aa92c501010942a83e33570a2ca9ead821577d497f4cce0251ee3d3e36",
+      "jpg_sha256": "74a7572a0d3282943216a5b93dc2656ffef792e04d80b89d027b49886da47698",
       "text_overflows": [],
       "text_box_count": 2,
       "visible_containers": [],
@@ -68,7 +68,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "0c359b497df42fa049068437a333fdf11db1cf5cb38d695297f6c87efcf3deef"
+          "pixel_sha256": "a69433b475b4d16c74a9e3d647ceb9a49356382f75d11d72bc2669a305f8ba69"
         },
         {
           "type": "semantic-motif",
@@ -85,6 +85,61 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [
+        {
+          "image_id": "badge-10",
+          "purpose": "cover-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            1000,
+            150,
+            1506,
+            770
+          ],
+          "rendered_bbox": [
+            1000,
+            317,
+            1506,
+            602
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            976,
+            132,
+            1524,
+            788
+          ]
+        }
       ]
     },
     {
@@ -97,8 +152,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-02.jpg",
-      "png_rgb_sha256": "f270f4e18e23ef0ddddb0b88321fba273a2b0ea0ef812773aba70908a5e193af",
-      "jpg_sha256": "a20a009105e4e02419fa5d5902aa77bc8dd0a2e5244b02bedd58b3ef7182d3b0",
+      "png_rgb_sha256": "464077245726fdcdf9ee8de9d2f12cb07d7622e9601a8daee07d5dff5059d704",
+      "jpg_sha256": "7a99007d2722e8766b15e6b23d5f691f9ec6954c2cd2f8318c68e9587ffa8b91",
       "text_overflows": [],
       "text_box_count": 9,
       "visible_containers": [],
@@ -112,7 +167,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "f59931ed093cf8b3ade6c66893f8ab983bbd8bc9b7c25eb519dda1d066261c9d"
+          "pixel_sha256": "8cd15c763b3527530ac74841b59024a92e90b8cb432ed929979bf7faa745fd9a"
         },
         {
           "type": "semantic-motif",
@@ -129,6 +184,69 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            80,
+            376,
+            789,
+            546
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            811,
+            376,
+            1520,
+            546
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            80,
+            568,
+            789,
+            738
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            811,
+            568,
+            1520,
+            738
+          ]
+        }
       ]
     },
     {
@@ -141,8 +259,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-03.jpg",
-      "png_rgb_sha256": "082408106d6ff3476ddf3171176632bcf548c27fae7cc5bf8171546e63caf52b",
-      "jpg_sha256": "e0c2c8e6975dab5a87c36248367c889bd492385bde67d9f5f67159a6a85c9b33",
+      "png_rgb_sha256": "15f764a0b763da4986ed489fa10afdb6e8ef6ab50c2b804cb1c358e80fc33eee",
+      "jpg_sha256": "32274f1497493cce236edd02ee055506f9219e6e47c3dc99e41992e3d8b77c7c",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -173,6 +291,39 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-transition",
+          "source_motif": "badge",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        }
       ]
     },
     {
@@ -185,8 +336,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-04.jpg",
-      "png_rgb_sha256": "041283b03803229884730359d5ffae2473f0a13e2eb76fd0f578c0a1c5c80bf6",
-      "jpg_sha256": "a84ac5411f9d62a040e326751540306e59f50b2cfac8dc00945831200d2dd28b",
+      "png_rgb_sha256": "fe392cf291b1183d01fdf46bc96db71383a0f847214d4bb78548ee9c1805e1ff",
+      "jpg_sha256": "cb7309c4cababb38c89d3ce5886ce28f9df8af5ba38319590254f7afb8f12497",
       "text_overflows": [],
       "text_box_count": 4,
       "visible_containers": [],
@@ -200,7 +351,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -217,6 +368,59 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            447,
+            688,
+            597
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            880,
+            273,
+            1522,
+            401
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            880,
+            423,
+            1522,
+            551
+          ]
+        }
       ]
     },
     {
@@ -229,8 +433,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-05.jpg",
-      "png_rgb_sha256": "8f2920a2a34494b1e38d17e5d4764fb6a6a4eae86db7d22a8cdf661ae23eb175",
-      "jpg_sha256": "307fa776e69f1687ff127ad7fc36c1ad9f7f0ec399a36bdb0905fdb3a44d6f36",
+      "png_rgb_sha256": "ffdeab05a8ffa2d6db10962b9e0ad1cf93b6536e7c7f7b12a95d0572e5ea6710",
+      "jpg_sha256": "ba813fdf447247e710ff6457c7de3ec3ca51d4ea83fa5be34bfc5e64194ae1b5",
       "text_overflows": [],
       "text_box_count": 4,
       "visible_containers": [],
@@ -244,7 +448,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -261,6 +465,59 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            610,
+            250,
+            950,
+            400
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            230,
+            485,
+            570,
+            635
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1030,
+            485,
+            1370,
+            635
+          ]
+        }
       ]
     },
     {
@@ -273,8 +530,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-06.jpg",
-      "png_rgb_sha256": "1319c8d20da6ca4dd87d091ec033b551f1201cb5d512dab1f70de8891bf1efd8",
-      "jpg_sha256": "557694fbd923bf7142c8d3de5c7827a1801caeaff0f7e2251265227f07ceb3c2",
+      "png_rgb_sha256": "59501800b5882d9daf7d8e77918ad3bcee7f26738bd351b2aee1dc4e3e01aaac",
+      "jpg_sha256": "80ed93a6066bdff701528a9692aa94bb9f1fe169cce4c95ddbcbdbba000e6f43",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -305,6 +562,39 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-transition",
+          "source_motif": "badge",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        }
       ]
     },
     {
@@ -317,8 +607,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.jpg",
-      "png_rgb_sha256": "0824ae4285014538614457da50e2b7d2fea3a7c5e8398878063f98eb3144c15f",
-      "jpg_sha256": "161dd95871afd89a4feb0182beee7e0592202e32353a58acc21e633df056ec05",
+      "png_rgb_sha256": "43e296d1dd9b900a8a95898b512dc9efec1e622eb61185ef666402ca1e483a5a",
+      "jpg_sha256": "11a0d0f793998c0fcb4fc82f3f97beedc055f2a703604d2377949727a3615ac4",
       "text_overflows": [],
       "text_box_count": 5,
       "visible_containers": [
@@ -363,7 +653,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -380,6 +670,49 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            448,
+            790,
+            620
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            810,
+            448,
+            1522,
+            620
+          ]
+        }
       ]
     },
     {
@@ -392,8 +725,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-08.jpg",
-      "png_rgb_sha256": "256314cd369ae0b6e904275dd710a9c4e4ff9e4fd70c81a24a3737eacc3dc431",
-      "jpg_sha256": "219f6cd073af1fff831c9f0b8fd4187b10138e22f6e640c9df22324e066d8e22",
+      "png_rgb_sha256": "28e24e084809f4534139ac87cc6bde91a6804dd9cce934c0830368c2ff78e7df",
+      "jpg_sha256": "7273ee09f26cf6d5538416bce3f1a5695302749e45f57b73c00b9c5cb0959ab9",
       "text_overflows": [],
       "text_box_count": 5,
       "visible_containers": [
@@ -460,7 +793,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -477,6 +810,79 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "orbit-timeline",
+          "source_motif": "badge",
+          "bbox": [
+            90,
+            245,
+            1510,
+            415
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            373,
+            318,
+            457
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            456,
+            373,
+            696,
+            457
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            903,
+            373,
+            1143,
+            457
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            457
+          ]
+        }
       ]
     },
     {
@@ -489,8 +895,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-09.jpg",
-      "png_rgb_sha256": "46ae17f7354ddf97512c8446df01b871a9dca1b58fb27a238795419197f0bfa7",
-      "jpg_sha256": "2fc05c895780170ac1312286135d9e1e28bdf48bc52d844394949a0b327f5156",
+      "png_rgb_sha256": "111bfde7ec1f1860db625bb50c0ee40f830802dccc131fa1b8229d7fbf3b54cf",
+      "jpg_sha256": "05b6c1d195ce35bef8a88b06848c350b3ecc02996c402c787ff1f3f37ddbdc45",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -521,6 +927,39 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-transition",
+          "source_motif": "badge",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        }
       ]
     },
     {
@@ -540,8 +979,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
-      "png_rgb_sha256": "d53a2dfce9bbf63e667a170ba20f0198446559f926271402fe43b14e1cde105a",
-      "jpg_sha256": "5ee21f0476ae26cc32d537e958df5846449b0d2c2431647c149c11a1385c820a",
+      "png_rgb_sha256": "3123491e0aefbb21723eca511067ab04ce9d839f2643b5205bc70484909baf95",
+      "jpg_sha256": "af2654268e933016da74a759ae65d3f9f1ee523cf50636ada0db7bd5465e5122",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -555,7 +994,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -572,6 +1011,216 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [
+        {
+          "image_id": "badge-01",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            88,
+            236,
+            537,
+            508
+          ],
+          "rendered_bbox": [
+            88,
+            245,
+            537,
+            498
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-02",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            575,
+            236,
+            1024,
+            508
+          ],
+          "rendered_bbox": [
+            575,
+            245,
+            1024,
+            498
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-03",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            1062,
+            236,
+            1511,
+            508
+          ],
+          "rendered_bbox": [
+            1062,
+            245,
+            1511,
+            498
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-05",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            88,
+            546,
+            537,
+            818
+          ],
+          "rendered_bbox": [
+            88,
+            555,
+            537,
+            808
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-06",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            575,
+            546,
+            1024,
+            818
+          ],
+          "rendered_bbox": [
+            575,
+            555,
+            1024,
+            808
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-07",
+          "purpose": "gallery-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            1062,
+            546,
+            1511,
+            818
+          ],
+          "rendered_bbox": [
+            1062,
+            555,
+            1511,
+            808
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            226,
+            547,
+            518
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            565,
+            226,
+            1034,
+            518
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1052,
+            226,
+            1521,
+            518
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            536,
+            547,
+            828
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            565,
+            536,
+            1034,
+            828
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1052,
+            536,
+            1521,
+            828
+          ]
+        }
       ]
     },
     {
@@ -588,8 +1237,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-11.jpg",
-      "png_rgb_sha256": "02edb0cd5a59075cd281f0a889cd613d90da4705fea7348f72be9e50da3665cd",
-      "jpg_sha256": "ee799ca8fe0e6a0b138f6a3fb3b0979deae0ffbc0d992089e75e153d6d772915",
+      "png_rgb_sha256": "939ef09e41bd3d01f3ab45d50527554809d0190d3f3465080c14c9d52222fe25",
+      "jpg_sha256": "bdd030f4d501b9ce18a34482487612858b64b0b6d0894309fcaa2c62a0d401c3",
       "text_overflows": [],
       "text_box_count": 2,
       "visible_containers": [],
@@ -603,7 +1252,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -614,12 +1263,109 @@
             150,
             863
           ],
-          "pixel_sha256": "596470d3ad2e486a4f332cc22433b7d7c3d3172d6ffd4bbaf56b76f295f66f6f"
+          "pixel_sha256": "290bdb58385e2c2f55fe82c594e527973c3743a3a3a6fd9a53f311f8013ccd80"
         }
       ],
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [
+        {
+          "image_id": "badge-08",
+          "purpose": "hero-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            92,
+            259,
+            1090,
+            810
+          ],
+          "rendered_bbox": [
+            101,
+            259,
+            1081,
+            810
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-09",
+          "purpose": "detail-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            1332,
+            271,
+            1480,
+            365
+          ],
+          "rendered_bbox": [
+            1332,
+            276,
+            1480,
+            359
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        },
+        {
+          "image_id": "badge-04",
+          "purpose": "detail-evidence",
+          "fit": "contain",
+          "container_bbox": [
+            1162,
+            271,
+            1310,
+            365
+          ],
+          "rendered_bbox": [
+            1162,
+            276,
+            1310,
+            359
+          ],
+          "source_size": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            245,
+            1104,
+            824
+          ]
+        }
       ]
     },
     {
@@ -632,8 +1378,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-12.jpg",
-      "png_rgb_sha256": "b82d89ea9cd36438ace315e8f47bdba31500889e43abb61a3d064baed60b010d",
-      "jpg_sha256": "98065d7c403f302a3a5f102d912def187ee73002d05fb8b3860b384e62bc8e73",
+      "png_rgb_sha256": "25fd6e8d1f69d82161735a8f7362835e9caf8f66d339b48df991373fb64938d8",
+      "jpg_sha256": "6002922fbdb72411c9631f4e7f4ae8a67eacf4bbb6b6a2d0633ce18894f50d70",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -664,6 +1410,39 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-transition",
+          "source_motif": "badge",
+          "bbox": [
+            768,
+            0,
+            1600,
+            900
+          ]
+        }
       ]
     },
     {
@@ -676,8 +1455,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-13.jpg",
-      "png_rgb_sha256": "8a25d67053f29bcfdb370300c5f5f6364885e1e1a9536f59dad8c8bea8ef6811",
-      "jpg_sha256": "a6226a54219de888505b4ed82da8d23e1fd16500b368c1144caac470b113169c",
+      "png_rgb_sha256": "3f0c029a49e16b1cce5dd94a5d6c82eefde7aeb80bc8c2d691fd8e346a447e11",
+      "jpg_sha256": "4577c1217ed2a6248564599f3a4825273de0e7b5ab04f44c0d448c9bd318e8df",
       "text_overflows": [],
       "text_box_count": 4,
       "visible_containers": [
@@ -731,7 +1510,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -748,6 +1527,69 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "orbit-timeline",
+          "source_motif": "badge",
+          "bbox": [
+            90,
+            245,
+            1510,
+            415
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            373,
+            318,
+            457
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            680,
+            373,
+            920,
+            457
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1282,
+            373,
+            1522,
+            457
+          ]
+        }
       ]
     },
     {
@@ -760,8 +1602,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-14.jpg",
-      "png_rgb_sha256": "f26ff110024dba18a0fbeb41a39ef123527958378f65f79e4f6a6314ab137f5c",
-      "jpg_sha256": "0a4b8872daf96f42e58e916b39cd243766ab0f9bd1a6acff1307e323c776127e",
+      "png_rgb_sha256": "97a93c849297c391ce098d3c9259f5392817bb1f7aaf7d4fd3336a4e9210391a",
+      "jpg_sha256": "93b68f036123ed2b4b2c7750dcc17848883a5d2d0e77fdd9f31cef48af27c978",
       "text_overflows": [],
       "text_box_count": 7,
       "visible_containers": [
@@ -818,7 +1660,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "1cb1b6e57a2a0b704bed40fcf8b94f5de34ea61220d25688942b036336e22cd6"
+          "pixel_sha256": "b34cf486386ac4798b3246b9ce17d192bd72908ccb9a6a11a8e6e1e5bd52eb33"
         },
         {
           "type": "semantic-motif",
@@ -835,6 +1677,59 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            78,
+            413,
+            544,
+            651
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            566,
+            413,
+            1032,
+            651
+          ]
+        },
+        {
+          "type": "badge-ribbon-card",
+          "source_motif": "badge",
+          "bbox": [
+            1054,
+            413,
+            1520,
+            651
+          ]
+        }
       ]
     },
     {
@@ -847,8 +1742,8 @@
       "image_ids": [],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-15.jpg",
-      "png_rgb_sha256": "b1e59d1645b5ef140c2e10d98f798da3af3b2307fc7a29fad70ff0f4310c679b",
-      "jpg_sha256": "6ee134bd7c873e51cfe49b91345ed56f1d794fb280901f2757c20bf2b778f8ca",
+      "png_rgb_sha256": "a26e40076f153c56b16bf94c1d117bdf8ccd8d0ecce59079a09970305b82dbef",
+      "jpg_sha256": "2937c2dcadb233653e95c8d7b4b48ebcce2b5075bdfd3363aa5420570f3b8993",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -862,7 +1757,7 @@
             1503,
             177
           ],
-          "pixel_sha256": "11a2d5aa8fec167cd4b1a21f0577206a26bbb0a3839bb228a3c8da2b0c9840f3"
+          "pixel_sha256": "6844386dcfa6948511e265f7b2d571c778fb1ebb2ea4767238b35c03fa48d232"
         },
         {
           "type": "semantic-motif",
@@ -879,6 +1774,29 @@
       "used_motifs": [
         "badge",
         "starburst"
+      ],
+      "image_placements": [],
+      "derived_components": [
+        {
+          "type": "ribbon-sweep",
+          "source_motif": "badge",
+          "bbox": [
+            0,
+            480,
+            1600,
+            900
+          ]
+        },
+        {
+          "type": "badge-orbit",
+          "source_motif": "badge",
+          "bbox": [
+            1162,
+            2,
+            1590,
+            430
+          ]
+        }
       ]
     }
   ]

@@ -8,7 +8,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageDraw, PngImagePlugin
+from PIL import Image, ImageDraw, ImageOps, PngImagePlugin
 from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parent
@@ -204,6 +204,50 @@ def main():
         assert unrelated_result["checks"]["visual_elements_semantically_grounded"] is False
         assert "QA 独立 badge 允许特征不匹配" in "\n".join(unrelated_result["failures"])
 
+        # A clean regeneration must still fail when a project original enters
+        # through bg_image: originals are content evidence, never backgrounds.
+        background_plan = json.loads(plan.read_text(encoding="utf-8"))
+        image_slide = next(row for row in background_plan["slides"] if row.get("images"))
+        image_slide["bg_image"] = image_slide["images"].pop(0)
+        background_path = root / "project-image-as-background.json"
+        write_json(background_path, background_plan)
+        background_pdf = root / "project-image-as-background.pdf"
+        background_report = root / "project-image-as-background-render.json"
+        run(RENDER, "--ir", background_path, "--manifest", manifest, "--output", background_pdf,
+            "--slides-dir", root / "project-image-as-background-slides", "--report", background_report, "--strict-images")
+        background_qa = root / "project-image-as-background-qa.json"
+        run(QA, "--pdf", background_pdf, "--ir", background_path, "--manifest", manifest,
+            "--render-report", background_report, "--output", background_qa, ok=False)
+        background_result = json.loads(background_qa.read_text(encoding="utf-8"))
+        assert background_result["checks"]["project_images_intact_and_not_backgrounds"] is False
+        assert "项目原图登记为背景" in "\n".join(background_result["failures"])
+
+        # Crop a real source into its container, synchronize PNG audit/report/
+        # JPEG/PDF, and keep claiming contain. QA must recompute source ratio.
+        cropped_report = json.loads(report.read_text(encoding="utf-8"))
+        cropped_row = next(row for row in cropped_report["slides"] if row.get("image_placements"))
+        with Image.open(cropped_row["png"]) as original:
+            cropped_audit = json.loads(original.info["image_pdf_audit"])
+            cropped_pixels = original.convert("RGB")
+        placement = cropped_audit["image_placements"][0]
+        box = placement["container_bbox"]
+        source_id = placement["image_id"]
+        source_file = next(row["file"] for row in json.loads(manifest.read_text(encoding="utf-8"))["images"] if row["id"] == source_id)
+        with Image.open(manifest.parent / source_file) as source:
+            damaged = ImageOps.fit(source.convert("RGB"), (box[2] - box[0], box[3] - box[1]))
+        cropped_pixels.paste(damaged, (box[0], box[1]))
+        placement["rendered_bbox"] = list(box)
+        cropped_row["image_placements"][0]["rendered_bbox"] = list(box)
+        cropped_pdf = sync_mutated_page(cropped_report, cropped_row, cropped_pixels, cropped_audit, root, "cropped-project-image")
+        cropped_report_path = root / "cropped-project-image-render.json"
+        write_json(cropped_report_path, cropped_report)
+        cropped_qa = root / "cropped-project-image-qa.json"
+        run(QA, "--pdf", cropped_pdf, "--ir", plan, "--manifest", manifest,
+            "--render-report", cropped_report_path, "--output", cropped_qa, ok=False)
+        cropped_result = json.loads(cropped_qa.read_text(encoding="utf-8"))
+        assert cropped_result["checks"]["project_images_intact_and_not_backgrounds"] is False
+        assert "疑似变形" in "\n".join(cropped_result["failures"])
+
         unsupported_plan = json.loads(plan.read_text(encoding="utf-8"))
         unsupported_plan["visual_semantics"] = {"keywords": ["卫星", "航天"], "motifs": ["leaf"], "evidence": {"leaf": "叶片"}}
         unsupported_path = root / "unsupported-semantics.json"
@@ -212,7 +256,7 @@ def main():
         unsupported_qa = root / "unsupported-qa.json"
         run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
         assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: nine checks + synced PNG/report/JPEG/PDF empty-card and leaf-as-badge attacks + regressions passed")
+    print("image-pdf tests: ten checks + synced empty-card, leaf-as-badge, raw-background and cropped-image attacks + regressions passed")
     return 0
 
 

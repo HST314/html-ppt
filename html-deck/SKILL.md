@@ -24,10 +24,12 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 - 图片 PDF 路线的 IR 必须登记 `visual_semantics.keywords`（至少 2 个项目主题词）、`visual_semantics.motifs`（项目专属插图/装饰母题）与逐母题 `visual_semantics.evidence`。每条 evidence 必须能在项目正文、主题词或 manifest alt 中逐字找到；例如卫星项目可用卫星/轨道/火箭，不得套用无关叶片、城市或抽象库存装饰。渲染器只使用登记母题，逐页将实际使用项写入 PNG 审计。
 - 图片 PDF 路线必须按文字实际行数确定用户真实可见卡片/面板的紧致尺寸，禁止只把字形自身边界登记为“文本框”来绕过卡片留白。逐页 PNG 与渲染报告必须同时写入 `visible_containers`（可见边界、关联文字、内边距）；QA 从页面像素独立发现扁平卡片候选，再与清单双向核对：每个像素候选必须登记，每个登记容器必须通过真实裁片的几何与文字占用检查。漏报或宽/高占用不足均拒绝。
 - 每个主题插图/装饰必须写入 `visual_elements`（语义 ID、真实边界、裁片像素指纹），并与 `visual_semantics.motifs`、PNG 实际裁片和渲染报告逐项交叉核验。QA 另行维护 `semantic_id` 的允许形状模板与颜色特征，不从渲染器导入；即使同步更新元素指纹、PNG 审计、渲染报告、JPEG 和 PDF，实际裁片与该独立契约不符时仍须拒绝。“漏报大空卡”“叶片伪装 badge”反例必须同步重写四类产物验证该边界。
-- 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
+- 图片根据元数据参与排版决策。项目原图仅允许作为内容证据使用，必须 `contain` 完整等比展示；图片型 PDF 路线禁止 `cover`、裁切、拉伸、变形或通过 `bg_image`/全页容器把项目原图铺作背景。背景必须从项目语义与图片视觉 DNA 独立衍生，不能复刻、模糊或加蒙版伪装原图。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
-- 项目图片只承担内容展示：必须置于独立、稳定、不可溢出的容器，默认 `contain` 保持原貌；禁止出血、叠字、背景融合、主体抠出越界和持续运动。背景系统独立承担主题视觉。生成或审查图片页时必须读取 `references/PROJECT_IMAGES.md`。
+- 项目图片只承担内容展示：必须置于独立、稳定、不可溢出的容器，使用 `contain` 保持全貌；禁止出血、叠字、背景融合、主体抠出越界和持续运动。每次放置必须登记 `image_placements`（图片 ID、用途、`fit=contain`、容器边界、实际显示边界、原图尺寸），QA 从 manifest 原图独立复算宽高比、边界、页面占比并与 PNG/报告双侧清单核对。背景系统独立承担主题视觉。生成或审查图片页时必须读取 `references/PROJECT_IMAGES.md`。
+- 图片型 PDF 的视觉系统必须把项目母题衍生到全 Deck，而不是仅添加角落装饰：至少覆盖独立背景、文本框/内容容器、流程或时间轴、章节转场四类组件。渲染器逐页登记 `derived_components` 及其 `source_motif`；QA 要求所有页具备同源背景衍生，且 timeline、section 和卡片型页面分别具备可核验的流程、转场和容器衍生组件。
+- 必备反例：① 将任一项目图改为 `bg_image` 并重新生成全部产物，QA 必须拒绝；② 将原图真实裁切/拉伸后，同步更新 PNG 审计、render report、JPEG、PDF 且继续自称 `contain`，QA 必须依据 manifest 原图比例独立拒绝。两项与“大空卡”“叶片伪装 badge”共同构成图片路线回归门槛。
 - 全 Deck 必须先运行 `extract_art_dna.py`：将项目图转成 `art_expression`，生成 cover/content/section/closing 四种同源角色背景和统一设计令牌。封面展开、章节转场强化、内容页弱化、尾页收束；禁止首尾项目化而中间页继续套通用主题。禁止把 `deco.py` 的固定行业图形当成跨项目模板；它只允许在无可读项目图时作为明确标注的降级方案。<!-- TASK-005 --> 无可读项目图但存在图片 md 解读时，禁止直接落入 `art_dna=fallback` 裸模板降级：必须先按 `references/ART_DNA.md`「无像素输入：图片 md 解读路径」提取 md 解读清单 `state/art_dna_md.json`，运行 `scripts/art_dna_from_md.py` 生成与图片路径同风格的四类生成式背景（QA 标注 `art_dna=md`）；仅当图片与 md 解读都没有时才允许 deco 降级（QA 标注 `art_dna=fallback`）。<!-- TASK-017 --> 首尾页保留生成式融合背景路线（用户 v9 截图确认为目标版式，撤销 TASK-015 的模板回退）：封面/尾页照常注入 project-art 生成背景（深藏蓝近黑实底、设计元素低饱和融入）；"融为一体"根因修复——首尾页自带 var(--bg) 实底深色基底 + 本地重声明 --ho/--ho-deep/--ho-gold（CSS 自定义属性在 :root 定义处即固化，不随局部 --accent 覆盖）；QA 覆盖门禁按 cover/content/section/closing 四类页面全核对。
 - 内容必须经过 `references/NARRATIVE.md` 的叙事框架；第 2 页强制生成目录，收束固定拆成“行动页 + 低负载结束页”。内容页必须有 action title、至少 3 个内容块、takeaway、150-300 字演讲备注。
 <!-- TASK-001: 新增页面语义分析层原则 -->
