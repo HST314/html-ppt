@@ -1,4 +1,4 @@
 interface:
-  display_name: "HTML / 图片 PDF 演示构建"
-  short_description: "将 Markdown 与场景图片转为 HTML 或逐页图片 PDF 演示"
-  default_prompt: "Use $html-deck to turn my Markdown and image manifest into a QA-verified HTML presentation or image-based PDF deck."
+  display_name: "HTML 与图片 PDF 演示文稿"
+  short_description: "将大纲与项目图片生成离线 HTML 或逐页图片 PDF"
+  default_prompt: "Use $html-deck to turn my outline and project images into either a QA-verified offline HTML deck or an image-only PDF presentation."

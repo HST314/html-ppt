@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>背景模板 · 极简科技/网格数据·克制版（cover 态）</title>
+<style>
+  /* ============================================================
+     bg-tech-grid-blueprint.html —— 极简科技/网格数据 风格库预览（cover 态）
+     TASK-042 新建：极简科技/网格数据 分类，参考范例 blueprint-grid。
+     本文件由 scripts/bg_styles.py::generate_full_background("tech-grid-blueprint", ...)
+     真实生成逻辑产出（占位色示范，实际渲染时 palette 来自项目图片分析
+     dna["palette"]），仅供人工预览/参考，不参与渲染时真正读取执行。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+  }
+  .bg-tpl {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    color: #eef5fa;
+    display: block;
+  }
+  .bg-tpl .art-bg {
+    position: absolute; inset: 0;
+    width: 1920px; height: 1080px;
+  }
+  .bg-tpl .art-bg svg { width: 100%; height: 100%; display: block; }
+  .bp-copy {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 220px;
+  }
+  .bp-eyebrow {
+    margin: 0 0 22px;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 24px;
+    letter-spacing: .34em;
+    font-weight: 700;
+    opacity: .78;
+  }
+  .bp-title {
+    margin: 0;
+    max-width: 1200px;
+    font-size: clamp(56px, 5.2vw, 92px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.01em;
+  }
+  .bp-tag {
+    position: absolute;
+    left: 220px; bottom: 56px;
+    z-index: 2;
+    margin: 0;
+    font-size: 17px;
+    letter-spacing: .04em;
+    opacity: .6;
+  }
+</style>
+</head>
+<body>
+<section class="slide role-cover bg-tpl bg-tech-grid-blueprint" data-role="cover" data-template="bg-tech-grid-blueprint" data-bg-style="tech-grid-blueprint" data-bg-category="极简科技/网格数据">
+  <div class="art-bg" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"><rect width="1920" height="1080" fill="#0e2438"/><g opacity="1.000"><line x1="0" y1="0" x2="0" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="52" y1="0" x2="52" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="104" y1="0" x2="104" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="156" y1="0" x2="156" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="208" y1="0" x2="208" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="260" y1="0" x2="260" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="312" y1="0" x2="312" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="364" y1="0" x2="364" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="416" y1="0" x2="416" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="468" y1="0" x2="468" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="520" y1="0" x2="520" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="572" y1="0" x2="572" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="624" y1="0" x2="624" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="676" y1="0" x2="676" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="728" y1="0" x2="728" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="780" y1="0" x2="780" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="832" y1="0" x2="832" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="884" y1="0" x2="884" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="936" y1="0" x2="936" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="988" y1="0" x2="988" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1040" y1="0" x2="1040" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1092" y1="0" x2="1092" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1144" y1="0" x2="1144" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1196" y1="0" x2="1196" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1248" y1="0" x2="1248" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1300" y1="0" x2="1300" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1352" y1="0" x2="1352" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1404" y1="0" x2="1404" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1456" y1="0" x2="1456" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1508" y1="0" x2="1508" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1560" y1="0" x2="1560" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1612" y1="0" x2="1612" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1664" y1="0" x2="1664" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1716" y1="0" x2="1716" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1768" y1="0" x2="1768" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1820" y1="0" x2="1820" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="1872" y1="0" x2="1872" y2="1080" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="0" x2="1920" y2="0" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="52" x2="1920" y2="52" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="104" x2="1920" y2="104" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="156" x2="1920" y2="156" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="208" x2="1920" y2="208" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="260" x2="1920" y2="260" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="312" x2="1920" y2="312" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="364" x2="1920" y2="364" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="416" x2="1920" y2="416" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="468" x2="1920" y2="468" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="520" x2="1920" y2="520" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="572" x2="1920" y2="572" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="624" x2="1920" y2="624" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="676" x2="1920" y2="676" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="728" x2="1920" y2="728" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="780" x2="1920" y2="780" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="832" x2="1920" y2="832" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="884" x2="1920" y2="884" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="936" x2="1920" y2="936" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="988" x2="1920" y2="988" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><line x1="0" y1="1040" x2="1920" y2="1040" stroke="#8fb8d6" stroke-width="1" opacity="0.045"/><path d="M60 102 L60 60 L102 60" fill="none" stroke="#8fb8d6" stroke-width="1.6" opacity=".3"/><path d="M1860 102 L1860 60 L1818 60" fill="none" stroke="#8fb8d6" stroke-width="1.6" opacity=".3"/><path d="M60 978 L60 1020 L102 1020" fill="none" stroke="#8fb8d6" stroke-width="1.6" opacity=".3"/><path d="M1860 978 L1860 1020 L1818 1020" fill="none" stroke="#8fb8d6" stroke-width="1.6" opacity=".3"/><rect x="1684" y="94" width="92" height="92" fill="none" stroke="#8fb8d6" stroke-width="1.3" opacity=".32"/><rect x="1706" y="116" width="48" height="48" fill="none" stroke="#8fb8d6" stroke-width="1" opacity=".24"/></g></svg>
+  </div>
+  <div class="bp-copy">
+    <p class="bp-eyebrow">PROGRAM NOTE</p>
+    <h1 class="bp-title">{{cover_title}}</h1>
+  </div>
+  <p class="bp-tag">极简科技/网格数据 · cover 态</p>
+</section>
+</body>
+</html>

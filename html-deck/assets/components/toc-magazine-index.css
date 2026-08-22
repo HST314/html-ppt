@@ -1,0 +1,118 @@
+/* ============================================================
+   toc-magazine-index —— 杂志索引式目录（TASK-036 新增，可选版式，未激活）
+   来源：参考 skill reference learning/beautiful-html-templates-main/
+   templates/peoples-platform 与 pin-and-paper 的目录页气质：编号 + 标题 +
+   虚线引导线 + 页码横向单行排列，行与行之间用实线分隔，纯文本导向、
+   克制——是此前 html-deck 目录库里完全没有的"极简书目录"风格。逐行
+   flex:1 均分纵向可用空间，天然适配任意 3~8 条目，不依赖硬编码坐标或
+   行高表。
+
+   接入说明同 toc-grid-matrix.css：全出血铺满 .slide.role-toc、
+   background:transparent 透出项目 art 背景层。
+   ============================================================ */
+.toc-magazine-index {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text, #14171f);
+  display: flex;
+  flex-direction: column;
+  padding: 108px 150px 100px;
+}
+
+.tmi-head { position: relative; flex: 0 0 auto; }
+/* TASK-036 fix（Playwright V7 字体层级实测发现）：base.css 通用规则
+   `.slide p { font-size: var(--fs-body) }` 是「1 class + 1 type」选择器
+   （特异性 0,1,1），高于本文件原来单 class 写法 `.tmi-eyebrow`（0,1,0），
+   会无条件覆盖掉这里声明的 18px，导致 CONTENTS 小标签被撑到跟正文同尺寸
+   （实测 30px），与下方 .tmi-row-title（31px）字号比 1.03，不满足相邻层级
+   ≥1.2 倍的字体层级门禁。加一层外层 wrapper class 把特异性提到 0,2,0
+   （两个 class，仍高于 0,1,1）以稳定胜出，不依赖源码顺序，也不用 !important。 */
+.toc-magazine-index .tmi-eyebrow {
+  margin: 0 0 16px;
+  font-size: 18px;
+  letter-spacing: .34em;
+  font-weight: 700;
+  color: var(--accent, #0b6bcb);
+}
+.tmi-title-main {
+  margin: 0;
+  max-width: 1300px;
+  font-size: clamp(38px, 3.4vw, 54px);
+  font-weight: 800;
+  line-height: 1.24;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.tmi-rule {
+  flex: 0 0 auto;
+  height: 2px;
+  margin: 34px 0 6px;
+  background: var(--text, #14171f);
+}
+
+.tmi-list {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tmi-row {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 150px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid var(--line, #d7dde6);
+}
+.tmi-row:first-child { border-top: 1px solid var(--line, #d7dde6); }
+
+.tmi-num {
+  flex: 0 0 auto;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent, #0b6bcb);
+  min-width: 64px;
+}
+.tmi-row-title {
+  flex: 0 1 auto;
+  margin: 0;
+  max-width: 62%;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--text, #14171f);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tmi-leader {
+  flex: 1 1 auto;
+  min-width: 40px;
+  height: 0;
+  align-self: center;
+  border-bottom: 2px dotted var(--line, #b9c3d1);
+  margin: 0 6px;
+  transform: translateY(-8px);
+}
+.tmi-page {
+  flex: 0 0 auto;
+  min-width: 48px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--muted, #5d687c);
+  text-align: right;
+}

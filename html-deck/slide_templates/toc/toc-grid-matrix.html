@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 矩阵网格式</title>
+<style>
+  /* ============================================================
+     toc-grid-matrix —— 矩阵网格式目录（TASK-036 新增，可选版式）
+     参考 beautiful-html-templates-main/templates/neo-grid-bold 的
+     .s-toc：工整网格、标题占满顶部、下方卡片按行列精确铺满，强对比、
+     编辑设计感，适合信息密度较高的目录场景。列数由渲染层
+     compute_grid_columns(N) 按条目数算出（此预览文件写死 4 列演示
+     8 条目的排布效果，实际渲染时任意 N=3~8 都会得到对应列数）。
+     仅布局/样式骨架，无业务文本。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-grid-matrix {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #14171f);
+    display: flex;
+    flex-direction: column;
+    padding: 92px 112px 96px;
+  }
+
+  .tgm-head {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    padding-bottom: 26px;
+    margin: 46px 0 40px;
+    border-bottom: 3px solid var(--text, #14171f);
+  }
+  .tgm-eyebrow {
+    position: absolute;
+    left: 0; top: -42px;
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: .34em;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+  }
+  .tgm-title-main {
+    margin: 0;
+    max-width: 1400px;
+    font-size: clamp(40px, 3.6vw, 58px);
+    font-weight: 800;
+    line-height: 1.24;
+    letter-spacing: -.01em;
+  }
+  .tgm-count {
+    flex: 0 0 auto;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+    padding-bottom: 8px;
+  }
+
+  .tgm-grid {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 2px;
+    background: var(--line, #d7dde6);
+    border: 2px solid var(--text, #14171f);
+  }
+
+  .tgm-card {
+    position: relative;
+    min-height: 0;
+    background: var(--surface, #ffffff);
+    padding: 30px 32px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .tgm-ghost {
+    position: absolute;
+    right: 16px; top: -10px;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 104px;
+    font-weight: 800;
+    line-height: 1;
+    color: color-mix(in srgb, var(--accent, #0b6bcb) 8%, transparent);
+  }
+  .tgm-num {
+    position: relative;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    color: var(--accent, #0b6bcb);
+  }
+  .tgm-card-title {
+    position: relative;
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--text, #14171f);
+  }
+  .tgm-desc {
+    position: relative;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--muted, #5d687c);
+  }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-grid-matrix" data-role="toc" data-template="toc-grid-matrix">
+  <div class="tgm-head">
+    <p class="tgm-eyebrow">CONTENTS</p>
+    <h1 class="tgm-title-main">{{toc_main_title}}</h1>
+    <span class="tgm-count">08</span>
+  </div>
+
+  <div class="tgm-grid">
+    <div class="tgm-card" data-idx="1">
+      <span class="tgm-ghost">{{item_01_num}}</span>
+      <span class="tgm-num">{{item_01_num}}</span>
+      <h3 class="tgm-card-title">{{item_01_title}}</h3>
+      <p class="tgm-desc">{{item_01_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="2">
+      <span class="tgm-ghost">{{item_02_num}}</span>
+      <span class="tgm-num">{{item_02_num}}</span>
+      <h3 class="tgm-card-title">{{item_02_title}}</h3>
+      <p class="tgm-desc">{{item_02_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="3">
+      <span class="tgm-ghost">{{item_03_num}}</span>
+      <span class="tgm-num">{{item_03_num}}</span>
+      <h3 class="tgm-card-title">{{item_03_title}}</h3>
+      <p class="tgm-desc">{{item_03_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="4">
+      <span class="tgm-ghost">{{item_04_num}}</span>
+      <span class="tgm-num">{{item_04_num}}</span>
+      <h3 class="tgm-card-title">{{item_04_title}}</h3>
+      <p class="tgm-desc">{{item_04_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="5">
+      <span class="tgm-ghost">{{item_05_num}}</span>
+      <span class="tgm-num">{{item_05_num}}</span>
+      <h3 class="tgm-card-title">{{item_05_title}}</h3>
+      <p class="tgm-desc">{{item_05_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="6">
+      <span class="tgm-ghost">{{item_06_num}}</span>
+      <span class="tgm-num">{{item_06_num}}</span>
+      <h3 class="tgm-card-title">{{item_06_title}}</h3>
+      <p class="tgm-desc">{{item_06_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="7">
+      <span class="tgm-ghost">{{item_07_num}}</span>
+      <span class="tgm-num">{{item_07_num}}</span>
+      <h3 class="tgm-card-title">{{item_07_title}}</h3>
+      <p class="tgm-desc">{{item_07_desc}}</p>
+    </div>
+    <div class="tgm-card" data-idx="8">
+      <span class="tgm-ghost">{{item_08_num}}</span>
+      <span class="tgm-num">{{item_08_num}}</span>
+      <h3 class="tgm-card-title">{{item_08_title}}</h3>
+      <p class="tgm-desc">{{item_08_desc}}</p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

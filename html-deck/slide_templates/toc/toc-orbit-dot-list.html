@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 轨道圆点引线</title>
+<style>
+  /* ============================================================
+     toc-orbit-dot-list —— 轨道圆点引线目录（极简编辑风）
+     一条极浅波浪基线 + 最多 8 个圆点标记，细引线牵出纯文字条目，
+     无大面积卡片填充，留白充分。仅布局/样式骨架，无业务文本。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-orbit-dot-list {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #172033);
+  }
+
+  .od-head {
+    position: absolute;
+    left: 90px; top: 64px; right: 90px;
+    text-align: center;
+  }
+  .od-eyebrow {
+    margin: 0 0 12px;
+    font-size: 19px;
+    letter-spacing: .32em;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+  }
+  .od-title {
+    margin: 0;
+    font-size: clamp(30px, 2.8vw, 44px);
+    font-weight: 800;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  .od-wave { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  .od-baseline {
+    fill: none;
+    stroke: var(--line, #d8dee8);
+    stroke-width: 1.5;
+    stroke-dasharray: 1 9;
+  }
+  .od-leader {
+    stroke: color-mix(in srgb, var(--accent, #0b6bcb) 45%, var(--line, #c7d0dd));
+    stroke-width: 1.5;
+  }
+  .od-dot-ring { fill: var(--bg, #f8fafc); stroke: var(--accent, #0b6bcb); stroke-width: 2.5; }
+  .od-dot-core { fill: var(--accent, #0b6bcb); }
+
+  .od-item { position: absolute; width: 300px; }
+  .od-num {
+    position: absolute;
+    width: 44px; height: 44px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800;
+    color: var(--inverse, #fff);
+    background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--accent, #0b6bcb) 36%, transparent);
+    z-index: 2;
+  }
+
+  .od-block {
+    position: relative;
+    display: flex;
+    gap: 14px;
+  }
+  .od-block-bar {
+    flex: 0 0 auto;
+    width: 4px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+  }
+  .od-block-text { flex: 1 1 auto; min-width: 0; }
+  .od-item-title {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text, #172033);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .od-item-desc {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--muted, #5d687c);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* 8 组节点定位：复用曲线时间轴已验证的安全波浪坐标 */
+  .od-item[data-idx="1"] { left: 260px; top: 490px; }
+  .od-item[data-idx="1"] .od-num { left: 230px; top: 460px; }
+  .od-item[data-idx="2"] { left: 469px; top: 750px; }
+  .od-item[data-idx="2"] .od-num { left: 439px; top: 720px; }
+  .od-item[data-idx="3"] { left: 677px; top: 490px; }
+  .od-item[data-idx="3"] .od-num { left: 647px; top: 460px; }
+  .od-item[data-idx="4"] { left: 886px; top: 750px; }
+  .od-item[data-idx="4"] .od-num { left: 856px; top: 720px; }
+  .od-item[data-idx="5"] { left: 1094px; top: 490px; }
+  .od-item[data-idx="5"] .od-num { left: 1064px; top: 460px; }
+  .od-item[data-idx="6"] { left: 1303px; top: 750px; }
+  .od-item[data-idx="6"] .od-num { left: 1273px; top: 720px; }
+  .od-item[data-idx="7"] { left: 1512px; top: 490px; }
+  .od-item[data-idx="7"] .od-num { left: 1482px; top: 460px; }
+  .od-item[data-idx="8"] { left: 1330px; top: 750px; }
+  .od-item[data-idx="8"] .od-num { left: 1690px; top: 720px; }
+  .od-item[data-idx="8"] { left: 1720px; top: 750px; text-align: right; }
+  .od-item[data-idx="8"] .od-block { flex-direction: row-reverse; text-align: right; }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-orbit-dot-list" data-role="toc" data-template="toc-orbit-dot-list">
+  <div class="od-head">
+    <p class="od-eyebrow">CONTENTS</p>
+    <h1 class="od-title">{{toc_main_title}}</h1>
+  </div>
+
+  <svg class="od-wave" viewBox="0 0 1920 1080" aria-hidden="true">
+    <path class="od-baseline" d="M 230 460 C 334 460, 334 720, 439 720 C 543 720, 543 460, 647 460 C 752 460, 752 720, 856 720 C 960 720, 960 460, 1064 460 C 1169 460, 1169 720, 1273 720 C 1377 720, 1377 460, 1482 460 C 1586 460, 1586 720, 1690 720"/>
+
+    <line class="od-leader" x1="230" y1="460" x2="260" y2="490"/>
+    <line class="od-leader" x1="439" y1="720" x2="469" y2="750"/>
+    <line class="od-leader" x1="647" y1="460" x2="677" y2="490"/>
+    <line class="od-leader" x1="856" y1="720" x2="886" y2="750"/>
+    <line class="od-leader" x1="1064" y1="460" x2="1094" y2="490"/>
+    <line class="od-leader" x1="1273" y1="720" x2="1303" y2="750"/>
+    <line class="od-leader" x1="1482" y1="460" x2="1512" y2="490"/>
+    <line class="od-leader" x1="1690" y1="720" x2="1660" y2="750"/>
+
+    <circle class="od-dot-ring" cx="230" cy="460" r="9"/>
+    <circle class="od-dot-ring" cx="439" cy="720" r="9"/>
+    <circle class="od-dot-ring" cx="647" cy="460" r="9"/>
+    <circle class="od-dot-ring" cx="856" cy="720" r="9"/>
+    <circle class="od-dot-ring" cx="1064" cy="460" r="9"/>
+    <circle class="od-dot-ring" cx="1273" cy="720" r="9"/>
+    <circle class="od-dot-ring" cx="1482" cy="460" r="9"/>
+    <circle class="od-dot-ring" cx="1690" cy="720" r="9"/>
+  </svg>
+
+  <div class="od-item" data-idx="1">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_01_title}}</h3>
+        <p class="od-item-desc">{{item_01_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="2">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_02_title}}</h3>
+        <p class="od-item-desc">{{item_02_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="3">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_03_title}}</h3>
+        <p class="od-item-desc">{{item_03_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="4">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_04_title}}</h3>
+        <p class="od-item-desc">{{item_04_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="5">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_05_title}}</h3>
+        <p class="od-item-desc">{{item_05_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="6">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_06_title}}</h3>
+        <p class="od-item-desc">{{item_06_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="7">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_07_title}}</h3>
+        <p class="od-item-desc">{{item_07_desc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="od-item" data-idx="8">
+    <div class="od-block">
+      <span class="od-block-bar"></span>
+      <div class="od-block-text">
+        <h3 class="od-item-title">{{item_08_title}}</h3>
+        <p class="od-item-desc">{{item_08_desc}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 序号圆点标记（沿波浪基线，独立于文字条目定位，便于渲染阶段按 data-idx 成对裁剪） -->
+  <div class="od-num" data-idx="1">01</div>
+  <div class="od-num" data-idx="2">02</div>
+  <div class="od-num" data-idx="3">03</div>
+  <div class="od-num" data-idx="4">04</div>
+  <div class="od-num" data-idx="5">05</div>
+  <div class="od-num" data-idx="6">06</div>
+  <div class="od-num" data-idx="7">07</div>
+  <div class="od-num" data-idx="8">08</div>
+</section>
+</body>
+</html>

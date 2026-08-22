@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>背景模板 · 几何色块/粗野主义（cover 态）</title>
+<style>
+  /* ============================================================
+     bg-geo-brutalist.html —— 几何色块/粗野主义 风格库预览（cover 态）
+     TASK-042 新建：几何色块/粗野主义 分类，参考范例 Stencil & Tablet / acid-block。
+     本文件由 scripts/bg_styles.py::generate_full_background("geo-brutalist", ...)
+     真实生成逻辑产出（占位色示范，实际渲染时 palette 来自项目图片分析
+     dna["palette"]），仅供人工预览/参考，不参与渲染时真正读取执行。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+  }
+  .bg-tpl {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    color: #f6c445;
+    display: block;
+  }
+  .bg-tpl .art-bg {
+    position: absolute; inset: 0;
+    width: 1920px; height: 1080px;
+  }
+  .bg-tpl .art-bg svg { width: 100%; height: 100%; display: block; }
+  .bp-copy {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 220px;
+  }
+  .bp-eyebrow {
+    margin: 0 0 22px;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 24px;
+    letter-spacing: .34em;
+    font-weight: 700;
+    opacity: .78;
+  }
+  .bp-title {
+    margin: 0;
+    max-width: 1200px;
+    font-size: clamp(56px, 5.2vw, 92px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.01em;
+  }
+  .bp-tag {
+    position: absolute;
+    left: 220px; bottom: 56px;
+    z-index: 2;
+    margin: 0;
+    font-size: 17px;
+    letter-spacing: .04em;
+    opacity: .6;
+  }
+</style>
+</head>
+<body>
+<section class="slide role-cover bg-tpl bg-geo-brutalist" data-role="cover" data-template="bg-geo-brutalist" data-bg-style="geo-brutalist" data-bg-category="几何色块/粗野主义">
+  <div class="art-bg" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"><rect width="1920" height="1080" fill="#f4f1ea"/><line x1="0" y1="0" x2="0" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="60" y1="0" x2="60" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="120" y1="0" x2="120" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="180" y1="0" x2="180" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="240" y1="0" x2="240" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="300" y1="0" x2="300" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="360" y1="0" x2="360" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="420" y1="0" x2="420" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="480" y1="0" x2="480" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="540" y1="0" x2="540" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="600" y1="0" x2="600" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="660" y1="0" x2="660" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="720" y1="0" x2="720" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="780" y1="0" x2="780" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="840" y1="0" x2="840" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="900" y1="0" x2="900" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="960" y1="0" x2="960" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1020" y1="0" x2="1020" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1080" y1="0" x2="1080" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1140" y1="0" x2="1140" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1200" y1="0" x2="1200" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1260" y1="0" x2="1260" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1320" y1="0" x2="1320" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1380" y1="0" x2="1380" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1440" y1="0" x2="1440" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1500" y1="0" x2="1500" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1560" y1="0" x2="1560" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1620" y1="0" x2="1620" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1680" y1="0" x2="1680" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1740" y1="0" x2="1740" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1800" y1="0" x2="1800" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1860" y1="0" x2="1860" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="1920" y1="0" x2="1920" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="0" x2="1920" y2="0" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="60" x2="1920" y2="60" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="120" x2="1920" y2="120" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="180" x2="1920" y2="180" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="240" x2="1920" y2="240" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="300" x2="1920" y2="300" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="360" x2="1920" y2="360" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="420" x2="1920" y2="420" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="480" x2="1920" y2="480" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="540" x2="1920" y2="540" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="600" x2="1920" y2="600" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="660" x2="1920" y2="660" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="720" x2="1920" y2="720" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="780" x2="1920" y2="780" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="840" x2="1920" y2="840" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="900" x2="1920" y2="900" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="960" x2="1920" y2="960" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="1020" x2="1920" y2="1020" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><line x1="0" y1="1080" x2="1920" y2="1080" stroke="#f4f1ea" stroke-width="1" opacity="0.03"/><g opacity="1.000"><rect x="1510" y="130" width="173" height="173" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="1500" y="120" width="173" height="173" rx="24" fill="#e0542f" stroke="#f4f1ea" stroke-width="3" opacity=".92"/><rect x="1630" y="430" width="168" height="168" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="1620" y="420" width="168" height="168" rx="24" fill="#1e6f5c" stroke="#f4f1ea" stroke-width="3" opacity=".92"/><rect x="1450" y="770" width="140" height="140" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="1440" y="760" width="140" height="140" rx="24" fill="#232323" stroke="#f4f1ea" stroke-width="3" opacity=".92"/><rect x="230" y="870" width="186" height="186" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="220" y="860" width="186" height="186" rx="24" fill="#f6c445" stroke="#f4f1ea" stroke-width="3" opacity=".92"/><rect x="170" y="190" width="184" height="184" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="160" y="180" width="184" height="184" rx="24" fill="#f4f1ea" stroke="#f4f1ea" stroke-width="3" opacity=".92"/><rect x="570" y="770" width="148" height="148" rx="24" fill="#f4f1ea" opacity=".18"/><rect x="560" y="760" width="148" height="148" rx="24" fill="#e0542f" stroke="#f4f1ea" stroke-width="3" opacity=".92"/></g></svg>
+  </div>
+  <div class="bp-copy">
+    <p class="bp-eyebrow">LAUNCH 01</p>
+    <h1 class="bp-title">{{cover_title}}</h1>
+  </div>
+  <p class="bp-tag">几何色块/粗野主义 · cover 态</p>
+</section>
+</body>
+</html>

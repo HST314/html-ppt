@@ -3,7 +3,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from common import ROLES, load_state, save_state, write_json, read_json, parse_page_semantics, match_groups_to_items, parse_visual_blueprints
+from common import ROLES, load_state, save_state, write_json, read_json, parse_page_semantics, match_groups_to_items, parse_visual_blueprints, normalize_layout_variant
 
 
 def parse_args():
@@ -59,6 +59,74 @@ def toc_entries(sections, md_slides):
         defaults = ["建立共同判断", "展开关键证据", "确认下一步行动"]
         entries.extend(x for x in defaults if x not in entries)
     return entries[:6]
+
+
+# toc-modern-card 卡片一句话描述：优先从 state/storyline.md 的章节表格里的
+# 「叙事任务」列派生（该列形如"标签：详情"，标签是"建立背景/展示证据/请求决策"
+# 这类流程标注词，不是给听众看的文案），派生失败或文件不存在时留空，交给
+# 渲染层模板自身的空值容错（.mc-desc 为空不影响卡片布局）。
+TOC_DESC_MAXLEN = 20
+
+
+def _shrink_narrative_task(task):
+    """把「标签：详情」的叙事任务压成一句 ~20 字以内的目录卡片描述：
+    去掉标签前缀，压掉多余空格，超长截断。"""
+    text = (task or "").strip()
+    for sep in ("：", ":"):
+        if sep in text:
+            _, rest = text.split(sep, 1)
+            if rest.strip():
+                text = rest.strip()
+            break
+    text = re.sub(r"\s*\+\s*", "+", text)
+    text = re.sub(r"\s+", "", text)
+    return text[:TOC_DESC_MAXLEN]
+
+
+def parse_storyline_rows(state_dir):
+    """读取 state/storyline.md 的章节表格（章节序|章节名|叙事任务|...），
+    按表格行序返回 [{"name": 章节名, "desc": 精简描述}]；表格不存在或列名
+    对不上时返回空列表。"""
+    path = Path(state_dir) / "storyline.md"
+    if not path.exists():
+        return []
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return []
+    rows = [ln for ln in text.splitlines() if ln.strip().startswith("|")]
+    if len(rows) < 3:
+        return []
+    header = [c.strip() for c in rows[0].strip().strip("|").split("|")]
+    try:
+        name_idx = next(i for i, h in enumerate(header) if "章节名" in h)
+        task_idx = next(i for i, h in enumerate(header) if "叙事任务" in h)
+    except StopIteration:
+        return []
+    out = []
+    for line in rows[2:]:  # rows[1] 是 `---` 分隔行
+        cols = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cols) <= max(name_idx, task_idx):
+            continue
+        name, task = cols[name_idx], cols[task_idx]
+        if name and task:
+            out.append({"name": name, "desc": _shrink_narrative_task(task)})
+    return out
+
+
+def toc_card_desc(story_rows, index, title):
+    """给第 index（0-based）个目录条目找一句话描述：优先按章节名精确匹配
+    storyline.md 表格；deck.md 的 `##` 标题常是评语化短句而非表格里的纯章节名
+    （如"序章：一切准备就绪" vs 表格"序章 · 总览"），匹配不上时退化为按表格
+    行序对应——两者都是按章节 1..N 顺序生成，序号本身就是可靠锚点。找不到
+    时返回空字符串，交给渲染层模板的空值容错。"""
+    stripped = title.strip()
+    for row in story_rows:
+        if row["name"] == stripped:
+            return row["desc"]
+    if 0 <= index < len(story_rows):
+        return story_rows[index]["desc"]
+    return ""
 
 
 def blocks(raw_lines):
@@ -124,11 +192,15 @@ def directives(raw):
     image = re.findall(r"<!--\s*image:\s*([A-Za-z0-9_.-]+)\s*-->", text)
     theme = re.search(r"<!--\s*theme:\s*([a-z0-9-]+)\s*-->", text)
     notes = re.findall(r"<!--\s*notes:\s*(.*?)\s*-->", text)
+    # TASK-022: 可选显式 takeaway 指令——作者确有超出导语的增量结论时才手写，
+    # 不再由 infer_takeaway 自动复制导语/首条 bullet（那样注定是同义复述）。
+    takeaway = re.search(r"<!--\s*takeaway:\s*(.*?)\s*-->", text)
     return {
         "role": role.group(1) if role else None,
         "images": image,
         "theme": theme.group(1) if theme else None,
         "notes": " ".join(notes),
+        "takeaway": takeaway.group(1).strip() if takeaway else None,
     }
 
 
@@ -172,13 +244,12 @@ def action_title_issues(title):
     return issues
 
 
-def infer_takeaway(title, bl, role):
-    for b in bl:
-        if b.get("type") == "paragraph" and len(b.get("text", "")) >= 18:
-            return "So-what：" + b["text"][:52].rstrip("，。；") + "。"
-        if b.get("type") == "list" and b.get("items"):
-            return "So-what：" + b["items"][0][:52].rstrip("，。；") + "。"
-    return f"So-what：本页用 {role} 证据支撑“{title[:28]}”，下一页继续展开方法或行动。"
+# TASK-022: 不再自动合成 takeaway。此前 infer_takeaway 直接截取导语/首条 bullet
+# 拼成 "So-what：..."，结构上注定和页面正文同义复述（导语讲一遍、列表讲一遍、
+# 这里再讲第三遍），是本轮要修的"四重复读"根因之一。takeaway 现在默认留空
+# （见 slide_html 的 takeaway 组装逻辑），只有作者用 `<!-- takeaway: ... -->`
+# 显式登记、且确有超出导语的增量信息时才会渲染——见 NARRATIVE.md「页面级硬规则」
+# 与 qa_render.py 的重复度检查（高度重复的显式 takeaway 同样判为反模式）。
 
 
 def speaker_notes(title, bl, fallback):
@@ -289,7 +360,7 @@ def single_image_continuation(base_title, image, idx, total, section):
     return {
         "page": None, "role": "image-side", "title": title, "section": section,
         "blocks": bl, "images": [image],
-        "takeaway": "So-what：保持项目图片原貌和清晰边界，避免为丰富页面强行组合。",
+        "takeaway": "",
         "notes": speaker_notes(title, bl, "说明本图的可识别内容，不推测未知业务关系。"),
         "decision": "unrelated image isolated; no shared group_id",
         "risk": risk_for(title, bl, [image]),
@@ -303,7 +374,7 @@ def gallery_continuation(base_title, chunk, idx, total, section, note_seed):
     return {
         "page": None, "role": "gallery", "title": title, "section": section,
         "blocks": bl, "images": chunk,
-        "takeaway": f"So-what：同组证据共 {total} 页，本页为第 {idx} 页，需结合前后页一起阅读。",
+        "takeaway": "",
         "notes": speaker_notes(title, bl, note_seed),
         "decision": f"auto-split gallery part {idx}/{total}",
         "risk": risk_for(title, bl, chunk),
@@ -405,7 +476,7 @@ def enforce_ending(slides, deck_title):
         title = "未来 30 天行动已压缩为 3 个检查点"
         normalized.append({
             "page": None, "role": "bullets", "title": title, "section": None,
-            "blocks": bl, "images": [], "takeaway": "So-what：现在只需确认第一项行动的负责人和时间。",
+            "blocks": bl, "images": [], "takeaway": "",
             "notes": speaker_notes(title, bl, "把方案收束为可确认、可跟进、可复盘的行动。"),
             "decision": "automatic closing decision page", "risk": risk_for(title, bl, []),
         })
@@ -457,7 +528,14 @@ def main():
     slides = [{"page": 1, "role": "cover", "title": title, "section": None, "blocks": [], "images": [], "bg_image": cover_bg, "takeaway": "", "notes": speaker_notes(title, [], "开场说明演示目标、对象与预期收获。"), "decision": "level-1 title becomes cover", "risk": {"level": "low", "issues": []}}]
     toc_items = toc_entries(sections, md_slides)
     toc_blocks = [{"type": "list", "items": toc_items}, {"type": "paragraph", "text": "目录先建立判断路径，再按证据与行动推进。"}]
-    slides.append({"page": 2, "role": "toc", "title": f"{len(toc_items)} 个叙事节点从判断走向行动", "section": None, "blocks": toc_blocks, "images": [], "takeaway": "So-what：先让听众知道结论、证据和行动会怎样展开。", "notes": speaker_notes("目录建立完整叙事路径", toc_blocks, "用目录建立预期，控制节奏。"), "decision": "mandatory toc derived from sections or slide titles", "risk": {"level": "low", "issues": []}})
+    # toc-modern-card 卡片阵列消费的结构化数据：编号 + 章节名 + 一句话描述
+    # （描述来自 storyline.md「叙事任务」列的精简派生，取不到就留空）。
+    story_rows = parse_storyline_rows(Path(args.state).parent)
+    toc_cards = [
+        {"num": f"{i + 1:02d}", "title": item, "desc": toc_card_desc(story_rows, i, item)}
+        for i, item in enumerate(toc_items)
+    ]
+    slides.append({"page": 2, "role": "toc", "title": f"{len(toc_items)} 个叙事节点从判断走向行动", "section": None, "blocks": toc_blocks, "toc_cards": toc_cards, "images": [], "takeaway": "", "notes": speaker_notes("目录建立完整叙事路径", toc_blocks, "用目录建立预期，控制节奏。"), "decision": "mandatory toc derived from sections or slide titles", "risk": {"level": "low", "issues": []}})
     last_section = None
     for page_idx, (md, imgs) in enumerate(zip(md_slides, image_groups), start=1):
         if md["section"] and md["section"] != last_section:
@@ -468,12 +546,18 @@ def main():
         bl = enrich_blocks(bl, role)
         d = directives(md["raw"])
         notes = d["notes"] or speaker_notes(md["title"], bl, "围绕本页标题展开，先讲结论再补充证据。")
-        slide = {"page": len(slides) + 1, "role": role, "title": md["title"], "section": md["section"], "blocks": bl, "images": imgs, "takeaway": infer_takeaway(md["title"], bl, role), "notes": notes, "decision": why, "risk": risk_for(md["title"], bl, imgs)}
+        # TASK-022: takeaway 默认空——只消费作者显式登记的 `<!-- takeaway: ... -->`，
+        # 不再自动复制导语/首条 bullet（理由见 infer_takeaway 上方注释）。
+        slide = {"page": len(slides) + 1, "role": role, "title": md["title"], "section": md["section"], "blocks": bl, "images": imgs, "takeaway": d["takeaway"] or "", "notes": notes, "decision": why, "risk": risk_for(md["title"], bl, imgs)}
         # TASK-003: 消费语义登记的分组结果（2–4 组含组标题），以结构化 groups 字段进入 IR
         row = semantics.get(page_idx)
         if row:
             slide["semantics_page"] = f"P{page_idx:02d}"
             slide["semantic_role"] = row.get("role") or None
+            # TASK-022: 「正文关系」登记随 IR 落盘，供 render_deck.py 判断列表条目
+            # 是否该用数字编号（只有递进/流程/时间轴等真实先后顺序才编号）。
+            slide["content_relation"] = row.get("relation") or None
+            slide["content_logic"] = row.get("logic") or None
             list_items = [x for b in bl if b.get("type") == "list" for x in b.get("items", [])]
             if row.get("groups") and list_items:
                 matched = match_groups_to_items(row["groups"], list_items)
@@ -486,9 +570,15 @@ def main():
         bp_row = blueprints.get(page_idx)
         if bp_row:
             slide["layout_pattern"] = bp_row.get("pattern") or None
-            slide["layout_variant"] = bp_row.get("variant") or None
+            # TASK-021: 蓝图变体自由文本 → LAYOUT_VARIANTS 固定词表语义归一（不精确匹配就置空）
+            raw_variant = bp_row.get("variant") or ""
+            norm_variant, norm_reason = normalize_layout_variant(bp_row.get("pattern"), raw_variant)
+            slide["layout_variant"] = norm_variant or None
+            slide["layout_variant_raw"] = raw_variant or None
             slide["blueprint"] = {k: bp_row.get(k) for k in ("focus", "title_pos", "main_area", "aux_area", "whitespace", "svg_need", "image_need", "reason")}
             slide["decision"] += f" | layout: {bp_row.get('pattern')}/{bp_row.get('variant')}"
+            if raw_variant and raw_variant != norm_variant:
+                slide["decision"] += f" | variant normalized: {raw_variant!r} -> {norm_variant or '(unmapped, default role rendering)'} [{norm_reason}]"
         slides.append(slide)
     # 自动拆页：任何超出组件容量的图片拆成多页，渲染层不再截断图片
     slides = split_overflow_slides(slides)
@@ -502,7 +592,7 @@ def main():
             utitle = f"清单内剩余场景图已独立汇入证据页（{ci + 1}/{len(chunks)}）"
             ubl = [{"type": "paragraph", "text": "以下场景图来自图片清单但未在正文中被显式引用，系统自动拆入本页以保证输入图片零遗漏。"}]
             role = "gallery" if len(chunk) > 1 else "image-side"
-            slides.append({"page": None, "role": role, "title": utitle, "section": last_section, "blocks": ubl, "images": chunk, "takeaway": f"So-what：本页完整展示清单内未被引用的 {len(chunk)} 张场景图。", "notes": speaker_notes(utitle, ubl, "说明图片自动汇入的原因，不推测未知业务关系。"), "decision": "unplaced images isolated unless explicit group_id", "risk": risk_for(utitle, ubl, chunk)})
+            slides.append({"page": None, "role": role, "title": utitle, "section": last_section, "blocks": ubl, "images": chunk, "takeaway": "", "notes": speaker_notes(utitle, ubl, "说明图片自动汇入的原因，不推测未知业务关系。"), "decision": "unplaced images isolated unless explicit group_id", "risk": risk_for(utitle, ubl, chunk)})
     slides = enforce_ending(slides, title)
     # 拆页与汇入后统一重编页码
     for page_no, s in enumerate(slides, start=1):

@@ -21,8 +21,12 @@
    增加 .project-art-frame 裁切层（overflow:hidden）截断溢出传播，动画本身不变 */
 .project-art-frame { position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
 .project-art-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:.82; z-index:0; animation:artDrift 18s ease-in-out infinite alternate; }
-.project-art-toc, .project-art-bullets, .project-art-two-column, .project-art-image-side, .project-art-gallery, .project-art-table, .project-art-kpi, .project-art-quote, .project-art-compare, .project-art-timeline { opacity:.58; }
-.project-art-section { opacity:.76; }
+.project-art-bullets, .project-art-two-column, .project-art-image-side, .project-art-gallery, .project-art-table, .project-art-kpi, .project-art-quote, .project-art-compare, .project-art-timeline { opacity:.58; }
+/* TASK-034 fix：目录页(toc)背景要和 section 等骨架页一致（用户原话"背景也
+   一致就行了"）——toc 此前和普通内容页共用 .58 这一档更暗的不透明度，
+   是"目录页自建一套配方"的表现之一。toc 结构上属于骨架页（承载全局导航，
+   不是逐条正文信息），改为和 section 同档 .76，两者背景强度对齐。 */
+.project-art-section, .project-art-toc { opacity:.76; }
 .slide > .project-art-frame ~ *, .slide > .project-art-bg ~ * { z-index:2; } /* TASK-013 fix: art 层已包进 frame，兄弟层级选择器同步 */
 .slide:has(.project-art-bg) .panel, .slide:has(.project-art-bg) .content-list li, .slide:has(.project-art-bg) .takeaway { background:rgba(5,15,28,.72); border-color:rgba(211,163,82,.25); }
 .slide:has(.project-art-bg)::after { background:linear-gradient(90deg,transparent,rgba(222,178,95,.5),transparent); }

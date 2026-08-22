@@ -302,3 +302,27 @@ pattern 决定空间构图，role 是组件库中的渲染落点，二者解耦�
 | ⑩ 产品英雄图 | image-hero | 主体大图 + 卖点 |
 | ⑪ 主图+细节 | image-hero / image-side | 主图 + 细节槽 |
 | ⑫ 层级空间结构 | two-column（layers 变体） / table | 分层条 L1…Ln |
+
+---
+
+## 14. 页面逻辑（13 类）→ 必选带符号 variant 映射表（TASK-021 A.6）
+
+**铁律**：「裸选 pattern 不带变体」仅在角色本身自带符号（kpi 的计数器面板 / timeline 的日期徽标 / gallery 的编号角标）时允许；其余场景一律禁止不带变体落版——只登记 pattern 不登记变体，等于把"关系如何被看见"的决定权交还给默认竖排列表，正是本轮要修的退化根因。变体 slug 必须落在 `scripts/common.py::LAYOUT_VARIANTS` 固定词表内（`normalize_layout_variant()` 是唯一校验依据，本表为人工查阅速查表）。
+
+| 逻辑类型 | 必选带符号 variant（任选其一，需与主体区域/焦点位置相符） | 承载 role | 免检豁免 |
+| --- | --- | --- | --- |
+| 并列 | `grid-2x2` / `grid-2x3` / `asym-cards`（非对称双栏族，与 `anchor-right`/`cause-effect` 同族，DOM 结构不是网格，不要当成网格族变体来处理） | two-column / bullets | 无 |
+| 对比 | `vs-split` / `anchor-right`（镜像对照） | two-column / compare / image-side | compare 角色自带对照卡，可不挂变体 |
+| 因果 | `cause-effect` | two-column | 无 |
+| 流程 | `chain-3` / `chain-4` / `ascend-4` | two-column / bullets / timeline | 无 |
+| 时间轴 | `checkpoint-3`（≤4 节点强调当前） | timeline | timeline 角色自带日期徽标，可不挂变体 |
+| 递进 | `ascend-4` | bullets / two-column / timeline | 无 |
+| 中心辐射 | `hub-left` / `hub-top` / `hub-spoke` | two-column | 无 |
+| 闭环 | `loop-3` / `loop-4` / `hub-return` | two-column | 无 |
+| 矩阵 | `grid-2x2` / `grid-2x3` | two-column / bullets | 无 |
+| 层级 | `layers-3` / `layers-4` / `layers-5` | two-column | 无 |
+| 数据 | `num-anchor`（并列+数据焦点复合页） | two-column / bullets | kpi 角色自带大数字计数器，可不挂变体 |
+| 产品展示 | `anchor-right`（图锚定 + 卖点栏） | image-hero / image-side | image-hero 主图占位本身即焦点，无正式分组时可不挂变体（保留段落叙事，见 render_deck.py SELF_CONTAINED_SYNTH_VARIANTS 注释） |
+| 图文叙事 | `anchor-right` / `gather-3`（多要点汇聚一个结论） | image-side / bullets | 同上 |
+
+汇聚收束（总分关系"分→总"，如多个平等要点收出一个结论）额外映射 `gather-3`；总分关系"总→分"（一个统领主张分解为若干方面）映射 `hub-top`；编辑式并列铺陈（3–4 个场景/触点各配一句解读）映射 `ed-strip`。这三个连同 `hub-spoke`/`num-anchor`/`checkpoint-3` 是 §12.5 登记的六个结构级变体，CSS 已在 `assets/components/layouts.css` 就位，渲染器出口见 `scripts/render_deck.py::render_structural_variant()`。

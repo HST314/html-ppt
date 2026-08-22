@@ -18,9 +18,18 @@ import re
 import sys
 from pathlib import Path
 
-from common import read_json, write_json
+from common import read_json, write_json, attach_motifs
 # TASK-005: 复用图片路径的同一套背景生成器，保证 md 路径与像素路径同风格
-from extract_art_dna import svg
+# TASK-041: 复用同一个 --theme-domain 解析函数，保证 md 路径与像素路径的
+# domain 加载口径一致，不重复实现一遍
+# 本轮新增：色彩发散检测与内容页基础色兜底也复用 extract_art_dna.py 的同一套实现，
+# 保证 md 路径与像素路径判定口径完全一致，不重复实现一遍（详见该函数顶部注释）。
+from extract_art_dna import svg, _load_theme_domain, color_divergence_check, content_page_base_palette
+# TASK-039: md 路径没有 deck.md 正文可扫描关键词，风格选择仅走量化特征兜底
+# （bg_styles.select_background_style 的 keyword_text 缺省空串）；TASK-041 起
+# 若调用方传入 --theme-domain，则 domain 命中作为最高优先级信号参与选择，
+# 仍记录选中风格与判断依据供追溯，见 references/BACKGROUND_STYLES.md
+import bg_styles
 
 LINE_LANGUAGES = {"纵向生长", "横向延展", "均衡网格"}
 # ART_DNA.md 规范的 8 个维度，art_expression 必须全覆盖（每维度命中任一关键词即视为覆盖）
@@ -41,6 +50,11 @@ def args():
     p.add_argument("--md-report", required=True, help="Agent 从图片 md 解读提取的清单 JSON（state/art_dna_md.json）")
     p.add_argument("--output", required=True)
     p.add_argument("--assets-dir", required=True)
+    # TASK-028: 可选——项目主题线条插画装饰映射（缺省取 --output 同目录下的 art_motifs.json）
+    p.add_argument("--motifs", required=False, help="state/art_motifs.json：主题图形关键词->线条SVG素材映射")
+    # TASK-041: 可选——指向 classify_theme_domain.py 产出的 state/theme_domain.json，
+    # 与 extract_art_dna.py 同口径，解析 domain/confidence 传给背景风格选择
+    p.add_argument("--theme-domain", required=False, help="state/theme_domain.json 路径（可选）：项目主题域判定结果，作为背景风格选择的最高优先级输入")
     return p.parse_args()
 
 
@@ -81,6 +95,23 @@ def validate(rep):
     return errors
 
 
+def _source_identity_items(rep):
+    """本轮新增：可选字段 source_identity_colors——{来源标识: 该来源自身色彩身份 hex}，
+    仅当项目存在多份 md 解读来源、且 Agent 在提取阶段愿意额外登记"每份解读各自的主色"
+    时才建议提供（用于跨来源色彩发散检测，见 references/ART_DNA.md「无像素输入」一节
+    与 color_divergence_check()）。字段缺省、格式不对、或有效条目不足 2 个时，本函数
+    返回空列表——调用方据此完全跳过发散检测，不影响主产物生成（非阻断检查，不写入
+    validate() 的 errors）。"""
+    raw = rep.get("source_identity_colors")
+    if not isinstance(raw, dict):
+        return []
+    items = []
+    for sid, hexc in raw.items():
+        if isinstance(hexc, str) and re.fullmatch(r"#[0-9a-fA-F]{6}", hexc):
+            items.append((sid, hexc))
+    return items
+
+
 def main():
     a = args()
     rep = read_json(a.md_report)
@@ -90,6 +121,16 @@ def main():
     dna = rep["dna"]
     expression = rep["art_expression"].strip()
     ids = list(rep["source_md_ids"])
+    # 色彩发散兜底（md 路径）：与像素路径判定口径一致，见 color_divergence_check()
+    # 顶部注释。md 路径当前 schema 里 dna 是 Agent 通读全部来源后已经合并好的单一
+    # 结果，本身不带"每份来源各自的主色"——只有 Agent 额外提供了可选字段
+    # source_identity_colors（见 _source_identity_items() 注释）时才有数据可比较；
+    # 未提供或有效来源不足 2 个时直接跳过，dna 完全不变，不影响任何既有项目。
+    identity_items = _source_identity_items(rep)
+    diverged, div_reason, _camps = color_divergence_check(identity_items)
+    if diverged:
+        dna = dict(dna)
+        dna["palette"] = content_page_base_palette(a.output)
     outdir = Path(a.assets_dir)
     outdir.mkdir(parents=True, exist_ok=True)
     seed = "|".join(ids) + expression
@@ -97,8 +138,10 @@ def main():
     content = outdir / "project-content.svg"
     section = outdir / "project-section.svg"
     closing = outdir / "project-closing.svg"
+    domain, domain_confidence = _load_theme_domain(a)
+    style_key, style_trace = bg_styles.select_background_style(dna, "", domain, domain_confidence)
     for path, kind in ((cover, "cover"), (content, "content"), (section, "section"), (closing, "closing")):
-        path.write_text(svg(dna, kind, seed), encoding="utf-8")
+        path.write_text(svg(dna, kind, seed, "", domain, domain_confidence), encoding="utf-8")
     report = {
         "version": "2.0",
         "source_mode": "md",  # TASK-005: QA 据此标注 art_dna=md，与图片路径区分
@@ -110,7 +153,19 @@ def main():
         "section_background": f"{outdir.name}/{section.name}",
         "closing_background": f"{outdir.name}/{closing.name}",
         "non_template_signature": hashlib.sha256(seed.encode()).hexdigest()[:16],
+        # TASK-039/TASK-041: 背景风格匹配结果——md 路径无正文关键词可扫描，但若传入
+        # --theme-domain，domain 命中仍作为最高优先级信号参与选择（否则仅走量化特征）
+        "background_style": style_key,
+        "background_style_label": bg_styles.STYLE_LIBRARY[style_key]["label"],
+        "background_style_reason": style_trace,
+        # 色彩发散检测结果——无论是否触发都记录，不做静默决策。triggered=True 时
+        # dna["palette"] 已替换为内容页基础色兜底，见 _source_identity_items() 注释。
+        "color_divergence_triggered": diverged,
+        "color_divergence_reason": div_reason,
     }
+    # TASK-028: 可选主题插画装饰层——静默跳过不阻断主产物，详见 common.attach_motifs
+    motifs_path = a.motifs or (Path(a.output).parent / "art_motifs.json")
+    report = attach_motifs(report, motifs_path, outdir)
     write_json(a.output, report)
     print(a.output)
     return 0

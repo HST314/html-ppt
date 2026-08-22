@@ -1,14 +1,34 @@
+/* TASK-036 fix：用户给出的字体排版量化规则要求"标题行距 1.2~1.3 倍、正文
+   行距 1.4~1.6 倍"，并把这条规则落实为 qa_render.py 的自动化检查
+   （check_line_spacing）。原 --lh-tight(.96)/--lh-title(1.05)/--lh-body(1.36)
+   均低于各自下限（标题行距过紧、正文行距偏紧），是全库所有页面 h1/h2/正文
+   共用的基准 token，属于"字体在页面中过小/拥挤"问题的根因之一——在这里
+   统一改，不是逐页打补丁。--fs-support 同步从 22px（对应 .takeaway 结论条
+   实测仅占 16:9 画布高 2.04%，低于正文 2.5% 底线）提到 28px（2.59%，达标）。 */
+/* TASK-042 fix（project-test-digitrans 端到端实测发现）：上一条修复把
+   --fs-support 固定改成 28px 后，与各主题 --body-size（如 proposal-light
+   30px、其余主题 31px 附近）的比值仅约 1.07~1.11，全部低于
+   check_font_hierarchy() 的相邻字号层级下限 1.2——几乎每一个带
+   takeaway 结论条的内容页都会因此命中"字号层级区分不足"扣分，这不是某个
+   项目的个例，是 --fs-support 这个 token 本身与 --fs-body 撞在同一层级
+   区间的全局缺陷。takeaway 结论条在语义上就是"本页结论的复述"，本来就
+   属于正文同一层级（用 font-weight:700 加粗 + accent 描边色块区分即可，
+   不需要也不应该单独占一个"比正文小一点"的中间层级——那个中间层级本身
+   就是本次问题的根源）。改为直接跟随 --fs-body：两者字号相同时
+   check_font_hierarchy() 对相同字号去重后不再产出这一对相邻层级，从根上
+   消除该误报，同时自动满足正文 2.5% 画布高下限（因为直接复用已达标的
+   --fs-body），不需要再单独维护一个数值。 */
 :root {
   --fs-display: 144px;
   --fs-cover: var(--cover-size, 112px);
   --fs-title: var(--title-size, 70px);
   --fs-subtitle: 40px;
   --fs-body: var(--body-size, 31px);
-  --fs-support: 22px;
+  --fs-support: var(--fs-body);
   --fs-caption: 17px;
-  --lh-tight: .96;
-  --lh-title: 1.05;
-  --lh-body: 1.36;
+  --lh-tight: 1.24;
+  --lh-title: 1.26;
+  --lh-body: 1.45;
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
@@ -30,11 +50,22 @@
   transform-origin: left center;
 }
 
+/* TASK-027 fix: 此前描边色（70% 透明度）外面又叠一层 opacity:.38，两层透明度
+   相乘，实际可见度约 70%×38%=27%，实测封面/章节页的巨型编号（01…06）对比度
+   只有 1.4~1.8:1，与目录页 ss-ghost-num 是同一个"双重透明度叠加"错误写法
+   （见 assets/components/toc-segment-strip.css 对应说明）。改为单层透明度：
+   描边色直接用不叠加 opacity 的固定 alpha，去掉外层 opacity。
+   实测发现光调高 alpha 收益递减——144px 字号配 2px 描边，相对渲染尺寸而言
+   线条很细，大部分描边像素落在抗锯齿过渡区而非纯色核心，把 alpha 从 65%
+   提到 82% 时核心像素实测灰度只从约 66 升到约 78（远低于线性预期的
+   ~113），说明瓶颈是线宽太细导致抗锯齿稀释、不是透明度不够。改为同时加粗
+   描边（2px→3px，减少抗锯齿像素占比）+ alpha 提到 88%，封面页（背景更暗，
+   叠了一层 cover-bg-mask 暗化渐变）实测达标 ≥3:1；因为是描边（非实心填充）
+   视觉强度仍明显弱于正文/标题的实色文字，不会喧宾夺主。 */
 .outline-number {
   color: transparent;
-  -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 70%, transparent);
+  -webkit-text-stroke: 3px color-mix(in srgb, var(--accent) 88%, transparent);
   font: 900 var(--fs-display)/.8 var(--font-mono);
-  opacity: .38;
 }
 
 .slide .watermark-word {
@@ -77,7 +108,7 @@
   background: color-mix(in srgb, var(--accent) 18%, var(--surface));
   border-left: 6px solid var(--accent);
   border-radius: min(var(--radius), 8px);
-  font: 700 var(--fs-support)/1.22 var(--font-sans);
+  font: 700 var(--fs-support)/1.45 var(--font-sans);
 }
 
 .caption-bar {

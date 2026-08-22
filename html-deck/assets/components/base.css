@@ -80,14 +80,15 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 }
 .slide h1 { font-size: var(--fs-cover); line-height: var(--lh-tight); max-width: 1300px; }
 .slide h2 { font-size: var(--fs-title); line-height: var(--lh-title); max-width: 1230px; }
-/* TASK-004 fix: 长标题平衡换行，消除末词孤行（P14“离”、P20“链路”）；对不支持浏览器自动回退普通换行 */
-.slide h1, .slide h2 { text-wrap: balance; }
 .subtitle {
   margin: 30px 0 0;
   max-width: 1000px;
   color: var(--muted);
   font-size: var(--fs-subtitle);
-  line-height: 1.32;
+  /* TASK-036 fix: 原 1.32 低于正文行距规则下限 1.4，封面副标题在语义上是
+     引导性正文（非独立标题层级），复用 --lh-body（已统一改到 1.45）而不是
+     再写一个局部魔数，保持全库正文行距口径一致。 */
+  line-height: var(--lh-body);
 }
 .eyebrow, .tag {
   display: inline-flex;
@@ -116,6 +117,8 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   list-style: none;
   display: grid;
   gap: 18px;
+  min-height: 0;
+  overflow: hidden;
 }
 .content-list li {
   position: relative;
@@ -123,6 +126,7 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   padding: 12px 18px 12px 38px;
   border-left: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 78%, transparent);
+  overflow: hidden;
 }
 .content-list li::before {
   content: "";
@@ -132,6 +136,45 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   width: 12px;
   height: 12px;
   background: var(--accent);
+}
+/* TASK-021: 扁平列表编号徽标——即使没有正式分组登记，也不再是纯文字竖排列表；
+   只在真正带 .li-index 徽标的 <li> 上加左侧留白，不影响 group-card 内部列表 */
+.content-list li:has(.li-index),
+.content-list li:has(.li-mark) { padding-left: 78px; }
+/* TASK-027 fix: 此前 color/background 直接用 var(--accent-2) 原色 + opacity
+   叠加——accent-2 由每个项目的 art_dna 从图片提取，不保证一定是亮色（本项目
+   提取到的"航天蓝 #0033A0"是暗色，压在近黑底色 --bg 上，即使 opacity 拉到
+   1 也只有约 1.8:1，实测两位数字/方块标记全部与背景"融在一起"看不清）。
+   这是通用组件库的样式，会被所有项目、所有主题（含浅色主题）复用，不能
+   假设 accent-2 一定够亮——用 color-mix 混入固定比例的 --text（每套主题
+   都保证与 --bg 高对比、深色主题是浅色文字/浅色主题是深色文字，比 --inverse
+   固定白更稳妥：浅色主题下混白只会让标记更接近背景，混 --text 才能在任意
+   主题下都兜住亮度/暗度下限）。给符号兜住一个可辨识的对比度下限，不管当次
+   项目的 accent-2 明暗如何，同时仍带有 accent-2 的品牌色相（不是纯色）。 */
+.content-list li .li-index {
+  position: absolute;
+  left: 34px;
+  top: 10px;
+  color: color-mix(in srgb, var(--accent-2) 30%, var(--text) 70%);
+  font: 900 20px/1 var(--font-mono);
+}
+/* TASK-022: 并列/对比/层级等无先后顺序的列表不该用数字编号（会暗示不存在的
+   顺序），但仍需要一个真实的结构标记把"这是一条独立条目"这件事视觉化——
+   用不带数字的方块类目标记（.li-mark）承接，语义职能是"标记/类目"而非
+   "编号/顺序"，口径见 references/visual-symbol-system.md 七类符号里的标签/标记类。 */
+/* TASK-027 fix（二次修正）：14x14 方块面积太小，即使填色混到 accent-2 35%/
+   --text 65% 也只测到 2.2~4.2:1（P7/8/9/11 多数仍 <4.5），小色块本身能承载
+   的"提亮"余地有限。改为填色直接用 --text（与 --bg 保证高对比，任意主题下
+   都成立），accent-2 品牌色相降级为外围一圈细描边（box-shadow 圆环），不
+   再依赖填色本身混出可辨识的亮度——实测稳定 ≥4.5:1。 */
+.content-list li .li-mark {
+  position: absolute;
+  left: 34px;
+  top: 18px;
+  width: 14px;
+  height: 14px;
+  background: var(--text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-2) 60%, transparent);
 }
 .body {
   max-width: 1120px;
@@ -170,6 +213,66 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   border-radius: max(4px, calc(var(--radius) - 2px));
   box-shadow: 0 20px 46px rgba(0,0,0,.28);
 }
+/* ── TASK-021 A.4：三段式骨架（slide-head/slide-body/slide-foot）───────────
+   内容类角色统一产出三段 DOM，取代此前"第 N 个直接子元素落第 N 行"的隐式定位；
+   空内容用 :empty 隐藏（仍然生成该 div，不是不生成）。本轮试点 image-hero 与
+   bullets（两个角色专属 grid-row 声明见各自的 role-xxx 规则）。 */
+.slide-head, .slide-body, .slide-foot { min-height: 0; }
+.slide-head:empty, .slide-body:empty, .slide-foot:empty { display: none; }
+.role-bullets {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.role-bullets > .slide-head { grid-row: 1; }
+/* TASK-022: slide-body 用 flex 纵向居中——takeaway 默认不再渲染后，slide-foot
+   行收缩为 0、slide-body 拿到全部让出的高度（见上方 grid-template-rows 的
+   1fr 行），但单容器结构级变体（checkpoint-3/gather-3 等）内容本身高度固定，
+   不会跟着拉伸；不居中就会在内容下方留一整块空白。flex column + justify-
+   content:center 让内容在拿到的额外空间里居中，而不是顶部对齐留白在底部。 */
+.role-bullets > .slide-body { grid-row: 2; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+.role-bullets > .slide-foot { grid-row: 3; }
+/* TASK-027 fix: kpi/table 两个角色此前是"h2/正文/主体"三个 flat 直接子元素，
+   吃的是本文件下方共享规则的 `align-content:start`——kpi-grid（4 张固定高度
+   卡片）与 table（固定行高）都不会随画布拉伸，无配图时顶部对齐后底部留出
+   大片不协调空白（用户反馈 P4 KPI 页举例）。改用与 role-bullets 相同的三段式
+   骨架 + flex 纵向居中：标题固定在 slide-head（顶部通栏，位置不变），主体
+   内容在 slide-body 里作为一个整体在标题下方的剩余空间内居中，不再顶部对齐。 */
+.role-kpi, .role-table {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.role-kpi > .slide-head, .role-table > .slide-head { grid-row: 1; }
+.role-kpi > .slide-body, .role-table > .slide-body { grid-row: 2; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+.role-kpi > .slide-foot, .role-table > .slide-foot { grid-row: 3; }
+/* TASK-022 fix: layouts.css 给 gather-3/hub-top/hub-spoke/checkpoint-3/layers-N
+   声明的 `.slide.layout-X { align-items: start; }` 是为"内容直接挂在 .slide
+   下"的旧写法准备的（two-column 等角色）；三段式骨架角色（bullets/image-hero）
+   把内容包进了 .slide-body 后，这条规则会连带把 slide-body 这个 grid item 也
+   压成 align-self:start（内容收缩到自身高度，多余空间全部堆在底部空白），
+   在这里针对骨架场景显式拉回 stretch，slide-body 才能吃满 1fr 行让上面的
+   flex justify-content:center 生效。 */
+.role-bullets.layout-gather-3 > .slide-body,
+.role-bullets.layout-hub-top > .slide-body,
+.role-bullets.layout-hub-spoke > .slide-body,
+.role-bullets.layout-checkpoint-3 > .slide-body,
+.role-bullets[class*="layout-layers"] > .slide-body,
+.role-image-hero.layout-gather-3 > .slide-body,
+.role-image-hero.layout-hub-top > .slide-body,
+.role-image-hero.layout-hub-spoke > .slide-body,
+.role-image-hero.layout-checkpoint-3 > .slide-body,
+.role-image-hero[class*="layout-layers"] > .slide-body {
+  align-self: stretch;
+}
+/* split 族变体命中 bullets 角色时，.copy/.visual 落在 slide-body 内部（非
+   .slide 直接子级），layout-split 的 12 列网格与 :has() 兜底相应改挂 slide-body */
+.slide-body:has(> .copy):has(> .visual),
+.slide.layout-split > .slide-body {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 34px;
+  align-items: center;
+}
+.slide.layout-split > .slide-body > .copy { grid-column: span 6; min-width: 0; min-height: 0; overflow: hidden; }
+.slide.layout-split > .slide-body > .visual { grid-column: 7 / span 6; min-width: 0; min-height: 0; overflow: hidden; }
+
 .role-cover {
   display: grid;
   align-content: end;
@@ -202,11 +305,17 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   align-content: start;
   padding-bottom: 112px;
 }
+/* TASK-022 fix: 原先假设固定 3 行（h2/正文/gallery-grid），但正文只要同时有
+   导语段落和列表条目，blocks_html 就会产出两个独立的直接子元素（<p> 和
+   <ul class="content-list">），第 4 个元素挤进隐式行、和 3 号 minmax(0,1fr)
+   行抢空间，实测会跟 gallery-grid 视觉重叠。用 .gallery-copy 包一层让导语+
+   列表合并成一个 grid item，行数与实际子元素数对齐；4 号行留给可选 takeaway。 */
 .role-gallery {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   padding-bottom: 112px;
 }
+.role-gallery .gallery-copy { min-height: 0; overflow: hidden; }
 .role-gallery .gallery-grid { margin-top: 34px; min-height: 0; }
 .role-bullets .content-list, .role-toc .content-list { max-width: 1180px; }
 .role-two-column, .role-image-side, .role-compare {
@@ -217,18 +326,25 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   padding-bottom: 92px;
 }
 .role-compare > h2 { grid-column: 1 / -1; }
-.role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; }
-.role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; }
+.role-two-column > .copy, .role-image-side > .copy { grid-column: span 6; min-width: 0; min-height: 0; overflow: hidden; }
+.role-two-column > .visual, .role-image-side > .visual { grid-column: 7 / span 6; min-width: 0; min-height: 0; overflow: hidden; }
 /* TASK-003: 语义信息组的独立视觉区块（组卡片），组标题可见 */
 .group-card {
   padding: 24px 26px;
   align-self: start;
   text-align: left;
+  min-height: 0;
+  overflow: hidden;
 }
 .group-card .group-title {
   margin: 0 0 16px;
   color: var(--accent);
-  font-size: 27px;
+  /* TASK-036 fix: 27px 与各主题正文字号（--body-size 30~32px）实测倍率仅
+     1.03~1.19，低于字号层级比例规则下限 1.2（Playwright 实测 P13/P17/P19/
+     P20 命中）——二级标题与正文字号太接近，读不出层级差异。上调到 40px，
+     对全部主题的 --body-size（最大 32px）都能稳定拉开 ≥1.2 倍差距
+     （40/32=1.25），同时仍明显小于 h1/h2（--title-size 66~76px）。 */
+  font-size: 40px;
   font-weight: 800;
   line-height: 1.25;
 }
@@ -240,16 +356,46 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   gap: 22px;
   margin-top: 32px;
 }
+/* TASK-028 fix：并列容器尺寸统一（同一问题类别见 toc-segment-strip.css 的
+   .ss-plaque 修复说明；判定标准写进 references/final-quality-check.md V4
+   「并列容器尺寸一致性专项」）——.group-card 基础规则的 align-self:start 会
+   主动关闭 CSS Grid 默认的同行拉伸对齐，导致同一批并列卡片因组内条目数/文字
+   长度不同而产生实际渲染高度差（内容多的卡片更高、内容少的卡片更矮，肉眼
+   不整齐）。这里只对"纯并列矩阵/纯并列分支"三类容器（.group-grid 的默认
+   矩阵用法、gather-3 的 needs 分支列、hub-top 的 branches 分支列——均为
+   display:grid 且卡片确为该容器直接子级，天然只在同一行内生效）补 stretch，
+   不改 base .group-card 的默认值，因此不影响 asym-cards/hub-left/hub-radiate/
+   hub-return/layers-N 等"首卡故意更大"的非对称设计（这些卡片的 :first-child
+   特化规则不受本选择器覆盖，:first-child 特化写在别处且选择器更具体，
+   仍会按设计保持不同尺寸）。spoke-col（hub-spoke 左右翼列）卡片彼此纵向堆叠
+   在各自独立行内，stretch 在此处不产生跨卡片拉伸效果，加入仅为选择器完整性，
+   不改变实际渲染。 */
+.group-grid > .group-card,
+.gather-needs > .group-card,
+.hub-top-branches > .group-card,
+.spoke-col > .group-card {
+  align-self: stretch;
+}
 .role-two-column .group-stack { display: grid; gap: 20px; align-content: center; }
 .role-two-column .copy > .group-stack { margin-top: 30px; }
 .visual .image-frame.group-image { height: 220px; margin-bottom: 20px; }
+/* TASK-021 A.4: 三段式骨架——slide-head(标题)/slide-body(hero 双栏)/slide-foot(takeaway)，
+   取代原先"标题嵌在 hero-copy 内、takeaway 靠 grid-row:3 隐式定位"的写法 */
 .role-image-hero {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 28px 34px;
+  gap: 20px 34px;
   padding-bottom: 92px;
 }
+.role-image-hero > .slide-head { grid-row: 1; }
+.role-image-hero > .slide-body {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 28px 34px;
+  min-height: 0;
+}
+.role-image-hero > .slide-foot { grid-row: 3; }
 /* 封面场景图背景：风格检测选出的高权重场景图做全幅底图，蒙版保证文字可读 */
 .cover-bg {
   position: absolute;
@@ -276,12 +422,30 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 }
 .hero-copy {
   grid-column: 1 / span 4;
-  grid-row: 1 / span 2;
   align-self: center;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
-.hero-visual { grid-column: 5 / -1; grid-row: 1 / span 2; min-width: 0; min-height: 0; }
-.role-image-hero > .takeaway { grid-column: 1 / -1; grid-row: 3; }
+.hero-visual { grid-column: 5 / -1; min-width: 0; min-height: 0; overflow: hidden; }
+/* TASK-024 fix（终审 D1 命中修复）：hero-right-info-left（镜像变体）此前只在
+   蓝图文字里声明"图右信息左"，data-variant 属性虽已写出但没有任何 CSS 选择
+   它，导致该变体实际渲染与 hero-left-info-right 完全同栅格（图右文左），三个
+   image-hero 页（本项目 P7/P8/P10）四元组（标题位置×内容区切分×焦点位置×
+   模块节奏）全部相同，命中 html-layout-system.md §9 deck 结构配额（>2 页同
+   签名）。此规则让镜像变体真正对调栅格列位——内容区切分方向与焦点位置两维
+   同时改变，符合 §9"结构差异须落在四元组至少 2 维"的要求。 */
+/* grid-row 显式钉住第 1 行——只给 grid-column 反向排布时，Chromium 的隐式行
+   auto-placement 会把两者分进两条隐式行（实测复现：copy 顶到与 slide-head
+   同高、纵向错位/重叠），显式行号消除该歧义。 */
+.role-image-hero[data-variant="hero-right-info-left"] > .slide-body > .hero-copy {
+  grid-column: 9 / -1;
+  grid-row: 1;
+}
+.role-image-hero[data-variant="hero-right-info-left"] > .slide-body > .hero-visual {
+  grid-column: 1 / span 8;
+  grid-row: 1;
+}
 .side-image, .visual .image-frame {
   width: 100%;
   height: 690px;
@@ -315,25 +479,31 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   background: var(--accent);
   font: 900 18px/1 var(--font-mono);
 }
+/* TASK-022: takeaway 默认不再渲染，kpi 页底部让出的空间用来放大核心数字本身
+   （大数字页的视觉焦点理应是数字，不是靠一句复读式收尾语撑住存在感）。
+   TASK-027 fix: 配合上方 role-kpi 三段式骨架的纵向居中，kpi-card/kpi-number
+   同步放大（min-height 248→320，数字 100px→132px），让卡片在居中后空出来的
+   画布里有足够的视觉体量，不是小卡片孤零零漂在大留白正中间；4 张卡片间距
+   同步放大到 32px 保持疏密协调。 */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-top: 40px;
+  gap: 32px;
+  margin-top: 54px;
 }
 .kpi-card {
-  min-height: 216px;
-  padding: 30px;
+  min-height: 320px;
+  padding: 40px 36px;
   display: grid;
   align-content: space-between;
 }
 .kpi-number {
   color: var(--accent);
-  font: 900 82px/1 var(--font-mono);
+  font: 900 132px/1 var(--font-mono);
 }
 .kpi-card small {
   color: var(--muted);
-  font: 700 19px/1.3 var(--font-sans);
+  font: 700 20px/1.35 var(--font-sans);
 }
 .quote-mark {
   color: var(--accent);
@@ -349,6 +519,7 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   margin-top: 28px;
+  min-height: 0;
 }
 .compare-card {
   min-height: 480px;
@@ -366,7 +537,8 @@ body.transition-scale-fade .slide { transform: scale(.975); }
 .compare-card h3 {
   margin: 0 0 24px;
   color: var(--accent);
-  font: 900 36px/1.08 var(--font-sans);
+  /* TASK-036 fix: 行距 1.08 低于标题行距规则下限 1.2，改为 1.25。 */
+  font: 900 36px/1.25 var(--font-sans);
 }
 .timeline-row {
   margin-top: 54px;
@@ -375,25 +547,67 @@ body.transition-scale-fade .slide { transform: scale(.975); }
   gap: 22px;
 }
 .timeline-item {
+  position: relative;
   min-height: 264px;
   padding: 26px;
   border-top: 7px solid var(--accent);
+  overflow: hidden;
 }
 .timeline-item .date {
   color: var(--accent);
   font: 900 24px/1 var(--font-mono);
 }
-.timeline-item p { font-size: 25px; }
+/* TASK-024 fix（终审 V5 命中修复）：role=timeline 的渲染分支此前无条件套用固定
+   4 列格阵，不论蓝图登记的 chain-N/checkpoint-N 变体是否承诺"→ 方向符号"
+   （见 state/visual_blueprints.md 对应页选型理由），实际渲染都没有任何方向/
+   连接符号——递进/流程类页面（正文关系=递进）却零方向符号，命中
+   visual-symbol-system.md §0.4 与 final-quality-check.md V5（终审阻断）。
+   仅在同一行内相邻卡片间补一个 accent-2 的 → 连接符（跨行处/末卡不补，避免
+   指向空白违反 §8 纯装饰测试的"锚点测试"），不改变节点数量与文案。 */
+/* right 用正值贴在卡片内右上角——.timeline-item 本身 overflow:hidden（防止长文案
+   撑破卡片），伪元素若定位到卡片外（负值）会被一并裁掉，量测截图已验证并修正。 */
+.timeline-row .timeline-item:not(:last-child):not(:nth-child(4n))::after {
+  content: "→";
+  position: absolute;
+  top: 22px;
+  right: 20px;
+  color: var(--accent-2);
+  font: 900 22px/1 var(--font-mono);
+  z-index: 1;
+}
+/* TASK-036 fix: 原 25px 换算 16:9 画布占比 2.31%，低于正文最小可读性底线
+   2.5%；同时与页面其它正文（var(--fs-body) 30~32px）差值仅约 1.1 倍，低于
+   字号层级比例规则下限 1.2——但二者语义上同属"正文"层级，不该刻意拉出
+   一个新层级，正确处理是直接复用同一个正文 token，而不是另设一个刚好卡在
+   底线附近的独立数值（这类"数值接近但不完全相同"才是层级混乱的根源）。 */
+.timeline-item p { font-size: var(--fs-body); }
+/* TASK-022: table 页 takeaway 默认不再渲染，让出的空间用来给表格本身更多呼吸感
+   （行高/字号小幅放大），高亮结论行随之更醒目，不再靠底部一句话收束视觉焦点。
+   TASK-027 fix: 配合上方 role-table 三段式骨架的纵向居中，行内边距同步从
+   18px 放大到 24px——表格作为一个整体在居中后拿到更多空间，行间距加大让
+   它填得更饱满，而不是行高不变、只是整张表被搬到画布中间留出更多空白。 */
 table {
   width: 100%;
+  table-layout: fixed; /* B.1: 固定列宽，配合 td/th 的 word-break 防止长词撑破横向边界 */
   border-collapse: collapse;
-  margin-top: 34px;
-  font-size: 28px;
+  margin-top: 44px;
+  font-size: 30px;
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--surface);
 }
-th, td { padding: 14px 22px; border-bottom: 1px solid var(--line); text-align: left; }
+th, td {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  /* TASK-036 fix: 此前未显式设置，浏览器默认 line-height:normal（≈1.15~1.2），
+     低于正文行距规则下限 1.4，字符密集时观感拥挤；显式声明与全局正文口径
+     一致的 --lh-body。 */
+  line-height: var(--lh-body);
+}
 th { color: var(--accent); background: color-mix(in srgb, var(--surface) 70%, var(--accent) 12%); }
 tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
 .fx-canvas {
@@ -448,14 +662,21 @@ tr.highlight td, tr:last-child td { color: var(--accent); font-weight: 900; }
   color: var(--accent);
   font-family: var(--font-mono);
 }
-/* TASK-004 fix: @page 自定义 1920×1080 页面，Chromium 默认打印下每页恰为一页 16:9 画布，
-   消除 Letter 纵向造成的右侧/底部裁切；print-color-adjust 保证深空背景强制保留 */
-@page { size: 1920px 1080px; margin: 0; }
+/* ── TASK-021 B.2: autofit.js 降字号到下限仍溢出时的 line-clamp 兜底 ─────── */
+.autofit-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+}
+h1.autofit-clamped, h2.autofit-clamped { -webkit-line-clamp: 3;
+ line-clamp: 3; }
+
 @media print {
-  html, body { overflow: visible; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { overflow: visible; background: #fff; }
   .deck-shell { display: block; width: auto; height: auto; background: #fff; }
   .deck-stage { transform: none !important; width: 100%; height: auto; box-shadow: none; }
-  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; break-inside: avoid; }
-  .slide:last-of-type { page-break-after: auto; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
   .deck-ui, .overview { display: none !important; }
 }

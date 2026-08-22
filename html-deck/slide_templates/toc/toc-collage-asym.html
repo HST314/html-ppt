@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 非对称拼贴式</title>
+<style>
+  /* ============================================================
+     toc-collage-asym —— 非对称拼贴式目录（TASK-041 新增，可选版式）
+     第 1 个章节放大为左侧头条卡（占满全部可用高度），其余章节收进右侧
+     纵向排列的紧凑编号短条列表。此预览文件写死 8 条目（1 头条 + 7 短条）
+     演示排布效果，实际渲染时任意 N=3~8 都由 flex 自动等分短条高度。
+     仅布局/样式骨架，无业务文本。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-collage-asym {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #14171f);
+    display: flex;
+    flex-direction: column;
+    padding: 92px 112px 96px;
+  }
+
+  .tca-head {
+    position: relative;
+    flex: 0 0 auto;
+    padding-bottom: 22px;
+    margin: 46px 0 40px;
+    border-bottom: 3px solid var(--text, #14171f);
+  }
+  .tca-eyebrow {
+    position: absolute;
+    left: 0; top: -42px;
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: .34em;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+  }
+  .tca-title-main {
+    margin: 0;
+    max-width: 1400px;
+    font-size: clamp(40px, 3.6vw, 58px);
+    font-weight: 800;
+    line-height: 1.24;
+    letter-spacing: -.01em;
+  }
+
+  .tca-body {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    gap: 36px;
+  }
+
+  .tca-headline {
+    position: relative;
+    flex: 0 0 58%;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 44px 48px 40px;
+    border-radius: 28px;
+    background: var(--surface, #ffffff);
+    border: 2px solid var(--text, #14171f);
+    overflow: hidden;
+  }
+  .tca-headline-ghost {
+    position: absolute;
+    right: 20px; top: -14px;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 220px;
+    font-weight: 800;
+    line-height: 1;
+    color: color-mix(in srgb, var(--accent, #0b6bcb) 10%, transparent);
+  }
+  .tca-headline-num {
+    position: relative;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    color: var(--accent, #0b6bcb);
+  }
+  .tca-headline-title {
+    position: relative;
+    margin: 0;
+    font-size: clamp(38px, 3.4vw, 52px);
+    font-weight: 800;
+    line-height: 1.28;
+    color: var(--text, #14171f);
+  }
+  .tca-headline-desc {
+    position: relative;
+    margin: 0;
+    max-width: 640px;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted, #5d687c);
+  }
+
+  .tca-list {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .tca-row {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 28px;
+    border-radius: 16px;
+    background: var(--surface-2, #f3f5f9);
+    border: 1px solid var(--line, #d7dde6);
+    overflow: hidden;
+  }
+  .tca-row-ghost {
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1;
+    color: color-mix(in srgb, var(--accent, #0b6bcb) 8%, transparent);
+  }
+  .tca-row-num {
+    position: relative;
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+  }
+  .tca-row-title {
+    position: relative;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text, #14171f);
+  }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-collage-asym" data-role="toc" data-template="toc-collage-asym">
+  <div class="tca-head">
+    <p class="tca-eyebrow">CONTENTS</p>
+    <h1 class="tca-title-main">{{toc_main_title}}</h1>
+  </div>
+
+  <div class="tca-body">
+    <div class="tca-headline" data-idx="1">
+      <span class="tca-headline-ghost">{{item_01_num}}</span>
+      <span class="tca-headline-num">{{item_01_num}}</span>
+      <h2 class="tca-headline-title">{{item_01_title}}</h2>
+      <p class="tca-headline-desc">{{item_01_desc}}</p>
+    </div>
+
+    <div class="tca-list">
+      <div class="tca-row" data-idx="2">
+        <span class="tca-row-ghost">{{item_02_num}}</span>
+        <span class="tca-row-num">{{item_02_num}}</span>
+        <h3 class="tca-row-title">{{item_02_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="3">
+        <span class="tca-row-ghost">{{item_03_num}}</span>
+        <span class="tca-row-num">{{item_03_num}}</span>
+        <h3 class="tca-row-title">{{item_03_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="4">
+        <span class="tca-row-ghost">{{item_04_num}}</span>
+        <span class="tca-row-num">{{item_04_num}}</span>
+        <h3 class="tca-row-title">{{item_04_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="5">
+        <span class="tca-row-ghost">{{item_05_num}}</span>
+        <span class="tca-row-num">{{item_05_num}}</span>
+        <h3 class="tca-row-title">{{item_05_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="6">
+        <span class="tca-row-ghost">{{item_06_num}}</span>
+        <span class="tca-row-num">{{item_06_num}}</span>
+        <h3 class="tca-row-title">{{item_06_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="7">
+        <span class="tca-row-ghost">{{item_07_num}}</span>
+        <span class="tca-row-num">{{item_07_num}}</span>
+        <h3 class="tca-row-title">{{item_07_title}}</h3>
+      </div>
+      <div class="tca-row" data-idx="8">
+        <span class="tca-row-ghost">{{item_08_num}}</span>
+        <span class="tca-row-num">{{item_08_num}}</span>
+        <h3 class="tca-row-title">{{item_08_title}}</h3>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

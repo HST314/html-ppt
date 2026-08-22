@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 曲线时间轴异形</title>
+<style>
+  /* ============================================================
+     toc-curve-timeline —— 曲线时间轴异形目录
+     一条平滑波浪曲线贯穿画布，最多 8 个节点沿曲线交替上下分布，
+     节点圆点承载序号，短柄连接至异形卡片。仅布局/样式骨架。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-curve-timeline {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #172033);
+  }
+
+  .ct-bg-glow {
+    position: absolute; left: -220px; top: -260px;
+    width: 820px; height: 820px; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent, #0b6bcb) 14%, transparent), transparent 70%);
+    pointer-events: none;
+  }
+
+  .ct-head {
+    position: absolute;
+    left: 90px; top: 64px; right: 90px;
+    text-align: center;
+  }
+  .ct-eyebrow {
+    font-size: 20px;
+    letter-spacing: .32em;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+    margin: 0 0 12px;
+  }
+  .ct-title {
+    margin: 0;
+    font-size: clamp(32px, 3vw, 46px);
+    font-weight: 800;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  .ct-curve { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  .ct-seg {
+    fill: none;
+    stroke: url(#ctGrad);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .ct-stem {
+    stroke: var(--line, #c7d0dd);
+    stroke-width: 2;
+  }
+  .ct-dot-ring {
+    fill: var(--bg, #f8fafc);
+    stroke: var(--accent, #0b6bcb);
+    stroke-width: 3;
+  }
+  .ct-dot-core { fill: var(--accent, #0b6bcb); }
+
+  .ct-num {
+    position: absolute;
+    width: 64px; height: 64px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--inverse, #fff);
+    background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--accent, #0b6bcb) 40%, transparent);
+  }
+
+  .ct-card {
+    position: absolute;
+    width: 280px; height: 170px;
+    background: var(--surface, #ffffff);
+    border-radius: 14px 46px 46px 46px;
+    box-shadow: var(--shadow, 0 16px 38px rgba(23,32,51,.14));
+    padding: 22px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow: hidden;
+  }
+  .toc-curve-timeline .ct-item[data-track="down"] .ct-card {
+    border-radius: 46px 46px 46px 14px;
+  }
+  .ct-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--accent, #0b6bcb) 28%, transparent);
+    pointer-events: none;
+  }
+  .ct-card-title {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.32;
+    color: var(--text, #172033);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .ct-card-desc {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--muted, #5d687c);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* 8 组节点定位 */
+  .ct-item[data-idx="1"] .ct-num { left: 230px; top: 460px; }
+  .ct-item[data-idx="1"] .ct-card { left: 90px; top: 235px; }
+  .ct-item[data-idx="2"] .ct-num { left: 439px; top: 720px; }
+  .ct-item[data-idx="2"] .ct-card { left: 299px; top: 775px; }
+  .ct-item[data-idx="3"] .ct-num { left: 647px; top: 460px; }
+  .ct-item[data-idx="3"] .ct-card { left: 507px; top: 235px; }
+  .ct-item[data-idx="4"] .ct-num { left: 856px; top: 720px; }
+  .ct-item[data-idx="4"] .ct-card { left: 716px; top: 775px; }
+  .ct-item[data-idx="5"] .ct-num { left: 1064px; top: 460px; }
+  .ct-item[data-idx="5"] .ct-card { left: 924px; top: 235px; }
+  .ct-item[data-idx="6"] .ct-num { left: 1273px; top: 720px; }
+  .ct-item[data-idx="6"] .ct-card { left: 1133px; top: 775px; }
+  .ct-item[data-idx="7"] .ct-num { left: 1482px; top: 460px; }
+  .ct-item[data-idx="7"] .ct-card { left: 1342px; top: 235px; }
+  .ct-item[data-idx="8"] .ct-num { left: 1690px; top: 720px; }
+  .ct-item[data-idx="8"] .ct-card { left: 1550px; top: 775px; }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-curve-timeline" data-role="toc" data-template="toc-curve-timeline">
+  <div class="ct-bg-glow"></div>
+
+  <div class="ct-head">
+    <p class="ct-eyebrow">TIMELINE · CONTENTS</p>
+    <h1 class="ct-title">{{toc_main_title}}</h1>
+  </div>
+
+  <svg class="ct-curve" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="ctGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--accent, #0b6bcb)"/>
+        <stop offset="1" stop-color="var(--accent-2, #d14b3f)"/>
+      </linearGradient>
+    </defs>
+    <path class="ct-seg" data-seg="1" d="M 230 460 C 334 460, 334 720, 439 720"/>
+    <path class="ct-seg" data-seg="2" d="M 439 720 C 543 720, 543 460, 647 460"/>
+    <path class="ct-seg" data-seg="3" d="M 647 460 C 752 460, 752 720, 856 720"/>
+    <path class="ct-seg" data-seg="4" d="M 856 720 C 960 720, 960 460, 1064 460"/>
+    <path class="ct-seg" data-seg="5" d="M 1064 460 C 1169 460, 1169 720, 1273 720"/>
+    <path class="ct-seg" data-seg="6" d="M 1273 720 C 1377 720, 1377 460, 1482 460"/>
+    <path class="ct-seg" data-seg="7" d="M 1482 460 C 1586 460, 1586 720, 1690 720"/>
+
+    <line class="ct-stem" x1="230" y1="460" x2="230" y2="405"/>
+    <line class="ct-stem" x1="439" y1="720" x2="439" y2="775"/>
+    <line class="ct-stem" x1="647" y1="460" x2="647" y2="405"/>
+    <line class="ct-stem" x1="856" y1="720" x2="856" y2="775"/>
+    <line class="ct-stem" x1="1064" y1="460" x2="1064" y2="405"/>
+    <line class="ct-stem" x1="1273" y1="720" x2="1273" y2="775"/>
+    <line class="ct-stem" x1="1482" y1="460" x2="1482" y2="405"/>
+    <line class="ct-stem" x1="1690" y1="720" x2="1690" y2="775"/>
+  </svg>
+
+  <div class="ct-item" data-idx="1" data-track="up">
+    <div class="ct-num">{{item_01_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_01_title}}</h3>
+      <p class="ct-card-desc">{{item_01_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="2" data-track="down">
+    <div class="ct-num">{{item_02_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_02_title}}</h3>
+      <p class="ct-card-desc">{{item_02_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="3" data-track="up">
+    <div class="ct-num">{{item_03_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_03_title}}</h3>
+      <p class="ct-card-desc">{{item_03_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="4" data-track="down">
+    <div class="ct-num">{{item_04_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_04_title}}</h3>
+      <p class="ct-card-desc">{{item_04_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="5" data-track="up">
+    <div class="ct-num">{{item_05_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_05_title}}</h3>
+      <p class="ct-card-desc">{{item_05_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="6" data-track="down">
+    <div class="ct-num">{{item_06_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_06_title}}</h3>
+      <p class="ct-card-desc">{{item_06_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="7" data-track="up">
+    <div class="ct-num">{{item_07_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_07_title}}</h3>
+      <p class="ct-card-desc">{{item_07_desc}}</p>
+    </div>
+  </div>
+  <div class="ct-item" data-idx="8" data-track="down">
+    <div class="ct-num">{{item_08_num}}</div>
+    <div class="ct-card">
+      <h3 class="ct-card-title">{{item_08_title}}</h3>
+      <p class="ct-card-desc">{{item_08_desc}}</p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

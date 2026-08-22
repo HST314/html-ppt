@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 圆弧环形排布卡片</title>
+<style>
+  /* ============================================================
+     toc-arc-card —— 圆弧环形排布卡片目录
+     8 个节点沿一条大圆弧（仪表盘式）均匀排布，直线辐射连接至
+     异形徽章卡片，主标题落在弧线下方的留白区。仅布局/样式骨架。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-arc-card {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #172033);
+  }
+
+  .ac-bg-glow {
+    position: absolute; left: 50%; top: 130px;
+    width: 1400px; height: 700px; transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, color-mix(in srgb, var(--accent, #0b6bcb) 10%, transparent), transparent 70%);
+    pointer-events: none;
+  }
+
+  .ac-arcs { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  .ac-arc-guide {
+    fill: none;
+    stroke: var(--line, #d8dee8);
+    stroke-width: 2;
+    stroke-dasharray: 2 10;
+  }
+  .ac-arc-main {
+    fill: none;
+    stroke: url(#acGrad);
+    stroke-width: 3;
+  }
+  .ac-spoke {
+    stroke: var(--line, #c7d0dd);
+    stroke-width: 1.5;
+  }
+  .ac-dot-ring { fill: var(--bg, #f8fafc); stroke: var(--accent, #0b6bcb); stroke-width: 3; }
+  .ac-dot-core { fill: var(--accent, #0b6bcb); }
+
+  .ac-num {
+    position: absolute;
+    width: 52px; height: 52px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800;
+    color: var(--inverse, #fff);
+    background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--accent, #0b6bcb) 40%, transparent);
+    z-index: 2;
+  }
+
+  .ac-card {
+    position: absolute;
+    width: 300px; height: 150px;
+    background: var(--surface, #ffffff);
+    border-radius: 50% 50% 18px 18px / 46% 46% 18px 18px;
+    box-shadow: var(--shadow, 0 16px 36px rgba(23,32,51,.13));
+    padding: 24px 26px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+  }
+  .ac-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--accent, #0b6bcb) 24%, transparent);
+    pointer-events: none;
+  }
+  .ac-card-title {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.28;
+    color: var(--text, #172033);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .ac-card-desc {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--muted, #5d687c);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* 标题区（弧线下方留白处） */
+  .ac-head {
+    position: absolute;
+    left: 50%; top: 730px;
+    transform: translateX(-50%);
+    width: 980px;
+    text-align: center;
+  }
+  .ac-eyebrow {
+    margin: 0 0 14px;
+    font-size: 19px;
+    letter-spacing: .3em;
+    font-weight: 700;
+    color: var(--accent, #0b6bcb);
+  }
+  .ac-title {
+    margin: 0;
+    font-size: clamp(30px, 2.8vw, 42px);
+    font-weight: 800;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .ac-head-rule {
+    width: 120px; height: 3px; margin: 22px auto 0;
+    background: linear-gradient(90deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    border-radius: 3px;
+  }
+
+  /* 8 组节点定位 */
+  /* 卡片分两层沿弧线交错（近层/远层），避免相邻卡片横向重叠 */
+  .ac-item[data-idx="1"] .ac-num  { left: 340px; top: 663px; }
+  .ac-item[data-idx="1"] .ac-card { left: 122px; top: 495px; }
+  .ac-item[data-idx="2"] .ac-num  { left: 517px; top: 558px; }
+  .ac-item[data-idx="2"] .ac-card { left: 268px; top: 270px; }
+  .ac-item[data-idx="3"] .ac-num  { left: 694px; top: 494px; }
+  .ac-item[data-idx="3"] .ac-card { left: 515px; top: 308px; }
+  .ac-item[data-idx="4"] .ac-num  { left: 871px; top: 464px; }
+  .ac-item[data-idx="4"] .ac-card { left: 702px; top: 155px; }
+  .ac-item[data-idx="5"] .ac-num  { left: 1049px; top: 464px; }
+  .ac-item[data-idx="5"] .ac-card { left: 908px; top: 274px; }
+  .ac-item[data-idx="6"] .ac-num  { left: 1226px; top: 494px; }
+  .ac-item[data-idx="6"] .ac-card { left: 1135px; top: 192px; }
+  .ac-item[data-idx="7"] .ac-num  { left: 1403px; top: 558px; }
+  .ac-item[data-idx="7"] .ac-card { left: 1301px; top: 379px; }
+  .ac-item[data-idx="8"] .ac-num  { left: 1580px; top: 663px; }
+  .ac-item[data-idx="8"] .ac-card { left: 1569px; top: 398px; }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-arc-card" data-role="toc" data-template="toc-arc-card">
+  <div class="ac-bg-glow"></div>
+
+  <svg class="ac-arcs" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="acGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--accent, #0b6bcb)"/>
+        <stop offset="1" stop-color="var(--accent-2, #d14b3f)"/>
+      </linearGradient>
+    </defs>
+    <path class="ac-arc-guide" d="M 200 730 A 1050 1050 0 0 1 1720 730"/>
+    <path class="ac-arc-main" d="M 340 663 A 1050 1050 0 0 1 1580 663"/>
+
+    <line class="ac-spoke" data-idx="1" x1="340" y1="663" x2="293" y2="598"/>
+    <line class="ac-spoke" data-idx="2" x1="517" y1="558" x2="433" y2="377"/>
+    <line class="ac-spoke" data-idx="3" x1="694" y1="494" x2="674" y2="417"/>
+    <line class="ac-spoke" data-idx="4" x1="871" y1="464" x2="855" y2="264"/>
+    <line class="ac-spoke" data-idx="5" x1="1049" y1="464" x2="1055" y2="384"/>
+    <line class="ac-spoke" data-idx="6" x1="1226" y1="494" x2="1276" y2="301"/>
+    <line class="ac-spoke" data-idx="7" x1="1403" y1="558" x2="1437" y2="485"/>
+    <line class="ac-spoke" data-idx="8" x1="1580" y1="663" x2="1698" y2="501"/>
+
+    <circle class="ac-dot-ring" data-idx="1" cx="340" cy="663" r="13"/>
+    <circle class="ac-dot-ring" data-idx="2" cx="517" cy="558" r="13"/>
+    <circle class="ac-dot-ring" data-idx="3" cx="694" cy="494" r="13"/>
+    <circle class="ac-dot-ring" data-idx="4" cx="871" cy="464" r="13"/>
+    <circle class="ac-dot-ring" data-idx="5" cx="1049" cy="464" r="13"/>
+    <circle class="ac-dot-ring" data-idx="6" cx="1226" cy="494" r="13"/>
+    <circle class="ac-dot-ring" data-idx="7" cx="1403" cy="558" r="13"/>
+    <circle class="ac-dot-ring" data-idx="8" cx="1580" cy="663" r="13"/>
+  </svg>
+
+  <div class="ac-item" data-idx="1">
+    <div class="ac-num">{{item_01_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_01_title}}</h3>
+      <p class="ac-card-desc">{{item_01_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="2">
+    <div class="ac-num">{{item_02_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_02_title}}</h3>
+      <p class="ac-card-desc">{{item_02_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="3">
+    <div class="ac-num">{{item_03_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_03_title}}</h3>
+      <p class="ac-card-desc">{{item_03_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="4">
+    <div class="ac-num">{{item_04_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_04_title}}</h3>
+      <p class="ac-card-desc">{{item_04_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="5">
+    <div class="ac-num">{{item_05_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_05_title}}</h3>
+      <p class="ac-card-desc">{{item_05_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="6">
+    <div class="ac-num">{{item_06_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_06_title}}</h3>
+      <p class="ac-card-desc">{{item_06_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="7">
+    <div class="ac-num">{{item_07_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_07_title}}</h3>
+      <p class="ac-card-desc">{{item_07_desc}}</p>
+    </div>
+  </div>
+  <div class="ac-item" data-idx="8">
+    <div class="ac-num">{{item_08_num}}</div>
+    <div class="ac-card">
+      <h3 class="ac-card-title">{{item_08_title}}</h3>
+      <p class="ac-card-desc">{{item_08_desc}}</p>
+    </div>
+  </div>
+
+  <div class="ac-head">
+    <p class="ac-eyebrow">CONTENTS</p>
+    <h1 class="ac-title">{{toc_main_title}}</h1>
+    <div class="ac-head-rule"></div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* ============================================================
+   motifs —— 项目主题线条插画装饰层（TASK-028 新增；TASK-030 扩展到内容页）
+
+   背景：全 Deck 已有 art_dna 生成式背景层（.project-art-frame /
+   .project-art-bg，见 deco.css），负责"从项目图整体色调/明暗/线条方向
+   派生抽象几何背景"。本文件承载的是另一层、更具体的补充装饰——从项目
+   图片/图片描述中提炼出的**可识别图形主体**（如本项目的火箭剪影、
+   祥云纹、卫星轨道连线、星尘），以极简线条 SVG 的形式，低透明度叠加在
+   页面留白区域，呼应主题、丰富画面，但不能抢过正文的视觉焦点、不能
+   遮挡任何文字。
+
+   TASK-030：此前只叠到骨架页（封面/章节过渡/尾页/目录），内容页完全没有。
+   现在任意角色都可以有这层装饰，但内容页信息密度远高于骨架页，同一套
+   位置预设在内容页上要收得更紧（见文末"内容页角标收紧"一节），透明度/
+   尺寸也由 render_deck.py::CONTENT_MOTIF_LAYOUT 统一压低，具体取舍依据见
+   该常量表的注释。
+
+   机制说明（详见 references/ART_DNA.md「主题线条插画装饰机制」一节）：
+   - 素材库 assets/motifs/library/*.svg 是跨项目通用的图形素材仓库，
+     素材本身不与任何具体项目绑定，供 Agent 按新项目主题挑选/新增。
+   - 每个项目按需手写 state/art_motifs.json，声明本项目选用哪几个素材、
+     显式登记用在哪些角色、什么透明度与位置预设（骨架页的常规用法）；
+     内容页角色一般不需要逐条手写——render_deck.py 按页面文本自动选素材、
+     自动套用比骨架页更保守的透明度/尺寸/位置（TASK-030 通用兜底机制）。
+   - extract_art_dna.py / art_dna_from_md.py 读取该文件后，把选中的 svg
+     复制进 dist/art/motifs/ 并把结构写进 art_dna.json 的 "motifs" 字段；
+     render_deck.py 消费该字段，在 .project-art-frame 内追加
+     <img class="project-art-motif motif-pos-xx"> 节点，具体透明度/尺寸
+     由内联 style 按 JSON 逐条取值（不同素材可以有不同强度，不写死单一
+     全局值）。
+   - 本文件只提供"位置预设 + 层级 + 不干扰点击"的通用外壳样式，不含任何
+     与「长征八号甲」项目绑定的专有名词或专有配色，可被任何项目直接复用。
+
+   层级与可读性：与 .project-art-bg 同属 .project-art-frame（deco.css 定义
+   z-index:0、pointer-events:none、overflow:hidden 裁切），本文件追加
+   z-index:1（叠在底层生成背景之上，仍在正文 z-index:2 之下），保证：
+   ① 不会盖住任何文字/符号（全部在内容层之下）；
+   ② 不会被脚本或用户交互到（pointer-events:none 继承）；
+   ③ 越界部分被 frame 裁切，不会撑高 slide 造成滚动溢出。
+   ============================================================ */
+.project-art-motif {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  width: var(--motif-size, 320px);
+  height: auto;
+  color: var(--accent, #d3a352);
+  /* 默认透明度兜底；render_deck.py 按每条素材登记的 opacity 用内联 style 覆盖 */
+  opacity: .14;
+}
+/* TASK-028 fix: 素材以内联 <svg>（而非 <img src>）方式注入（见 render_deck.py
+   说明——currentColor 必须在同一文档内才能继承外层 CSS color），这里让内联
+   svg 撑满外层已经定好尺寸/位置的 .project-art-motif 容器。 */
+.project-art-motif svg {
+  display: block;
+  width: 100%;
+  height: auto; /* 保留 svg 自身 viewBox 宽高比，不拉伸变形 */
+}
+/* 星尘/星芒一类"满铺散点"素材用整幅铺满预设，其余单体图形（火箭/祥云/
+   轨道连线等）用角标预设，避免单体图形被拉伸变形。满铺预设的外层容器本身
+   已经是 inset:0 的确定尺寸（撑满整个 .project-art-frame），这里改回
+   height:100% 让散点均匀铺满整幅画布，不受单体图形那种"保留原始宽高比"
+   的约束（星尘素材本身设计意图就是随容器拉伸铺满，不是要保持某个固定长宽比）。 */
+.project-art-motif.motif-pos-full {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.project-art-motif.motif-pos-full svg {
+  width: 100%;
+  height: 100%;
+}
+.project-art-motif.motif-pos-tr { top: 6%; right: 4%; }
+.project-art-motif.motif-pos-br { bottom: 6%; right: 4%; }
+.project-art-motif.motif-pos-tl { top: 6%; left: 4%; }
+.project-art-motif.motif-pos-bl { bottom: 6%; left: 4%; }
+.project-art-motif.motif-pos-br-wide { bottom: 4%; right: -2%; }
+.project-art-motif.motif-pos-tl-wide { top: 4%; left: -2%; }
+/* 目录页（role-toc）内容区（.ss-row）已经铺满整个下半屏，只在头部留白
+   区（.ss-head 高度约 74~104px）给单体图形一个更靠内的落位，避免和铭牌
+   卡片视觉打架。 */
+.role-toc .project-art-motif.motif-pos-tr { top: 3%; right: 3%; width: calc(var(--motif-size, 320px) * .62); }
+
+/* TASK-030: 内容页角标插画整体比骨架页更贴边、更靠内收，降低与正文卡片/
+   表格/图片实际占据区域重叠的概率，配合 render_deck.py::CONTENT_MOTIF_LAYOUT
+   里更小的尺寸与更低的透明度，共同把碰撞风险压到最低。
+   纯正文/卡片角色（bullets/kpi/table/timeline/quote）用右上角——这几个
+   角色的卡片/列表数量取决于 deck.md 正文条目数，条目一多就会堆叠到贴近
+   页面底边（实测：本项目"数字孪生"内容页 4 张堆叠卡片，早期版本把插画放
+   右下角时卡片顶穿了插画轮廓，见 CONTENT_MOTIF_LAYOUT 注释），标题行
+   （slide-head）高度只取决于标题字数、与正文条目数无关，是唯一结构性
+   保证留白的角落，收紧到比骨架页 toc 的 tr 预设（3%/3%）更内收一点。 */
+.role-bullets .project-art-motif.motif-pos-tr,
+.role-kpi .project-art-motif.motif-pos-tr,
+.role-table .project-art-motif.motif-pos-tr,
+.role-timeline .project-art-motif.motif-pos-tr,
+.role-quote .project-art-motif.motif-pos-tr {
+  top: 2.4%;
+  right: 2%;
+}
+/* 右侧带独立可视化面板的角色（image-hero/image-side/two-column/compare）
+   放左下角，避开右侧图片/面板区；这几个角色正文条目数固定（本项目均为
+   4 条），逐页截图确认左下角长期留空，贴边收紧同上。 */
+.role-image-hero .project-art-motif.motif-pos-bl,
+.role-image-side .project-art-motif.motif-pos-bl,
+.role-two-column .project-art-motif.motif-pos-bl,
+.role-compare .project-art-motif.motif-pos-bl {
+  bottom: 3%;
+  left: 2%;
+}
+
+body.no-motion .project-art-motif { animation: none; }

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 分栏满版色块</title>
+<style>
+  /* ============================================================
+     toc-segment-strip —— 分栏满版色块目录（深色海报风）
+     整版渐变色底 + 最多 8 栏等分，每栏巨型幽灵数字打底，
+     底部异形圆角铭牌承载标题与释义。仅布局/样式骨架。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+  }
+
+  .toc-segment-strip {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: linear-gradient(120deg, var(--accent, #0b6bcb) 0%, color-mix(in srgb, var(--accent, #0b6bcb) 55%, #0a1a33) 55%, color-mix(in srgb, var(--accent-2, #d14b3f) 40%, #0a1a33) 100%);
+    color: var(--inverse, #fff);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ss-head {
+    flex: 0 0 auto;
+    padding: 74px 90px 30px;
+  }
+  .ss-eyebrow {
+    margin: 0 0 14px;
+    font-size: 18px;
+    letter-spacing: .32em;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--inverse, #fff) 70%, transparent);
+  }
+  .ss-title {
+    margin: 0;
+    font-size: clamp(32px, 3vw, 48px);
+    font-weight: 800;
+    line-height: 1.28;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  .ss-row {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: stretch;
+    padding: 0 90px 64px;
+    gap: 0;
+  }
+
+  .ss-seg {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 14px 0;
+    border-right: 1.5px solid color-mix(in srgb, var(--inverse, #fff) 22%, transparent);
+  }
+  .ss-seg:last-child { border-right: none; }
+
+  .ss-ghost-num {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(70px, 9vw, 150px);
+    font-weight: 800;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--inverse, #fff) 32%, transparent);
+    opacity: .32;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .ss-plaque {
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    margin-bottom: 54px;
+    background: var(--surface, #ffffff);
+    border-radius: 26px 26px 26px 8px;
+    box-shadow: 0 16px 34px rgba(4,10,26,.28);
+    padding: 22px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text, #172033);
+  }
+  .ss-plaque::before {
+    content: "";
+    position: absolute;
+    left: 18px; top: -11px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    box-shadow: 0 6px 14px rgba(4,10,26,.3);
+  }
+  .ss-num {
+    flex: 0 0 auto;
+    height: 10px;
+  }
+  .ss-plaque-title {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 4px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .ss-plaque-desc {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--muted, #5d687c);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-segment-strip" data-role="toc" data-template="toc-segment-strip">
+  <div class="ss-head">
+    <p class="ss-eyebrow">CONTENTS</p>
+    <h1 class="ss-title">{{toc_main_title}}</h1>
+  </div>
+
+  <div class="ss-row">
+    <div class="ss-seg" data-idx="1">
+      <span class="ss-ghost-num">{{item_01_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_01_title}}</h3>
+        <p class="ss-plaque-desc">{{item_01_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="2">
+      <span class="ss-ghost-num">{{item_02_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_02_title}}</h3>
+        <p class="ss-plaque-desc">{{item_02_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="3">
+      <span class="ss-ghost-num">{{item_03_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_03_title}}</h3>
+        <p class="ss-plaque-desc">{{item_03_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="4">
+      <span class="ss-ghost-num">{{item_04_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_04_title}}</h3>
+        <p class="ss-plaque-desc">{{item_04_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="5">
+      <span class="ss-ghost-num">{{item_05_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_05_title}}</h3>
+        <p class="ss-plaque-desc">{{item_05_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="6">
+      <span class="ss-ghost-num">{{item_06_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_06_title}}</h3>
+        <p class="ss-plaque-desc">{{item_06_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="7">
+      <span class="ss-ghost-num">{{item_07_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_07_title}}</h3>
+        <p class="ss-plaque-desc">{{item_07_desc}}</p>
+      </div>
+    </div>
+    <div class="ss-seg" data-idx="8">
+      <span class="ss-ghost-num">{{item_08_num}}</span>
+      <div class="ss-plaque">
+        <h3 class="ss-plaque-title">{{item_08_title}}</h3>
+        <p class="ss-plaque-desc">{{item_08_desc}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

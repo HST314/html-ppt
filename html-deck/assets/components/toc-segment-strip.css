@@ -1,0 +1,205 @@
+/* ============================================================
+   toc-segment-strip —— 分栏满版色块目录（深色海报风）
+   来源：slide_templates/toc/toc-segment-strip.html（用户提供的独立目录页模板）。
+   整版渐变色底 + N 栏等分（本项目固定 6 栏），每栏巨型幽灵数字打底，
+   底部异形圆角铭牌（非对称圆角 + 左上角悬浮圆形徽标）承载标题与释义。
+
+   接入说明（相对原始独立模板文件的改动，仅涉及"容器如何挂进现有舞台
+   / 如何与项目 art_dna 背景层共存"，不改视觉设计本身）：
+   - 原模板 body{width:1920px;height:1080px;...} 与 *{box-sizing}/html,body
+     重置属于模板独立预览用的页面级样式，已省略，理由同 toc-modern-card.css。
+   - 原模板 .toc-segment-strip 是"一整页"、width/height:1920px/1080px 固定
+     尺寸 + 自己的 overflow:hidden，现在作为 .slide.role-toc 的直接子容器，
+     改为 position:absolute;inset:0 全出血铺满（与 toc-modern-card /
+     project-art-frame 同一手法），绕开 .slide 自身的 --slide-padding。
+   - 关键改动——背景不透明度：原模板 background 是一条完全不透明的
+     linear-gradient（纯色 var(--accent)/var(--accent-2)），直接铺会
+     100% 盖死本项目 toc 角色已有的 art_dna 生成式背景层
+     （.project-art-toc，deco.css 定义 opacity:.58，z-index:0，位于本
+     容器之下）。本项目规则"每页必须有项目背景层可见，四类背景不得全部
+     同构"，toc 属于骨架页之一，也要保留这层可见性。参照 role-section
+     的处理分寸（section 角色自身不铺任何不透明底色，只让 art 背景图
+     以 .76 不透明度直接打底，视觉强度全部来自前景装饰元素），这里把
+     纯色渐变改为 background-color（深藏蓝 rgba(4,10,20,.46)）+
+     background-image 渐变（用 color-mix 在 --accent/--accent-2 与
+     transparent 之间取色，两端约 60%/32% alpha）叠加的双层半透明写法：
+     既保留"深色海报感"的强渐变辨识度，又让下层 art 背景图的纹理与
+     明暗透出来，取值经肉眼截图核对（见验收记录），在"看得清渐变"与
+     "看得见项目图片纹理"之间取平衡，不再是原模板的纯色实底。
+   - TASK-026 fix：铭牌背景不再借用 var(--surface)。--surface 这个 token
+     是给"已经有自己独立边框/背景处理"的内容页面板（.panel/.group-card/
+     .kpi-card）做一层微弱底色叠加用的，取值高度依赖当前主题/art_dna 是否
+     命中——多数主题下（无 art_dna，或 LIGHT_THEMES 主题+art_dna 场景，
+     toc 角色不在 art_dna 深色覆写的角色白名单内）--surface 停留在基础主题
+     自己的低不透明度默认值（如 tech-dark 的 rgba(126,232,250,.07)、
+     business-dark 的 rgba(255,255,255,.075)），铭牌背景几乎透明，文字直接
+     漂在深色渐变+幽灵大数字这堆杂乱背景元素之上，可读性差。toc-segment-
+     strip 的铭牌卡片需要"在任意主题/背景下都能独立撑起一块清晰可读区域"，
+     属于与 .panel 不同的使用场景，不该盲目复用同一个 token。改为写死一个
+     足够不透明的深色（rgba(8,10,18,.92)，抄 .kpi-card/.group-card 在
+     art_dna 深色场景下的"实体卡片"手法而非抄 token 名字），配浅色文字，
+     不再受主题/art_dna 是否覆写 --surface 影响，任何组合下都保证铭牌是
+     一块视觉上独立的实体，文字是全页最强的焦点。
+   - 溢出防护：.ss-plaque-title / .ss-plaque-desc 保留原模板的
+     -webkit-line-clamp 截断；补充 .ss-row { min-height:0 } 防止 flex
+     行容器默认 min-height:auto 导致子项不收缩——口径同既有溢出防护
+     体系（如 .role-gallery .gallery-copy 的 min-height:0 组合）。
+   - 仅渲染实际 6 栏，模板里第 7、8 个空栏样式选择器（.ss-seg 等）本身
+     是通用规则，不因少渲染两栏而需要改动。
+   ============================================================ */
+.toc-segment-strip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(4, 10, 20, .46);
+  background-image: linear-gradient(120deg,
+    color-mix(in srgb, var(--accent, #0b6bcb) 60%, transparent) 0%,
+    color-mix(in srgb, var(--accent, #0b6bcb) 32%, transparent) 55%,
+    color-mix(in srgb, var(--accent-2, #d14b3f) 32%, transparent) 100%);
+  color: var(--inverse, #fff);
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-segment-strip .ss-head {
+  flex: 0 0 auto;
+  padding: 74px 90px 30px;
+}
+/* TASK-021 fix: 以下选择器统一加 .toc-segment-strip 前缀（提升为两个类的
+   优先级 0,2,0/0,2,1），原因见上方说明——不加前缀时单类选择器（如
+   .ss-eyebrow/.ss-title/.ss-plaque-desc 落在 <p>/<h1> 标签上）会被
+   base.css 的 `.slide p, .slide li{font-size:var(--fs-body)}` 与
+   `.slide h1{font-size:var(--fs-cover)}`（优先级 0,1,1，类+标签组合）
+   压过——实测标题被撑到 104px、铭牌描述被撑到 30px 导致三行截断丢字，
+   这是本轮截图自检发现并修复的问题，不是原始独立模板文件的设计缺陷。 */
+/* TASK-027 fix: 70% 白实测（像素级对比度量测）在本项目渐变底上只有
+   4.2:1，差一点没到正文 4.5:1 门槛，提到 88% 留出安全余量。 */
+.toc-segment-strip .ss-eyebrow {
+  margin: 0 0 14px;
+  font-size: 18px;
+  letter-spacing: .32em;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--inverse, #fff) 88%, transparent);
+}
+.toc-segment-strip .ss-title {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 800;
+  line-height: 1.28;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.toc-segment-strip .ss-row {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  padding: 0 90px 64px;
+  gap: 0;
+}
+
+.toc-segment-strip .ss-seg {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px 0;
+  border-right: 1.5px solid color-mix(in srgb, var(--inverse, #fff) 22%, transparent);
+}
+.toc-segment-strip .ss-seg:last-child { border-right: none; }
+
+/* TASK-027 fix：此前描边色本身已经是 30% 透明度的白（color-mix ... 30%,
+   transparent），外层又叠一层 opacity:.3——两层透明度相乘，实际可见度约
+   30%×30%=9%，几乎与底色融为一体，这正是用户反馈"01/02/03 与底色接近
+   重合"的成因（双重透明度叠加是本处的错误写法，不是取值问题）。改为单层
+   透明度控制：描边色直接使用不叠加 opacity 的固定 alpha 值，去掉外层
+   .ss-ghost-num 的 opacity 声明，只保留这一层。初版单层 55% 实测（像素级
+   Otsu 对比度量测，scripts/contrast_audit.py）在本项目渐变底上只有
+   2.83:1，未过大字号符号 3:1 门槛，再提到 65%，实测达标。因为是描边（非
+   实心填充）视觉强度仍明显弱于铭牌里的实色标题文字（铭牌标题是
+   rgba(244,246,251,.92) 实心近全不透明），铭牌标题继续是全页最强焦点，
+   数字只承担"章节序号"的辅助语义。实测截图见验收记录
+   （state/screenshots/slide-02.png）。 */
+.toc-segment-strip .ss-ghost-num {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(70px, 9vw, 150px);
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--inverse, #fff) 65%, transparent);
+  pointer-events: none;
+  white-space: nowrap;
+}
+/* TASK-026 fix: 背景改为写死深色高不透明度（不再依赖 --surface token，理由见
+   上方文件头说明），配浅色文字与细边框，任意主题/art_dna 组合下都是一块
+   清晰独立的实体铭牌，不会退化成若隐若现的色块。 */
+/* TASK-028 fix：并列容器尺寸统一（终审新增维度检查，见
+   references/final-quality-check.md V4「并列容器尺寸一致性专项」）——此前
+   .ss-plaque 只有 min-height:128px（下限，非固定值），6 栏标题字数不同、
+   是否触发换行也不同，实测 1 行标题卡片停在 128px 下限、2 行标题卡片被内容
+   撑到 146px+，6 张铭牌肉眼可见大小不一，不整齐。改为 height 固定死值（不再
+   是 min-height），标题 -webkit-line-clamp 从 3 收紧到 2（铭牌里现在只剩一个
+   短章节名，2 行足够覆盖任何真实内容，同时让固定高度可以按"2 行文字 + 上下
+   内边距"精确算出，不留多余安全余量）：2 行标题内容高度 ≈ 30px×1.34×2
+   ≈80px + padding(34+32)=66px ≈146px，取 152px 留极小缓冲；不论标题实际是
+   1 行还是 2 行，卡片外壳靠 flex 垂直居中，尺寸恒定，不再随字数变化。 */
+.toc-segment-strip .ss-plaque {
+  position: relative;
+  width: 100%;
+  max-width: 268px;
+  margin-bottom: 54px;
+  background: rgba(8, 10, 18, .92);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 26px 26px 26px 8px;
+  box-shadow: 0 16px 34px rgba(4,10,26,.4);
+  padding: 34px 26px 32px;
+  height: 152px;
+  display: flex;
+  align-items: center;
+  color: #f4f6fb;
+  overflow: hidden;
+}
+.toc-segment-strip .ss-plaque::before {
+  content: "";
+  position: absolute;
+  left: 18px; top: -11px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+  box-shadow: 0 6px 14px rgba(4,10,26,.3);
+}
+.toc-segment-strip .ss-num {
+  flex: 0 0 auto;
+  height: 10px;
+}
+/* TASK-027 fix: 铭牌不再渲染一句话描述（render_deck.py 已去掉 ss-plaque-desc
+   的输出），标题字号从 22px 放大到 30px，且改为 flex 垂直居中——铭牌里只剩
+   一个短标题时，字号放大 + 居中让"只有标题"看起来是有意为之的简洁设计，
+   而不是"忘了填内容"的空洞感；.ss-plaque 同步加大 min-height/padding 让
+   比例仍然协调（见上方 .ss-plaque 改动）。 */
+.toc-segment-strip .ss-plaque-title {
+  width: 100%;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.34;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}

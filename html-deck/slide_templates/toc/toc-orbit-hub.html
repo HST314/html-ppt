@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 中心枢纽环形节点</title>
+<style>
+  /* ============================================================
+     toc-orbit-hub —— 中心枢纽 + 环形卫星节点目录（深色科技风）
+     中心一颗径向渐变发光球体承载目录总标题，卫星节点圆形按 360°/N 均匀
+     环绕（本预览文件固定展示 N=6 的坐标示例），辐条虚线连接 + 外圈虚线
+     轨道环。仅布局/样式骨架，供人工预览参考——正式渲染时坐标由
+     scripts/render_deck.py::compute_orbit_layout()/orbit_node_position()
+     针对实际节点数 N（3-8）用 math.cos/sin 现场计算，不是读取本文件做
+     占位符替换（本文件不参与实际渲染流程，写法惯例同其余 slide_templates/
+     toc/*.html）。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+  }
+
+  .toc-orbit-hub {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    color: var(--inverse, #fff);
+    background-color: rgba(3, 8, 16, .52);
+    background-image:
+      radial-gradient(circle at 50% 44%, color-mix(in srgb, var(--accent, #7ee8fa) 16%, transparent) 0%, transparent 58%),
+      linear-gradient(155deg,
+        color-mix(in srgb, var(--accent, #7ee8fa) 20%, transparent) 0%,
+        transparent 52%,
+        color-mix(in srgb, var(--accent-2, #9dff8f) 16%, transparent) 100%);
+  }
+
+  .oh-orbit-svg { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; z-index: 1; }
+  .oh-orbit-ring {
+    fill: none;
+    stroke: color-mix(in srgb, var(--accent-2, #9dff8f) 62%, transparent);
+    stroke-width: 2;
+    stroke-dasharray: 3 11;
+  }
+  .oh-spoke {
+    stroke: color-mix(in srgb, var(--accent-2, #9dff8f) 72%, transparent);
+    stroke-width: 2.4;
+    stroke-dasharray: 6 5;
+  }
+  .oh-spoke-dot { fill: color-mix(in srgb, var(--accent-2, #9dff8f) 88%, white); }
+
+  .oh-hub-glow {
+    position: absolute;
+    left: 656px; top: 236px; width: 608px; height: 608px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent, #7ee8fa) 30%, transparent) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .oh-hub {
+    position: absolute;
+    left: 770px; top: 350px; width: 380px; height: 380px;
+    z-index: 3;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 54px; /* 固定 px（非百分比）——百分比 padding 按包含块宽度折算，
+      会把内边距撑到远大于球体自身直径，见 assets/components/toc-orbit-hub.css
+      文件头「实测踩坑修复记录」；正式渲染时由 render_deck.py 按 hub_d 现算 */
+    background:
+      radial-gradient(circle at 32% 26%,
+        color-mix(in srgb, var(--accent, #7ee8fa) 92%, white) 0%,
+        color-mix(in srgb, var(--accent, #7ee8fa) 58%, var(--accent-2, #9dff8f)) 34%,
+        color-mix(in srgb, var(--accent-2, #9dff8f) 55%, #050b14) 70%,
+        color-mix(in srgb, var(--accent-2, #9dff8f) 30%, #020509) 100%);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent, #7ee8fa) 35%, transparent),
+      0 30px 70px color-mix(in srgb, var(--accent, #7ee8fa) 28%, transparent),
+      inset -34px -34px 70px rgba(0, 0, 0, .5),
+      inset 22px 22px 46px color-mix(in srgb, var(--accent, #7ee8fa) 32%, transparent);
+  }
+  /* 选择器加 .toc-orbit-hub 前缀提升优先级（0,2,0/0,2,1），避免被正式渲染
+     环境里 base.css 的 .slide h1 / .slide p,.slide li（0,1,1）压过字号——
+     本预览文件独立运行不受 base.css 影响，但保持写法与正式接入版一致。 */
+  .toc-orbit-hub .oh-hub-eyebrow {
+    margin: 0 0 10px;
+    font-size: 13px;
+    letter-spacing: .32em;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--inverse, #fff) 82%, transparent);
+  }
+  .toc-orbit-hub .oh-hub-title {
+    margin: 0;
+    font-size: clamp(24px, 2vw, 33px);
+    font-weight: 800;
+    line-height: 1.3;
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .oh-hub-rule {
+    width: 52px; height: 3px; margin: 14px auto 0;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--inverse, #fff) 62%, transparent);
+  }
+
+  .oh-node {
+    position: absolute;
+    width: 250px; height: 250px;
+    z-index: 2;
+    border-radius: 50%;
+    background: rgba(8, 10, 18, .93);
+    border: 1.5px solid color-mix(in srgb, var(--accent-2, #9dff8f) 52%, transparent);
+    box-shadow: 0 14px 30px rgba(4, 10, 26, .4), inset 0 0 0 1px color-mix(in srgb, var(--accent-2, #9dff8f) 14%, transparent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px; /* 固定 px（非百分比），理由同 .oh-hub */
+    overflow: hidden;
+  }
+  .toc-orbit-hub .oh-node-num {
+    margin: 0 0 6px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    color: color-mix(in srgb, var(--accent-2, #9dff8f) 86%, white);
+  }
+  .toc-orbit-hub .oh-node-title {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.26;
+    max-width: none;
+    color: #f4f6fb;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .toc-orbit-hub .oh-node-desc {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.42;
+    color: rgba(233, 236, 245, .64);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-orbit-hub" data-role="toc" data-template="toc-orbit-hub">
+  <svg class="oh-orbit-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+    <circle class="oh-orbit-ring" cx="960" cy="540" r="360"/>
+    <line class="oh-spoke" x1="960" y1="350" x2="960" y2="180"/>
+    <line class="oh-spoke" x1="1124.5" y1="445" x2="1271.8" y2="360"/>
+    <line class="oh-spoke" x1="1124.5" y1="635" x2="1271.8" y2="720"/>
+    <line class="oh-spoke" x1="960" y1="730" x2="960" y2="900"/>
+    <line class="oh-spoke" x1="795.5" y1="635" x2="648.2" y2="720"/>
+    <line class="oh-spoke" x1="795.5" y1="445" x2="648.2" y2="360"/>
+    <circle class="oh-spoke-dot" cx="960" cy="350" r="6"/>
+    <circle class="oh-spoke-dot" cx="1124.5" cy="445" r="6"/>
+    <circle class="oh-spoke-dot" cx="1124.5" cy="635" r="6"/>
+    <circle class="oh-spoke-dot" cx="960" cy="730" r="6"/>
+    <circle class="oh-spoke-dot" cx="795.5" cy="635" r="6"/>
+    <circle class="oh-spoke-dot" cx="795.5" cy="445" r="6"/>
+  </svg>
+
+  <div class="oh-hub-glow"></div>
+  <div class="oh-hub">
+    <p class="oh-hub-eyebrow">CONTENTS</p>
+    <h1 class="oh-hub-title">{{toc_main_title}}</h1>
+    <div class="oh-hub-rule"></div>
+  </div>
+
+  <div class="oh-node" style="left:835px;top:55px" data-idx="1">
+    <span class="oh-node-num">{{item_01_num}}</span>
+    <h3 class="oh-node-title">{{item_01_title}}</h3>
+    <p class="oh-node-desc">{{item_01_desc}}</p>
+  </div>
+  <div class="oh-node" style="left:1146.8px;top:235px" data-idx="2">
+    <span class="oh-node-num">{{item_02_num}}</span>
+    <h3 class="oh-node-title">{{item_02_title}}</h3>
+    <p class="oh-node-desc">{{item_02_desc}}</p>
+  </div>
+  <div class="oh-node" style="left:1146.8px;top:595px" data-idx="3">
+    <span class="oh-node-num">{{item_03_num}}</span>
+    <h3 class="oh-node-title">{{item_03_title}}</h3>
+    <p class="oh-node-desc">{{item_03_desc}}</p>
+  </div>
+  <div class="oh-node" style="left:835px;top:775px" data-idx="4">
+    <span class="oh-node-num">{{item_04_num}}</span>
+    <h3 class="oh-node-title">{{item_04_title}}</h3>
+    <p class="oh-node-desc">{{item_04_desc}}</p>
+  </div>
+  <div class="oh-node" style="left:523.2px;top:595px" data-idx="5">
+    <span class="oh-node-num">{{item_05_num}}</span>
+    <h3 class="oh-node-title">{{item_05_title}}</h3>
+    <p class="oh-node-desc">{{item_05_desc}}</p>
+  </div>
+  <div class="oh-node" style="left:523.2px;top:235px" data-idx="6">
+    <span class="oh-node-num">{{item_06_num}}</span>
+    <h3 class="oh-node-title">{{item_06_title}}</h3>
+    <p class="oh-node-desc">{{item_06_desc}}</p>
+  </div>
+</section>
+</body>
+</html>

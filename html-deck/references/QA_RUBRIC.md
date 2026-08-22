@@ -97,4 +97,4 @@ Playwright 可用时，QA 必须输出逐页截图，并将当前 deck 与 `refe
 5. IR 中 `layout_pattern` 与蓝图登记不一致 → 判失败（总线⑥绕开⑤直接生成）。**IR layout_pattern 与蓝图不一致属本条阻断条件。**
 
 <!-- TASK-016: 指针——最终审查入口（不重写既有检查节） -->
-> **最终审查入口**：本文件 100 分制评分与各专项检查通过后，每页还必须执行 `references/final-quality-check.md` 的四维检查（<!-- TASK-018 fix -->15 条）+ 二次升级判断（自动修改回路），并逐页登记 `state/qa_report.md` 终审节；终审门禁口径见 `SKILL.md` 阶段 5 第 10 条。
+> **最终审查入口**：本文件 100 分制评分与各专项检查通过后，每页还必须执行 `references/final-quality-check.md` 的四维检查（<!-- TASK-036 fix -->17 条，含 V1 第 4 条标题级文字对比度/字号双达标、V6 背景色漂移检测、V7 字体排版系统三条永久门禁）+ 二次升级判断（自动修改回路），并逐页登记 `state/qa_report.md` 终审节；终审门禁口径见 `SKILL.md` 阶段 5 第 10 条。

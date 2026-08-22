@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>目录模板 · 流体闭环发散式</title>
+<style>
+  /* ============================================================
+     toc-fluid-loop —— 流体闭环发散式目录
+     中心主题 Hub + 最多 8 张异形卡片沿椭圆轨道向外发散，
+     曲线连线从 Hub 流转至各卡片。仅布局/样式骨架，无业务文本。
+     兼容变量：若外层 deck 主题已定义 --accent/--bg 等 token 则自动继承，
+     独立预览时使用本文件内的兜底值。
+     ============================================================ */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px;
+    font-family: var(--font-sans, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif);
+    background: var(--page-bg, #eef1f6);
+  }
+
+  .toc-fluid-loop {
+    position: relative;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: var(--bg, #f8fafc);
+    color: var(--text, #172033);
+  }
+
+  /* 装饰性背景光斑 */
+  .fl-bg-glow-a, .fl-bg-glow-b {
+    position: absolute; border-radius: 50%;
+    filter: blur(4px);
+    opacity: .35;
+    pointer-events: none;
+  }
+  .fl-bg-glow-a {
+    width: 900px; height: 900px; left: -260px; top: -320px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent, #0b6bcb) 18%, transparent), transparent 70%);
+  }
+  .fl-bg-glow-b {
+    width: 760px; height: 760px; right: -240px; bottom: -300px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent-2, #d14b3f) 14%, transparent), transparent 70%);
+  }
+
+  .fl-lines { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  .fl-line {
+    fill: none;
+    stroke: url(#flLineGrad);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    opacity: .55;
+  }
+  .fl-orbit {
+    fill: none;
+    stroke: var(--line, #d8dee8);
+    stroke-width: 1.5;
+    stroke-dasharray: 2 10;
+    opacity: .8;
+  }
+
+  /* 中心 Hub */
+  .fl-hub {
+    position: absolute;
+    left: 960px; top: 540px;
+    width: 320px; height: 320px;
+    transform: translate(-50%, -50%);
+    border-radius: 42% 58% 63% 37% / 46% 42% 58% 54%;
+    background: linear-gradient(150deg, var(--accent, #0b6bcb), color-mix(in srgb, var(--accent, #0b6bcb) 55%, var(--accent-2, #d14b3f)));
+    box-shadow: 0 30px 70px color-mix(in srgb, var(--accent, #0b6bcb) 35%, transparent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    color: var(--inverse, #fff);
+  }
+  .fl-hub-tag {
+    font-size: 20px;
+    letter-spacing: .28em;
+    opacity: .78;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .fl-hub-title {
+    margin: 0;
+    font-size: clamp(30px, 3vw, 44px);
+    line-height: 1.28;
+    font-weight: 800;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* 发散卡片节点 */
+  .fl-item {
+    position: absolute;
+    width: 320px; height: 210px;
+  }
+  .fl-card {
+    position: relative;
+    width: 100%; height: 100%;
+    background: var(--surface, #ffffff);
+    border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
+    box-shadow: var(--shadow, 0 18px 44px rgba(23,32,51,.14));
+    padding: 22px 28px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+  }
+  .fl-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2.5px;
+    background: linear-gradient(135deg, var(--accent, #0b6bcb), var(--accent-2, #d14b3f));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: .8;
+    pointer-events: none;
+  }
+  .fl-num {
+    flex: 0 0 auto;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent, #0b6bcb);
+    letter-spacing: .04em;
+  }
+  .fl-title {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text, #172033);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .fl-desc {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--muted, #5d687c);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* 8 个节点定位（超过实际条目数的节点在渲染时删除） */
+  .fl-item[data-idx="1"] { left: 810px; top: 83px; }
+  .fl-item[data-idx="2"] { left: 1277px; top: 188px; }
+  .fl-item[data-idx="3"] { left: 1470px; top: 443px; }
+  .fl-item[data-idx="4"] { left: 1277px; top: 698px; }
+  .fl-item[data-idx="5"] { left: 810px; top: 803px; }
+  .fl-item[data-idx="6"] { left: 343px; top: 698px; }
+  .fl-item[data-idx="7"] { left: 150px; top: 443px; }
+  .fl-item[data-idx="8"] { left: 343px; top: 188px; }
+</style>
+</head>
+<body>
+<section class="slide role-toc toc-tpl toc-fluid-loop" data-role="toc" data-template="toc-fluid-loop">
+  <div class="fl-bg-glow-a"></div>
+  <div class="fl-bg-glow-b"></div>
+
+  <svg class="fl-lines" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="flLineGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--accent, #0b6bcb)"/>
+        <stop offset="1" stop-color="var(--accent-2, #d14b3f)"/>
+      </linearGradient>
+    </defs>
+    <ellipse class="fl-orbit" cx="960" cy="540" rx="330" ry="220"/>
+    <path class="fl-line" data-idx="1" d="M 960 390 C 915 348, 915 306, 960 262"/>
+    <path class="fl-line" data-idx="2" d="M 1066 434 C 1190 451, 1285 415, 1355 325"/>
+    <path class="fl-line" data-idx="3" d="M 1110 540 C 1251 480, 1392 480, 1538 540"/>
+    <path class="fl-line" data-idx="4" d="M 1066 646 C 1133 735, 1228 771, 1355 755"/>
+    <path class="fl-line" data-idx="5" d="M 960 690 C 1005 732, 1005 774, 960 818"/>
+    <path class="fl-line" data-idx="6" d="M 854 646 C 730 629, 635 665, 565 755"/>
+    <path class="fl-line" data-idx="7" d="M 810 540 C 669 600, 528 600, 382 540"/>
+    <path class="fl-line" data-idx="8" d="M 854 434 C 787 345, 692 309, 565 325"/>
+  </svg>
+
+  <div class="fl-hub">
+    <span class="fl-hub-tag">CONTENTS</span>
+    <h1 class="fl-hub-title">{{toc_main_title}}</h1>
+  </div>
+
+  <div class="fl-item" data-idx="1">
+    <div class="fl-card">
+      <span class="fl-num">{{item_01_num}}</span>
+      <h3 class="fl-title">{{item_01_title}}</h3>
+      <p class="fl-desc">{{item_01_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="2">
+    <div class="fl-card">
+      <span class="fl-num">{{item_02_num}}</span>
+      <h3 class="fl-title">{{item_02_title}}</h3>
+      <p class="fl-desc">{{item_02_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="3">
+    <div class="fl-card">
+      <span class="fl-num">{{item_03_num}}</span>
+      <h3 class="fl-title">{{item_03_title}}</h3>
+      <p class="fl-desc">{{item_03_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="4">
+    <div class="fl-card">
+      <span class="fl-num">{{item_04_num}}</span>
+      <h3 class="fl-title">{{item_04_title}}</h3>
+      <p class="fl-desc">{{item_04_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="5">
+    <div class="fl-card">
+      <span class="fl-num">{{item_05_num}}</span>
+      <h3 class="fl-title">{{item_05_title}}</h3>
+      <p class="fl-desc">{{item_05_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="6">
+    <div class="fl-card">
+      <span class="fl-num">{{item_06_num}}</span>
+      <h3 class="fl-title">{{item_06_title}}</h3>
+      <p class="fl-desc">{{item_06_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="7">
+    <div class="fl-card">
+      <span class="fl-num">{{item_07_num}}</span>
+      <h3 class="fl-title">{{item_07_title}}</h3>
+      <p class="fl-desc">{{item_07_desc}}</p>
+    </div>
+  </div>
+  <div class="fl-item" data-idx="8">
+    <div class="fl-card">
+      <span class="fl-num">{{item_08_num}}</span>
+      <h3 class="fl-title">{{item_08_title}}</h3>
+      <p class="fl-desc">{{item_08_desc}}</p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

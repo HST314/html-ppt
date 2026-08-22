@@ -5,56 +5,87 @@
    纯 CSS 实现，print 兼容，无 JS 依赖。
    ========================================================================== */
 
+/* ── TASK-021 A.3：产出 .copy/.visual 结构的角色自动获得 12 列双栏网格 ───
+   不必逐角色在 base.css 补 role-xxx 专属 grid 规则；.role-two-column/
+   .role-image-side/.role-compare 已经无条件声明同款网格。此处兜底 .copy/
+   .visual 直接挂在 .slide 下（未走 A.4 三段式骨架）的角色；已接入骨架的
+   bullets 角色对应规则见 base.css（.copy/.visual 落在 .slide-body 内）。
+   :has() 在旧版非 Chromium 浏览器不生效时用 Python 侧 .layout-split 类兜底。 */
+.slide:has(> .copy):has(> .visual) {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 34px;
+  align-items: center;
+  padding-bottom: 92px;
+}
+.slide > .copy, .slide > .visual { min-width: 0; min-height: 0; overflow: hidden; }
+
 /* ── 通栏格阵/链式容器（render 单容器分支）────────────────────────────── */
 /* TASK-009 fix: role-two-column 父级是 12 列 grid，单容器分支（grid-系、chain-系、
    loop-系、ascend-系）的 h2/容器/takeaway 必须 span 全宽，否则卡片会被压扁在左列出现竖排文字。
    直接用具体类名而非属性选择器，确保所有浏览器一致匹配。
    注意：本注释内严禁出现星号紧跟斜杠的序列，否则会提前闭合注释并作废下方规则。 */
-.slide.role-two-column.layout-grid-2x2 > h2,
-.slide.role-two-column.layout-grid-2x2 > .takeaway,
-.slide.role-two-column.layout-grid-2x2 > p,
-.slide.role-two-column.layout-grid-2x2 > .group-grid,
-.slide.role-two-column.layout-grid-2x3 > h2,
-.slide.role-two-column.layout-grid-2x3 > .takeaway,
-.slide.role-two-column.layout-grid-2x3 > p,
-.slide.role-two-column.layout-grid-2x3 > .group-grid,
-.slide.role-two-column.layout-chain-3 > h2,
-.slide.role-two-column.layout-chain-3 > .takeaway,
-.slide.role-two-column.layout-chain-3 > p,
-.slide.role-two-column.layout-chain-3 > .group-grid,
-.slide.role-two-column.layout-chain-4 > h2,
-.slide.role-two-column.layout-chain-4 > .takeaway,
-.slide.role-two-column.layout-chain-4 > p,
-.slide.role-two-column.layout-chain-4 > .group-grid,
-.slide.role-two-column.layout-loop-3 > h2,
-.slide.role-two-column.layout-loop-3 > .takeaway,
-.slide.role-two-column.layout-loop-3 > p,
-.slide.role-two-column.layout-loop-3 > .loop-stage,
-.slide.role-two-column.layout-loop-4 > h2,
-.slide.role-two-column.layout-loop-4 > .takeaway,
-.slide.role-two-column.layout-loop-4 > p,
-.slide.role-two-column.layout-loop-4 > .loop-stage,
-.slide.role-two-column.layout-ascend-4 > h2,
-.slide.role-two-column.layout-ascend-4 > .takeaway,
-.slide.role-two-column.layout-ascend-4 > p,
-.slide.role-two-column.layout-ascend-4 > .group-stack,
-.slide.role-two-column.layout-ascend-4 > .group-grid {
+.slide.layout-grid-2x2 > h2,
+.slide.layout-grid-2x2 > .takeaway,
+.slide.layout-grid-2x2 > p,
+.slide.layout-grid-2x2 > .group-grid,
+.slide.layout-grid-2x3 > h2,
+.slide.layout-grid-2x3 > .takeaway,
+.slide.layout-grid-2x3 > p,
+.slide.layout-grid-2x3 > .group-grid,
+.slide.layout-chain-3 > h2,
+.slide.layout-chain-3 > .takeaway,
+.slide.layout-chain-3 > p,
+.slide.layout-chain-3 > .group-grid,
+.slide.layout-chain-4 > h2,
+.slide.layout-chain-4 > .takeaway,
+.slide.layout-chain-4 > p,
+.slide.layout-chain-4 > .group-grid,
+.slide.layout-loop-3 > h2,
+.slide.layout-loop-3 > .takeaway,
+.slide.layout-loop-3 > p,
+.slide.layout-loop-3 > .loop-stage,
+.slide.layout-loop-4 > h2,
+.slide.layout-loop-4 > .takeaway,
+.slide.layout-loop-4 > p,
+.slide.layout-loop-4 > .loop-stage,
+.slide.layout-ascend-4 > h2,
+.slide.layout-ascend-4 > .takeaway,
+.slide.layout-ascend-4 > p,
+.slide.layout-ascend-4 > .group-stack,
+.slide.layout-ascend-4 > .group-grid,
+/* TASK-021 补齐遗漏：render_deck.py::ascend_row_html() 实际输出的通栏容器类名
+   是 .timeline-row.ascend-row（非上面已登记的 .group-stack/.group-grid），此前
+   未被本选择器列表覆盖，会被 12 列父网格压成 1/12 宽的单元格，导致内部
+   repeat(4,1fr) 阶梯节点被压扁到几十像素宽、文字大量换行撑高盒子，实测整页
+   scrollHeight 超出 clientHeight（真实溢出，非文案过长）。 */
+.slide.layout-ascend-4 > .timeline-row {
   grid-column: 1 / -1;
 }
-.slide.role-two-column.layout-grid-2x2,
-.slide.role-two-column.layout-grid-2x3,
-.slide.role-two-column.layout-chain-3,
-.slide.role-two-column.layout-chain-4,
-.slide.role-two-column.layout-loop-3,
-.slide.role-two-column.layout-loop-4,
-.slide.role-two-column.layout-ascend-4 {
+.slide.layout-grid-2x2,
+.slide.layout-grid-2x3,
+.slide.layout-chain-3,
+.slide.layout-chain-4,
+.slide.layout-loop-3,
+.slide.layout-loop-4,
+.slide.layout-ascend-4 {
   align-items: start;
   align-content: center;
 }
 .group-grid.layout-canvas {
-  margin-top: 46px;
+  margin-top: 28px;
   align-content: center;
   width: 100%;
+}
+/* B.3(b)/Playwright 实测修复：grid-2x2/grid-2x3 在 3–4 组（2 行卡片）时会真实
+   溢出画布（实测 scrollHeight 超 clientHeight 约 31px）——通栏格阵变体不需要
+   role-two-column 默认给「双栏图文」预留的 92px 底部留白（takeaway 自身已有
+   内边距），回收这部分冗余留白，双行卡片高度预算随之达标。 */
+.slide.layout-grid-2x2,
+.slide.layout-grid-2x3,
+.slide.layout-chain-3,
+.slide.layout-chain-4 {
+  padding-bottom: 46px;
 }
 
 /* ── ⑦ 矩阵：grid-2x2 ───────────────────────────────────────────────── */
@@ -65,8 +96,17 @@
 }
 .layout-grid-2x2 .group-card {
   position: relative;
-  /* TASK-023 fix: 330px×2 + 标题/导语/takeaway 在 1080px 屏高下必然溢出 ~44px，降至 300px 保 grid-2x2 页不溢出 */
-  min-height: 300px;
+  /* TASK-021 测试实测修复：330px 对"组标题(1行)+正文 1 条"的典型 grid-2x2
+     内容（自然高度约 150-170px：24px 上下内边距+约 34px 标题行+约 50px
+     单条正文）过于宽裕——2 行卡片轨道合计 330×2+gap(26)=686px，叠加标题
+     （2 行 action title 常见）+ 导语 + 页边距后，真实项目（如本次云深企业
+     文化 deck 的资质认证页/支撑体系页）在 1080px 画布上 Playwright 实测
+     scrollHeight 溢出 40-120px。参照同一文件里 grid-2x3 已用真实测量调校
+     过的 210px 楼层（TASK-036 fix 注释），grid-2x2 收紧到 220px——仍比本
+     变体典型内容的自然高度多出 50-70px 余量（容纳稍长的正文换行），只是
+     不再远超两倍所需，不影响卡片对齐/等高等视觉效果（仍是 min-height，
+     内容更长时照常向下撑高，不设上限）。 */
+  min-height: 220px;
   border-top: 5px solid var(--accent);
   counter-increment: cell;
 }
@@ -85,10 +125,52 @@
   gap: 26px;
   counter-reset: cell;
 }
+/* TASK-036 fix（Playwright 实测发现）：本变体设计假设固定 2 组（每组内部
+   条目再 3 列成阵），单列通栏堆叠正好够放 2 张全宽卡片；但内容层（
+   build_ir.py 从正文条目派生的分组数）不受本变体名称约束，实测本项目某页
+   落在该变体却产出 4 个分组，4 张全宽卡片纵向堆叠总高度远超画布，
+   scrollHeight 1191 > clientHeight 1080 真实溢出（终审 V1 字体排版系列
+   问题排查时发现，与字体大小无关，是本变体缺少"分组数超预期"兜底）。用
+   :has() 检测第 3 张卡片是否存在——超过 2 组时整体切到 2 列换行网格（≤2 组
+   的既定视觉效果完全不变，双卡仍各自通栏铺满同一行；>2 组才切换，超额分组
+   自动折成多行 2 列，把纵向高度打对折，不再无限堆高溢出画布）。 */
+.layout-grid-2x3 .group-grid:has(> .group-card:nth-child(3)) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* TASK-036 fix（Playwright 实测发现的 CSS Grid 已知坑）：.group-card 自带
+     overflow:hidden（base.css，防止长文案撑破卡片），这会让 Grid 按规范把该
+     网格项的"自动最小尺寸"算作 0，轨道（行）高度只按内容实际需要的最小值
+     分配——子项自己声明的 min-height（210px）不参与轨道高度计算，只在轨道
+     已经够高时才生效。实测两行卡片轨道各自收缮到 166px/140px，min-height
+     形同虚设，两行之间产生 26px 高度差，命中并列容器尺寸一致性检查。改为
+     直接约束轨道本身：grid-auto-rows:minmax(210px,auto) 让每一行的最小高度
+     由网格布局算法保证，不受子项 overflow 状态影响，两行卡片稳定拉齐到
+     同一高度。 */
+  grid-auto-rows: minmax(210px, auto);
+}
+/* TASK-036 fix（同上实测的第二层问题）：minmax(210px,auto) 只兜住"每行各自
+   不低于 210px"的地板，行与行之间仍按各自内容 auto 到不同高度（实测二级
+   标题两行文案的那一行需要 249px、单行文案的另一行仍停在 210px 地板，
+   4 张卡片里出现 249≈166px(缩放后)/210≈140px(缩放后) 两档，仍差 26px，
+   命中并列容器尺寸一致性检查）。.group-card 是 align-self:stretch（默认，
+   未被显式覆盖）网格项，让同一份 .group-grid 里两行 group-card 稳定拉到
+   完全相同高度的做法是把行高改成 1fr 等分而不是各自 auto——配合
+   .group-grid 自身有确定的总高度（由外层 .role-bullets 三段式骨架的中间
+   内容行给出）时，1fr 会把多行平均分配，取代 auto 逐行按各自内容独立
+   定高的做法。 */
+.layout-grid-2x3 .group-grid:has(> .group-card:nth-child(3)) {
+  grid-auto-rows: minmax(210px, 1fr);
+}
 .layout-grid-2x3 .group-card {
   position: relative;
   border-top: 5px solid var(--accent);
   counter-increment: cell;
+  /* TASK-036 fix：切到 2 列换行网格（>2 组场景，见上）后，CSS Grid 默认的
+     align-items:stretch 只在"同一行"内拉齐高度，不同行之间仍各自按各行最高
+     卡片定高，实测跨行卡片高度差达 29px（137~166px），命中并列容器尺寸
+     一致性检查。补一个固定 min-height，覆盖 1~2 行标题（40px 二级标题）+
+     若干条目的常见内容量，让全部分组卡片（不论落在哪一行）都以同一高度
+     打底，不再因所在行不同而产生尺寸差异。 */
+  min-height: 210px;
 }
 .layout-grid-2x3 .group-card::after {
   content: "0" counter(cell);
@@ -115,9 +197,13 @@
   border-top-width: 8px;
   box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 7%, transparent);
 }
-.layout-asym-cards > .copy .group-card:first-child .group-title {
-  font-size: 31px;
-}
+/* TASK-036 fix：此前给焦点卡单独调大过 .group-title 字号（31px，后又跟 base.css
+   基准 27→40px 联动改成 44px），实测同页另一张非焦点卡仍是 base.css 的 40px，
+   44 与 40 两个"同为二级标题"的字号并存在同一页，倍率仅 1.10，命中字号
+   层级比例规则（本是为区分"不同层级"设计的规则，误伤了"同层级、仅样式
+   强调不同"的两个 group-title）。焦点感改由已有的边框/阴影/强调色差异化
+   承担（本条规则上方 .group-card:first-child 的 border/box-shadow 已经
+   够用），字号统一回落继承 base.css 的 40px，不再另立字号差异。 */
 
 /* ── ⑨ 非对称图文：anchor-right（右栏焦点锚定，镜像 7:5）────────────── */
 .layout-anchor-right > .copy { grid-column: span 5; }
@@ -133,6 +219,7 @@
   position: relative;
   border: 2px solid var(--accent-2);
   background: color-mix(in srgb, var(--accent-2) 8%, var(--surface));
+  overflow: visible; /* B.1: 方向箭头伪元素越出栏位负偏移，豁免通栏 overflow:hidden 裁切 */
 }
 .layout-cause-effect > .visual.panel::before {
   content: "→";
@@ -143,8 +230,10 @@
   font: 900 58px/1 var(--font-sans);
 }
 .layout-cause-effect > .visual.panel .group-title {
+  /* TASK-036 fix：理由同上（asym-cards 处的说明）——去掉单独字号覆盖，与左侧
+     "因"卡的 group-title 统一沿用 base.css 的 40px，只保留 accent 色区分
+     "果"侧的强调语义，不再制造 44 vs 40 的层级近似冲突。 */
   color: var(--accent);
-  font-size: 31px;
 }
 
 /* ── ① 中心节点+分支：hub-left（左栏深蓝大中心核，右栏分支）────────── */
@@ -154,8 +243,10 @@
   box-shadow: 0 24px 60px rgba(18, 58, 107, .28);
 }
 .layout-hub-left > .copy .group-card:first-child .group-title {
+  /* TASK-036 fix：理由同上——去掉单独字号覆盖，中心核与分支卡的 group-title
+     统一沿用 base.css 的 40px，中心核的强调语义已经由 accent 实底背景 + 白字
+     承担，不需要再叠加字号差异制造层级近似冲突。 */
   color: #fff;
-  font-size: 32px;
 }
 .layout-hub-left > .copy .group-card:first-child .group-list li {
   color: #eaf2fb;
@@ -171,12 +262,14 @@
   border: 2px solid var(--accent);
   box-shadow: var(--shadow), 0 0 0 12px color-mix(in srgb, var(--accent) 8%, transparent);
 }
-.layout-hub-radiate > .copy .group-card:first-child .group-title {
-  font-size: 32px;
-}
+/* TASK-036 fix：此前 .group-card:first-child .group-title 单独覆盖字号
+   （32px，后随 base.css 基准联动改 44px），与同页其它分支卡的 group-title
+   （base.css 40px）并存会制造层级近似冲突；中心核的强调语义已经由上方
+   border/box-shadow 承担，去掉字号覆盖，统一沿用 base.css 的 40px。 */
 .layout-hub-radiate > .visual.panel {
   position: relative;
   border-left: 4px solid var(--accent-2);
+  overflow: visible; /* B.1: 辐射光带伪元素越出栏位负偏移，豁免通栏 overflow:hidden 裁切 */
 }
 .layout-hub-radiate > .visual.panel::before {
   content: "";
@@ -210,6 +303,7 @@
 /* ── ⑤ 对比构图：vs-split（中央分界 + VS 徽标）────────────────────── */
 .layout-vs-split > .visual.panel {
   position: relative;
+  overflow: visible; /* B.1: 中央分界线/VS 徽标伪元素越出栏位负偏移，豁免通栏 overflow:hidden 裁切 */
 }
 .layout-vs-split > .visual.panel::before {
   content: "";
@@ -241,6 +335,8 @@
   position: relative;
   height: 660px;
   margin-top: 14px;
+  min-height: 0;
+  overflow: hidden;
 }
 .loop-ring {
   position: absolute;
@@ -267,7 +363,10 @@
 }
 .loop-node p {
   margin: 0;
-  font-size: 25px;
+  /* TASK-036 fix: 原 25px 既低于正文最小可读性底线 2.5%（25/1080=2.31%），
+     又与页面其它正文（var(--fs-body)）差值不到 1.2 倍——语义上同属"正文"，
+     不该另立一个刚好卡在边界附近的独立数值，改为直接复用正文 token。 */
+  font-size: var(--fs-body);
   line-height: 1.42;
 }
 .loop-node-1 { left: 3%; top: 3%; }
@@ -338,6 +437,7 @@
   position: relative;
   min-height: 300px;
   counter-increment: chain;
+  overflow: visible; /* B.1: 编号徽章 ::before 悬浮在卡片上方（top:-52px），豁免 .group-card 通栏 overflow:hidden */
 }
 .layout-chain-3 .group-card::before {
   content: "0" counter(chain);
@@ -353,13 +453,14 @@
 }
 
 /* ── ⑨ 非对称图文:ed-strip(编辑式动线条,TASK-001 新增变体,登记见 references/layout-patterns.md)── */
-.slide.role-two-column.layout-ed-strip > h2,
-.slide.role-two-column.layout-ed-strip > .takeaway,
-.slide.role-two-column.layout-ed-strip > .ed-flow,
-.slide.role-two-column.layout-ed-strip > .ed-brand {
+.slide.layout-ed-strip > h2,
+.slide.layout-ed-strip > .takeaway,
+.slide.layout-ed-strip > p,
+.slide.layout-ed-strip > .ed-flow,
+.slide.layout-ed-strip > .ed-brand {
   grid-column: 1 / -1;
 }
-.slide.role-two-column.layout-ed-strip { align-items: start; align-content: center; }
+.slide.layout-ed-strip { align-items: start; align-content: center; }
 .ed-flow { display: grid; gap: 18px; margin-top: 40px; counter-reset: ed; }
 .ed-strip {
   position: relative;
@@ -376,7 +477,10 @@
   font: 900 44px/1 var(--font-mono);
 }
 .ed-strip .ed-name { color: var(--accent); font: 900 30px/1.25 var(--font-sans); }
-.ed-strip .ed-text { font-size: 25px; line-height: 1.4; margin: 0; }
+/* TASK-036 fix: 同 .loop-node p，原 25px 既低于画布底线又与正文字号太接近，
+   改为直接复用正文 token（var(--fs-body)），行距保持 1.4（下限边界，仍
+   合规）。 */
+.ed-strip .ed-text { font-size: var(--fs-body); line-height: 1.4; margin: 0; }
 .ed-flow .ed-strip:not(:last-child)::after {
   content: "↓";
   position: absolute;
@@ -438,29 +542,38 @@
 }
 
 /* ── 全宽行：五个新变体的 h2 / 容器 / takeaway 通栏 ──────────────────── */
-.slide.role-two-column.layout-gather-3 > h2,
-.slide.role-two-column.layout-gather-3 > .takeaway,
-.slide.role-two-column.layout-gather-3 > .group-grid,
-.slide.role-two-column.layout-hub-top > h2,
-.slide.role-two-column.layout-hub-top > .takeaway,
-.slide.role-two-column.layout-hub-top > .group-grid,
-.slide.role-two-column.layout-hub-spoke > h2,
-.slide.role-two-column.layout-hub-spoke > .takeaway,
-.slide.role-two-column.layout-hub-spoke > .group-grid,
-.slide.role-two-column.layout-checkpoint-3 > h2,
-.slide.role-two-column.layout-checkpoint-3 > .takeaway,
-.slide.role-two-column.layout-checkpoint-3 > .group-grid,
-.slide.role-two-column.layout-checkpoint-3 > .cp-note,
-.slide.role-two-column[class*="layout-layers"] > h2,
-.slide.role-two-column[class*="layout-layers"] > .takeaway,
-.slide.role-two-column[class*="layout-layers"] > .copy {
+/* TASK-022 fix: 补齐 `> p`——这五个变体命中 two-column 等角色时，导语段落
+   （非列表块）和 h2/.group-grid 一样是 .slide 的直接子级，遗漏 `> p` 会让
+   它落回外层 12 列栅格的默认单列宽度，中文逐字换行成一条竖排窄柱（已在
+   grid-2x2/grid-2x3/chain/loop/ascend 那组全宽规则里处理过，这里补齐同款）。 */
+.slide.layout-gather-3 > h2,
+.slide.layout-gather-3 > .takeaway,
+.slide.layout-gather-3 > p,
+.slide.layout-gather-3 > .group-grid,
+.slide.layout-hub-top > h2,
+.slide.layout-hub-top > .takeaway,
+.slide.layout-hub-top > p,
+.slide.layout-hub-top > .group-grid,
+.slide.layout-hub-spoke > h2,
+.slide.layout-hub-spoke > .takeaway,
+.slide.layout-hub-spoke > p,
+.slide.layout-hub-spoke > .group-grid,
+.slide.layout-checkpoint-3 > h2,
+.slide.layout-checkpoint-3 > .takeaway,
+.slide.layout-checkpoint-3 > p,
+.slide.layout-checkpoint-3 > .group-grid,
+.slide.layout-checkpoint-3 > .cp-note,
+.slide[class*="layout-layers"] > h2,
+.slide[class*="layout-layers"] > .takeaway,
+.slide[class*="layout-layers"] > p,
+.slide[class*="layout-layers"] > .copy {
   grid-column: 1 / -1;
 }
-.slide.role-two-column.layout-gather-3,
-.slide.role-two-column.layout-hub-top,
-.slide.role-two-column.layout-hub-spoke,
-.slide.role-two-column.layout-checkpoint-3,
-.slide.role-two-column[class*="layout-layers"] {
+.slide.layout-gather-3,
+.slide.layout-hub-top,
+.slide.layout-hub-spoke,
+.slide.layout-checkpoint-3,
+.slide[class*="layout-layers"] {
   align-items: start;
   align-content: center;
 }
@@ -470,10 +583,19 @@
 .layout-gather-3 .gather-rows { display: grid; grid-template-columns: none; gap: 16px; width: 100%; }
 .layout-gather-3 .gather-needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .layout-gather-3 .gather-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.layout-gather-3 .gather-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
+/* TASK-027 fix: 方向符直接坐在 --bg 上，实测本项目 accent-2（航天蓝
+   #0033A0，暗色）压近黑底色对比度只有 ~1:1，几乎不可见；混入 --text（每套
+   主题都保证与 --bg 高对比）兜住可辨识度下限，理由同 base.css 的
+   .li-mark/.li-index 修复。 */
+.layout-gather-3 .gather-links span { text-align: center; color: color-mix(in srgb, var(--accent-2) 55%, var(--text) 45%); font: 900 36px/1 var(--font-sans); }
 .layout-gather-3 .gather-core {
   position: relative; max-width: 1080px; width: 100%; margin: 0 auto;
   text-align: center; border: 2px solid var(--accent); border-top-width: 8px;
+  /* TASK-036 fix（Playwright 实测发现）：`.panel` 基类未声明 padding（padding
+     由各具体角色自行声明，如 .group-card 有 24px 26px），gather-core 此前
+     没有补声明，实测四周内边距为 0px，文字紧贴边框——命中字体排版检查
+     规则②"文本框四周必须保留内边距"。补上与 .group-card 一致的内边距量级。 */
+  padding: 24px 26px;
 }
 
 /* ── ① 通栏核总分 hub-top：顶部通栏核 + 分叉方向符 + 下双分支 ────────── */
@@ -486,6 +608,11 @@
 .layout-hub-top .hub-top-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .layout-hub-top .hub-top-links span { text-align: center; color: var(--accent-2); font: 900 36px/1 var(--font-sans); }
 .layout-hub-top .hub-top-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+/* B.1 补丁修复：全局 .group-card 有 align-self:start（矩阵/格阵类页面故意让卡片
+   顶对齐、不因内容长短强行拉伸），但 hub-top 的分支卡是"并列同级支撑点"，
+   内容长短不一时会产生真实像素高度差（Playwright sibling-uniformity 门禁命中）。
+   仅在 hub-top-branches 范围内改回 stretch，让同一行分支卡统一到最高者的高度。 */
+.layout-hub-top .hub-top-branches > .group-card { align-self: stretch; }
 
 /* ── ① 左右夹核辐射 hub-spoke：左列卡 + 中心核 + 右列卡 + 对向连接符 ─── */
 .layout-hub-spoke .spoke-grid {
@@ -528,11 +655,16 @@
 }
 
 /* ── ④ 检查点轴 checkpoint-3：日期徽章节点 + 字符箭头 + 当前锁定焦点 ─── */
+/* TASK-027 fix: checkpoint-3 命中 role-bullets 时已经靠 base.css 的 slide-body
+   flex justify-content:center 纵向居中（无配图内容页通用规则），但 3 个节点
+   本身内容偏短，居中后上下仍各留一大截空白，视觉上像"内容漂在画布中间"。
+   节点间距与内边距适度放大（margin-top 40→64，padding 28px 24px→38px 30px），
+   让节点本身的体量配得上居中后腾出来的空间，不靠拉伸变形硬填。 */
 .layout-checkpoint-3 .checkpoint-flow {
   display: grid; grid-template-columns: minmax(0, 1fr) 62px minmax(0, 1fr) 62px minmax(0, 1fr);
-  gap: 0 8px; width: 100%; margin-top: 40px; align-items: stretch;
+  gap: 0 8px; width: 100%; margin-top: 64px; align-items: stretch;
 }
-.layout-checkpoint-3 .checkpoint-node { position: relative; padding: 28px 24px; border-top: 5px solid var(--accent-2); }
+.layout-checkpoint-3 .checkpoint-node { position: relative; padding: 38px 30px; border-top: 5px solid var(--accent-2); }
 .layout-checkpoint-3 .checkpoint-node.is-current {
   border: 2px solid var(--accent); border-top-width: 8px;
   box-shadow: var(--shadow), 0 0 0 8px color-mix(in srgb, var(--accent) 8%, transparent);
@@ -543,12 +675,35 @@
   color: var(--accent); font: 900 22px/1.2 var(--font-mono);
 }
 .layout-checkpoint-3 .is-current .cp-date { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.layout-checkpoint-3 .cp-link { display: grid; place-items: center; color: var(--accent-2); font: 900 44px/1 var(--font-sans); }
+/* TASK-027 fix: 同上 .gather-links span——cp-link 箭头直接坐在 --bg 上，混入
+   --text 兜住亮度下限，避免暗色 accent-2 项目里箭头与背景融为一体。 */
+.layout-checkpoint-3 .cp-link { display: grid; place-items: center; color: color-mix(in srgb, var(--accent-2) 55%, var(--text) 45%); font: 900 44px/1 var(--font-sans); }
 .layout-checkpoint-3 .cp-current-tag {
   position: absolute; right: 18px; top: 16px;
   color: var(--accent); font: 700 18px/1 var(--font-mono);
 }
 .layout-checkpoint-3 .cp-note { color: var(--muted); font-size: 20px; margin-top: 6px; }
+
+/* ── B.1 容器边界补丁：A.2b 结构级变体新增的 -core/-panel/-node 系列容器 ──
+   grid/flex 子项 min-height 初始值是 auto 不是 0，文字过长会撑破轨道侵入
+   相邻区域造成重叠；显式清零边界。个别容器有意越出边界的方向符/连接符
+   （spoke-core 的 →/← 连接符位于 -56px 负偏移）用 overflow:visible 豁免。 */
+.gather-core, .hub-top-core, .num-panel, .checkpoint-node, .ed-brand {
+  min-height: 0;
+  overflow: hidden;
+}
+.ed-strip {
+  min-height: 0;
+  overflow: visible; /* 相邻条目间 ↓ 连接符 ::after 用 bottom:-24px 越出边界，不能裁切 */
+}
+.spoke-core {
+  min-height: 0;
+  overflow: visible; /* 对向连接符 ::before/::after 越出栏位负偏移，不能裁切 */
+}
+.spoke-col, .gather-needs > *, .hub-top-branches > * {
+  min-height: 0;
+  overflow: hidden;
+}
 
 /* ── 打印兼容：新变体连接符静态化 ───────────────────────────────────── */
 @media print {

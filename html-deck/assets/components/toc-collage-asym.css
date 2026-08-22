@@ -1,0 +1,241 @@
+/* ============================================================
+   toc-collage-asym —— 非对称拼贴式目录（TASK-041 新增，目录页调度精简）
+   来源：诊断确认 toc-modern-card/toc-segment-strip/toc-grid-matrix 三款
+   本质都是"编号+标题+一句描述"套不同卡片容器形状（同一批卡片彼此等大，
+   只是外壳形状不同），toc-orbit-hub/toc-magazine-index 才是真正结构不同
+   的两款。本版式补一种库里从未出现过的"尺寸不对称"结构语言：第 1 个章节
+   放大为左侧一张占满全部可用高度的"头条卡"（.tca-headline，编号+标题+
+   一句话说明，字号/留白明显大于其余条目），其余章节收进右侧纵向排列的
+   紧凑编号短条（.tca-row，仅编号+标题单行）。适合叙事型 deck（人文温暖/
+   非遗类项目见 render_deck.py::select_toc_template()）。
+
+   通用 N 版式：头条卡 flex:0 0 58% 自动占满 .tca-body 全高（不随 N 变化，
+   只随头部区域高度变化）；.tca-list 内每个短条 flex:1 1 0，由浏览器按
+   可用高度自动等分，天然适配 N=3~8，不依赖 Python 侧按 N 查表分支像素值、
+   不把坐标写死在选择器里（与 toc-orbit-hub::compute_orbit_layout()/
+   toc-grid-matrix::compute_grid_columns(N) 同一条"用公式/自动布局代替
+   坐标表"纪律）。
+
+   接入说明（相对独立预览文件 slide_templates/toc/toc-collage-asym.html
+   的改动，仅涉及"容器如何挂进现有舞台"，不改视觉设计本身）：
+   - 原模板 body{width:1920px;height:1080px;...} 与 *{box-sizing}/
+     html,body 重置属于独立预览用页面级样式，已省略；
+   - .toc-collage-asym 作为 .slide.role-toc 的直接子容器，position:
+     absolute;inset:0 全出血铺满，绕开 .slide 自身 --slide-padding
+     （写法与 toc-grid-matrix.css/toc-magazine-index.css 一致）；
+   - background 用 transparent：本项目内容页的 project-art-bg 生成式
+     融合背景依赖所在角色容器透明才能透出。
+
+   防溢出三层机制（与库内其余版式同一套纪律，见 SKILL.md「目录页版式
+   模板库」防溢出说明）：
+   ① Python 侧标题精简（render_deck.py::shrink_toc_collage_headline_title
+      头条卡 18 字阈值 / shrink_toc_collage_row_title 短条 12 字阈值）；
+   ② CSS 侧 -webkit-line-clamp 双重兜底（头条标题/说明各 3 行，短条标题
+      1 行）；
+   ③ 固定容器尺寸：头条卡与短条本就设计为不同尺寸（非对称是本版式的核心
+      视觉语言，二者之间不要求同高）；但"同一批短条彼此之间"仍固定统一
+      高度（flex:1 1 0 等分），纳入 qa_render.py::check_sibling_uniformity
+      的 .tca-list>.tca-row 核验，不因文字长短产生大小不一致。
+   ============================================================ */
+.toc-collage-asym {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text, #14171f);
+  display: flex;
+  flex-direction: column;
+  padding: 92px 112px 96px;
+}
+
+.tca-head {
+  position: relative;
+  flex: 0 0 auto;
+  padding-bottom: 22px;
+  margin: 46px 0 40px;
+  border-bottom: 3px solid var(--text, #14171f);
+}
+/* TASK-041（同 toc-grid-matrix.css/toc-magazine-index.css 一并遵循的修复）：
+   单 class 选择器（0,1,0）会被 base.css 的 `.slide p`（0,1,1）无条件覆盖，
+   加外层 wrapper class 把特异性提到 0,2,0 稳定胜出。 */
+.toc-collage-asym .tca-eyebrow {
+  position: absolute;
+  left: 0; top: -42px;
+  margin: 0;
+  /* TASK-022 fix（QA 实测发现）：18px 低于正文字号 2.5% 画布高度底线
+     （1080*2.5%=27px），且与相邻 tca-headline-desc 字号比例不足 1.2。
+     统一提到全库既有的 --fs-support 惯例值 28px（与 typography.css 里
+     ".takeaway 结论条" 同一批修复采用的安全值一致），与 desc 同档。 */
+  font-size: 28px;
+  letter-spacing: .3em;
+  font-weight: 700;
+  color: var(--accent, #0b6bcb);
+}
+/* TASK-022 fix（QA 实测发现）：与 .tca-eyebrow/.tca-headline-desc/.tca-row-title
+   同一个根因——单 class 选择器（0,1,0）会被 base.css 的 `.slide h1{font-size:
+   var(--fs-cover)}`/`.slide h2{font-size:var(--fs-title)}`（优先级 0,1,1，
+   类+标签组合）覆盖，导致 h1.tca-title-main 实际按主题 --cover-size 渲染、
+   h2.tca-headline-title 实际按主题 --title-size 渲染，二者又与目录页其余
+   小字号挤在同一档，字号层级比例 <1.2 判定失败。此前只给 3 个非标题选择器
+   加了 `.toc-collage-asym` 前缀提到 0,2,0，遗漏了 h1/h2 这两个——现在一并补齐。 */
+.toc-collage-asym .tca-title-main {
+  margin: 0;
+  max-width: 1400px;
+  /* TASK-022 fix：修完 h1 specificity 后原 max 58px 与 headline-title 的
+     52px 比例仅 1.12，不足 1.2 下限；提到 66px（66/52=1.27）。 */
+  font-size: clamp(40px, 3.8vw, 66px);
+  font-weight: 800;
+  line-height: 1.24;
+  letter-spacing: -.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.tca-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  gap: 36px;
+}
+
+/* ── 头条卡：第 1 个章节，放大占满左侧全部可用高度 ── */
+.tca-headline {
+  position: relative;
+  flex: 0 0 58%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 44px 48px 40px;
+  border-radius: 28px;
+  background: var(--surface, #ffffff);
+  border: 2px solid var(--text, #14171f);
+  overflow: hidden;
+}
+.tca-headline-ghost {
+  position: absolute;
+  right: 20px; top: -14px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 220px;
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent, #0b6bcb) 10%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+.tca-headline-num {
+  position: relative;
+  flex: 0 0 auto;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--accent, #0b6bcb);
+}
+.toc-collage-asym .tca-headline-title {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 0;
+  margin: 0;
+  font-size: clamp(38px, 3.4vw, 52px);
+  font-weight: 800;
+  line-height: 1.28;
+  color: var(--text, #14171f);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.toc-collage-asym .tca-headline-desc {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 0;
+  margin: 0;
+  max-width: 640px;
+  /* TASK-022 fix：19px 低于正文 2.5% 画布高度底线，且与 eyebrow(18px)
+     比例不足 1.2；提到与 eyebrow 同档 28px（同为"支撑文字"层级，同档
+     不产生新的相邻比例问题）。 */
+  font-size: 28px;
+  line-height: 1.5;
+  color: var(--muted, #5d687c);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* ── 短条列表：其余章节，紧凑纵向编号短条，彼此等高 ── */
+.tca-list {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tca-row {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 28px;
+  border-radius: 16px;
+  background: var(--surface-2, #f3f5f9);
+  border: 1px solid var(--line, #d7dde6);
+  overflow: hidden;
+}
+.tca-row-ghost {
+  position: absolute;
+  right: 16px; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent, #0b6bcb) 8%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+.tca-row-num {
+  position: relative;
+  flex: 0 0 auto;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent, #0b6bcb);
+}
+.toc-collage-asym .tca-row-title {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  /* TASK-022 fix：22px 与 headline-desc 提档后的 28px 顺序颠倒且比例
+     不足 1.2；提到 36px（36/28=1.29），恢复"短条标题 > 头条卡说明文字"
+     的合理层级顺序。 */
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text, #14171f);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}

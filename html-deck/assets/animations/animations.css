@@ -51,7 +51,26 @@ body.no-motion .slide.is-active * {
   animation: none !important;
   transition: none !important;
 }
+/* TASK-034 fix：path-draw 的 stroke-dasharray:900/stroke-dashoffset:900 是
+   普通静态属性，写在与 animation 同一条规则里，不会随上面的 animation:none
+   一起失效——B 键静态降级/prefers-reduced-motion 关闭动画后，真实 SVG
+   path/line/polyline 元素会永久停在动画起始态（dashoffset:900，即笔画被
+   完全抽离，视觉上不可见），而不是「跳过动画、直接显示画好的线」。此前
+   全库唯一挂 path-draw 的地方是 section 页 `.deckline`（纯 div，不匹配
+   path/line/polyline 选择器），问题从未暴露；toc-orbit-hub 首次给真实
+   <line> 辐条接入 path-draw 时实测发现。修复：静态/降级场景强制
+   dashoffset:0，呈现"已画完"的最终态，不影响正常动效路径下的绘制动画。 */
+body.no-motion [data-animate="path-draw"] path,
+body.no-motion [data-animate="path-draw"] line,
+body.no-motion [data-animate="path-draw"] polyline {
+  stroke-dashoffset: 0 !important;
+}
 @media (prefers-reduced-motion: reduce) {
+  [data-animate="path-draw"] path,
+  [data-animate="path-draw"] line,
+  [data-animate="path-draw"] polyline {
+    stroke-dashoffset: 0 !important;
+  }
   * {
     animation: none !important;
     transition: none !important;

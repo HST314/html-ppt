@@ -1,0 +1,251 @@
+/* ============================================================
+   toc-orbit-hub —— 中心枢纽 + 环形卫星节点目录（深色科技风）
+   TASK-032 新增：学习来源见 `skill reference learning/frontend-slides-main`
+   （STYLE_PRESETS.md「Neon Cyber」深色科技配色节奏 + 径向渐变/描边/虚线的
+   通用 CSS 技法，非照搬该 skill 的自由手写架构，只借鉴视觉技法）。
+
+   中心是一颗径向渐变的发光球体（hub），承载目录总标题；N 个卫星节点圆形
+   （承载编号 + 章节名 + 一句话释义）按 360°/N 精确均匀环绕在 hub 周围，
+   金/暖色调辐条虚线连接 hub 与各节点，外圈叠加一条穿过全部节点圆心的
+   虚线轨道环，视觉上暗示"沿同一条轨道环绕中心运行"。
+
+   节点像素坐标由 render_deck.py::compute_orbit_layout()/orbit_node_position()
+   在 Python 侧用 math.cos/sin 现场计算、以内联 style="left/top" 写入，本文件
+   只负责形状/配色/描边/发光这些与节点数量无关的静态样式——这是吸取
+   toc-arc-card.html/toc-curve-timeline.html「坐标写死在 CSS 选择器里，
+   N<8 时节点分布不均、留白缺口」教训后的通用 N 版实现（详见 SKILL.md
+   「目录页版式模板库」一节）。
+
+   配色纪律：中心球体渐变、卫星节点描边/编号色一律从当前主题
+   `--accent`/`--accent-2` token 用 `color-mix(in srgb, ...)` 派生，不写死
+   具体色值——这样在不同项目/不同主题下自动适配（同 toc-segment-strip.css
+   的既有纪律）。参考截图里的"金色/琥珀色"描边由 `--accent-2` 派生实现
+   （多数主题里 accent-2 承担"结构与引导"职能，语义贴近描边/编号这类
+   辅助强调件），不引入第三个硬编码强调色。
+
+   防溢出机制（三层，缺一不可，详见 SKILL.md 同节「防溢出机制」说明）：
+   ① Python 侧标题精简（shrink_toc_node_title/shrink_toc_hub_title，复用
+      shrink_toc_plaque_title 同一套算法）；② 本文件的
+      -webkit-line-clamp 截断兜底；③ 卫星节点圆形容器同一份 deck 内固定
+      统一直径（不因文字长短产生大小不一致，compute_orbit_layout() 统一
+      计算），配合 overflow:hidden，理论上不会触发，但双重/三重防护杜绝
+      "文字压边"（学习来源 frontend-slides 参考 skill 的目录页实测就出现
+      过这个问题，是本次实现明确要求避免的底线）。
+
+   两处实测踩坑修复记录（首版截图核对时发现，非理论推测）：
+   ① 内边距不能用百分比：`padding` 的百分比值——包括上下方向——一律按
+      「所在包含块的宽度」折算，不是按元素自身直径。.oh-hub/.oh-node 的
+      包含块是铺满整页的 .toc-orbit-hub（宽度 1920px），若在这两个类上写
+      `padding:15%`，实际会被解析成 1920px×15%≈288px 的巨大内边距，
+      配合 box-sizing:border-box「内边距撑爆时盒子会被迫增宽」的规则，
+      球体/节点被撑成又扁又宽的椭圆（实测截图复现）。改为球体/节点的
+      内边距由 render_deck.py 按各自实际直径（sat_d/hub_d）算出具体 px
+      值、通过内联 style="padding:...px" 下发，本文件只保留一个防御性
+      的固定 px 兜底值（供无 Python 覆盖的独立预览文件使用）。
+   ② 选择器必须加 `.toc-orbit-hub` 前缀：单类选择器（如 `.oh-hub-title`
+      落在 `<h1>`、`.oh-hub-eyebrow`/`.oh-node-desc` 落在 `<p>`）优先级
+      只有 0,1,0，会被 base.css 的 `.slide h1{font-size:var(--fs-cover)}`
+      与 `.slide p,.slide li{font-size:var(--fs-body)}`（优先级 0,1,1，
+      类+标签组合）压过——实测标题被撑到 ~73px 挤成竖排单字。写法与
+      toc-segment-strip.css 早前修复的同一类问题完全一致，这里同样统一
+      加前缀提升优先级到 0,2,0/0,2,1。
+   ============================================================ */
+.toc-orbit-hub {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--inverse, #fff);
+  /* TASK-034 fix：用户反馈"目录页与其他页面风格要一致啊，背景也一致就行了"——
+     此前这里（TASK-033 修过一版）仍然自己发明了一套独立的背景配方（accent
+     蓝混合 + 两层径向/线性渐变），跟 cover/section/closing 这类骨架页的背景
+     处理方式（project-art 背景图层 + deco.css 统一叠加规则，见该文件
+     .project-art-bg/.project-art-section 与 render_deck.py slide_html() 的
+     art_layer 注入逻辑）完全是两套独立配方，即使色相都对，视觉质感（有无
+     额外渐变蒙层）也会显得"贴上去的另一个设计"。改为彻底不再自建背景：
+     不设置 background-color/background-image，让 art_layer（toc 的
+     content_background 生成图）+ .slide 透出的全局 --bg 唯一负责背景，
+     和 section 角色完全同一套处理方式（deco.css 已把 .project-art-toc
+     的不透明度从内容页档位 .58 调到与 .project-art-section 一致的 .76，
+     视觉强度也对齐）。中心球体/卫星节点圆形自身都是不透明实体（见下方
+     .oh-hub/.oh-node），不依赖这层背景提供对比度，去掉它不影响可读性。 */
+}
+
+.oh-orbit-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.oh-orbit-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent-2, #9dff8f) 62%, transparent);
+  stroke-width: 2;
+  stroke-dasharray: 3 11;
+}
+.oh-spoke {
+  stroke: color-mix(in srgb, var(--accent-2, #9dff8f) 72%, transparent);
+  stroke-width: 2.4;
+  stroke-dasharray: 6 5;
+}
+.oh-spoke-dot {
+  fill: color-mix(in srgb, var(--accent-2, #9dff8f) 88%, white);
+}
+
+/* 中心枢纽外层大范围柔光晕——半径约为球体的 1.6 倍，低透明度径向渐变
+   模拟"星球大气层辉光"，不用 filter:blur（避免拖慢逐页截图/打印导出），
+   纯靠渐变半径拉长实现柔和衰减。 */
+.oh-hub-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent, #7ee8fa) 30%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 发光星球本体：左上角高光 + 中段过渡 + 边缘深色，配合 box-shadow 的
+   outset 外发光（呼应大气层）与 inset 双向阴影（左上受光凸起、右下
+   阴影内凹）营造球体立体质感。 */
+.oh-hub {
+  position: absolute;
+  z-index: 3;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 54px; /* 兜底值（对应默认 hub_d=380px）；正式渲染由内联 style 覆盖为精确值 */
+  /* TASK-033 fix：qa_render.py 规则A（标题级文字对比度 ≥6:1）实测发现
+     oh-hub-title 白字压在原高光区（0-34% 范围内是很亮的 92%白混色）实测只有
+     5.33:1，不达标——高光区离中心标题文字块太近、太亮。收窄高光半径
+     （0%→18%，从 34%提前到 18%就开始过渡）并把中段过渡色从"58%accent+
+     accent-2"（本身也偏亮）压暗到直接过渡到深色，让标题文字实际落点的背景
+     普遍更暗，不改变"左上角高光+球体立体感"的整体观感（外圈仍有
+     box-shadow 双向阴影/发光晕维持球体质感）。 */
+  background:
+    radial-gradient(circle at 32% 26%,
+      color-mix(in srgb, var(--accent, #7ee8fa) 92%, white) 0%,
+      color-mix(in srgb, var(--accent, #7ee8fa) 46%, #081019) 18%,
+      color-mix(in srgb, var(--accent-2, #9dff8f) 50%, #050b14) 60%,
+      color-mix(in srgb, var(--accent-2, #9dff8f) 28%, #020509) 100%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent, #7ee8fa) 35%, transparent),
+    0 30px 70px color-mix(in srgb, var(--accent, #7ee8fa) 28%, transparent),
+    inset -34px -34px 70px rgba(0, 0, 0, .5),
+    inset 22px 22px 46px color-mix(in srgb, var(--accent, #7ee8fa) 32%, transparent);
+}
+.toc-orbit-hub .oh-hub-eyebrow {
+  flex: 0 0 auto;
+  margin: 0 0 10px;
+  /* TASK-036 fix: 15px 换算 16:9 画布占比仅 1.39%，低于图注/注释最小可读性
+     底线 1.5%；上调到 17px（1.57%，达标）。 */
+  font-size: 17px;
+  letter-spacing: .32em;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--inverse, #fff) 88%, transparent);
+}
+/* TASK-033 fix：用户反馈"目录页文字与底色的色差要明显一点，字体要显著一点，
+   大一点"——中心枢纽标题/卫星节点编号-标题-释义字号全面上调（hub-title
+   24-33px → 30-40px、node-num 21px → 24px、node-title 18px → 21px、
+   node-desc 13px → 15px），文字颜色透明度同步小幅提升，在原本已经不低的
+   对比度基础上进一步拉开"文字跳出背景"的视觉观感。字号仍由 render_deck.py
+   注入的 data-autofit 机制兜底：真遇到超长标题导致溢出时 assets/runtime/
+   autofit.js 会自动降字号（最低降到本值的 70%），不会因为基准字号调大就
+   产生溢出风险。 */
+.toc-orbit-hub .oh-hub-title {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin: 0;
+  font-size: clamp(30px, 2.4vw, 40px);
+  font-weight: 800;
+  line-height: 1.3;
+  max-width: none;
+  color: var(--inverse, #fff);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.oh-hub-rule {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--inverse, #fff) 62%, transparent);
+}
+
+/* 卫星节点：深色实体圆形（同 ss-plaque 写死高不透明度深色，不依赖
+   --surface token——理由同 toc-segment-strip.css，任意主题/art_dna 组合下
+   都要是一块独立清晰可读的实体，不随主题弱化成半透明）+ 细描边（accent-2
+   派生），承载编号/标题/释义三行文字，flex 居中，overflow:hidden 兜底裁切。 */
+.oh-node {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  background: rgba(8, 10, 18, .93);
+  border: 1.5px solid color-mix(in srgb, var(--accent-2, #9dff8f) 52%, transparent);
+  box-shadow:
+    0 14px 30px rgba(4, 10, 26, .4),
+    inset 0 0 0 1px color-mix(in srgb, var(--accent-2, #9dff8f) 14%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px; /* 兜底值（对应默认 sat_d=250px）；正式渲染由内联 style 覆盖为精确值 */
+  overflow: hidden;
+}
+.toc-orbit-hub .oh-node-num {
+  flex: 0 0 auto;
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  /* TASK-033 fix: 原 86% accent-2 混色实测对比度 5.59:1，差一点没到规则A的
+     6:1 下限——`color-mix(in srgb, X N%, white)` 里 N 是 X（accent-2）自身的
+     占比，要更亮应该调低 N（加大 white 占比），此前误改成调高 N 反而更暗更
+     不达标（95% 时实测跌到 4.69:1）。改为 62% accent-2 + 38% white，按 WCAG
+     相对亮度公式对节点圆形深色实体底（rgba(8,10,18,.93)）预算约 8:1，留出
+     比 6:1 门槛更充足的余量（节点圆形底色本身是接近不透明的深色实体，
+     提亮编号色不会反过来对不齐承载面）。 */
+  color: color-mix(in srgb, var(--accent-2, #9dff8f) 62%, white);
+}
+.toc-orbit-hub .oh-node-title {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin: 0 0 6px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.26;
+  max-width: none;
+  color: #f4f6fb;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.toc-orbit-hub .oh-node-desc {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin: 0;
+  /* TASK-036 fix: 15px 换算 16:9 画布（1080px 高）占比仅 1.39%，低于用户
+     给出的图注/注释最小可读性底线 1.5%；上调到 17px（1.57%，达标）。 */
+  font-size: 17px;
+  line-height: 1.42;
+  color: rgba(233, 236, 245, .8);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
