@@ -8,7 +8,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageOps, PngImagePlugin
+from PIL import Image, ImageDraw, ImageFont, ImageOps, PngImagePlugin
 from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parent
@@ -29,6 +29,7 @@ VISUAL_LANGUAGE = {
     "composition": {"cover": "launch", "toc": "orbit-map", "section": "gate", "content": "panels", "closing": "trails"},
     "derived_components": {"background": ["orbit"], "container": ["satellite"], "flow": ["orbit"], "transition": ["rocket"]},
 }
+TEST_FONT = "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"
 
 
 def write_json(path, value):
@@ -86,7 +87,10 @@ def fixture(root):
         canvas = Image.new("RGB", (1200, 800), color)
         ImageDraw.Draw(canvas).text((80, 80), f"ASSET {index}", fill="white")
         canvas.save(path)
-        manifest_rows.append({"id": f"img-{index}", "file": path.name, "alt": f"素材 {index}"})
+        manifest_rows.append({
+            "id": f"img-{index}", "file": path.name, "alt": f"素材 {index}",
+            "audience_label": f"第{'一' if index == 1 else '二'}组完整观众测试素材工艺路线",
+        })
     manifest = image_dir / "manifest.json"
     write_json(manifest, {"version": "1.0", "images": manifest_rows})
     toc = slide(2, "toc", "四个判断节点", blocks=[], section=None)
@@ -95,7 +99,7 @@ def fixture(root):
     chapter_pages = [
         ("定位", slide(4, "two-column", "中心结论向四项证据展开", "center-hub", "hub-left", blocks=[{"type": "list", "items": ["结论一", "证据二", "证据三", "行动四"]}], section="定位")),
         ("结构", slide(6, "two-column", "三项能力形成交付闭环", "tri-loop", "loop-3", section="结构")),
-        ("证据", slide(8, "image-side", "左文右图保留完整证据", "text-image", "anchor-right", images=[{"id": "img-1"}], section="证据")),
+        ("证据", slide(8, "gallery", "两种素材路线保留完整证据", images=[{"id": "img-1"}, {"id": "img-2"}], blocks=[], section="证据")),
         ("落地", slide(10, "image-hero", "英雄主图承载核心视觉", "product-hero", None, images=[{"id": "img-2"}], section="落地")),
     ]
     for index, (title, content) in enumerate(chapter_pages, start=1):
@@ -285,6 +289,35 @@ def main():
         mismatch_result = json.loads(mismatch_qa.read_text(encoding="utf-8"))
         assert mismatch_result["checks"]["body_content_matches_title_claim"] is False
 
+        # Ninth synchronized attack: truncate every complete audience label to
+        # 12 characters, repaint the real gallery, and update PNG/report/JPEG/PDF.
+        # The source manifest stays authoritative, so both copy and real pixels
+        # must still be rejected after all renderer-controlled artifacts agree.
+        label_report = json.loads(report.read_text(encoding="utf-8"))
+        label_row = next(row for row in label_report["slides"] if row["role"] == "gallery")
+        with Image.open(label_row["png"]) as original:
+            label_audit = json.loads(original.info["image_pdf_audit"])
+            label_pixels = original.convert("RGB")
+        label_draw = ImageDraw.Draw(label_pixels)
+        for audit_label, report_label in zip(label_audit["gallery_labels"], label_row["gallery_labels"]):
+            truncated = audit_label["text"][:12]
+            bbox, origin, size = audit_label["bbox"], audit_label["text_origin"], audit_label["font_size"]
+            label_draw.rounded_rectangle(tuple(bbox), radius=14, fill="#071725")
+            label_draw.text(tuple(origin), truncated, font=ImageFont.truetype(TEST_FONT, size=size), fill="#FFFFFF")
+            audit_label["text"] = truncated
+            report_label["text"] = truncated
+        label_pdf = sync_mutated_page(label_report, label_row, label_pixels, label_audit, root, "gallery-labels-truncated-to-12")
+        label_report_path, label_qa = root / "gallery-labels-truncated-render.json", root / "gallery-labels-truncated-qa.json"
+        write_json(label_report_path, label_report)
+        run(QA, "--pdf", label_pdf, "--ir", plan, "--manifest", manifest,
+            "--render-report", label_report_path, "--output", label_qa, ok=False)
+        label_result = json.loads(label_qa.read_text(encoding="utf-8"))
+        assert label_result["checks"]["text_complete_and_within_capacity"] is False
+        assert label_result["checks"]["body_content_matches_title_claim"] is False
+        label_failures = "\n".join(label_result["failures"])
+        assert "图集标签不完整" in label_failures
+        assert "图集可见名称未完整绘制" in label_failures
+
         # A clean regeneration must still fail when a project original enters
         # through bg_image: originals are content evidence, never backgrounds.
         background_plan = json.loads(plan.read_text(encoding="utf-8"))
@@ -341,7 +374,7 @@ def main():
         unsupported_qa = root / "unsupported-qa.json"
         run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
         assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: fifteen checks + eight adversarial cases + regressions passed")
+    print("image-pdf tests: fifteen checks + nine adversarial cases + regressions passed")
     return 0
 
 

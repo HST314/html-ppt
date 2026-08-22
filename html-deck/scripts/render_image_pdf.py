@@ -37,6 +37,7 @@ VISUAL_ELEMENTS = []
 IMAGE_PLACEMENTS = []
 DERIVED_COMPONENTS = []
 WORD_ART_AUDIT = []
+GALLERY_LABEL_AUDIT = []
 FONT_CANDIDATES = [
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
@@ -86,6 +87,21 @@ def hex_rgb(value):
 def text_width(draw, text, typeface):
     box = draw.textbbox((0, 0), text, font=typeface)
     return box[2] - box[0]
+
+
+def gallery_label(item):
+    """Return the complete audience-facing label; internal IDs are never copy."""
+    return re.sub(r"\s+", " ", str(item.get("audience_label") or item.get("alt") or "")).strip()
+
+
+def fitted_single_line_font(draw, text, max_width, start=18, minimum=12):
+    """Fit a complete one-line label by type size, never by slicing its text."""
+    for size in range(start, minimum - 1, -1):
+        typeface = font(size, True)
+        if text_width(draw, text, typeface) <= max_width:
+            return typeface
+    TEXT_OVERFLOWS.append(f"图集标签无法完整显示：{text}")
+    return font(minimum, True)
 
 
 def wrap_text(draw, text, typeface, max_width, max_lines=None):
@@ -597,9 +613,17 @@ def render_gallery(slide, images, size, page_no, total):
         col, row = index % cols, index // cols
         x, y = x0 + col * (cell_w + gap), y0 + row * (cell_h + gap)
         derived_card(draw, (x, y, x + cell_w, y + cell_h), 18, "#E3D7BF", "#CFB990", 2)
-        badge = str(item.get("id") or index + 1)
-        rounded(draw, (x + 16, y + 12, x + 152, y + 47), 14, PALETTE["ink"])
-        draw.text((x + 30, y + 18), badge[:12], font=font(15, True), fill=PALETTE["white"])
+        label = gallery_label(item)
+        label_font = fitted_single_line_font(draw, label, cell_w - 60)
+        label_width = text_width(draw, label, label_font)
+        label_box = [x + 16, y + 10, x + 16 + label_width + 30, y + 48]
+        text_origin = [x + 31, y + 17]
+        rounded(draw, tuple(label_box), 14, PALETTE["ink"])
+        draw.text(tuple(text_origin), label, font=label_font, fill=PALETTE["white"])
+        GALLERY_LABEL_AUDIT.append({
+            "image_id": image_id(item), "text": label, "bbox": label_box,
+            "text_origin": text_origin, "font_size": label_font.size,
+        })
         # Reserve a separate header strip: labels and decorative motifs must
         # never cover the source-derived rendered_bbox used for intactness QA.
         place_project_image(page, item, (x + 10, y + 54, x + cell_w - 10, y + cell_h - 10), "gallery-evidence", PALETTE["ink"])
@@ -944,6 +968,7 @@ def main():
         IMAGE_PLACEMENTS.clear()
         DERIVED_COMPONENTS.clear()
         WORD_ART_AUDIT.clear()
+        GALLERY_LABEL_AUDIT.clear()
         images = resolve_slide_images(slide, index)
         used_ids.update(image_id(item) for item in images if image_id(item))
         page = render_slide(slide, images, (args.width, args.height), page_no, total)
@@ -968,6 +993,7 @@ def main():
             "image_placements": list(IMAGE_PLACEMENTS),
             "derived_components": list(DERIVED_COMPONENTS),
             "word_art": list(WORD_ART_AUDIT),
+            "gallery_labels": list(GALLERY_LABEL_AUDIT),
             "rendered_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(),
         }
         pnginfo = PngImagePlugin.PngInfo()
@@ -975,7 +1001,7 @@ def main():
         page.save(png_path, "PNG", optimize=True, pnginfo=pnginfo)
         page.save(jpg_path, "JPEG", quality=args.quality, optimize=True, progressive=True)
         jpegs.append(jpg_path)
-        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS), "word_art": list(WORD_ART_AUDIT), "visual_language_sha256": audit["visual_language_sha256"]})
+        slide_rows.append({"page": page_no, "role": effective_role(slide), "source_role": slide.get("role"), "layout_pattern": slide.get("layout_pattern"), "layout_variant": slide.get("layout_variant"), "title": slide.get("title"), "image_ids": [image_id(item) for item in images], "png": str(png_path), "jpg": str(jpg_path), "png_rgb_sha256": hashlib.sha256(page.tobytes()).hexdigest(), "jpg_sha256": hashlib.sha256(jpg_path.read_bytes()).hexdigest(), "text_overflows": list(TEXT_OVERFLOWS), "text_box_count": len(TEXT_BOX_AUDIT), "visible_containers": list(VISIBLE_CONTAINERS), "visual_elements": list(VISUAL_ELEMENTS), "used_motifs": list(USED_MOTIFS), "image_placements": list(IMAGE_PLACEMENTS), "derived_components": list(DERIVED_COMPONENTS), "word_art": list(WORD_ART_AUDIT), "gallery_labels": list(GALLERY_LABEL_AUDIT), "visual_language_sha256": audit["visual_language_sha256"]})
     build_pdf(jpegs, output, args.width, args.height)
     manifest_ids = set(index)
     missing_ids = sorted(manifest_ids - used_ids)

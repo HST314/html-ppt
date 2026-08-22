@@ -10,7 +10,7 @@
   "manifest_image_count": 5,
   "used_image_count": 5,
   "ir_sha256": "603504ce3e2ee533197fb1195cf80d092f8846862f17e771e4290b456f2d0426",
-  "manifest_sha256": "ac9184d447cbb3494beb588f8d9b97b7abd27a14589cb84eb46ce468085a8ead",
+  "manifest_sha256": "f07b62bde4f860586beffa57859ba776003f9a566837083f51cfb6ae48ccd22a",
   "theme": "tech-dark",
   "visual_semantics": {
     "keywords": [
@@ -268,6 +268,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -474,6 +475,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -593,6 +595,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -729,6 +732,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -911,6 +915,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -1030,6 +1035,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -1048,8 +1054,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-07.jpg",
-      "png_rgb_sha256": "f882b279081ff1a4a38a3f226d9616b76caa07c793cfb6024b0022ba2860c2b1",
-      "jpg_sha256": "7cacce863bcbb37ade240981abe4f3fe22a35cfa81dd535b58ebbac8f03ea9ef",
+      "png_rgb_sha256": "e74f62bc6f9f79946fd714dec7bfa9262b5a60a63b86c00e3f8de47d894ee45e",
+      "jpg_sha256": "0bb62fd91951656545ebe524bc42c3f288bf03fee0d95e4ca00167b5f5ed3d6e",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [],
@@ -1284,6 +1290,83 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [
+        {
+          "image_id": "cz8a-silver-tech",
+          "text": "银质极简科技拓扑印刷工艺路线",
+          "bbox": [
+            94,
+            236,
+            376,
+            274
+          ],
+          "text_origin": [
+            109,
+            243
+          ],
+          "font_size": 18
+        },
+        {
+          "image_id": "cz8a-gold-enamel",
+          "text": "金珐琅星空高浮雕纪念工艺路线",
+          "bbox": [
+            581,
+            236,
+            863,
+            274
+          ],
+          "text_origin": [
+            596,
+            243
+          ],
+          "font_size": 18
+        },
+        {
+          "image_id": "cz8a-dual-story",
+          "text": "双景叙事纪念银币浮雕工艺路线",
+          "bbox": [
+            1068,
+            236,
+            1350,
+            274
+          ],
+          "text_origin": [
+            1083,
+            243
+          ],
+          "font_size": 18
+        },
+        {
+          "image_id": "cz8a-orbit-array",
+          "text": "香槟金轨道阵列拉丝电镀工艺路线",
+          "bbox": [
+            94,
+            546,
+            394,
+            584
+          ],
+          "text_origin": [
+            109,
+            553
+          ],
+          "font_size": 18
+        },
+        {
+          "image_id": "cz8a-virtual-real",
+          "text": "虚实融合文化叠影篆刻工艺路线",
+          "bbox": [
+            581,
+            546,
+            863,
+            584
+          ],
+          "text_origin": [
+            596,
+            553
+          ],
+          "font_size": 18
+        }
+      ],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -1437,6 +1520,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -1562,6 +1646,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -1576,8 +1661,8 @@
       ],
       "png": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.png",
       "jpg": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/image-slides/slide-10.jpg",
-      "png_rgb_sha256": "44b83d0c26223eb3aa96900b112476e5daaf581f779c7bb2db2e5109c8d053b3",
-      "jpg_sha256": "f4a2e811eb830b9e75d2494c78063f635fec39f5b72a083b4aaef7cc27ac7e85",
+      "png_rgb_sha256": "4cfe1d2011f3f6de0e5fe8b0b5f5fb3e760daf2f1c6b48ff01739bb08bf48b1a",
+      "jpg_sha256": "8f74d21becb94dd0df8abc54df6c24dcf91fa9d371e939a2bfacd0e736cb68c7",
       "text_overflows": [],
       "text_box_count": 1,
       "visible_containers": [
@@ -1723,6 +1808,23 @@
             148
           ],
           "ornament_bboxes": []
+        }
+      ],
+      "gallery_labels": [
+        {
+          "image_id": "cz8a-orbit-array",
+          "text": "香槟金轨道阵列拉丝电镀工艺路线",
+          "bbox": [
+            94,
+            236,
+            394,
+            274
+          ],
+          "text_origin": [
+            109,
+            243
+          ],
+          "font_size": 18
         }
       ],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
@@ -1930,6 +2032,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -2049,6 +2152,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -2185,6 +2289,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -2360,6 +2465,7 @@
           "ornament_bboxes": []
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     },
     {
@@ -2469,6 +2575,7 @@
           ]
         }
       ],
+      "gallery_labels": [],
       "visual_language_sha256": "abbab8dafe0fe026c401024b72452dac81fed5ab0f49a87fa7498d8c463565ff"
     }
   ]

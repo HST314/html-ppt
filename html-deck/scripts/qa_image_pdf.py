@@ -12,7 +12,7 @@ from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps, ImageStat
+    from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageOps, ImageStat
     from pypdf import PdfReader
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -52,6 +52,12 @@ CARD_FILL_COLORS = (
     (221, 232, 238), (244, 247, 248),                    # business-dark
     (241, 223, 197), (255, 248, 237),                    # warm-human
     (243, 232, 210), (250, 246, 236), (255, 253, 247),  # default
+)
+QA_FONT_CANDIDATES = (
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 )
 
 
@@ -301,6 +307,72 @@ def title_body_correspondence_failures(slide, page):
     else:
         return []
     return [f"第 {page} 页标题承诺 {expected}{match.group(2)}，正文仅提供 {actual} 个{noun}"] if actual != expected else []
+
+
+def expected_gallery_label(item):
+    return re.sub(r"\s+", " ", str(item.get("audience_label") or item.get("alt") or "")).strip()
+
+
+def qa_font(size):
+    for candidate in QA_FONT_CANDIDATES:
+        if Path(candidate).exists():
+            return ImageFont.truetype(candidate, size=size)
+    raise RuntimeError("未找到 QA 可用的中文字体")
+
+
+def gallery_label_pixel_visible(image, row, expected):
+    """Render the source-owned full name independently and verify its real ink."""
+    bbox, origin = row.get("bbox") or [], row.get("text_origin") or []
+    size = int(row.get("font_size") or 0)
+    if len(bbox) != 4 or len(origin) != 2 or not 12 <= size <= 22:
+        return False
+    x1, y1, x2, y2 = map(int, bbox)
+    if x1 < 0 or y1 < 0 or x2 > image.width or y2 > image.height or x2 <= x1 or y2 <= y1:
+        return False
+    mask = Image.new("L", image.size, 0)
+    ImageDraw.Draw(mask).text(tuple(map(int, origin)), expected, font=qa_font(size), fill=255)
+    mask_crop = mask.crop((x1, y1, x2, y2))
+    actual = image.convert("RGB").crop((x1, y1, x2, y2))
+    points = [(x, y) for y in range(mask_crop.height) for x in range(mask_crop.width)
+              if mask_crop.getpixel((x, y)) >= 80]
+    if not points:
+        return False
+    lit = lambda pixel: sum(pixel) / 3 >= 168 and max(pixel) - min(pixel) <= 75
+    overall = sum(1 for point in points if lit(actual.getpixel(point))) / len(points)
+    right_edge = max(x for x, _ in points)
+    tail = [point for point in points if point[0] >= right_edge - max(10, (x2 - x1) // 5)]
+    tail_ratio = sum(1 for point in tail if lit(actual.getpixel(point))) / max(1, len(tail))
+    # CJK anti-aliasing leaves roughly 18–20% mid-tone edge pixels even when
+    # renderer and QA use the same font. Missing tail glyphs remain near zero.
+    return overall >= 0.76 and tail_ratio >= 0.76
+
+
+def gallery_label_failures(slide, image, audit, report_row, manifest_index, page):
+    if effective_role(slide) != "gallery":
+        return []
+    failures = []
+    expected = []
+    for image_id_value in slide_image_ids(slide)[:6]:
+        item = manifest_index.get(image_id_value) or {}
+        label = expected_gallery_label(item)
+        expected.append((image_id_value, label))
+        if not label or label == image_id_value or re.fullmatch(r"[a-z0-9_-]+", label, re.I):
+            failures.append(f"第 {page} 页图集标签不完整：{image_id_value} 缺少观众可读名称")
+    declared = audit.get("gallery_labels") or []
+    if declared != (report_row.get("gallery_labels") or []):
+        failures.append(f"第 {page} 页图集标签在 PNG 与渲染报告间不一致")
+    if [row.get("image_id") for row in declared] != [value[0] for value in expected]:
+        failures.append(f"第 {page} 页图集标签不完整：未与项目图片逐项对应")
+    for index, (image_id_value, label) in enumerate(expected):
+        if index >= len(declared):
+            failures.append(f"第 {page} 页图集可见名称缺失：{label or image_id_value}")
+            continue
+        row = declared[index]
+        if row.get("text") != label:
+            failures.append(f"第 {page} 页图集标签不完整：{image_id_value} 应显示“{label}”")
+        if not gallery_label_pixel_visible(image, row, label):
+            failures.append(f"第 {page} 页图集可见名称未完整绘制：{label or image_id_value}")
+    return failures
 
 
 def new_visual_rule_failures(slide, image, audit, report_row, page):
@@ -735,6 +807,7 @@ def main():
             # Geometry and pixels are checked after the legacy gates so these
             # four user rules remain independent final-QA decisions.
             failures.extend(new_visual_rule_failures(slide, image, audit, rows[index - 1], index))
+            failures.extend(gallery_label_failures(slide, image, audit, rows[index - 1], manifest_index, index))
             if index <= len(pdf.pages):
                 binding_failure = pdf_page_binding_failure(pdf.pages[index - 1], image, rows[index - 1], index)
                 if binding_failure:
@@ -753,7 +826,7 @@ def main():
         "pdf_matches_ir": len(pdf.pages) == len(slides) and not any("PDF 第" in value for value in failures),
         "manifest_coverage_recomputed": not unknown and not missing and not duplicates,
         "png_identity_and_provenance": not any("PNG" in value or "指纹" in value for value in failures),
-        "text_complete_and_within_capacity": not any("文本" in value or "标题超过" in value or "截断" in value for value in failures),
+        "text_complete_and_within_capacity": not any("文本" in value or "标题超过" in value or "截断" in value or "图集标签" in value for value in failures),
         "blueprint_and_roles_supported": not any("blueprint" in value or "role/pattern" in value or "蓝图/role" in value for value in failures),
         "toc_sections_complete": not structure_failures,
         "section_palette_consistent": not palette_failures,
@@ -764,10 +837,10 @@ def main():
         "icons_and_illustrations_do_not_obscure_text": not any("图标插图遮挡文字" in value for value in failures),
         "busy_narrative_pages_use_restrained_backgrounds": not any("背景未删减" in value for value in failures),
         "word_art_preserves_text_primacy": not any("艺术字" in value and ("重叠" in value or "主体" in value or "几何" in value) for value in failures),
-        "body_content_matches_title_claim": not any("标题承诺" in value for value in failures),
+        "body_content_matches_title_claim": not any("标题承诺" in value or "图集可见名称" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.6", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.7", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

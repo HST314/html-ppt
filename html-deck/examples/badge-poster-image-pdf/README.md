@@ -1,6 +1,6 @@
 # 徽章海报图片型演示复验项目
 
-这是 `image-pdf` 路线的可复跑真实项目。`images/new-pack/` 保存 5 张项目原图，`descriptions/` 保存对应图片 MD 描述；`visual_language.json` 是从 MD 编译出的唯一视觉语言。`outline.json` 经绑定脚本整体替换旧元素语义后，生成 15 页 PDF、逐页图片和 QA v2.6 报告。
+这是 `image-pdf` 路线的可复跑真实项目。`images/new-pack/` 保存 5 张项目原图，`descriptions/` 保存对应图片 MD 描述；`visual_language.json` 是从 MD 编译出的唯一视觉语言。`outline.json` 经绑定脚本整体替换旧元素语义后，生成 15 页 PDF、逐页图片和 QA v2.7 报告；第 7 页五张作品使用 manifest `audience_label` 的完整观众向工艺路线名称，并由渲染器自适应标签宽度与字号。
 
 从 `html-deck/` 执行：
 
@@ -31,4 +31,4 @@ python3 scripts/qa_image_pdf.py \
   --output examples/badge-poster-image-pdf/state/qa_image_pdf.json
 ```
 
-完整回归（含 MD 语言契约、QA v2.6、既有四组同步攻击与新增四项终审门禁）：`python3 scripts/test_image_pdf.py`。
+完整回归（含 MD 语言契约、QA v2.7、15 项检查、既有 8 组攻击与新增“同步截为 12 字符”对抗）：`python3 scripts/test_image_pdf.py`。
