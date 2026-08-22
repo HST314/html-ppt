@@ -4,14 +4,15 @@
 import argparse
 import hashlib
 import json
+import math
 import re
 import sys
-from collections import Counter
+from collections import Counter, deque
 from pathlib import Path
 
 DEPENDENCY_ERROR = None
 try:
-    from PIL import Image, ImageChops, ImageStat
+    from PIL import Image, ImageChops, ImageDraw, ImageStat
     from pypdf import PdfReader
 except ImportError as exc:  # pragma: no cover
     DEPENDENCY_ERROR = exc
@@ -33,6 +34,31 @@ ROLE_CAPACITY = {
     "compare": (9, 600), "timeline": (6, 500), "table": (42, 900), "kpi": (6, 420),
     "quote": (4, 380), "bullets": (8, 620), "two-column": (9, 650),
 }
+
+# QA-owned visual contracts.  These are deliberately not imported from the
+# renderer: changing a renderer declaration or crop hash must not change what
+# QA considers a badge, satellite, orbit, and so on.
+SEMANTIC_ALIASES = {
+    "badge": "badge", "medal": "badge", "徽章": "badge", "勋章": "badge",
+    "ribbon": "ribbon", "绶带": "ribbon",
+    "star": "star", "starburst": "star", "星芒": "star", "星": "star",
+    "orbit": "orbit", "space": "orbit", "轨道": "orbit", "太空": "orbit",
+    "satellite": "satellite", "卫星": "satellite",
+    "rocket": "rocket", "火箭": "rocket",
+    "leaf": "leaf", "叶片": "leaf", "生态": "leaf",
+}
+CARD_FILL_COLORS = (
+    (217, 236, 242), (239, 248, 250), (255, 255, 255),  # tech-dark
+    (221, 232, 238), (244, 247, 248),                    # business-dark
+    (241, 223, 197), (255, 248, 237),                    # warm-human
+    (243, 232, 210), (250, 246, 236), (255, 253, 247),  # default
+)
+
+
+def image_pixels(image):
+    """Use Pillow's current API while retaining compatibility with older releases."""
+    getter = getattr(image, "get_flattened_data", None)
+    return getter() if getter else image.getdata()
 
 
 def parse_args():
@@ -136,7 +162,7 @@ def story_structure_failures(slides):
 def section_palette_failure(image, page):
     """Reject visually abrupt red-dominant chapter transitions."""
     sample = image.convert("RGB").resize((160, 90))
-    pixels = list(sample.getdata())
+    pixels = list(image_pixels(sample))
     red_dominant = sum(1 for red, green, blue in pixels if red > 120 and red > green * 1.18 and red > blue * 1.18)
     ratio = red_dominant / max(1, len(pixels))
     return f"第 {page} 页章节转场红色主导像素占比 {ratio:.1%}，未延续蓝白视觉体系" if ratio > 0.18 else None
@@ -153,7 +179,7 @@ def pixel_content_extent(image, bbox, padding):
     crop = image.convert("RGB").crop((x1 + pad, y1 + pad, x2 - pad, y2 - pad))
     if crop.width <= 0 or crop.height <= 0:
         return 0.0, 0.0
-    colors = Counter(crop.resize((max(1, crop.width // 4), max(1, crop.height // 4))).getdata())
+    colors = Counter(image_pixels(crop.resize((max(1, crop.width // 4), max(1, crop.height // 4)))))
     background = colors.most_common(1)[0][0]
     points = []
     for y in range(crop.height):
@@ -167,6 +193,161 @@ def pixel_content_extent(image, bbox, padding):
     return (max(xs) - min(xs) + 1) / crop.width, (max(ys) - min(ys) + 1) / crop.height
 
 
+def _close_color(pixel, target, tolerance=14):
+    return max(abs(pixel[channel] - target[channel]) for channel in range(3)) <= tolerance
+
+
+def discover_visible_containers(image):
+    """Find flat, card-sized page regions without consulting renderer output."""
+    scale = 4
+    sample = image.convert("RGB").resize((image.width // scale, image.height // scale))
+    width, height = sample.size
+    pixels = sample.load()
+    mask = bytearray(width * height)
+    for y in range(height):
+        for x in range(width):
+            if any(_close_color(pixels[x, y], color) for color in CARD_FILL_COLORS):
+                mask[y * width + x] = 1
+    visited = bytearray(width * height)
+    candidates = []
+    for start_y in range(height):
+        for start_x in range(width):
+            start = start_y * width + start_x
+            if not mask[start] or visited[start]:
+                continue
+            queue = deque([(start_x, start_y)])
+            visited[start] = 1
+            count = 0
+            min_x = max_x = start_x
+            min_y = max_y = start_y
+            while queue:
+                x, y = queue.popleft()
+                count += 1
+                min_x, max_x = min(min_x, x), max(max_x, x)
+                min_y, max_y = min(min_y, y), max(max_y, y)
+                for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                    if 0 <= nx < width and 0 <= ny < height:
+                        position = ny * width + nx
+                        if mask[position] and not visited[position]:
+                            visited[position] = 1
+                            queue.append((nx, ny))
+            box_width, box_height = max_x - min_x + 1, max_y - min_y + 1
+            rectangularity = count / max(1, box_width * box_height)
+            # Rounded cards retain >70% of their flat fill after text/lines are
+            # excluded. Full-page backgrounds and tiny labels are not cards.
+            if (box_width * scale >= 220 and box_height * scale >= 68
+                    and box_width * box_height * scale * scale >= 18000
+                    and rectangularity >= 0.68
+                    and not (box_width > width * 0.91 and box_height > height * 0.91)):
+                candidates.append({
+                    "bbox": [min_x * scale, min_y * scale,
+                             min(image.width, (max_x + 1) * scale),
+                             min(image.height, (max_y + 1) * scale)],
+                    "rectangularity": round(rectangularity, 3),
+                })
+    return candidates
+
+
+def box_iou(first, second):
+    ax1, ay1, ax2, ay2 = first
+    bx1, by1, bx2, by2 = second
+    intersection = max(0, min(ax2, bx2) - max(ax1, bx1)) * max(0, min(ay2, by2) - max(ay1, by1))
+    union = max(1, (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - intersection)
+    return intersection / union
+
+
+def container_discovery_failures(image, containers, page):
+    discovered = discover_visible_containers(image)
+    declared = [row.get("bbox") or [] for row in containers if len(row.get("bbox") or []) == 4]
+    failures = []
+    for candidate in discovered:
+        if not any(box_iou(candidate["bbox"], box) >= 0.48 for box in declared):
+            failures.append(f"第 {page} 页像素发现漏报可见卡片：{candidate['bbox']}")
+    return failures
+
+
+def _template_mask(size, semantic_id):
+    """Build a QA-owned shape template for an approved semantic family."""
+    width, height = size
+    mask = Image.new("1", size, 0)
+    draw = ImageDraw.Draw(mask)
+    cx, cy = width // 2, height // 2
+    sx, sy = width / 116.0, height / 110.0
+    family = SEMANTIC_ALIASES.get(str(semantic_id))
+    def box(left, top, right, bottom):
+        return (int(cx + left * sx), int(cy + top * sy), int(cx + right * sx), int(cy + bottom * sy))
+    line = max(2, int(round(5 * min(sx, sy))))
+    if family == "badge":
+        draw.polygon(((cx - int(20*sx), cy - int(35*sy)), (cx, cy + int(5*sy)), (cx + int(20*sx), cy - int(35*sy))), fill=1)
+        draw.ellipse(box(-29, -10, 29, 48), outline=1, width=line)
+        draw.ellipse(box(-12, 7, 12, 31), fill=1)
+    elif family == "ribbon":
+        draw.polygon(((cx-int(42*sx),cy-int(18*sy)),(cx+int(36*sx),cy-int(18*sy)),(cx+int(18*sx),cy),(cx+int(36*sx),cy+int(18*sy)),(cx-int(42*sx),cy+int(18*sy))), fill=1)
+    elif family == "star":
+        points = []
+        for index in range(16):
+            radius = 34 if index % 2 == 0 else 14
+            angle = math.pi * index / 8 - math.pi / 2
+            points.append((cx + radius * sx * math.cos(angle), cy + radius * sy * math.sin(angle)))
+        draw.polygon(points, fill=1)
+    elif family == "orbit":
+        draw.ellipse(box(-48, -20, 48, 20), outline=1, width=line)
+        draw.ellipse(box(-7, -7, 7, 7), fill=1)
+        draw.ellipse(box(34, -18, 46, -6), fill=1)
+    elif family == "satellite":
+        draw.rectangle(box(-13, -13, 13, 13), fill=1)
+        draw.rectangle(box(-54, -10, -19, 10), outline=1, width=line)
+        draw.rectangle(box(19, -10, 54, 10), outline=1, width=line)
+        draw.line((cx-int(19*sx), cy, cx+int(19*sx), cy), fill=1, width=line)
+    elif family == "rocket":
+        draw.polygon(((cx,cy-int(48*sy)),(cx+int(20*sx),cy+int(14*sy)),(cx,cy+int(32*sy)),(cx-int(20*sx),cy+int(14*sy))), fill=1)
+        draw.polygon(((cx-int(10*sx),cy+int(28*sy)),(cx,cy+int(50*sy)),(cx+int(10*sx),cy+int(28*sy))), fill=1)
+    elif family == "leaf":
+        draw.ellipse(box(-38, -28, 20, 30), outline=1, width=line)
+        draw.line((cx-int(22*sx),cy+int(22*sy),cx+int(30*sx),cy-int(28*sy)), fill=1, width=line)
+    return mask
+
+
+def semantic_template_score(crop, semantic_id):
+    """Compare actual pixels with QA's template, independent of claimed hashes."""
+    rgb = crop.convert("RGB")
+    template = _template_mask(rgb.size, semantic_id)
+    if not template.getbbox():
+        return 0.0
+    border = []
+    for x in range(rgb.width):
+        border.extend((rgb.getpixel((x, 0)), rgb.getpixel((x, rgb.height - 1))))
+    for y in range(rgb.height):
+        border.extend((rgb.getpixel((0, y)), rgb.getpixel((rgb.width - 1, y))))
+    background = tuple(sorted(pixel[channel] for pixel in border)[len(border)//2] for channel in range(3))
+    salient = Image.new("1", rgb.size, 0)
+    salient_pixels = salient.load()
+    for y in range(rgb.height):
+        for x in range(rgb.width):
+            pixel = rgb.getpixel((x, y))
+            if sum(abs(pixel[channel] - background[channel]) for channel in range(3)) >= 42:
+                salient_pixels[x, y] = 1
+    template_values, salient_values = list(image_pixels(template)), list(image_pixels(salient))
+    intersection = sum(1 for a, b in zip(template_values, salient_values) if a and b)
+    expected_count = sum(bool(value) for value in template_values)
+    salient_count = sum(bool(value) for value in salient_values)
+    recall = intersection / max(1, expected_count)
+    precision = intersection / max(1, salient_count)
+    return 2 * precision * recall / max(1e-9, precision + recall)
+
+
+def semantic_color_feature_failure(crop, semantic_id, page):
+    """Reject strong features outside the QA-owned semantic family profile."""
+    family = SEMANTIC_ALIASES.get(str(semantic_id))
+    pixels = list(image_pixels(crop.convert("RGB").resize((58, 55))))
+    green = sum(1 for red, green, blue in pixels
+                if green > 75 and green > red * 1.28 and green > blue * 1.40)
+    green_ratio = green / max(1, len(pixels))
+    if family != "leaf" and green_ratio > 0.055:
+        return f"第 {page} 页可见元素与 QA 独立 {semantic_id} 允许特征不匹配（叶片绿色 {green_ratio:.1%}）"
+    return None
+
+
 def visible_design_failures(image, audit, report_row, page, motifs):
     failures = []
     containers = audit.get("visible_containers") or []
@@ -175,6 +356,8 @@ def visible_design_failures(image, audit, report_row, page, motifs):
     required = audit.get("role") in {"compare", "timeline", "kpi"}
     if required and not containers:
         failures.append(f"第 {page} 页缺少真实可见容器清单")
+    if required:
+        failures.extend(container_discovery_failures(image, containers, page))
     for container in containers:
         bbox = container.get("bbox") or []
         if len(bbox) != 4 or bbox[2] <= bbox[0] or bbox[3] <= bbox[1]:
@@ -196,6 +379,13 @@ def visible_design_failures(image, audit, report_row, page, motifs):
         actual = hashlib.sha256(image.convert("RGB").crop(tuple(bbox)).tobytes()).hexdigest()
         if actual != element.get("pixel_sha256"):
             failures.append(f"第 {page} 页可见元素像素与元素清单不一致")
+        crop = image.convert("RGB").crop(tuple(bbox))
+        score = semantic_template_score(crop, semantic_id)
+        if score < 0.24:
+            failures.append(f"第 {page} 页可见元素与 QA 独立 {semantic_id} 模板不匹配（特征分 {score:.2f}）")
+        color_failure = semantic_color_feature_failure(crop, semantic_id, page)
+        if color_failure:
+            failures.append(color_failure)
         used.append(semantic_id)
     if used != (audit.get("used_motifs") or []):
         failures.append(f"第 {page} 页实际元素清单与设计母题声明不一致")
@@ -376,11 +566,11 @@ def main():
         "blueprint_and_roles_supported": not any("blueprint" in value or "role/pattern" in value or "蓝图/role" in value for value in failures),
         "toc_sections_complete": not structure_failures,
         "section_palette_consistent": not palette_failures,
-        "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value or "可见容器" in value or "文字占用" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
+        "text_boxes_fit_content": not any("文本框" in value or "紧致文本框" in value or "可见容器" in value or "漏报可见卡片" in value or "文字占用" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
         "visual_elements_semantically_grounded": not any("主题语义" in value or "设计母题" in value or "装饰元素" in value or "visual_semantics" in value or "元素清单" in value or "可见元素" in value or "真实像素" in value or "像素与逐页 PNG" in value for value in failures),
     }
     qa = {
-        "schema": "ImagePdfQA", "version": "2.2", "route": "image-pdf",
+        "schema": "ImagePdfQA", "version": "2.3", "route": "image-pdf",
         "status": "pass" if not failures else "fail", "pdf": str(Path(args.pdf).resolve()),
         "ir_sha256": ir_hash, "manifest_sha256": manifest_hash, "page_count": len(pdf.pages),
         "manifest_image_count": len(manifest_set), "ir_used_image_count": len(set(ir_refs)),

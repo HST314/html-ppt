@@ -2,12 +2,14 @@
 """End-to-end positive and adversarial tests for the image-PDF route."""
 
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, PngImagePlugin
+from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parent
 RENDER = ROOT / "render_image_pdf.py"
@@ -30,6 +32,28 @@ def run(*args, ok=True):
     if not ok and result.returncode == 0:
         raise AssertionError("expected failure: " + " ".join(map(str, args)))
     return result
+
+
+def sync_mutated_page(report, row, image, audit, root, stem):
+    """Update every renderer-controlled artifact, as a hostile renderer could."""
+    png = root / f"{stem}.png"
+    jpg = root / f"{stem}.jpg"
+    rgb_hash = hashlib.sha256(image.convert("RGB").tobytes()).hexdigest()
+    audit["rendered_rgb_sha256"] = rgb_hash
+    info = PngImagePlugin.PngInfo()
+    info.add_text("image_pdf_audit", json.dumps(audit, ensure_ascii=False, sort_keys=True))
+    image.save(png, "PNG", optimize=True, pnginfo=info)
+    image.save(jpg, "JPEG", quality=94, optimize=True, progressive=True)
+    row["png"], row["jpg"] = str(png), str(jpg)
+    row["png_rgb_sha256"] = rgb_hash
+    row["jpg_sha256"] = hashlib.sha256(jpg.read_bytes()).hexdigest()
+    pdf = root / f"{stem}.pdf"
+    document = canvas.Canvas(str(pdf), pagesize=(960, 540), pageCompression=1)
+    for current in report["slides"]:
+        document.drawImage(current["jpg"], 0, 0, width=960, height=540, preserveAspectRatio=False)
+        document.showPage()
+    document.save()
+    return pdf
 
 
 def slide(page, role, title, pattern=None, variant=None, images=None, blocks=None, section="复验矩阵"):
@@ -75,7 +99,7 @@ def fixture(root):
     slides.insert(landing_end, slide(11, "kpi", "三项数字绑定交付", "big-number", "cards", blocks=[{"type": "list", "items": ["2 张素材", "14 页演示", "100% 覆盖"]}], section="落地"))
     slides.append(slide(11, "closing", "整改证据链已经闭环", blocks=[], section=None))
     plan = root / "outline.json"
-    write_json(plan, {"schema": "SlidesPlan", "version": "2.1", "theme_recommendation": "tech-dark", "visual_semantics": {"keywords": ["卫星", "航天"], "motifs": ["satellite", "orbit"], "evidence": {"satellite": "卫星", "orbit": "航天"}}, "slides": slides})
+    write_json(plan, {"schema": "SlidesPlan", "version": "2.1", "theme_recommendation": "tech-dark", "visual_semantics": {"keywords": ["卫星", "航天", "徽章"], "motifs": ["badge", "orbit"], "evidence": {"badge": "徽章", "orbit": "航天"}}, "slides": slides})
     return plan, manifest
 
 
@@ -103,7 +127,6 @@ def main():
         with Image.open(section_row["png"]) as original:
             audit = original.info.get("image_pdf_audit")
         red_image = Image.new("RGB", (1600, 900), (196, 55, 50))
-        from PIL import PngImagePlugin
         pnginfo = PngImagePlugin.PngInfo()
         pnginfo.add_text("image_pdf_audit", audit)
         red_image.save(red_path, pnginfo=pnginfo)
@@ -140,52 +163,46 @@ def main():
 
         loose_report = json.loads(report.read_text(encoding="utf-8"))
         loose_row = next(row for row in loose_report["slides"] if row["role"] == "compare")
-        loose_path = root / "loose-text-box.png"
         with Image.open(loose_row["png"]) as original:
-            loose_audit = original.info["image_pdf_audit"]
+            loose_audit = json.loads(original.info["image_pdf_audit"])
             loose_pixels = original.convert("RGB")
-        # A real visual mutation: cover a legitimate content card with a much
-        # larger empty card while leaving both audit payloads untouched.
+        # Hostile-renderer case: add a real empty card but omit it from
+        # visible_containers, then consistently update PNG/report/JPEG/PDF.
         loose_draw = ImageDraw.Draw(loose_pixels)
-        x1, y1, x2, y2 = loose_row["visible_containers"][0]["bbox"]
-        loose_draw.rounded_rectangle((x1, y1, x2, min(850, y2 + 330)), radius=24, fill="#D9ECF2", outline="#287E91", width=3)
-        from PIL import PngImagePlugin
-        loose_info = PngImagePlugin.PngInfo()
-        loose_info.add_text("image_pdf_audit", loose_audit)
-        loose_pixels.save(loose_path, pnginfo=loose_info)
-        loose_row["png"] = str(loose_path)
+        loose_draw.rounded_rectangle((390, 650, 1210, 835), radius=24, fill="#D9ECF2", outline="#287E91", width=3)
+        loose_pdf = sync_mutated_page(loose_report, loose_row, loose_pixels, loose_audit, root, "unreported-empty-card")
         loose_report_path = root / "loose-text-render.json"
         write_json(loose_report_path, loose_report)
         loose_qa = root / "loose-text-qa.json"
-        run(QA, "--pdf", pdf, "--ir", plan, "--manifest", manifest, "--render-report", loose_report_path, "--output", loose_qa, ok=False)
+        run(QA, "--pdf", loose_pdf, "--ir", plan, "--manifest", manifest, "--render-report", loose_report_path, "--output", loose_qa, ok=False)
         loose_result = json.loads(loose_qa.read_text(encoding="utf-8"))
         assert loose_result["checks"]["text_boxes_fit_content"] is False
-        assert "文字占用过低" in "\n".join(loose_result["failures"])
+        assert "像素发现漏报可见卡片" in "\n".join(loose_result["failures"])
 
         unrelated_report = json.loads(report.read_text(encoding="utf-8"))
         unrelated_row = unrelated_report["slides"][0]
-        unrelated_path = root / "unrelated-decoration.png"
         with Image.open(unrelated_row["png"]) as original:
-            unrelated_audit = original.info["image_pdf_audit"]
+            unrelated_audit = json.loads(original.info["image_pdf_audit"])
             unrelated_pixels = original.convert("RGB")
-        # A real pixel mutation: replace an approved motif crop with an obvious
-        # green leaf. The semantic element list and audit remain unchanged.
+        # Hostile-renderer case: paint a leaf but continue to claim badge, then
+        # consistently update its crop hash, PNG/report/JPEG/PDF.
         leaf_box = unrelated_row["visual_elements"][0]["bbox"]
         lx1, ly1, lx2, ly2 = leaf_box
         leaf_draw = ImageDraw.Draw(unrelated_pixels)
+        leaf_draw.rectangle(tuple(leaf_box), fill=unrelated_pixels.getpixel((lx1, ly1)))
         leaf_draw.ellipse((lx1 + 8, ly1 + 8, lx2 - 12, ly2 - 10), fill="#36A852", outline="#0E6F32", width=7)
         leaf_draw.line((lx1 + 22, ly2 - 18, lx2 - 18, ly1 + 18), fill="#F3F7D3", width=6)
-        unrelated_info = PngImagePlugin.PngInfo()
-        unrelated_info.add_text("image_pdf_audit", unrelated_audit)
-        unrelated_pixels.save(unrelated_path, pnginfo=unrelated_info)
-        unrelated_row["png"] = str(unrelated_path)
+        crop_hash = hashlib.sha256(unrelated_pixels.crop(tuple(leaf_box)).tobytes()).hexdigest()
+        unrelated_audit["visual_elements"][0]["pixel_sha256"] = crop_hash
+        unrelated_row["visual_elements"][0]["pixel_sha256"] = crop_hash
+        unrelated_pdf = sync_mutated_page(unrelated_report, unrelated_row, unrelated_pixels, unrelated_audit, root, "leaf-disguised-as-badge")
         unrelated_report_path = root / "unrelated-render.json"
         write_json(unrelated_report_path, unrelated_report)
         unrelated_qa = root / "unrelated-qa.json"
-        run(QA, "--pdf", pdf, "--ir", plan, "--manifest", manifest, "--render-report", unrelated_report_path, "--output", unrelated_qa, ok=False)
+        run(QA, "--pdf", unrelated_pdf, "--ir", plan, "--manifest", manifest, "--render-report", unrelated_report_path, "--output", unrelated_qa, ok=False)
         unrelated_result = json.loads(unrelated_qa.read_text(encoding="utf-8"))
         assert unrelated_result["checks"]["visual_elements_semantically_grounded"] is False
-        assert "可见元素像素与元素清单不一致" in "\n".join(unrelated_result["failures"])
+        assert "QA 独立 badge 允许特征不匹配" in "\n".join(unrelated_result["failures"])
 
         unsupported_plan = json.loads(plan.read_text(encoding="utf-8"))
         unsupported_plan["visual_semantics"] = {"keywords": ["卫星", "航天"], "motifs": ["leaf"], "evidence": {"leaf": "叶片"}}
@@ -195,7 +212,7 @@ def main():
         unsupported_qa = root / "unsupported-qa.json"
         run(QA, "--pdf", root / "unsupported.pdf", "--ir", unsupported_path, "--manifest", manifest, "--render-report", root / "unsupported-render.json", "--output", unsupported_qa, ok=False)
         assert "缺少来自正文" in "\n".join(json.loads(unsupported_qa.read_text(encoding="utf-8"))["failures"])
-    print("image-pdf tests: structure + palette + provenance + overflow + coverage + text-fit + semantics passed")
+    print("image-pdf tests: nine checks + synced PNG/report/JPEG/PDF empty-card and leaf-as-badge attacks + regressions passed")
     return 0
 
 

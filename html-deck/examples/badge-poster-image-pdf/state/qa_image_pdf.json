@@ -1,6 +1,6 @@
 {
   "schema": "ImagePdfQA",
-  "version": "2.2",
+  "version": "2.3",
   "route": "image-pdf",
   "status": "pass",
   "pdf": "/home/node3/multica_workspaces/4465c449-1ec8-4dfc-98c3-51c1d585e994/16080373/workdir/html-ppt-round2/html-deck/examples/badge-poster-image-pdf/dist/badge-poster.image.pdf",

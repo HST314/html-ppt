@@ -22,8 +22,8 @@ html-deck 是一个交付优先的 Agent Skill：输入 `deck.md` 与 `images/ma
 <!-- TASK-003 -->- 所有 PPT 生成必须走「执行流程总线」七阶段流水线：项目理解 → 故事线分析 → 页面任务定义 → 页面逻辑判断 → 视觉结构选择 → HTML 生成 → 质量检查；页面逻辑分析（总线③④步）为必经阶段，任何 deck 不得跳过。
 - 所有中间产物落盘：`outline.json`、`state/run_state.json`、`state/qa_history.jsonl`、`qa_report.md`；<!-- TASK-003 -->流程产物另含 `state/storyline.md`、`state/page_semantics.md`、`state/visual_blueprints.md`。
 - 图片 PDF 路线的 IR 必须登记 `visual_semantics.keywords`（至少 2 个项目主题词）、`visual_semantics.motifs`（项目专属插图/装饰母题）与逐母题 `visual_semantics.evidence`。每条 evidence 必须能在项目正文、主题词或 manifest alt 中逐字找到；例如卫星项目可用卫星/轨道/火箭，不得套用无关叶片、城市或抽象库存装饰。渲染器只使用登记母题，逐页将实际使用项写入 PNG 审计。
-- 图片 PDF 路线必须按文字实际行数确定用户真实可见卡片/面板的紧致尺寸，禁止只把字形自身边界登记为“文本框”来绕过卡片留白。逐页 PNG 与渲染报告必须同时写入 `visible_containers`（可见边界、关联文字、内边距）；QA 从容器内部真实像素独立复算文字占用，宽/高占用不足或清单两侧不一致即拒绝。
-- 每个主题插图/装饰必须写入 `visual_elements`（语义 ID、真实边界、裁片像素指纹），并与 `visual_semantics.motifs`、PNG 实际裁片和渲染报告逐项交叉核验。真实像素发生未绑定变化时，`visual_elements_semantically_grounded` 不得通过；“大空卡”“无关叶片”反例必须直接修改渲染像素，不得仅改 PNG 元数据。
+- 图片 PDF 路线必须按文字实际行数确定用户真实可见卡片/面板的紧致尺寸，禁止只把字形自身边界登记为“文本框”来绕过卡片留白。逐页 PNG 与渲染报告必须同时写入 `visible_containers`（可见边界、关联文字、内边距）；QA 从页面像素独立发现扁平卡片候选，再与清单双向核对：每个像素候选必须登记，每个登记容器必须通过真实裁片的几何与文字占用检查。漏报或宽/高占用不足均拒绝。
+- 每个主题插图/装饰必须写入 `visual_elements`（语义 ID、真实边界、裁片像素指纹），并与 `visual_semantics.motifs`、PNG 实际裁片和渲染报告逐项交叉核验。QA 另行维护 `semantic_id` 的允许形状模板与颜色特征，不从渲染器导入；即使同步更新元素指纹、PNG 审计、渲染报告、JPEG 和 PDF，实际裁片与该独立契约不符时仍须拒绝。“漏报大空卡”“叶片伪装 badge”反例必须同步重写四类产物验证该边界。
 - 图片根据元数据参与排版决策；不得拉伸，必须 `contain` 或 `cover`。
 - 视觉风格由场景图驱动：先用 `detect_style.py` 分析图片色相/明度/饱和度，推荐基础主题并派生 accent 配色与高权重封面背景；清单中带 `url` 的联网素材先经 `fetch_assets.py` 本地化。
 - 图片零遗漏：build_ir 自动拆页扩容，`audit_images.py` 最终核验，漏图即 QA 失败。
